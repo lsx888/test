@@ -1,0 +1,83 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0090)http://172.13.19.31:6060/note_html/工具/JMeter测试工具/1003010-元件的作用域与执行顺序.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>元件的作用域与执行顺序</TITLE> <LINK href="元件的作用域与执行顺序_files/standalone.css" rel="stylesheet"> 
+<LINK href="元件的作用域与执行顺序_files/overlay-apple.css" rel="stylesheet"> <LINK href="元件的作用域与执行顺序_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="元件的作用域与执行顺序_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="元件的作用域与执行顺序_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">元件的作用域与执行顺序</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-09-22 15:28:32</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>元件的作用域</H3>
+<P 
+style="text-indent: 0.8cm;">JMeter中共有8类可被执行的元件（测试计划与线程组不属于元件），这些元件中，取样器是典型的不与其它元件发生交互作用的元件，逻辑控制器只对其子节点的取样器有效，而其它元件（config 
+elements 、timers 、post-processors、assertions、listeners、）需要与取样器（sampler）等元件交互。 
+</P>
+<UL>
+  <LI>配置元件（config elements ）：元件会影响其作用范围内的所有元件。</LI>
+  <LI>前置处理程序（Per-processors）：元件在其作用范围内的每一个sampler元件之前执行。</LI>
+  <LI>定时器（timers ）：元件对其作用范围内的每一个sampler 有效</LI>
+  <LI>后置处理程序（Post-processors）：元件在其作用范围内的每一个sampler元件之后执行。</LI>
+  <LI>断言（Assertions）：元件对其作用范围内的每一个sampler 元件执行后的结果执行校验。</LI>
+  <LI>听器（Listeners）：元件收集其作用范围的每一个sampler元件的信息并呈现。</LI></UL>
+<UL>
+  <LI>  在jmeter中，元件的作用域是靠测试计划的的树型结构中元件的父子关系来确定的，作用域的原则是：   </LI>
+  <LI>取样器（sampler）元件不和其它元件相互作用，因此不存在作用域的问题。</LI>
+  <LI>逻辑控制器（Logic&nbsp;Controller）元件只对其子节点中的取样器&nbsp;和&nbsp;逻辑控制器作用。</LI>
+  <LI>除取样器&nbsp;和逻辑控制器&nbsp;元件外，其他6类元件，如果是某个sampler的子节点，则该元件公对其父子节点起作用。</LI>
+  <LI>除取样器和逻辑控制器元件外的其他6类元件，如果其父节点不是sampler&nbsp;，则其作用域是该元件父节点下的其他所有后代节点（包括子节点，子节点的子节点等）。</LI></UL>
+<H3>元件的执行顺序</H3>
+<P style="text-indent: 0.8cm;">
+了解了元件有作用域之后，来看看元件的执行顺序，元件执行顺序的规则很简单，在同一作用域名范围内，测试计划中的元件按照如下顺序执行。 </P>
+<OL>
+  <LI>配置元件（config elements ）</LI>
+  <LI>前置处理程序（Per-processors）</LI>
+  <LI>定时器（timers ）</LI>
+  <LI>取样器（Sampler）</LI>
+  <LI>后置处理程序（Post-processors） （除非Sampler 得到的返回结果为空）。</LI>
+  <LI>断言（Assertions）（除非Sampler 得到的返回结果为空）。</LI>
+  <LI>监听器（Listeners）（除非Sampler 得到的返回结果为空）。</LI></OL>
+<P style="text-indent: 0.8cm;">关于执行顺序，有三点需要注意： </P>
+<UL>
+  <LI>前置处理器、后置处理器和断言等元件只能对 取样器作用，因此，如果在它们的作用域内没有任何取样器，则不会被执行。</LI>
+  <LI>如果在同一作用域范围内有多个同一类型的元件，则这些元件按照它们在测试计划中的上下顺序一次执行。</LI>
+  <LI>一个断言在测试树中是分等级的。如果它的父元件是请求，它就被应用于那个请求。如果它的父元件是控制器，它就影响所有那个控制器下的所有请求。</LI></UL>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

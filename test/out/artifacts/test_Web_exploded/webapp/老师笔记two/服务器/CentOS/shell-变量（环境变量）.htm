@@ -1,0 +1,209 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0082)http://172.13.19.31:6060/note_html/服务器/CentOS/11002-shell-变量（环境变量）.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>shell-变量（环境变量）</TITLE> <LINK href="shell-变量（环境变量）_files/standalone.css" 
+rel="stylesheet"> <LINK href="shell-变量（环境变量）_files/overlay-apple.css" rel="stylesheet"> 
+<LINK href="shell-变量（环境变量）_files/article_edit.css" rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="shell-变量（环境变量）_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="shell-变量（环境变量）_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">shell-变量（环境变量）</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-09-23 13:09:12</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>环境变量</H3>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="shell-变量（环境变量）_files/20150827-01.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>直接使用echo命令显示变量的值</FONT></DIV></DIV>
+<H4>使用env命令显示环境变量</H4>
+<DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>注意：使用env显示的变量只是环境变量</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="shell-变量（环境变量）_files/20150827-02.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>使用env命令即可全部列出系统预设的全部系统变量了。不过登录的用户不一样这些环境变量的值也不一样。当前显示的就是root这个账户的环境变量了。常见的环境变量：</FONT></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>PATH 
+决定了shell将到哪些目录中寻找命令或程序</FONT></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>HOME 当前用户主目录</FONT></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>HISTSIZE 历史记录数</FONT></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>LOGNAME 当前用户的登录名</FONT></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>HOSTNAME 指主机的名称</FONT></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>SHELL 前用户Shell类型</FONT></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>LANG 
+语言相关的环境变量，多语言可以修改此环境变量</FONT></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>MAIL 当前用户的邮件存放目录</FONT></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>PWD 当前目录</FONT></DIV></DIV>
+<H4>使用set命令把系统预设的全部变量都显示出来</H4>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="shell-变量（环境变量）_files/20150827-03.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>set不仅可以显示系统预设的变量，也可以连同用户自定义的变量显示出来</FONT></DIV></DIV>
+<H3>用户自定义变量</H3>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="shell-变量（环境变量）_files/20150827-04.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>虽然可以自定义变量，但是该变量只能在当前shell中生效</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="shell-变量（环境变量）_files/20150827-05.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>使用bash命令即可再打开一个shell，此时先前设置的myname变量已经不存在了，退出当前shell回到原来的shell，myname变量还在。那要想设置的变量一直生效怎么办？有两种情况：</FONT></DIV></DIV>
+<OL>
+  <LI>
+  <DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>要想系统内所有用户登录后都能使用该变量</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-变量（环境变量）_files/20150827-06.png"></DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>在/etc/profile文件最末行加入 “export 
+  myname=Aming” 然后运行”source 
+  /etc/profile”就可以生效了。该修改需要在root账户下进行</FONT></DIV></DIV></LI>
+  <LI>  只想让当前用户使用该变量<BR>  需要在用户主目录下的.bashrc文件最后一行加入“export myname=Aming” 
+  然后运行”source 
+  .bashrc”就可以生效了。这时候再登录test账户，myname变量则不会生效了。上面用的source命令的作用是，讲目前设定的配置刷新，即不用注销再登录也能生效。 
+    </LI></OL>
+<H3>自定义变量的规则</H3>
+<UL>
+  <LI>设定变量的格式为”a=b”，其中a为变量名，b为变量的内容，<SPAN 
+  style="color: rgb(255, 0, 0);">等号两边不能有空格</SPAN></LI>
+  <LI>变量名只能由英、数字以及下划线组成，而且不能以数字开头</LI>
+  <LI>不能使用标点符号</LI>
+  <LI>不能使用bash里的关键字（可用help命令查看保留关键字）</LI>
+  <LI>
+  <DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>当变量内容带有特殊字符（如空格）时，需要加上单引号</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-变量（环境变量）_files/20150827-07.png"></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>有一种情况，需要注意，就是变量内容中本身带有单引号，这就需要用到双引号了</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-变量（环境变量）_files/20150827-08.png"></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>如果变量内容中需要用到其他命令运行结果则可以使用反引号</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-变量（环境变量）_files/20150827-09.png"></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>变量内容可以累加其他变量的内容，需要加双引号</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-变量（环境变量）_files/20150827-10.png"></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>在这里如果你不小心把双引号加错为单引号，将得不到你想要的结果</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-变量（环境变量）_files/20150827-11.png"></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>通过上面几个例子也许你能看得出，单引号和双引号的区别：<SPAN style="color: rgb(255, 0, 0);">用双引号时不会取消掉里面出现的特殊字符的本身作用（这里的$），而使用单引号则里面的特殊字符全部失去它本身的作用</SPAN>。</FONT></DIV></DIV></LI></UL>
+<H3>取消某个变量</H3>
+<DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>只要输入”unset 
+变量名”即可。</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="shell-变量（环境变量）_files/20150827-12.png"></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>用unset abc后，再echo 
+$abc则不再输出任何内容。</FONT></DIV></DIV>
+<H3>只读变量</H3>
+<PRE class="brush: bash;">使用 readonly 命令可以将变量定义为只读变量，只读变量的值不能被改变。
+下面的例子尝试更改只读变量，结果报错：
+
+    #!/bin/bash
+    myUrl="http://see.xidian.edu.cn/cpp/shell/"
+    readonly myUrl
+    myUrl="http://see.xidian.edu.cn/cpp/danpianji/"
+
+运行脚本，结果如下：
+
+/bin/sh: NAME: This variable is read only.
+</PRE>
+<H3>变量类型</H3>
+<UL>
+  <LI>局部变量：局部变量在脚本或命令中定义，仅在当前shell实例中有效，其他shell启动的程序不能访问局部变量</LI>
+  <LI>环境变量：所有的程序，包括shell启动的程序，都能访问环境变量，有些程序需要环境变量来保证其正常运行。必要的时候shell脚本也可以定义环境变量</LI>
+  <LI>shell变量：shell变量是由shell程序设置的特殊变量。shell变量中有一部分是环境变量，有一部分是局部变量，这些变量保证了shell的正常运行 
+  </LI></UL>
+<H3>bash、export、pstree</H3>
+<DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>bash命令，如果在当前shell中运行bash指令后，则会进入一个新的shell，这个shell就是原来shell的子shell了，不妨用pstree指令来查看一下</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="shell-变量（环境变量）_files/20150827-13.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>pstree这个指令会把linux系统中所有进程通过树形结构打印出来。图中没有全部列出结果，可以直接输入pstree查看即可。在父shell中设定一个变量后，进入子shell后该变量是不会生效的，如果想让这个变量在子shell中生效则要用到export指令</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="shell-变量（环境变量）_files/20150827-14.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>export其实就是声明一下这个变量的意思，让该shell的子shell也知道变量abc的值是123.如果export后面不加任何变量名，则它会声明所有的变量.此操作会把自定义的变量一起声明</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="shell-变量（环境变量）_files/20150827-15.png"></DIV></DIV>
+<H3>系统环境变量与个人环境变量的配置文件</H3>
+<H4>系统环境变量配置文件</H4>
+<UL>
+  <LI>/etc/profile ：这个文件预设了几个重要的变量，例如PATH, USER, LOGNAME, MAIL, INPUTRC, 
+  HOSTNAME, HISTSIZE, umas等等。</LI>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>/etc/bashrc 
+  ：这个文件主要预设umask以及PS1。这个PS1就是我们在敲命令时，前面那串字符了，例如某些linux系统PS1就是 [root@localhost 
+  ~]# ，我们不妨看一下PS1的值。</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-变量（环境变量）_files/20150827-16.png"></DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>\u就是用户，\h 主机名， \W 
+  则是当前目录，\$就是那个’#’了，如果是普通用户则显示为’$’</FONT></DIV></DIV></LI></UL>
+<H4>个人环境变量配置文件</H4>
+<UL>
+  <LI>.bash_profile 
+  ：定义了用户的个人化路径与环境变量的文件名称。每个用户都可使用该文件输入专用于自己使用的shell信息,当用户登录时,该文件仅仅执行一次。有3种方式可以使该环境变量文件的修改立即生效： 
+  <UL>
+    <LI>. .bash_profile（注意两个点之间有空格）</LI>
+    <LI>source .bash_profile</LI>
+    <LI>exec bash --login</LI></UL></LI>
+  <LI>.bashrc 
+  ：该文件包含专用于你的shell的bash信息,当登录时以及每次打开新的shell时,该该文件被读取。例如你可以将用户自定义的alias或者自定义变量写到这个文件中。有2种方式可以使该环境变量文件的修改立即生效： 
+  <UL>
+    <LI>. ~/.bashrc（注意空格，~表示用户根目录，其实和上面.bash_profile的方式一样）</LI>
+    <LI>source ~/.bashrc</LI></UL></LI>
+  <LI>.bash_history ：记录命令历史用的。</LI>
+  <LI>.bash_logout ：当退出shell时，会执行该文件。可以把一些清理的工作放到这个文件中</LI></UL>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

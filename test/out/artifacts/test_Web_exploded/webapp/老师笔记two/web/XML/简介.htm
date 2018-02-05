@@ -1,0 +1,115 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0060)http://172.13.19.31:6060/note_html/web/XML/1001010-简介.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>简介</TITLE> <LINK href="简介_files/standalone.css" rel="stylesheet"> <LINK 
+href="简介_files/overlay-apple.css" rel="stylesheet"> <LINK href="简介_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="简介_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="简介_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">简介</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-06-17 14:00:16</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV id="content_div_3">
+<H3>XML和HTML有什么区别：</H3>
+<UL>
+  <LI>可扩展性：Html不具有可扩展性。XML是元标记语言，可用于定义新的标记语言。</LI>
+  <LI>侧重点：Html侧重于如何表现信息。XML侧重于如何机构化的描述信息。</LI>
+  <LI>语法要求：Html不要求标记的嵌套、配对等。不要求标记间具有一定的顺序。XML严格要求嵌套、配对、遵循DTD的树形结构。</LI>
+  <LI>可读性和可维护性：Html内容和显示方式整合为一体。XML结构清晰便于维护和阅读</LI>
+  <LI>数据和显示的关系：Html内容描述和显示方式整合为一体。XML内容描述和显示方式分离。</LI>
+  <LI>保值性：Html不具保值性。XML具有保值性。</LI></UL></DIV>
+<DIV id="content_div_4">
+<H3>XML声明</H3>
+<UL>
+  <LI>声明写在文档第一行，如：&lt;?xml version="1.0" standalone="yes" 
+  encoding="UTF-8"?&gt;，这是xml的处理指令。(注意：该指令前面最好不要出现空格，否则在某些解析器下会又问题，?前后也不能有空格。属性的值必须以单引号或双引号括起来)</LI>
+  <LI>version：表示xml的版本，目前只有1.0版本</LI>
+  <LI>standalone：独立的，说明当前文档没有对他进行验证的DTD文档。只要保证语法正确就行。</LI>
+  <LI>encoding：文档编码格式，这里是UTF-8格式(XML默认该格式)。encoding属性应该放在standalone前面。</LI></UL></DIV>
+<DIV id="content_div_5">
+<H3>可以通过样式实现XML内容与展现形式的分离</H3>
+<UL>
+  <LI>CSS样式(Cascading Style 
+  Sheets)：其优势在于它是W3C制定的标准，为编写Html的人所熟悉，且被具有XML能力的浏览器所支持。(详见：参考代码xml下的hello.xml和hello.css) 
+    
+<PRE class="brush: xml;">&lt;!-- hello.xml内容 --&gt;
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;?xml-stylesheet type="text/css" href="hello.css"?&gt;
+&lt;HELLO&gt;
+	Hello World!
+&lt;/HELLO&gt;
+
+</PRE>
+<PRE class="brush: css;">/* hello.css内容 */
+HELLO{
+	color: red;
+	font-size: 1.2em;
+}
+</PRE></LI>
+  <LI>XSL(Extensible Style 
+Language)：当前最强大灵活的样式语言，特别为应用XML设计。但是它比CSS更复杂。</LI></UL></DIV>
+<DIV id="content_div_1">
+<H3>XML(eXtensible Markup Language可扩展标记语言)</H3>
+<H4 style="text-indent: 0.8cm;">XML 被设计用来结构化、存储以及传输信息。XML 
+是不作为的。其描述的是文档的内容和语义，而不是文档应该如何显示(注意和Html的区别，Html先于XML出现)</H4>
+<H4 style="text-indent: 0.8cm;">XML可以实现异构语言、异构平台之间的数据交互。(web service)</H4>
+<H4 style="text-indent: 0.8cm;">XML严格区分大小写，XML注释和Html一样</H4></DIV>
+<DIV id="content_div_2">
+<H3>一个"形式良好"的XML文档的语法规则：</H3>
+<UL>
+  <LI>XML 文档必须有根元素(而且有且仅有一个根元素)</LI>
+  <LI>XML 文档必须有关闭标签</LI>
+  <LI>XML 标签对大小写敏感</LI>
+  <LI>XML 元素必须被正确的嵌套</LI>
+  <LI>XML 属性必须加引号。在一个元素上，相同的属性，只允许出现一次</LI></UL></DIV>
+<DIV id="content_div_6">
+<H3>XML专用标记</H3>
+<OL>
+  <LI>注释：&lt;!-- 注释内容 --&gt;</LI>
+  <LI>处理指令PI：&lt;?目标 
+  指令?&gt;，PI必须以一个叫做目标的标识符开头，这个标识符遵从如同元素和属性一样的规则，目标是指令指向的应用的名称。如样式表指令：&lt;?xml-stylesheet 
+  type="text/css" href="hello.css"?&gt;</LI>
+  <LI>CDATA节：用于把整段文本解释为纯字符数据而不是标记。语法&lt;![CDATA[ 内容 
+  ]]&gt;。详见：参考代码:xml/CDATA.xml</LI></OL></DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

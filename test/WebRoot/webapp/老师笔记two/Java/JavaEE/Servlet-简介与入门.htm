@@ -1,0 +1,273 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0078)http://172.13.19.31:6060/note_html/Java/JavaEE/1001010-Servlet-简介与入门.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>Servlet-简介与入门</TITLE> <LINK href="Servlet-简介与入门_files/standalone.css" 
+rel="stylesheet"> <LINK href="Servlet-简介与入门_files/overlay-apple.css" rel="stylesheet"> 
+<LINK href="Servlet-简介与入门_files/article_edit.css" rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="Servlet-简介与入门_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="Servlet-简介与入门_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">Servlet-简介与入门</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-07-11 13:56:17</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>Servlet简介</H3>
+<P style="text-indent: 0.8cm;"><B>Servlet</B>（Server Applet），全称<B>Java 
+Servlet</B>，未有中文译文。是用Java编写的服务器端
+ 程序。其主要功能在于交互式地浏览和修改数据，生成动态Web内容。狭义的Servlet是指Java语言实现的一个接口，广义的Servlet是指任何
+ 实现了这个Servlet接口的类，一般情况下，人们将Servlet理解为后者。</P>
+<H3>Servlet体系结构</H3>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="Servlet-简介与入门_files/20160706-01.jpg"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>Servlet体系结构图</FONT></DIV></DIV>
+<H3>Servlet的作用</H3>
+<UL>
+  <LI>读取客户端（浏览器）发送的 HTTP 请求数据。这包括 cookies、媒体类型和浏览器能理解的压缩格式等等。</LI>
+  <LI>处理数据并生成结果。这个过程可能需要访问数据库，或者直接响应结果。</LI>
+  <LI>发送数据（即文档）到客户端（浏览器）。该文档的格式可以是多种多样的，包括文本文件（HTML 或 XML）、二进制文件（GIF 图像）、Excel 
+  等。</LI>
+  <LI>发送 HTTP 响应到客户端（浏览器）。这包括告诉浏览器或其他客户端被返回的文档类型（例如 HTML），设置 cookies 
+  和缓存参数，以及其他类似的任务。</LI></UL>
+<H3>HelloWorld(servlet入门示例)</H3>
+<H4>1.服务器准备（这里使用tomcat，请参考"服务器-Apache-tomcat"）</H4>
+<H4>2.使用eclipse的JavaEE视图新建JavaEE项目</H4>
+<DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>先在eclipse右上角选中JavaEE视图</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="Servlet-简介与入门_files/20160707-06.png"></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>步骤1</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="Servlet-简介与入门_files/20160707-02.png"></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>步骤2</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="Servlet-简介与入门_files/20160707-03.png"></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>步骤3</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="Servlet-简介与入门_files/20160707-08.png"></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>步骤4</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="Servlet-简介与入门_files/20160707-09.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>步骤5：选中项目名称，右键选择Properties选项，弹出如下页面：</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="Servlet-简介与入门_files/20160707-04.png"></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>步骤6：选中Java Bulid 
+Path，修改Source选项卡，如图JavaEE/build/classes为JavaEE/WebContent/classes然后点击确定</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="Servlet-简介与入门_files/20160707-07.png"></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>步骤7：选中Java Bulid 
+Path，修改Libraries 
+选项卡，如图导入tomcat的lib目录下的servlet-api.jar文件导入项目。（也可直接拷贝该文件放到项目的WEB-INF/lib目录下，但是建议使用导入方式）</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="Servlet-简介与入门_files/20160707-10.png"></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>修改后的结果</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="Servlet-简介与入门_files/20160707-05.png"></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>代码结构图</FONT></DIV></DIV>
+<H4>3.新建servlet代码</H4>
+<P style="text-indent: 0.8cm;">新建servlet对象的方式有多种，以下几种都是：(当然，必须先建包) </P>
+<UL>
+  <LI>右键-&gt;new -&gt; servlet -&gt;填写各个选项即可</LI>
+  <LI>直接新建java类，继承javax.servlet.http.HttpServlet，重写对应服务方法（service、doGet、doPost）即可</LI>
+  <LI>注解方式定义servlet（需要版本servlet 2.5版本以后才支持）</LI></UL>
+<H3>HelloServlet代码</H3>
+<PRE class="brush: java;">package com.yyoo.servlet;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class HelloServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		
+//		response.setContentType("text/html;charset=utf-8");
+		
+		PrintWriter out =  response.getWriter();
+		
+		out.write("&lt;html&gt;");
+		out.write("&lt;head&gt;");
+		out.write("&lt;title&gt;");
+		out.write("Hello World");
+		out.write("&lt;/title&gt;");
+		out.write("&lt;/head&gt;");
+		out.write("&lt;body&gt;");
+		out.write("&lt;h1&gt;");
+		out.write("Servlet Hello World");
+		out.write("&lt;/h1&gt;");
+		out.write("&lt;/body&gt;");
+		out.write("&lt;/html&gt;");
+		
+		out.close();
+	}
+}
+</PRE>
+<H3>web.xml文件配置</H3>
+<PRE class="brush: xml;">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns="http://java.sun.com/xml/ns/javaee" 
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+id="WebApp_ID" version="3.0"&gt;
+  &lt;display-name&gt;JavaEE&lt;/display-name&gt;
+  &lt;welcome-file-list&gt;
+    &lt;welcome-file&gt;index.html&lt;/welcome-file&gt;
+    &lt;welcome-file&gt;index.htm&lt;/welcome-file&gt;
+    &lt;welcome-file&gt;index.jsp&lt;/welcome-file&gt;
+    &lt;welcome-file&gt;default.html&lt;/welcome-file&gt;
+    &lt;welcome-file&gt;default.htm&lt;/welcome-file&gt;
+    &lt;welcome-file&gt;default.jsp&lt;/welcome-file&gt;
+  &lt;/welcome-file-list&gt;
+  
+  &lt;servlet&gt;
+  	&lt;!-- &lt;servlet-name&gt;：描述当前servlet的名称,是唯一不重复的，
+  	注意必须和&lt;servlet-mapping&gt;中的 &lt;servlet-name&gt;对应--&gt;
+  	&lt;servlet-name&gt;HelloServlet&lt;/servlet-name&gt;
+  	
+  	&lt;!-- &lt;servlet-class&gt;描述当前servlet的名称，包括包名的 --&gt;
+  	&lt;servlet-class&gt;com.yyoo.servlet.HelloServlet&lt;/servlet-class&gt;
+  &lt;/servlet&gt;
+  
+  &lt;servlet-mapping&gt;
+  	&lt;servlet-name&gt;HelloServlet&lt;/servlet-name&gt;
+  	
+  	&lt;!-- &lt;url-pattern&gt;访问当前servlet的url地址，注意：前面的/不能省略 --&gt;
+  	&lt;url-pattern&gt;/HelloServlet&lt;/url-pattern&gt;
+  &lt;/servlet-mapping&gt;
+  
+&lt;/web-app&gt;
+</PRE>
+<H3>tomcat配置</H3>
+<H4>修改端口号：参考tomcat简介与安装-&gt;启动-&gt;端口占用问题解决</H4>
+<H4>添加项目配置在Host标签末尾添加如下代码，如果有多个项目，添加多个如下代码即可</H4>
+<PRE class="brush: xml;">&lt;Context path ="/JavaEE" 
+docBase ="C:\work\base\workspace\JavaEE\WebContent" 
+debug ="0" reloadbale ="true" privileged="true"/&gt;
+</PRE>
+<H4>启动tomcat</H4>
+<P 
+style="text-indent: 0.8cm;">执行${tomcat_home}/bin/startup.bat（linux下请执行srartup.sh文件） 
+</P>
+<H3>浏览器访问</H3>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="Servlet-简介与入门_files/20160707-11.png"></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>访问地址以及页面显示</FONT></DIV></DIV>
+<H3>常见问题</H3>
+<H4>修改了java代码或配置，刷新页面没有反应。或者404错误。</H4>
+<P style="text-indent: 0.8cm;">修改了java代码或配置，一定要重启tomcat。 </P>
+<H3>注解方式配置servlet</H3>
+<PRE class="brush: java;">package me.gacl.web.controller;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * 注解WebServlet用来描述一个Servlet
+ * 属性name描述Servlet的名字,可选
+ * 属性urlPatterns定义访问的URL,或者使用属性value定义访问的URL.(定义访问的URL是必选属性)
+ */
+@WebServlet(name="Servlet3Demo",urlPatterns="/Servlet3Demo")
+public class Servlet3Demo extends HttpServlet {
+    
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.getWriter().write("Hello Servlet3.0");
+    }
+
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        this.doGet(request, response);
+    }
+}
+
+/*
+ * 完成了一个使用注解描述的Servlet程序开发。注意：使用注解后web.xml就不用配置了，但是其他的操作和普通的servlet一样。
+　　使用@WebServlet将一个继承于javax.servlet.http.HttpServlet的类定义为Servlet组件。
+　　@WebServlet有很多的属性：
+    　　1、asyncSupported：    声明Servlet是否支持异步操作模式。
+    　　2、description：　　    Servlet的描述。
+    　　3、displayName：       Servlet的显示名称。
+    　　4、initParams：        Servlet的init参数。
+    　　5、name：　　　　       Servlet的名称。
+    　　6、urlPatterns：　　   Servlet的访问URL。
+    　　7、value：　　　        Servlet的访问URL。
+　　Servlet的访问URL是Servlet的必选属性，可以选择使用urlPatterns或者value定义。
+　　像上面的Servlet3Demo可以描述成@WebServlet(name="Servlet3Demo",value="/Servlet3Demo")。
+　　也定义多个URL访问：
+　　如@WebServlet(name="Servlet3Demo",urlPatterns={"/Servlet3Demo","/Servlet3Demo2"})
+　　或者@WebServlet(name="AnnotationServlet",value={"/Servlet3Demo","/Servlet3Demo2"})
+ *
+ */
+</PRE>
+<H3>关于访问路径</H3>
+<PRE class="brush: xml;">&lt;a href="webpage/form/form.html" target="_blank"&gt;表单提交&lt;/a&gt;
+&lt;!-- 以上使用的是相对路径，是相对于当前页面的路径。如果当前页面是在WebContent/index.html，
+那么访问路径是：WebContent/webpage/form/form.html
+ --&gt;
+
+&lt;a href="/JavaEE/webpage/form/form.html" target="_blank"&gt;表单提交&lt;/a&gt;
+&lt;!-- 以上使用的是绝对路径，前面多了一个"/"，这个个斜杠是应用上下文跟路径，
+应用上下文前面的"/JavaEE"所表示的项目文件路径，就是在WebContent/下面，这两个方法访问的是相同的路径
+其中/JavaEE就表示应用上下文路径
+ --&gt;
+
+&lt;a href="/JavaEE/HelloServlet" target="_blank"&gt;表单提交&lt;/a&gt;
+&lt;!--
+以上访问的是servlet的路径，/JavaEE后跟的时候servlet的配置路径，该servlet的页面的相对路径在/JavaEE下而/JavaEE的路径和WebContent/下的路径相同
+  --&gt;
+
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

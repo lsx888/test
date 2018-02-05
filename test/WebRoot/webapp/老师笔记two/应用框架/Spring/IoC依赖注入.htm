@@ -1,0 +1,68 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0075)http://172.13.19.31:6060/note_html/应用框架/Spring/1003010-IoC依赖注入.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>IoC依赖注入</TITLE> <LINK href="IoC依赖注入_files/standalone.css" rel="stylesheet"> 
+<LINK href="IoC依赖注入_files/overlay-apple.css" rel="stylesheet"> <LINK href="IoC依赖注入_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="IoC依赖注入_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="IoC依赖注入_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">IoC依赖注入</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-02-24 17:12:06</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<P style="text-indent: 0.8cm;">依赖注入也称DI（控制反转）。 </P>
+<DIV id="content_div_1">
+<H3>依赖注入有3中实现类型（参考代码spring的demo1和demo2）</H3>
+<UL>
+  <LI>接口注入：接口注入基于接口将调用与实现分离。这种依赖注入方式必须实现容器所规定的接口，使程序代码和容器的API绑定在一起，这不是理想的依赖注入方式。Spring不支持这种方式的依赖注入.</LI>
+  <LI>Setter方式注入：基于JavaBean的Setter方法为属性赋值。在实际开发中得到了广泛应用。</LI>
+  <LI>构造器注入：基于构造方法为属性赋值。容器通过调用类的构造方法，将其所需的依赖关系注入其中。</LI></UL></DIV>
+<DIV id="content_div_2">
+<H3>Bean的作用域(bean的scope属性来配置)</H3>
+<UL>
+  <LI>singleton：只会创建该Bean的唯一实例，对于该Bean的所有引用以及请求都会使用这个唯一实例</LI>
+  <LI>prototype：在每次请求该Bean的时候都会创建一个新的实例。当Bean被容器创建完毕，容器就将生成的对象的生命周期的管理工作交由请求方负责，容器不再拥有当前实例的引用。</LI>
+  <LI>request：在一次Http请求中IoC容器会返回该Bean的同一个实例，而对于不同的用户请求，则会返回不同的实例。只在ApplicationContext情形下有效，否则将会抛出异常。</LI>
+  <LI>session：在一个Http 
+  Session中，IoC容器会返回一个实例，在不同Session中返回不同实例。只在ApplicationContext情形下有效，否则将会抛出异常。</LI>
+  <LI>global session：在一个全局Http Session中，IoC容器会返回一个实例。典型情况下，仅在使用portlet 
+  context的时候有效。只在ApplicationContext情形下有效，否则将会抛出异常。</LI></UL></DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

@@ -1,0 +1,105 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0074)http://172.13.19.31:6060/note_html/工具/Apache-Ant/1001010-简介与安装.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>简介与安装</TITLE> <LINK href="简介与安装_files/standalone.css" rel="stylesheet"> 
+<LINK href="简介与安装_files/overlay-apple.css" rel="stylesheet"> <LINK href="简介与安装_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="简介与安装_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="简介与安装_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">简介与安装</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-08-04 17:11:17</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>简介</H3>
+<P style="text-indent: 0.8cm;">Apache 
+Ant,是一个将软件编译、测试、部署等步骤联系在一起加以自动化的一个工具，大多用于Java环境中的软件开发。由Apache软件基金会所提供。 </P>
+<P style="text-indent: 0.8cm;">Linux系统中的 
+make这个命令。当编译Linux内核及一些软件的源程序时，经常要用这个命令。Make命令其实就 
+是一个项目管理工具，而Ant所实现功能与此类似。像make，gnumake和nmake这些编译工具都有 
+一定的缺陷，但是Ant却克服了这些工具的缺陷。最初Ant开发者在开发跨平台的应用时，同样也 是基于这些缺陷对Ant做了更好的设计。 </P>
+<H3>下载与安装</H3>
+<H4>请到官网下载ant的安装文件<A 
+href="http://ant.apache.org/">http://ant.apache.org/</A></H4>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" src="简介与安装_files/20160804-01.png"></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>下载.zip文件即可</FONT></DIV></DIV>
+<H4>安装</H4>
+<OL>
+  <LI>将.zip文件解压，解压到的路径最好不要出现中文</LI>
+  <LI>配置环境变量ANT_HOME=解压后的ant文件夹根路径</LI>
+  <LI>配置环境变量path=%ANT_HOME%/bin</LI>
+  <LI>打开cmd命令行执行命令ant -version如果出现ant的相关版本信息，说明ant安装完成</LI></OL>
+<H3>ant的xml文件与执行命令</H3>
+<UL>
+  <LI>Ant的构件文件是基于XML编写的，默认名称为build.xml。直接在build.xml文件所在路径下，键入命令：ant 即可执行该文件</LI>
+  <LI>ant也可以定义其他名称命名的xml文件，如：test.xml。这样如果要执行该文件，需要在命令ant只后添加选项：ant -f hello.xml 
+  task_name、ant -buildfile hello.xml task_name或ant -file hello.xml 
+task_name</LI>
+  <LI>其中task_name是xml文件中定义的任务名称，之后将做介绍。</LI></UL>
+<H3>Hello World</H3>
+<OL>
+  <LI>在build文件夹下新建build.xml文件（要让eclipse修改build.xml文件需修改默认打开该文件的方式为ant editor）   
+  <DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="简介与安装_files/20160804-02.png"></DIV></DIV></LI>
+  <LI>编辑build.xml文件   
+<PRE class="brush: xml;">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+
+&lt;!-- 
+project标签：
+	name：表示项目的名称
+	default：表示直接执行该文件时，默认执行的任务。值是target标签的name属性的值
+	basedir：ant的内置属性，使用的是相对路径。
+		比如：. 表示为当前build文件所在的路径
+		比如：../ 表示位当前build文件所在路径的上一级路径
+--&gt;
+&lt;project name="test" default="test" basedir="."&gt;
+	&lt;!-- target 任务标签之后将做介绍，name表示任务的名称 --&gt;
+	&lt;target name="test"&gt;
+		&lt;echo&gt;Hello Ant&lt;/echo&gt;
+	&lt;/target&gt;
+
+&lt;/project&gt;
+</PRE></LI>
+  <LI>执行：使用cmd命令窗口进入build.xml文件所在的目录，使用ant命令执行该文件。</LI></OL>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

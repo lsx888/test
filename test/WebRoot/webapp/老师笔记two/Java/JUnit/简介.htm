@@ -1,0 +1,119 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0063)http://172.13.19.31:6060/note_html/Java/JUnit/1001010-简介.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>简介</TITLE> <LINK href="简介_files/standalone.css" rel="stylesheet"> <LINK 
+href="简介_files/overlay-apple.css" rel="stylesheet"> <LINK href="简介_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="简介_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="简介_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">简介</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-01-09 15:32:14</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>简介</H3>
+<P style="text-indent: 0.8cm;">JUnit是一个Java语言的单元测试框架。它由Kent Beck和Erich 
+Gamma建立，逐渐成为源于Kent Beck的sUnit的xUnit家族中最为成功的一个。 
+JUnit有它自己的JUnit扩展生态圈。多数Java的开发环境都已经集成了JUnit作为单元测试的工具。 JUnit是由 Erich Gamma 和 Kent 
+Beck 编写的一个回归测试框架（regression testing 
+framework）。Junit测试是程序员测试，即所谓白盒测试，因为程序员知道被测试的软件如何（How）完成功能和完成什么样（What）的功能。Junit是一套框架，继承TestCase类，就可以用Junit进行自动测试了。 
+</P>
+<H3>特性</H3>
+<P 
+style="text-indent: 0.8cm;">JUnit是一个开放源代码的Java测试框架，用于编写和运行可重复的测试。他是用于单元测试框架体系xUnit的一个实例（用于java语言）。它包括以下特性： 
+</P>
+<UL>
+  <LI>用于测试期望结果的断言（Assertion）</LI>
+  <LI>用于共享共同测试数据的测试工具</LI>
+  <LI>用于方便的组织和运行测试的测试套件</LI>
+  <LI>图形和文本的测试运行器</LI></UL>
+<H3>编写测试代码的技巧</H3>
+<PRE class="brush: xml;">1.不要用TestCase的构造函数初始化Fixture，而要用setUp()和tearDown()方法。
+
+2.不要依赖或假定测试运行的顺序，因为JUnit利用Vector保存测试方法。所以不同的平台会按不同的顺序从Vector中取出测试方法。
+
+3.避免编写有副作用的TestCase。例如：如果随后的测试依赖于某些特定的交易数据，就不要提交交易数据。简单的回滚就可以了。
+
+4.当继承一个测试类时，记得调用父类的setUp()和tearDown()方法。
+
+5.将测试代码和工作代码放在一起，一边同步编译和更新。（使用Ant中有支持junit的task.）
+
+6.测试类和测试方法应该有一致的命名方案。如在工作类名前加上test从而形成测试类名。
+
+7.确保测试与时间无关，不要依赖使用过期的数据进行测试。导致在随后的维护过程中很难重现测试。
+
+8.如果你编写的软件面向国际市场，编写测试时要考虑国际化的因素。不要仅用母语的Locale进行测试。
+
+9.尽可能地利用JUnit提供地assert/fail方法以及异常处理的方法，可以使代码更为简洁。
+
+10.测试要尽可能地小，执行速度快。
+
+11.不要硬性规定数据文件的路径。
+
+12.利用Junit 的自动异常处理书写简洁的测试代码。事实上在Junit 中使用try-catch 来捕获异常是没有必要的，
+Junit 会自动捕获异常。那些没有被捕获的异常就被当成错误处理。
+
+13.充分利用Junit 的assert/fail 方法
+
+     assertSame()用来测试两个引用是否指向同一个对象
+     assertEquals()用来测试两个对象是否相等
+
+14.确保测试代码与时间无关
+</PRE>
+<H3>JUnit和ant结合</H3>
+<P style="text-indent: 0.8cm;">ant 提供了两个 target：junit 和 junitreport 运行所有测试用例，并生成 
+html 格式的报表</P>
+<H3>JUnit4.x</H3>
+<UL>
+  <LI>使用junit4.x版本进行单元测试时，不用测试类继承TestCase父类，因为，junit4.x全面引入了Annotation来执行我们编写的测试。</LI>
+  <LI>junit4.x版本，引用了注解的方式，进行单元测试</LI>
+  <LI>junit4.x版本我们常用的注解：   
+  <OL>
+    <LI>@Before 注解：与junit3.x中的setUp()方法功能一样，在每个测试方法之前执行；可以有多个</LI>
+    <LI>@After 注解：与junit3.x中的tearDown()方法功能一样，在每个测试方法之后执行；可以有多个</LI>
+    <LI>@BeforeClass 注解：在所有方法执行之前执行；只能有一个(类级别，每个测试类无论多少个方法，只执行一次)；<SPAN style="color: rgb(255, 0, 0);">注意：使用该注解的方法必须是public和Static的</SPAN></LI>
+    <LI>@AfterClass 注解：在所有方法执行之后执行；只能有一个(类级别，每个测试类无论多少个方法，只执行一次)；<SPAN style="color: rgb(255, 0, 0);">注意：使用该注解的方法必须是public和Static的</SPAN></LI>
+    <LI>@Test(timeout = xxx) 
+    注解：设置当前测试方法在一定时间内运行完，否则返回错误；(防止死循环)。@Test也可以直接使用。用@Test标注的方法，返回值必须为void，而且不能有任何参数。方法名称可以任意取，但一般以test开头</LI>
+    <LI>@Test(expected = Exception.class) 
+    注解：设置被测试的方法是否有异常抛出。抛出异常类型为：Exception.class；</LI>
+    <LI>@Ignore 
+注解：忽略掉一个测试方法或一个类，被该注解注明的方法或类，不会被执行。或@Ignore("说明文字")</LI></OL></LI></UL>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

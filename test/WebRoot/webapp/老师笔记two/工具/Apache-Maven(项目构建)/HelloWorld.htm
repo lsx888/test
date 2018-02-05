@@ -1,0 +1,159 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0088)http://172.13.19.31:6060/note_html/工具/Apache-Maven（项目构建）/1002010-HelloWorld.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>HelloWorld</TITLE> <LINK href="HelloWorld_files/standalone.css" rel="stylesheet"> 
+<LINK href="HelloWorld_files/overlay-apple.css" rel="stylesheet"> <LINK href="HelloWorld_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="HelloWorld_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="HelloWorld_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">HelloWorld</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-10-21 16:02:43</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>标准目录结构</H3>
+<PRE class="brush: java;">my-app
+  |- src
+      |-main  主要的工程源文件
+         |–bin 脚本库
+         |–java java源代码文件(java文件夹下面的目录为项目的包，如：com.yyoo.appName.util等)
+         |–resources 资源库，会自动复制到classes目录里
+         |–filters 资源过滤文件
+         |–assembly 组件的描述配置（如何打包）
+         |–config 配置文件
+         |–webapp web应用的目录。WEB-INF、css、js等
+      |-test 测试文件
+         |–java 单元测试java源代码文件（文件路径和main下一致）
+         |–resources 测试需要用的资源库
+         |–filters 测试资源过滤库
+      |-site Site（一些文档，项目站点文件）
+  |- target 是有存放项目构建后的文件和目录，jar包、war包、编译的class文件等。target里的所有内容都是maven构建的时候生成的
+  |-LICENSE.txt Project’s license 
+  |-README.txt Project’s readme
+  |-pom.xml
+</PRE>
+<H3>创建HelloWorld的目录结构</H3>
+<P style="text-indent: 0.8cm;">
+先在D:\根路径下建立文件夹，my_app_maven，名称可以任意取，以后的所有使用maven管理构建的项目都放在这个文件夹下，再在这个文件夹下创建hello_maven文件夹，此文件夹的名称即为我们HelloWorld程序的项目名称，接下来按如下创建文件夹 
+</P>
+<PRE class="brush: java;">hello_maven
+  |- src
+      |-main
+         |–java
+             |-com
+               |-yyoo
+                  |-maven01
+                     |-HelloWorld.java
+      |-test
+  |- target 运行mvn compile后会自动生成，运行mvn clean后会自动删除，无须我们手动维护
+  |-pom.xml 
+</PRE>
+<H3>创建HelloWorld.java</H3>
+<PRE class="brush: java;">package com.yyoo.maven01;//注意package
+
+public class HelloWorld{
+	public static void main(String[] arg){
+		System.out.println("Hello world!");
+	}
+}
+</PRE>
+<H3>创建pom.xml文件</H3>
+<PRE class="brush: xml;">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!--  maven的schema --&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0"	
+	     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"&gt;
+	&lt;!-- 固定写法，model的版本 --&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;!-- groupId：组id，公司网址的反写+项目名称。如下：com.yyoo是公司名称，maven01是项目名称 --&gt;
+	&lt;groupId&gt;com.yyoo.maven01&lt;/groupId&gt;
+	&lt;!-- artifactId：项目id，实际对应项目的名称-模块名称  此名称和mvn package、mvn install 生成后的文件有关系--&gt;
+	&lt;artifactId&gt;hello-maven&lt;/artifactId&gt;
+	&lt;!-- version：版本号，SNAPSHOT表示快照版本 --&gt;
+	&lt;version&gt;SNAPSHOT-0.0.1&lt;/version&gt;
+
+	&lt;!--我们不使用junit
+	&lt;dependencies&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;junit&lt;/groupId&gt;
+			&lt;artifactId&gt;junit&lt;/artifactId&gt;
+			&lt;version&gt;4.10&lt;/version&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;
+	&lt;/dependencies&gt;
+    --&gt;
+
+&lt;/project&gt;
+</PRE>
+<H3>编译mvn compile、打包 mvn package、执行java -cp</H3>
+<OL>
+  <LI>编译   
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT> 
+  在cmd命令窗口，进入D:\my_app_maven\hello_maven文件夹</FONT></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>在此路径下执行D:\my_app_maven\hello_maven&gt;mvn 
+  compile，maven将编译代码，并将代码放入target文件夹</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="HelloWorld_files/20151014-01.png"></DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>出现如图所示，表示编译成功</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="HelloWorld_files/20151014-02.png"></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>target文件夹的内容，编译后的文件放在classes文件夹中</FONT></DIV></DIV></LI>
+  <LI>打包：在命令窗口执行，D:\my_app_maven\hello_maven&gt;mvn 
+  package。执行后会在target文件夹下出现hello-maven-SNAPSHOT-0.0.1.jar包，（jar的包名就是artifactId+version.jar）</LI>
+  <LI>执行：D:\my_app_maven\hello_maven&gt;java -cp 
+  target\hello-maven-SNAPSHOT-0.0.1.jar 
+  com.yyoo.maven01.HelloWorld，注意需要完整的类路径。执行后，控制台会打印出"Hello World！"。这样我们的Hello 
+  World就完成了</LI>
+  <LI>发布到仓库：在命令窗口执行，D:\my_app_maven\hello_maven&gt;mvn 
+  install。执行后会在本地仓库~/m2/repository/com/yyoo/maven01/${artifactId}/${version}/下发布artifactId+version.jar包。<SPAN 
+  style="color: rgb(255, 0, 0);">注意：mvn install执行时，会自动先执行mvn compile，然后mvn 
+  package，最后发布到本地仓库，也就是可以直接执行mvn install。</SPAN></LI>
+  <LI>清除：在命令窗口执行，D:\my_app_maven\hello_maven&gt;mvn clean。<SPAN style="color: rgb(255, 0, 0);">执行后，会自动删除target目录，但是已经发布到本地仓库的版本将不会被删除</SPAN></LI></OL>
+<H3>注意</H3>
+<UL>
+  <LI>大多数写Hello World 
+  程序时，是第一次执行mvn的相关命令，maven在首次执行这些命令的时候会先检查本地仓库相关的依赖，如果没有相关依赖，maven会自动联网（所以，在首次执行相关命令时，请保证可以联网）下载相关依赖到本地仓库，这会耗些时间。</LI>
+  <LI><SPAN style="color: rgb(255, 0, 0);">上面的编译、打包、发布命令均可以同mvn clean命令一起使用，如mvn 
+  clean compile、mvn clean package、mvn clean 
+  install，这些命令均先clean后执行。clean的主要功能是删除maven生成的target文件，如果不执行clean，而直接install的话，其过程中生成的如.class文件就会覆盖原来的文件，这在一般情况下是没有问题的。但是，比如你在源文件删除了一个java，结果没有clean，则它依然存在与target中，可能会对最终的结果造成影响。</SPAN></LI></UL>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

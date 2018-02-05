@@ -1,0 +1,175 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0081)http://172.13.19.31:6060/note_html/Java/JavaSE/1002010-JavaSE-数据类型、变量.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>JavaSE-数据类型、变量</TITLE> <LINK href="JavaSE-数据类型、变量_files/standalone.css" 
+rel="stylesheet"> <LINK href="JavaSE-数据类型、变量_files/overlay-apple.css" rel="stylesheet"> 
+<LINK href="JavaSE-数据类型、变量_files/article_edit.css" rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="JavaSE-数据类型、变量_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="JavaSE-数据类型、变量_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">JavaSE-数据类型、变量</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-06-17 13:46:28</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>Java中的数据类型分为两大类：</H3>
+<UL>
+  <LI>原生数据类型 (Primitive Data Type) </LI>
+  <LI>引用类型(对象类型)(Reference Type)   引用类型是用在对象上的。一个对象可以被多个引用所指  
+  向，但同一时刻，每个引用只能指向唯一的一个对象。如果一个对象被多个引用所指向，  那么无论哪个引用对对象的属性进行了修改，都会反映到其他的引用当中。   
+  </LI></UL>
+<H3>变量与常量：</H3>
+<UL>
+  <LI>  所谓常量，就是值不会变化的量   
+  <UL>
+    <LI>    对于Java中的常量的命名规则：所有单词的字母都是大写，如果有多个单词，    那么使用下划线连接即可。比如说：public 
+    static final int AGE_0F_PERSON = 20;     </LI>
+    <LI>在Java 中声明final 常量时通常都会加上 static关键字，这样对象的每个实例    都会访问唯一一份常量值。     
+  </LI></UL></LI>
+  <LI>  所谓变量，就是值可以变化的量   
+  <UL>
+    <LI>=  表示赋值，将等号右边的值赋给了左边的变量。Java中使用==表示相等，等价于数学中的=</LI>
+    <LI>变量名：在 Java中，变量名以下划线、字母、$符号开头，并且后跟下划线、字母、$符号以及数字。     <FONT style="color: red;">总之，Java中的变量名不能以数字开头</FONT> 
+        </LI>
+    <LI>变量类型  变量名  =  变量值;int a = 1; </LI>
+    <LI><FONT style="color: red;">变量在使用前必须要赋值；int a; 
+    System.out.println(a);编译错误</FONT> </LI>
+    <LI><FONT style="color: red;">变量必须要声明其类型方可使用 a = 1; 
+    System.out.println(a);编译错误</FONT> </LI>
+    <LI><FONT style="color: red;">变量在使用前必须要定义，并且只能定义一次; int a = 0; byte a = 
+    2;编译错误 </FONT></LI></UL></LI></UL>
+<H3><FONT style="color: red;">Java中的原生数据类型共有 8种：</FONT> </H3>
+<UL>
+  <LI>1).整型：使用int表示。(32位 -- 4字节)</LI>
+  <LI>2).字节型：使用byte 表示。(表示-128～127之间的256 个整数,8位 -- 1字节)</LI>
+  <LI>3).短整型：使用short表示。(16 位 -- 2字节)</LI>
+  <LI>4).长整型：使用long表示。(64 位 -- 8字节)</LI>
+  <LI>5).单精度浮点型：使用 float表示。所谓浮点型，指的就是小数，也叫做实数，比如 1.2。</LI>
+  <LI>6).双精度浮点型：使用 double表示。双精度浮点型表示的数据范围要比单精度浮点型大。 </LI>
+  <LI>7).字符型：使用 char 表示（char 是 character 的缩写）。所谓字符，就是单个的字符表示，  
+  比如字母a，或者中文张，外面用单引号包围上。比如 char a = 'B'; char b = '张';   <FONT style="color: red;">char 
+  a = 'ab'是错误的(编译无法通过)</FONT>   </LI>
+  <LI>8).布尔类型，使用boolean 表示。布尔类型只有两种可能值，分别是true 与false。 </LI></UL>
+<H3><FONT style="color: red;">原生数据类型使用陷阱：</FONT> </H3>
+<UL>
+  <LI>1).<FONT style="color: red;">Java中的所有浮点类型默认情况下都是 double。</FONT>不能将 
+  double类型的值赋给float类型  的变量，即便该double类型的值处于float类型的范围内也是不可以的。总之，能否成  
+  功赋值取决于等号右边的值类型与等号左边的变量类型是否一致。   
+  <UL>
+    <LI><FONT style="color: red;">float a = 1.2是错误的；float a = 
+    (float)1.2是正确的</FONT></LI></UL></LI>
+  <LI>2).可以将表示范围小的值赋给表示范围大的变量；但不能直接将表示范围大的值赋给表示范围小的变量，只能通过强制类型转换实现   
+  <UL>
+    <LI><FONT style="color: red;">int a = 1; short b = a; 是错误的；int a = 1; short 
+    b = (short) a；a的值需在short范围内。short b = 1;也是正确的。</FONT>     </LI>
+    <LI><FONT style="color: red;">short a = 1;int b = a; 是正确的</FONT></LI>
+    <LI><FONT style="color: red;">char a = 'a'; short b =&nbsp; 'a' + 
+    10;是正确的。short b = a + 
+    10;是错误的。'a'+10得到的是int常量，而a+10得到的是int类型的变量。<BR></FONT></LI></UL></LI></UL>
+<H3><FONT style="color: red;">运算规律：</FONT></H3>
+<UL>
+  <LI>1.  当有若干个变量参与运算时，结果类型取决于这些变量中表示范围最大的那个变量类型。  比如，参与运算的变量中，有整型 int，有双精度浮点型 
+  double，有短整型 short，那么  最后的结果类型就是 double   </LI>
+  <LI>  2.  取模的规律：取模的结果符号永远与被除数的符号相同   </LI></UL>
+<H3><FONT style="color: red;">常见运算错误 ：</FONT></H3>
+<UL>
+  <LI><FONT style="color: red;">除法：</FONT>int a = 1;int b = 2;   <FONT style="color: red;">a/b的值为0；而不是0.5；(double)a/b 
+  = 0.5</FONT>   上面的代码中，a与 b都是整型，但是通过<FONT 
+  style="color: red;">(double)a这种转换将a转换为一个匿名的变  量</FONT>，该变量的类型是 
+  double，但是要注意：<FONT style="color: red;">a本身依旧是 int类型</FONT>，而不是double类型，  
+  这样，(double)a / b就是 double类型除以 int类型，结果自然是double类型。   </LI>
+  <LI><FONT style="color: red;">取模运算符--使用%表示：</FONT>   
+  <UL>
+    <LI>int a = 5;int b = 3; <FONT style="color: red;">a%b = 2</FONT></LI>
+    <LI>int a = -5;int b = 3; <FONT style="color: red;">a%b = -2</FONT></LI>
+    <LI>int a = 5;int b = 3; <FONT style="color: red;">b%a = 3</FONT></LI>
+    <LI>int a = -5;int b = 3; <FONT style="color: red;">b%a = 
+  3</FONT></LI></UL></LI>
+  <LI><FONT style="color: red;">关于除数为0：</FONT>   
+  <UL>
+    <LI>int a = 5;int b = 0; <FONT style="color: red;">a/b 
+    会报除数为0的异常ArithmeticException</FONT></LI>
+    <LI>long a = 5L;long b = 0L; <FONT 
+    style="color: red;">a/b会报除数为0的异常ArithmeticException</FONT></LI>
+    <LI>float a = 5F;float b = 0.0F; <FONT 
+    style="color: red;">a/b=Infinity</FONT></LI>
+    <LI>double a = 5;double b = 0; <FONT 
+    style="color: red;">a/b=Infinity</FONT></LI></UL></LI></UL>
+<H3>运算符：</H3>
+<UL>
+  <LI>  关系运算符：大于（&gt;）、小于（&lt;）、等于（==）、不等于（!=）、大于等于（&gt;=）、小于等于（&lt;=），关系运算的结果是个 
+  boolean值.   还有一个三元表单式(a?b:c) a &lt; b?a:b;如果a &lt; b则返回a，否则返回b   </LI>
+  <LI>逻辑运算符：重点讲解两个，逻辑运算符本身也返回一个boolean值   
+  <UL>
+    <LI>    逻辑与：使用&amp;&amp;表示，逻辑与是个双目运算符（即有两个操作数的运算符），只有    
+    当两个操作数都为真的时候，结果才为真；其余情况结果均为假。逻辑与表示的并    且的意思     </LI>
+    <LI>    逻辑或：使用||表示，逻辑或也是个双目运算符，只有当两个操作数都为假的时候，    结果才为假；其余情况结果均为真。逻辑或表示或者的意思 
+        </LI></UL></LI>
+  <LI>  关于逻辑运算符的短路特性   
+  <UL>
+    <LI>    逻辑与：如果第一个操作数为 false，那么结果肯定就是 false，所以在这种情况下，    
+    将不会执行逻辑与后面的运算了，即发生了短路     </LI>
+    <LI>    逻辑或：如果第一个操作数为 true，那么结果肯定就是 true，所在在这种情况下，    将不会执行逻辑或后面的运算了，即发生了短路  
+       </LI></UL></LI>
+  <LI>  关于变量的自增与自减运算   
+  <UL>
+    <LI>a++；a = a +1； a += 1；这三种方法效果一样     </LI>
+    <LI>    关于int b = a++，作用是将a的值先赋给b，然后再让a自增1.     </LI>
+    <LI>关于int b = ++a，作用是将a的值先自增1，然后将自增后的结果赋给 b.     </LI></UL></LI></UL>
+<H3>运算符的优先级</H3>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="JavaSE-数据类型、变量_files/20160608-01.jpg"></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>运算符的优先级</FONT></DIV></DIV>
+<H3>关于计算机系统中的数据表示 ：</H3>
+<UL>
+  <LI>位：bit(只有0，1两种状态)，是计算机系统中的最小数据表示单位 </LI>
+  <LI>字节：byte，  1 byte = 8 bit</LI>
+  <LI>1 KB = 1024 Byte </LI>
+  <LI>1 MB = 1024 KB </LI>
+  <LI>1 GB = 1024 MB </LI></UL>
+<H3>注释。注释是给人看的，不是给计算机看的。Java中共有3 种类型的注释：</H3>
+<UL>
+  <LI>单行注释：以//开头，//后面的所有内容均被当作注释处理。 </LI>
+  <LI>  多行注释：以/*开头，以*/结束，中间的所有内容均被当作注释处理。多行注释来源于C/C++。   <FONT style="color: red;">关于多行注释，需要注意的是，多行注释不能嵌套。</FONT> 
+    </LI>
+  <LI>另一种多行注释：以/**开头，以*/结束。用于产生Java Doc帮助文档。 </LI></UL>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

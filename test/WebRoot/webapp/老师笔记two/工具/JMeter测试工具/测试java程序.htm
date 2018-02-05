@@ -1,0 +1,307 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0080)http://172.13.19.31:6060/note_html/工具/JMeter测试工具/1004010-测试java程序.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>测试java程序</TITLE> <LINK href="测试java程序_files/standalone.css" rel="stylesheet"> 
+<LINK href="测试java程序_files/overlay-apple.css" rel="stylesheet"> <LINK href="测试java程序_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="测试java程序_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="测试java程序_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">测试java程序</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-09-24 15:22:06</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>核心步骤</H3>
+<OL>
+  <LI>创建一个Java工程；</LI>
+  <LI>将JMeter的lib目录下的需要用到的jar文件添加进此工程的Build 
+  Path；只测试java代码，应该需要ApacheJMeter_core.jar文件即可</LI>
+  <LI>创建一个类并实现JavaSamplerClient接口或继承AbstractJavaSamplerClient；接口有如下方法：   
+<PRE class="brush: java;">public Arguments getDefaultParameters();设置可用参数及的默认值；
+public void setupTest(JavaSamplerContext arg0)：每个线程测试前执行一次，做一些初始化工作；
+public SampleResult runTest(JavaSamplerContext arg0)：开始测试，从arg0参数可以获得参数值；
+public void teardownTest(JavaSamplerContext arg0)：测试结束时调用；
+
+
+执行的先后顺序为：
+getDefaultParameters() --&gt; setupTest(JavaSamplerContext context) --&gt; runTest(JavaSamplerContext context) --&gt; teardownTest(JavaSamplerContext context)
+ 
+常用的方法：
+①、addArgument("name", "value")    定义参数
+②、sampleStart()    定义事务的开始，类似于LR的lr_start_transaction，和LR一样事务间不要放无关代码
+③、sampleEnd()    定义事务的结束，类似于LR的lr_end_transaction
+④、setSuccessful(true、false)    设置运行结果的成功或失败，Jmeter统计成功失败的次数，在聚合报告中能够体现。
+</PRE></LI>
+  <LI>Export为Runnable Jar File；（可以是导出jar或者使用ant编译打包）</LI>
+  <LI>将此jar包放入JMETER_HOME\lib\ext目录；（建议是使用jmeter.properties的search_paths属性，注意该属性是使用相对路径）</LI>
+  <LI>以管理员身份打开JMeter；</LI>
+  <LI>创建线程组、Java Request、查看结果树，进行测试；（正式的测试流程）</LI></OL>
+<H3>测试示例</H3>
+<H4>待测试代码</H4>
+<PRE class="brush: java;">import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
+import com.yyoo.core.app.AppException;
+
+public class MoneyUtil {
+	
+	/**
+	 * 将金额转换为中文大写
+	 * @param me 金额单位为分
+	 * @return
+	 * @throws AppException
+	 */
+	public static String toUpperMoney(long me)throws AppException{
+		//a.properties为配置文件，直接从classPath读取。如果是使用jmeter.properties的search_paths属性，JMeter的classPath，即为该属性对应的路径
+		InputStream path1 = MoneyUtil.class.getClassLoader().getResourceAsStream("a.properties");
+		System.out.println("java-in:"+path1);
+		Properties properties = new Properties();
+		try {
+			properties.load(path1);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+        System.out.println("java-properties:"+properties);
+		
+		String[] words = 
+			{"零","壹","贰","叁","肆","伍","陸","柒","捌","玖"};
+		String[] units = 
+			{"分","角","圆","拾","佰","仟","万","拾","佰","仟","亿","拾","佰","仟","万"};
+		
+		StringBuffer sbf = new StringBuffer("");
+		
+		String money = me+"";
+		int len = money.length();
+		
+		if(len &gt; 15){
+			throw new AppException("数据过大，最大为万亿");
+		}
+		
+		for(int i = 0; i &lt; len ; i++){
+			//某一位的值
+			int wordNum = new Integer(money.substring(i, i + 1));
+			int unitNum = len - i - 1;
+			
+			if(wordNum == 0 &amp;&amp; unitNum != 2 &amp;&amp; unitNum != 6 &amp;&amp; unitNum != 10){
+				sbf = sbf.append(words[wordNum]);
+			}else{			
+				sbf = sbf.append(words[wordNum]).append(units[unitNum]);
+			}
+			
+		}
+		
+		return sbf.toString().replaceAll("圆零零", "圆整")
+					.replaceAll("零+", "零")
+					.replaceAll("零圆", "圆")
+					.replaceAll("零万", "万")
+					.replaceAll("零亿", "亿")
+					.replaceAll("亿万", "亿");
+	}
+	
+	/**
+	 * 将数字转换为中文
+	 * @param num
+	 * @return
+	 * @throws AppException 
+	 */
+	public static String toUpperNum(long number) throws AppException{
+		String[] words = 
+			{"零","一","二","三","四","五","六","七","八","九"};
+		//个位不显示，所以用空，十万、百万、千万、十亿、百亿、千亿，均去掉后面的万和亿
+		String[] units = 
+			{"","十","百","千","万","十","百","千","亿","十","百","千","万"};
+		StringBuffer sbf = new StringBuffer("");
+		
+		String num = number+"";
+		int len = num.length();
+		
+		if(len &gt; 13){
+			throw new AppException("数据过大，最大为万亿");
+		}
+		
+		for(int i = 0; i &lt; len ; i++){
+			//某一位的值
+			int wordNum = new Integer(num.substring(i, i + 1));
+			int unitNum = len - i - 1;
+			
+			sbf = sbf.append(words[wordNum]).append(units[unitNum]);
+			
+		}
+	
+		
+		String rs = sbf.toString().replaceAll("零+", "零")
+				.replaceAll("零万", "万")
+				.replaceAll("零十万", "万")
+				.replaceAll("零百万", "万")
+				.replaceAll("零千万", "万")
+				.replaceAll("零亿", "亿")
+				.replaceAll("零十亿", "亿")
+				.replaceAll("零百亿", "亿")
+				.replaceAll("零千亿", "亿")
+				.replaceAll("零万亿", "亿")
+				.replaceAll("亿万", "亿")
+				.replaceAll("零十", "零")
+				.replaceAll("零百", "零")
+				.replaceAll("零千", "零")
+				.replaceAll("零万", "零")
+				.replaceAll("零亿", "零")
+				.replaceAll("零+", "零");
+		
+		if("0".equals(num.substring(len - 1, len))){
+			rs = rs.substring(0,rs.length()-1);
+		}
+		
+		return rs;
+	}
+	
+}
+</PRE>
+<H4>JMeter测试类</H4>
+<PRE class="brush: java;">import org.apache.jmeter.config.Arguments;
+import org.apache.jmeter.protocol.java.sampler.JavaSamplerClient;
+import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
+import org.apache.jmeter.samplers.SampleResult;
+
+/**
+ * @author zhou
+ *
+ */
+public class HelloJmeter implements JavaSamplerClient {
+
+	/** 
+	 * 设置可用参数及的默认值；
+	 */
+	@Override
+	public Arguments getDefaultParameters() {
+		Arguments arg = new Arguments();
+		
+		// 这个方法是用来自定义java方法入参的。
+	    // params.addArgument("me","");表示入参名字叫me，默认值为0。
+	    //设置可用参数及的默认值；
+		arg.addArgument("me", "0");
+		
+		return arg;
+	}
+
+	/**
+	 * 每个线程测试前执行一次，做一些初始化工作
+	 */
+	@Override
+	public void setupTest(JavaSamplerContext arg0) {
+		
+	}
+	
+
+	/**
+	 * 开始测试，从arg0参数可以获得参数值
+	 */
+	@Override
+	public SampleResult runTest(JavaSamplerContext arg0) {
+		/**
+		 * 结果类
+		 */
+		SampleResult rs = new SampleResult();
+		rs.setSampleLabel("数字金额转中文大写");
+		
+		try{
+			// jmeter 开始统计响应时间标记
+			rs.sampleStart();
+			//参数
+			long me = arg0.getLongParameter("me");
+			
+			String rsData = MoneyUtil.toUpperMoney(me);
+			rs.setResponseData("结果是："+rsData, null);
+            rs.setDataType(SampleResult.TEXT);
+            
+            System.out.println(rsData);
+            
+            rs.setSuccessful(true);
+		}catch(Exception e){
+			rs.setSuccessful(false);
+			e.printStackTrace();
+		}finally{
+			// jmeter 结束统计响应时间标记
+			rs.sampleEnd();
+		}
+		
+		return rs;
+	}
+
+	/**
+	 * 测试结束时调用；
+	 */
+	@Override
+	public void teardownTest(JavaSamplerContext arg0) {
+
+	}
+
+}
+</PRE>
+<P style="text-indent: 0.8cm;">Export为Runnable Jar 
+File：hello.jar。将此hello.jar包放入JMETER_HOME\lib\ext目录；（或者放入search_paths属性表示的目录，如是用的此方式部署的话） 
+</P>
+<H3>使用Java Request Sampler进行测试</H3>
+<P style="text-indent: 0.8cm;">JMeter默认实现了两个Java Request Sampler：SleepTest 
+Sampler和JavaTest Sampler。 JavaTest Sampler不向服务器发送数据请求，一般被用作调试目的使用。 </P>
+<DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>1.新建线程组，设置线程组数量、创建时间和循环次数</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="测试java程序_files/20150923-04.png"></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>2.新建Java Request 
+Sampler</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="测试java程序_files/20150923-01.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>3.选择刚刚写好的测试类，设置参数值</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="测试java程序_files/20150923-02.png"></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>4.添加结果监听</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="测试java程序_files/20150923-03.png"></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>5.点击启动，执行后查看结果</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="测试java程序_files/20150923-05.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>6.代码的打印内容可以在jmeter.bat打开的命令窗口查看</FONT></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>7.点击右上角的叹号也可以查看jmeter的执行日志内容</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="测试java程序_files/20150923-06.png"></DIV></DIV>
+<H4>聚合报告中90%Line的解释</H4>
+<P style="text-indent: 0.8cm;">
+一组数由小到大进行排列，找到他的第90%个数（假如是12），那么这个数组中有90%的数将小于等于12 。
+ 用在性能测试的响应时间也将非常有意义，也就是90%用户响应时间不会超过12 秒。 </P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

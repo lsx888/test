@@ -1,0 +1,144 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0070)http://172.13.19.31:6060/note_html/数据库/SQL/104012-SQL-字符函数.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>SQL-字符函数</TITLE> <LINK href="SQL-字符函数_files/standalone.css" rel="stylesheet"> 
+<LINK href="SQL-字符函数_files/overlay-apple.css" rel="stylesheet"> <LINK href="SQL-字符函数_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="SQL-字符函数_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="SQL-字符函数_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">SQL-字符函数</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-06-15 13:15:25</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>字符串函数</H3>
+<TABLE>
+  <THEAD>
+  <TR>
+    <TD>函数</TD>
+    <TD>说明</TD></TR></THEAD>
+  <TBODY>
+  <TR>
+    <TD>ASCII(x)</TD>
+    <TD>返回字符x的ASCII码。</TD></TR>
+  <TR>
+    <TD>CONCAT(x,y)</TD>
+    <TD>连接字符串x和y。</TD></TR>
+  <TR>
+    <TD>INSTR(x, str [,start] [,n)</TD>
+    <TD>在x中查找str，可以指定从start开始，也可以指定从第n次开始。</TD></TR>
+  <TR>
+    <TD>LENGTH(x)</TD>
+    <TD>返回x的长度。</TD></TR>
+  <TR>
+    <TD>LOWER(x)</TD>
+    <TD>x转换为小写。</TD></TR>
+  <TR>
+    <TD>UPPER(x)</TD>
+    <TD>x转换为大写。</TD></TR>
+  <TR>
+    <TD>LTRIM(x[,trim_str])</TD>
+    <TD>把x的左边截去trim_str字符串，缺省截去空格。</TD></TR>
+  <TR>
+    <TD>RTRIM(x[,trim_str])</TD>
+    <TD>把x的右边截去trim_str字符串，缺省截去空格。</TD></TR>
+  <TR>
+    <TD>TRIM([trim_str FROM] x)</TD>
+    <TD>把x的两边截去trim_str字符串，缺省截去空格。</TD></TR>
+  <TR>
+    <TD>REPLACE(x,old,new)</TD>
+    <TD>在x中查找old，并替换为new。</TD></TR>
+  <TR>
+    <TD>SUBSTR(x,start[,length])</TD>
+    <TD>返回x的字串，从staart处开始，截取length个字符，缺省length，默认到结尾。</TD></TR></TBODY></TABLE>
+<TABLE></TABLE>
+<H3>示例</H3>
+<TABLE>
+  <THEAD>
+  <TR>
+    <TD>示例</TD>
+    <TD>示例结果</TD></TR></THEAD>
+  <TBODY>
+  <TR>
+    <TD>SELECT ASCII('a') FROM DUAL</TD>
+    <TD>97.0</TD></TR>
+  <TR>
+    <TD>SELECT CONCAT('Hello', ' world') FROM DUAL</TD>
+    <TD>Hello world</TD></TR>
+  <TR>
+    <TD>SELECT INSTR('Hello world'，'or') FROM DUAL</TD>
+    <TD>8.0</TD></TR>
+  <TR>
+    <TD>SELECT LENGTH('Hello') FROM DUAL</TD>
+    <TD>5.0</TD></TR>
+  <TR>
+    <TD>SELECT LOWER('hElLO') FROM DUAL;</TD>
+    <TD>hello</TD></TR>
+  <TR>
+    <TD>SELECT UPPER('hello') FROM DUAL</TD>
+    <TD>HELLO</TD></TR>
+  <TR>
+    <TD>SELECT LTRIM('===HELLO===', '=') FROM DUAL</TD>
+    <TD>HELLO===</TD></TR>
+  <TR>
+    <TD>SELECT '=='||LTRIM('   HELLO===') FROM DUAL</TD>
+    <TD>==HELLO===</TD></TR>
+  <TR>
+    <TD>SELECT RTRIM('===HELLO===', '=') FROM DUAL</TD>
+    <TD>===HELLO</TD></TR>
+  <TR>
+    <TD>SELECT '='||TRIM('   HELLO   ')||'=' FROM DUAL</TD>
+    <TD>=HELLO=</TD></TR>
+  <TR>
+    <TD>SELECT TRIM('=' FROM '===HELLO===') FROM DUAL</TD>
+    <TD>HELLO</TD></TR>
+  <TR>
+    <TD>SELECT REPLACE('ABCDE','CD','AAA') FROM DUAL</TD>
+    <TD>ABAAAE</TD></TR>
+  <TR>
+    <TD>SELECT SUBSTR('ABCDE',2) FROM DUAL</TD>
+    <TD>BCDE</TD></TR>
+  <TR>
+    <TD>SELECT SUBSTR('ABCDE',2,3) FROM DUAL</TD>
+    <TD>BCD</TD></TR></TBODY></TABLE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<TABLE>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+   
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+  	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+   
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+   
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+   
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+  	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+  	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+  	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+   
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+   <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+   </DIV></BODY></HTML>

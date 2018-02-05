@@ -1,0 +1,129 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0074)http://172.13.19.31:6060/note_html/数据库/Redis/1001021-数据结构-列表.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>数据结构-列表</TITLE> <LINK href="数据结构-列表_files/standalone.css" rel="stylesheet"> 
+<LINK href="数据结构-列表_files/overlay-apple.css" rel="stylesheet"> <LINK href="数据结构-列表_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="数据结构-列表_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="数据结构-列表_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">数据结构-列表</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-04-22 20:59:57</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<P style="text-indent: 0.8cm;">Redis列表是简单的字符串列表，排序插入顺序。您可以在头部或列表的尾部Redis的列表添加元素。
+ 列表的最大长度为232 - 1 (每个列表超过4十亿元素4294967295) </P>
+<H3>示例</H3>
+<PRE class="brush: bash;">redis 127.0.0.1:6379$ LPUSH tutorials redis
+(integer) 1
+redis 127.0.0.1:6379$ LPUSH tutorials mongodb
+(integer) 2
+redis 127.0.0.1:6379$ LPUSH tutorials mysql
+(integer) 3
+redis 127.0.0.1:6379$ LRANGE tutorials 0 10
+
+1) "mysql"
+2) "mongodb"
+3) "redis"
+</PRE>
+<H3>Redis的命令列表</H3>
+<TABLE class="src" style='border-color: rgb(214, 214, 214); width: 604px; color: rgb(49, 49, 49); line-height: 22px; font-family: "Open Sans", Arial, sans-serif; font-size: 14px; margin-top: 8px; margin-bottom: 8px; vertical-align: top; border-collapse: collapse; box-sizing: border-box; border-spacing: 0px; background-color: rgb(247, 247, 247);'>
+  <TBODY style="box-sizing: border-box;">
+  <TR style="box-sizing: border-box;">
+    <TH style="background: rgb(238, 238, 238); border-color: rgb(214, 214, 214); padding: 5px; width: 38px; border-collapse: collapse; box-sizing: border-box;">S.N.</TH>
+    <TH style="background: rgb(238, 238, 238); border-color: rgb(214, 214, 214); padding: 5px; border-collapse: collapse; box-sizing: border-box;">命令 
+      &amp; 描述</TH></TR>
+  <TR>
+    <TD>1</TD>
+    <TD>      BLPOP key1 [key2 ] 
+  timeout&nbsp;<BR>取出并获取列表中的第一个元素，或阻塞，直到有可用</TD></TR>
+  <TR>
+    <TD>2</TD>
+    <TD>      BRPOP key1 [key2 ] 
+  timeout&nbsp;<BR>取出并获取列表中的最后一个元素，或阻塞，直到有可用</TD></TR>
+  <TR>
+    <TD>3</TD>
+    <TD>      BRPOPLPUSH source destination 
+      timeout&nbsp;<BR>从列表中弹出一个值，它推到另一个列表并返回它;或阻塞，直到有可用</TD></TR>
+  <TR>
+    <TD>4</TD>
+    <TD>      LINDEX key index&nbsp;<BR>从一个列表其索引获取对应的元素</TD></TR>
+  <TR>
+    <TD>5</TD>
+    <TD>      LINSERT key BEFORE|AFTER pivot 
+      value&nbsp;<BR>在列表中的其他元素之后或之前插入一个元素</TD></TR>
+  <TR>
+    <TD>6</TD>
+    <TD>      LLEN key&nbsp;<BR>获取列表的长度</TD></TR>
+  <TR>
+    <TD>7</TD>
+    <TD>      LPOP key&nbsp;<BR>获取并取出列表中的第一个元素</TD></TR>
+  <TR>
+    <TD>8</TD>
+    <TD>      LPUSH key value1 [value2]&nbsp;<BR>在前面加上一个或多个值的列表</TD></TR>
+  <TR>
+    <TD>9</TD>
+    <TD>      LPUSHX key value&nbsp;<BR>在前面加上一个值列表，仅当列表中存在</TD></TR>
+  <TR>
+    <TD>10</TD>
+    <TD>      LRANGE key start stop&nbsp;<BR>从一个列表获取各种元素</TD></TR>
+  <TR>
+    <TD>11</TD>
+    <TD>      LREM key count value&nbsp;<BR>从列表中删除元素</TD></TR>
+  <TR>
+    <TD>12</TD>
+    <TD>      LSET key index value&nbsp;<BR>在列表中的索引设置一个元素的值</TD></TR>
+  <TR>
+    <TD>      13</TD>
+    <TD>      LTRIM key start stop&nbsp;<BR>修剪列表到指定的范围内</TD></TR>
+  <TR>
+    <TD>      14</TD>
+    <TD>      RPOP key&nbsp;<BR>取出并获取列表中的最后一个元素</TD></TR>
+  <TR>
+    <TD>15</TD>
+    <TD>      RPOPLPUSH source 
+    destination&nbsp;<BR>删除最后一个元素的列表，将其附加到另一个列表并返回它</TD></TR>
+  <TR>
+    <TD>16</TD>
+    <TD>      RPUSH key value1 [value2]&nbsp;<BR>添加一个或多个值到列表</TD></TR>
+  <TR>
+    <TD>17</TD>
+    <TD>      RPUSHX key value&nbsp;<BR>添加一个值列表，仅当列表中存在</TD></TR></TBODY></TABLE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

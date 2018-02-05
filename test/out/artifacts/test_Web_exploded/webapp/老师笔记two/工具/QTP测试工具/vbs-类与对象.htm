@@ -1,0 +1,143 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0077)http://172.13.19.31:6060/note_html/工具/QTP测试工具/1005010-vbs-类与对象.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>vbs-类与对象</TITLE> <LINK href="vbs-类与对象_files/standalone.css" rel="stylesheet"> 
+<LINK href="vbs-类与对象_files/overlay-apple.css" rel="stylesheet"> <LINK href="vbs-类与对象_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="vbs-类与对象_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="vbs-类与对象_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">vbs-类与对象</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-10-08 10:56:32</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>Class ... End Class</H3>
+<H4>示例</H4>
+<PRE class="brush: vb;">Option Explicit
+Class User
+    '私有字段，也可以使用Public语句定义公有字段
+    Private m_UserName
+    Private m_Profile
+ 
+    'Initialize事件相当于构造函数，在对象创建的时候调用
+    Private Sub Class_Initialize
+        m_UserName = Empty   '设置UserName初始值为空字符串
+    End Sub
+ 
+    'Terminate事件相当于析构函数，在对象销毁的时候调用，对象销毁的方式下面说明
+    Private Sub Class_Terminate
+        Set m_Profile = Nothing   '将对象设置为Nothing，销毁对象
+    End Sub
+ 
+    'Property Get语句，获取属性值或对象引用，Default只与Public一起使用，表示该属性为类的默认属性。和function过程定义方式类似，
+   '相当于java中的getter方法
+    Public Default Property Get UserName
+        UserName = m_UserName
+    End Property
+
+    'Property Let语句，设置属性值Property Let 过程是一种特殊的过程，用于在类的外部给私用属性变量赋值。Property
+    'Let 过程类似于 VBScript 中没有返回值的子过程，相当于java中的setter方法
+    Public Property Let UserName(newUserName)
+        m_UserName = newUserName
+    End Property
+ 
+    Public Property Get Profile
+        Set Profile = m_Profile
+    End Property
+
+    'Property Set语句，设置属性对象引用，相当于java中的setter方法，和Property Let 语句有区别
+    Public Property Set Profile(newProfile)
+        Set m_Profile = newProfile
+    End Property
+ 
+    'ToString方法
+    Public Function ToString()
+        ToString = "Hello! " &amp; Me.UserName   'Me相当于C#中的this关键字
+    End Function
+End Class
+</PRE>
+<H4>调用</H4>
+<PRE class="brush: vb;">Dim u                  '定义对象变量名，注意变量名不能与类名相同，即使是大小写不同
+Set u = New User       '创建对象用New语句
+u.UserName = "known"   '给属性赋值
+MsgBox u.ToString()    '调用方法
+</PRE>
+<H3>Property Let 和 Property Set 过程的区别</H3>
+<P style="text-indent: 0.8cm;">Property Set过程与Property Let比有两个不同之处</P>
+<UL>
+  <LI>明确地说明这个属性是一个基于对象的属性</LI>
+  <LI>类外部的代码必须用 Set Object.Property = Object 才能写入这个属性</LI></UL>
+<H3>创建只读/只写属性</H3>
+<P style="text-indent: 0.8cm;">有两种方法可以创建类的只读属性： </P>
+<UL>
+  <LI>只为这个属性提供 Property Get 过程。</LI>
+  <LI>将 Property Get 过程声明为公共的，而将 Property Let 过程声明为私有的。</LI></UL>
+<P style="text-indent: 0.8cm;">有两种方法可以创建只写属性，这两种方法与创建只读属性的方法完全相反： </P>
+<UL>
+  <LI>忽略 Property Get 过程，只提供 Property Let 过程。</LI>
+  <LI>用 Public 语句声明 Property Let 过程，用 Private 语句声明 Property Get 过程。</LI></UL>
+<H3>两种销毁对象的方法</H3>
+<UL>
+  <LI>将特殊值 Nothing 赋给最后一个引用了该对象的对象变量</LI>
+  <LI>超出了最后一个引用该对象的对象变量的作用域</LI></UL>
+<H3>类常量</H3>
+<P style="text-indent: 0.8cm;">VBScript 不支持声明类级的具名常量，原因不明。也就是说，不能在类中使用 Const 
+语句声明供类内部或外部代码使用的常量。例如，下面这段代码会产生编译错误： </P>
+<PRE class="brush: vb;">Option Explicit
+
+Dim objTest
+Set objTest = new ConstTest
+
+objTest.SayHello
+Set objTest = Nothing
+
+Class ConstTest
+
+Private Const TEST_CONST = "Hello there."
+
+Public Sub SayHello
+MsgBox TEST_CONST
+End Sub
+
+End Class
+编译错误出现在这一行：
+Private Const TEST_CONST = "Hello there."
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

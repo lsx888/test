@@ -1,0 +1,160 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0092)http://172.13.19.31:6060/note_html/服务器/CentOS/11101-linux系统日常管理-监控系统的状态.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>linux系统日常管理-监控系统的状态</TITLE> <LINK href="linux系统日常管理-监控系统的状态_files/standalone.css" 
+rel="stylesheet"> <LINK href="linux系统日常管理-监控系统的状态_files/overlay-apple.css" rel="stylesheet"> 
+<LINK href="linux系统日常管理-监控系统的状态_files/article_edit.css" rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="linux系统日常管理-监控系统的状态_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="linux系统日常管理-监控系统的状态_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">linux系统日常管理-监控系统的状态</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-09-09 17:14:35</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>w 查看当前系统的负载</H3>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-监控系统的状态_files/20150907-01.png"></DIV></DIV>
+<P style="text-indent: 0.8cm;">第一行从左面开始显示的信息依次为： </P>
+<OL>
+  <LI>时间</LI>
+  <LI>系统运行时间</LI>
+  <LI>登录用户数</LI>
+  <LI>平均负载</LI></OL>
+<P style="text-indent: 0.8cm;">
+第二行开始以及下面所有的行，告诉我们的信息是，当前登录的都有哪些用户，以及他们是从哪里登录的等等。其实，在这些信息当中，笔者认为我们最应该关注的应该是第一行中的’load 
+average:’后面的三个数值。 </P>
+<P style="text-indent: 0.8cm;">
+第一个数值表示1分钟内系统的平均负载值；第二个数值表示5分钟内系统的平均负载值；第三个数值表示15分钟系统的平均负载值。这个值的意义是，单位时间段内CPU活动进程数。当然这个值越大就说明你的服务器压力越大。一般情况下这个值只要不超过你服务器的cpu数量就没有关系，如果你的服务器cpu数量为8，那么这个值若小于8，就说明你的服务器没有压力，否则就要关注一下了 
+</P>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-监控系统的状态_files/20150907-02.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>’/proc/cpuinfo’这个文件记录了cpu的详细信息。目前市面上的服务器通常都是2颗4核cpu，在linux看来，它就是8个cpu。查看这个文件时则会显示8段类似的信息，而最后一段信息中processor 
+: 后面跟的是’7’。所以查看当前系统有几个cpu，你可以使用这个命令：’ grep -c 'processor' /proc/cpuinfo’ 
+</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-监控系统的状态_files/20150907-03.png"></DIV></DIV>
+<H3>vmstat 监控系统的状态</H3>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-监控系统的状态_files/20150907-04.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>上面讲的w查看的是系统整体上的负载，通过看那个数值可以知道当前系统有没有压力，但是具体是哪里（CPU, 
+内存，磁盘等）有压力就无法判断了。通过vmstat就可以知道具体是哪里有压力。vmstat命令打印的结果共分为6部分：procs, memory, swap, 
+io, system, cpu.请重点关注一下红色标出的项</FONT></DIV></DIV>
+<OL>
+  <LI>procs 显示进程相关信息   
+  <UL>
+    <LI><SPAN style="color: rgb(255, 0, 0);">r 
+    ：表示运行和等待cpu时间片的进程数，如果长期大于服务器cpu的个数，则说明cpu不够用了；</SPAN></LI>
+    <LI><SPAN style="color: rgb(255, 0, 0);">b ：表示等待资源的进程数，比如等待I/O, 
+    内存等，这列的值如果长时间大于1，则需要你关注一下了</SPAN></LI></UL></LI>
+  <LI>memory 内存相关信息   
+  <UL>
+    <LI>swpd ：表示切换到交换分区中的内存数量</LI>
+    <LI>free ：当前空闲的内存数量</LI>
+    <LI>buff ：缓冲大小，（即将写入磁盘的）</LI>
+    <LI>cache ：缓存大小，（从磁盘中读取的）</LI></UL></LI>
+  <LI>swap 内存交换情况   
+  <UL>
+    <LI><SPAN style="color: rgb(255, 0, 0);">si ：由内存进入交换区的数量</SPAN></LI>
+    <LI><SPAN style="color: rgb(255, 0, 0);">so ：由交换区进入内存的数量</SPAN></LI></UL></LI>
+  <LI>io 磁盘使用情况   
+  <UL>
+    <LI><SPAN style="color: rgb(255, 0, 0);">bi ：从块设备读取数据的量（读磁盘）</SPAN></LI>
+    <LI><SPAN style="color: rgb(255, 0, 0);">bo： 
+  从块设备写入数据的量（写磁盘）</SPAN></LI></UL></LI>
+  <LI>system 显示采集间隔内发生的中断次数   
+  <UL>
+    <LI>in ：表示在某一时间间隔中观测到的每秒设备中断数</LI>
+    <LI>cs ：表示每秒产生的上下文切换次数</LI></UL></LI>
+  <LI>CPU 显示cpu的使用状态   
+  <UL>
+    <LI>us ：显示了用户下所花费 cpu 时间的百分比</LI>
+    <LI>sy ：显示系统花费cpu时间百分比</LI>
+    <LI>id ：表示cpu处于空闲状态的时间百分比</LI>
+    <LI><SPAN style="color: rgb(255, 0, 0);">wa ：表示I/O等待所占用cpu时间百分比</SPAN></LI>
+    <LI>st ：表示被偷走的cpu所占百分比（一般都为0，不用关注）</LI></UL></LI></OL>
+<P style="text-indent: 0.8cm;">
+以上所介绍的各个参数中，经常会关注r列，b列，和wa列，三列代表的含义在上边说得已经很清楚。IO部分的bi以及bo也是我要经常参考的对象。如果磁盘io压力很大时，这两列的数值会比较高。另外当si, 
+so两列的数值比较高，并且在不断变化时，说明内存不够了，内存中的数据频繁交换到交换分区中，这往往对系统性能影响极大 </P>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-监控系统的状态_files/20150907-05.png"></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>用vmstat时，经常用这样的形式，’vmstat 1 5’ 
+表示每隔1秒钟打印一次系统状态，连续打印5次。当然你也可以 ‘vmstat 1 ‘ 表示每隔1秒钟打印一次系统状态，一直打印，除非你按ctrl + 
+c强制结束</FONT></DIV></DIV>
+<H3>top 显示进程所占系统资源</H3>
+<P style="text-indent: 0.8cm;">关于top的详细介绍，可以参考“100601-监控优化-top命令” </P>
+<H3>sar 监控系统状态</H3>
+<P style="text-indent: 0.8cm;">sar 
+命令很强大，它可以监控系统所有资源状态，比如平均负载、网卡流量、磁盘状态、内存使用等等。它不同于其他系统状态监控工具的地方在于，它可以打印历史信息，可以显示当天从零点开始到当前时刻的系统状态信息。如果你系统没有安装这个命令，请使用”yum 
+install -y 
+sysstat”命令安装。初次使用sar命令会报错，那是因为sar工具还没有生成相应的数据库文件（时时监控就不会了，因为不用去查询那个库文件）。它的数据库文件在” 
+/var/log/sa/”目录下，默认保存9天。因为这个命令太过复杂，所以现在只介绍几个。 </P>
+<UL>
+  <LI>查看网卡流量 ‘sar -n DEV ‘   
+  <DIV>
+  <DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-监控系统的状态_files/20150909-01.png"></DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>IFACE这列表示设备名称，rxpck/s 
+  表示每秒进入收取的包的数量，txpck/s 表示每秒发送出去的包的数量，rxbyt/s 
+  表示每秒收取的数据量（单位Byte），txbyt/s表示每秒发送的数据量。后面几列不需要关注。<SPAN style="color: rgb(255, 0, 0);">如果有一天你所管理的服务器丢包非常严重，那么你就应该看一看这个网卡流量是否异常了，如果rxpck/s 
+  那一列的数值大于4000，或者rxbyt/s那列大于5,000,000则很有可能是被攻击了</SPAN>，正常的服务器网卡流量不会高于这么多，除非是你自己在拷贝数据。上面的命令是查看网卡流量历史的，如何时时查看网卡流量呢？</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-监控系统的状态_files/20150909-02.png"></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>另外也可以查看某一天的网卡流量历史，使用-f选项，后面跟文件名，如果你的系统格式Redhat或者CentOS那么sar的库文件一定是在/var/log/sa/目录下的</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-监控系统的状态_files/20150909-03.png"></DIV></DIV></LI>
+  <LI>查看历史负载 ‘sar -q’ 
+  <DIV>
+  <DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-监控系统的状态_files/20150909-04.png"></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>这个命令有助于我们查看服务器在过去的某个时间的负载状况</FONT></DIV></DIV></LI></UL>
+<H3>free查看内存使用状况</H3>
+<P style="text-indent: 0.8cm;">关于free的详细介绍，可以参考“100701-监控优化-free命令” </P>
+<H3>ps 查看系统进程</H3>
+<P style="text-indent: 0.8cm;">
+关于ps的详细介绍，可以参考“101003-进程查看ps、文件内容统计wc、命令结果查看watch” </P>
+<H3>netstat 查看网络状况</H3>
+<P style="text-indent: 0.8cm;">关于netstat 的详细介绍，可以参考“100803-网络-netstat、ss命令” </P>
+<H3>抓包工具tcpdump</H3>
+<DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>有时候，也许你会有这样的需求，想看一下某个网卡上都有哪些数据包，尤其是当你初步判定你的服务器上有流量攻击。这时，使用抓包工具来抓一下数据包，就可以知道有哪些IP在攻击你了</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-监控系统的状态_files/20150909-05.png"></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>如果你没有tcpdump 这个命令，需要用’yum 
+install -y tcpdump 
+’命令去安装一下。上图中第三列和第四列显示的信息为哪一个IP+port在连接哪一个IP+port，后面的信息是该数据包的相关信息，如果不懂也没有关系，毕竟你不是专门搞网络的，而这里需要你关注的只是第三列以及第四列。-i 
+选项后面跟设备名称，如果你想抓eth1网卡的包，后面则要跟eth1.至于-nn选项的作用是让第三列和第四列显示成IP+端口号的形式，如果不加-nn则显示的是主机名+服务名称。</FONT></DIV></DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

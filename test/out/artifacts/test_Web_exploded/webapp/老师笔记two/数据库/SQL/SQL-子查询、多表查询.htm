@@ -1,0 +1,257 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0078)http://172.13.19.31:6060/note_html/数据库/SQL/105010-SQL-子查询、多表查询.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>SQL-子查询、多表查询</TITLE> <LINK href="SQL-子查询、多表查询_files/standalone.css" rel="stylesheet"> 
+<LINK href="SQL-子查询、多表查询_files/overlay-apple.css" rel="stylesheet"> <LINK href="SQL-子查询、多表查询_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="SQL-子查询、多表查询_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="SQL-子查询、多表查询_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">SQL-子查询、多表查询</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-06-15 15:45:07</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>子查询（如果一个查询的结果是另一个查询的条件，常常使用子查询）</H3>
+<H4>按位置分类</H4>
+<UL>
+  <LI>当一个查询的结果是另一个查询的条件时，称之为条件子查询</LI>
+  <LI>子查询也可以作为一个查询的结果列，称之为结果子查询</LI></UL>
+<H4>按返回的数据行数</H4>
+<UL>
+  <LI>单行子查询   
+  <UL>
+    <LI>单行操作符&gt;、&gt;=、 &lt;、 &lt;= 、&lt;&gt;、!=、=</LI></UL></LI>
+  <LI>多行子查询，<SPAN 
+  style="color: rgb(255, 0, 0);">多行子查询不能在主查询的结果列上使用</SPAN>使用多行比较操作符：   
+  <UL>
+    <LI>In：等于列表中的任何一个</LI>
+    <LI>Any：子查询返回的任意一个值比较</LI>
+    <LI>All：和子查询返回的所有值比较  </LI>
+    <LI>Exists：同In，但效率较In为高</LI>
+    <LI>Not：多行子查询的非操作符。如not in、not exists</LI></UL></LI></UL>
+<P style="text-indent: 0.8cm;"><SPAN 
+style="color: rgb(255, 0, 0);">注意：子查询可以嵌套多层。子查询需要圆括号()括起来 </SPAN></P>
+<PRE class="brush: sql;">---工资大于ALLEN的与员工信息(单行子查询，用等于不等于进行过滤)
+select p.* from emp p where p.sal &gt; (select sal from emp where ename = 'ALLEN');
+select p.* from emp p,emp allen where p.sal &gt; allen.sal and allen.ename = 'ALLEN';
+
+--查询工资比所有SALESMAN(销售人员)高的员工信息
+select * from emp where sal &gt; all (select sal from emp where job='SALESMAN'); 
+
+--查询工资比某一个SALESMAN(销售人员)高的员工信息
+select * from emp where sal &gt; any (select sal from emp where job='SALESMAN'); 
+
+--查询和其直接上级同一年任职的员工的信息
+select p.* from emp p where to_char(p.hiredate,'yyyy') = (select to_char(d.hiredate,'yyyy') from emp d where p.mgr = d.empno);  
+select p.* from emp p where to_char(p.hiredate,'yyyy') in (select to_char(d.hiredate,'yyyy') from emp d where p.mgr = d.empno);  
+
+-- 查询所有员工所在的部门名称
+-- 用在查询结果列上的子查询( 但是这种方式不建议使用)，主查询的返回结果列作为了子查询的条件
+-- 子查询作为结果列，必须是单行子查询( 返回单行结果，而且是单列 )
+select p.*,(select dname from dept where deptno = p.deptno) as dname from emp p;
+-- 返回结果如果除 * 列外，还有其他列，需要用表名或表的别名.* 来指定是哪张表的所有列
+
+-------------高级子查询
+
+---工资大于其所在部门的平均工资的员工信息
+select p.* from emp p join (select avg(sal) dsal,deptno from emp group by deptno) d on p.deptno=d.deptno where p.sal&gt;d.dsal;
+
+select p.*,d.avg_sal from emp p,(select avg(sal) avg_sal,deptno from emp group by deptno) d 
+       where p.deptno = d.deptno and p.sal &gt; d.avg_sal; 
+       
+
+---查询没有员工的部门
+select d.* from dept d where d.deptno not in (select deptno from emp);
+
+--  如果在子查询中存在满足条件的行:
+--  不在子查询中继续查找
+--  条件返回 TRUE
+--  如果在子查询中不存在满足条件的行:
+--  条件返回 FALSE
+--  继续在子查询中查找
+select d.* from dept d where not exists (select p.deptno from emp p where p.deptno = d.deptno);
+</PRE>
+<H4>用子查询创建表(视图)或新建表数据</H4>
+<PRE class="brush: sql;">--用子查询创建表
+/*
+   CREATE TABLE table
+  	  [(column, column...)]
+      AS subquery;
+*/
+
+create table emp1 as select * from emp where ename = 'SMITH';
+
+select * from emp1;
+
+
+create table emp2(empno,ename) as select empno,ename from emp;
+select * from emp2;
+
+create table emp3(empno,ename,deptno,dname) as 
+select p.empno,p.ename,p.deptno,d.dname from emp p,dept d where p.deptno = d.deptno;
+
+select * from emp3;
+
+
+---复制emp表的表结构到新的表emp4
+create table emp4 as select * from emp where 1 = 2;
+select * from emp4;
+
+---复制emp表的内容到emp4
+insert into emp4 select * from emp;
+commit;
+
+--拷贝ALLEN的job、hiredate、sal到emp1
+insert into emp1(ename,job,hiredate,sal) select ename,job,hiredate,sal from emp where ename = 'ALLEN';
+commit;
+select * from emp1;
+
+</PRE>
+<H3>多表查询（如果一个查询的结果包含多个表的列(字段)，常常使用多表查询）</H3>
+<UL>
+  <LI>外连接   
+  <UL>
+    <LI>左连接  left join 或 left outer 
+    join：保留左表的所有行，然后用左表的行去按条件匹配右表数据，匹配成功返回一行。如果左表中的某一行，对右表匹配都不成功，那么至少返回左表中的该行，对应的右表数据用空代替。.<SPAN 
+    style="color: rgb(255, 0, 0);">注：根据连接条件的不同，右表可能有多行与左表对应的行匹配，</SPAN><SPAN 
+    style="color: rgb(255, 0, 0);">因此我们不能说结果的行数等于左表数据的行数。</SPAN></LI>
+    <LI>右连接  right join 或 right outer join：同左外连接。<SPAN style="color: rgb(255, 0, 0);"></SPAN></LI>
+    <LI>完全外连接  full join 或 full outer 
+    join：按条件匹配两表数据，匹配成功，返回对应的一条数据。如果左表中的某一行，对右表匹配都不成功，那么至少返回左表中的该行，对应的右表数据用空代替。如果右表中的某一行，对左表匹配都不成功，那么至少返回右表中的该行，对应的左表数据用空代替。</LI></UL></LI>
+  <LI>内连接   
+  <UL>
+    <LI>inner join 是比较运算符，只返回符合条件的行。</LI>
+    <LI>内连接等价于等值连接：select p.*,t.* from emp p,dept t where p.deptno = 
+    t.deptno;<BR></LI></UL></LI>
+  <LI>交叉连接   
+  <UL>
+    <LI>没有 WHERE 
+    子句的交叉联接将产生连接所涉及的表的笛卡尔积。第一个表的行数乘以第二个表的行数等于笛卡尔积结果集的大小。如果我们在此时给这条SQL加上WHERE子句的时候比如SQL:select 
+    * from student cross join course where student.ID=course.ID     
+    此时将返回符合条件的结果集，结果和inner join所示执行结果一样。</LI></UL></LI></UL>
+<PRE class="brush: sql;">---多表查询
+--查询所有员工对应的部门的部门名称和所在地址
+select p.ename,d.dname,d.loc,p.deptno pno,d.deptno dno from dept d,emp p where p.deptno = d.deptno;
+
+
+---地址在CHICAGO的所有员工的所有信息以及其所在部门的信息
+select p.*,d.* from dept d,emp p where p.deptno = d.deptno and d.loc = 'CHICAGO';
+---join == inner join (内连接)
+select p.*,d.* from emp p join dept d on p.deptno = d.deptno where d.loc = 'CHICAGO';
+
+---非等值连接
+select p.*,s.* from emp p,salgrade s where p.sal between s.losal and s.hisal order by p.sal;
+
+---外连接(左外连接 left outer join，右外连接 rigth outer join)
+---显示有员工的所有部门
+select d.*,p.* from dept d left outer join emp p on p.deptno = d.deptno order by d.deptno; 
+select d.*,p.* from dept d right outer join emp p on p.deptno = d.deptno order by d.deptno;
+select d.*,p.* from dept d join emp p on p.deptno = d.deptno order by d.deptno;
+
+
+create table tab_a(
+      id number(20) primary key,
+      name varchar2(20) not null,
+      b_id number(20)
+);
+
+create table tab_b(
+       id number(20) primary key,
+       name varchar2(20) not null,
+       a_id number(20)
+);
+
+insert into tab_a(id,name,b_id) values(1,'A姓名1',1);
+insert into tab_a(id,name,b_id) values(2,'A姓名2',2);
+insert into tab_a(id,name,b_id) values(5,'A姓名5',5);
+
+insert into tab_b(id,name,a_id) values(1,'B姓名1',1);
+insert into tab_b(id,name,a_id) values(2,'B姓名2',2);
+insert into tab_b(id,name,a_id) values(8,'B姓名8',8);
+commit;
+select * from tab_a ;
+select * from tab_b ;
+
+---等值连接
+select a.*,b.* from tab_a a,tab_b b where a.b_id = b.id;
+select a.*,b.* from tab_a a join tab_b b on a.b_id = b.id;
+--using表中的连接字段要一样
+select a.ename,b.dname from emp a join dept b using(deptno);
+
+--右外连接(从表保留所有数据，主表去匹配)
+select a.*,b.* from tab_a a,tab_b b where a.b_id(+) = b.id;
+select a.*,b.* from tab_a a right outer join tab_b b on a.b_id = b.id;
+-- right outer join === right join
+select a.*,b.* from tab_a a right join tab_b b on a.b_id = b.id;
+
+--左外连接(主表保留所有数据，从表去匹配)
+select a.*,b.* from tab_a a,tab_b b where a.b_id = b.id(+);
+select a.*,b.* from tab_a a left outer join tab_b b on a.b_id = b.id;
+-- left outer join ===  left join
+select a.*,b.* from tab_a a left join tab_b b on a.b_id = b.id;
+
+---满外连接
+select a.*,b.* from tab_a a full outer join tab_b b on a.b_id = b.id;
+select a.*,b.* from tab_a a full join tab_b b on a.b_id = b.id;
+
+
+---自连接，显示emp中所有员工的信息如下显示：SMITH 的直接上级是 FORD
+select p1.ename || '的直接上级是' || p2.ename from emp p1,emp p2 where p1.mgr = p2.empno;
+--叉集
+select a.*,b.* from tab_a a cross join tab_b b;
+
+
+select * from emp;
+select * from dept;
+select * from salgrade;
+
+
+-- 查询每个部门的部门名称以及平均工资和平均工资的工资等级并按等级升序
+select a.dname,a.avg_sal,nvl(s.grade,0) kk from
+-- 用子查询表示一个新构建的表，扩起来给了一个别名 a
+(select distinct d.dname dname,nvl(avg(p.sal),0) avg_sal
+from dept d,emp p where d.deptno = p.deptno(+) group by d.dname) a,SALGRADE s
+
+where a.avg_sal between s.losal(+) and s.hisal(+) order by kk;
+
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

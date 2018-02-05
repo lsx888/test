@@ -1,0 +1,245 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0080)http://172.13.19.31:6060/note_html/数据库/SQL/101010-SQL-表操作、约束、事务.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>SQL-表操作、约束、事务</TITLE> <LINK href="SQL-表操作、约束、事务_files/standalone.css" 
+rel="stylesheet"> <LINK href="SQL-表操作、约束、事务_files/overlay-apple.css" rel="stylesheet"> 
+<LINK href="SQL-表操作、约束、事务_files/article_edit.css" rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="SQL-表操作、约束、事务_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="SQL-表操作、约束、事务_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">SQL-表操作、约束、事务</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-06-14 15:13:27</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>表操作</H3>
+<UL>
+  <LI>唯一的表名称</LI>
+  <LI>表内唯一的列名称</LI>
+  <LI>列的数据类型及其宽度</LI>
+  <LI>Oracle 中的表名（还有列名、用户名和其他对象名）不区分大小写，系统会自动转换成大写。<BR></LI>
+  <LI>表名应该严格遵循下列命名规则：   
+  <UL>
+    <LI>表名首字符应该为字母；</LI>
+    <LI>不能使用 Oracle 保留字来为表命名；</LI>
+    <LI> 表名的最大长度为 30 个字符；</LI>
+    <LI>同一用户模式下的不同表不能具有相同的名称；</LI>
+    <LI>可以使用下划线、数字和字母，但不能使用空格和单引号；</LI></UL></LI></UL>
+<H4>表的创建、删除与表数据的增删改查</H4>
+<PRE class="brush: sql;">--创建表
+create table tab_student(
+   id number(20) primary key,
+   name varchar2(50) not null,
+   sex number(1) not null,
+   age number(3) not null,
+   teacher varchar2(20) default '周' not null  
+);
+-- 列名 类型 [默认值] 约束 
+
+--向表中插入数据
+insert into tab_student(id,name,sex,age) values(1,'李建',1,13);
+insert into tab_student(id,name,sex,age) values(2,'何奇斋',1,33);
+insert into tab_student(id,name,sex,age) values(3,'王舟易',1,33);
+insert into tab_student(id,name,sex,age) values(4,'王舟易',1,33);
+commit;/*插入、修改、删除操作都必须commit*/
+
+
+--修改数据
+update tab_student set name = '彭厚冰',age = 25 where name = '李建';
+commit;
+
+
+--删除数据
+delete from tab_student where name = '何奇斋';
+commit;
+--如果我们要删除所有数据
+delete from tab_student;
+commit;
+
+
+---删除表
+drop table tab_student purge; 
+
+select * from tab_student;
+--describe tab_student;--显示表结构
+
+/*
+    数据和结构都被删除
+    所有正在运行的相关事物被提交
+    所有相关索引被删除
+    DROP TABLE 语句不能回滚
+*/
+
+--修改tab_student 的名称为tab_students
+rename tab_student to tab_students;
+
+select * from tab_students;
+
+/*
+       TRUNCATE TABLE 语句:
+                删除表中所有的数据
+                释放表的存储空间
+                TRUNCATE语句不能回滚
+*/
+truncate table tab_students;
+
+</PRE>
+<H4>修改表的列</H4>
+<PRE class="brush: sql;">--在tab_student表中增加score列默认0
+alter table tab_student add score number(3) default 0;
+
+--修改列
+alter table tab_student modify score varchar2(3) default '22';
+--修改score的类型为varchar2默认0(注:要修改列的数据类型，则被修改的列的数据要为空。默认值只在修改之后添加的数据中体现)
+update tab_student set score = null;
+commit;
+
+
+--删除列
+alter table tab_student drop column score;
+
+
+--使一个或多个列被标记为不可用
+alter table tab_student set unused (teacher);
+
+/*
+      ALTER TABLE	 table SET UNUSED	(column);
+
+      ALTER TABLE  table SET UNUSED COLUMN column;
+*/
+
+--删除不可用的列
+/*
+      ALTER TABLE table DROP  UNUSED COLUMNS;
+*/
+alter table tab_student drop unused columns;
+
+
+select * from tab_student;
+
+
+
+/*
+         可以通过下列数据字典视图查看所添加的注释:
+            ALL_COL_COMMENTS
+            USER_COL_COMMENTS
+            ALL_TAB_COMMENTS
+            USER_TAB_COMMENTS
+            
+          --查看当前用户定义的表
+          select * from user_tables;
+
+          --查看用户定义的各种数据库对象
+          SELECT  * FROM user_objects ;
+
+          --查看用户定义的表, 视图, 同义词和序列
+          SELECT	* FROM  user_catalog; 
+*/
+
+--为表添加注释
+comment on table tab_students is '学生表';
+
+comment on column tab_students.age is '年龄';
+
+
+commit;
+select * from USER_TAB_COMMENTS;
+
+select * from USER_COL_COMMENTS;
+</PRE>
+<H3>约束</H3>
+<UL>
+  <LI>NOT NULL : 用于控制字段的内容一定不能为空（NULL）。<BR></LI>
+  <LI>UNIQUE : 控件字段内容不能重复，一个表允许有多个 Unique 约束。<BR></LI>
+  <LI>PRIMARY KEY: 也是用于控件字段内容不能重复，但它在一个表只允许出现一个。</LI>
+  <LI>FOREIGN KEY: FOREIGN KEY 约束用于预防破坏表之间连接的动作，FOREIGN KEY 
+  约束也能防止非法数据插入外键列，因为它必须是它指向的那个表中的值之一。</LI>
+  <LI>CHECK: 用于控制字段的值范围。</LI>
+  <LI>DEFAULT: 用于设置新记录的默认值。<BR></LI></UL>
+<PRE class="brush: sql;">rename tab_students to tab_student;
+
+select * from tab_student;
+
+
+create table tab_teacher(
+    id number(10),
+    name varchar2(50),
+    age number(3),
+    course varchar2(50)
+);
+--添加主键约束(不能为空not null且不可重复unique)
+alter table tab_teacher add constraint pk_id primary key(id);
+--添加唯一性约束
+alter table tab_teacher add constraint unique_name unique(name);
+--添加检查约束(check的括号内一定是逻辑表达式，逻辑表达式中不能出现sysdate之类的动态的变量)
+alter table tab_teacher add constraint check_course check(course in ('语文','数学','外语'));
+
+insert into tab_teacher(id,name,age,course) values(1,'中文',23,'语文');
+insert into tab_teacher(id,name,age,course) values(2,'中文1',23,'语文');
+--违反检查约束
+--insert into tab_teacher(id,name,age,course) values(3,'物理',23,'物理');
+--删除检查约束
+alter table tab_teacher drop constraint check_course;
+insert into tab_teacher(id,name,age,course) values(3,'物理',23,'物理');
+commit;
+
+select * from tab_teacher;
+select * from tab_student;
+
+--添加teacher_id列，外键约束
+alter table tab_student add teacher_id number(10); 
+alter table tab_student add constraint fk_teacher_id foreign key(teacher_id) references tab_teacher(id);
+insert into tab_student(id,name,age,teacher_id,sex) values(5,'王舟易',12,2,1); 
+commit;
+</PRE>
+<H3>事务和锁</H3>
+<PRE class="brush: sql;">select * from tab_teacher;
+
+
+update tab_teacher set name = '何奇斋' where id= 1;
+
+savepoint savepoint_1;
+
+update tab_teacher set name = '王舟易' where id= 2;
+rollback to savepoint_1;
+commit;
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

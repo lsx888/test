@@ -1,0 +1,90 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0076)http://172.13.19.31:6060/note_html/工具/JMeter测试工具/1001010-工具简介.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>工具简介</TITLE> <LINK href="工具简介_files/standalone.css" rel="stylesheet"> 
+<LINK href="工具简介_files/overlay-apple.css" rel="stylesheet"> <LINK href="工具简介_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="工具简介_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="工具简介_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">工具简介</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-09-22 14:26:49</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>JMeter 介绍</H3>
+<P style="text-indent: 0.8cm;">Apache 
+JMeter是100%纯JAVA桌面应用程序，被设计为用于测试客户端/服务端结构的软件(例如web应用程序)。它可以用来测试静态和动态资源的性能，例如：静态文件，Java 
+Servlet,CGI Scripts,Java 
+Object,数据库和FTP服务器等等。JMeter可用于模拟大量负载来测试一台服务器，网络或者对象的健壮性或者分析不同负载下的整体性能。同时，JMeter可以帮助你对你的应用程序进行回归测试。通过你创建的测试脚本和assertions来验证你的程序返回了所期待的值。为了更高的适应性，JMeter允许你使用正则表达式来创建这些assertions. 
+</P>
+<H3>JMeter与LoadRunner比较</H3>
+<P style="text-indent: 0.8cm;">JMeter 
+是一款开源(有着典型开源工具特点：界面不美观)测试工具，虽然与LoadRunner相比有很多不足，比如：它结果分析能力没有LoadRunner详细；很它的优点也有很多： 
+</P>
+<UL>
+  <LI>开源，他是一款开源的免费软件，使用它你不需要支付任何费用，</LI>
+  <LI>小巧，相比LR的庞大（最新LR11将近4GB），它非常小巧，不需要安装，但需要JDK环境，因为它是使用java开发的工具</LI>
+  <LI>功能强大，jmeter设计之初只是一个简单的web性能测试工具，但经过不段的更新扩展，现在可以完成数据库、FTP、LDAP、WebService等方面的测试。因为它的开源性，当然你也可以根据自己的需求扩展它的功能</LI></UL>
+<P style="text-indent: 0.8cm;">两者最大的区别：jmeter不支持IP欺骗，而LR支持 </P>
+<H3>JMeter缺点</H3>
+<P style="text-indent: 0.8cm;">
+使用JMeter无法验证JS程序，也无法验证页面UI，所以要须要和Selenium配合来完成Web2.0应用的测试 </P>
+<H3>JMeter 下载安装</H3>
+<H4>JMeter安装</H4>
+<OL>
+  <LI><A href="http://jmeter.apache.org/" 
+  target="_blank">http://jmeter.apache.org/</A>下载最新版本的JMeter，解压文件到任意目录</LI>
+  <LI>安装JDK，配置环境变量JAVA_HOME.</LI>
+  <LI>系统要求：JMeter 需要JDK1.6以上的版本支持运行</LI>
+  <LI>JMeter可以运行在如下操作系统上：Unix，Windows和Open VMS.</LI>
+  <LI>避免在一个有空格的路径安装JMeter，这将导致远程测试出现问题。安装路径上避免中文。</LI></OL>
+<H4>JMeter插件安装</H4>
+<OL>
+  <LI>插件下载地址： <A href="http://jmeter-plugins.org/downloads/all/" 
+  target="_blank">http://jmeter-plugins.org/downloads/all/</A></LI>
+  <LI>插件下载后解压：找到JMeterPlugins-Extras.jar,把JMeterPlugins-Extras.jar放到apache-jmeter-2.12\lib\ext目录</LI></OL>
+<H3>JMeter 运行</H3>
+<UL>
+  <LI>进入bin目录运行jmeter.bat启动jmeter。注意：打开的时候会有两个窗口，JMeter的命令窗口和JMeter的图形操作界面，不可以关闭命令窗口</LI>
+  <LI>JMeter的classpath: 
+  <UL>
+    <LI>如果你想添加其他JAR文件到JMeter的classpath中，你可以复制他们到lib目录中</LI>
+    <LI>如果你开发了一个JMeter特定组件或有效的jar文件，复制到lib目录下的ext目录中</LI>
+    <LI>如果你要测试你的代码，可以将代码打包放到${JMETER_HOME}/下的任意目录，然后修改${JMETER_HOME}/bin/jmeter.properties文件的search_paths属性，用相对路径配置到你的jar目录</LI></UL></LI>
+  <LI>通过菜单选项-&gt;选择语言-&gt;中文即可转换工具语言</LI></UL>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

@@ -1,0 +1,149 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0091)http://172.13.19.31:6060/note_html/工具/Apache-Maven（项目构建）/1004011-Maven常用插件.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>Maven常用插件</TITLE> <LINK href="Maven常用插件_files/standalone.css" rel="stylesheet"> 
+<LINK href="Maven常用插件_files/overlay-apple.css" rel="stylesheet"> <LINK href="Maven常用插件_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="Maven常用插件_files/shCoreEclipse.css" 
+rel="stylesheet">	 <LINK href="Maven常用插件_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">Maven常用插件</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-02-23 21:16:57</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>插件列表</H3>
+<P style="text-indent: 0.8cm;">Maven官方有两个插件列表： </P>
+<UL>
+  <LI>第一个列表的GroupId为org.apache.maven.plugins，这里的插件最为成熟，具体地址为：<A href="http://maven.apache.org/plugins/index.html" 
+  target="_blank">http://maven.apache.org/plugins/index.html</A></LI>
+  <LI>第二个列表的GroupId为org.codehaus.mojo，这里的插件没有那么核心，但也有不少十分有用，其地址为：<A href="http://mojo.codehaus.org/plugins.html" 
+  target="_blank">http://mojo.codehaus.org/plugins.html</A></LI></UL>
+<H3>maven-compiler-plugin</H3>
+<P style="text-indent: 0.8cm;">
+Maven区别对待Java代码文件和资源文件，maven-compiler-plugin用来编译Java代码，maven-resources-plugin则用来处理资源文件。默认的主资源文件目录是src/main/resources，很多用户会需要添加额外的资源文件目录，这个时候就可以通过配置maven-resources-plugin来实现。maven-compiler-plugin常用在更改maven默认使用的jdk版本，下面我们来讲讲，怎么配置maven使用特定的jdk版本，这里我们配置jdk版本我jdk1.7. 
+</P>
+<H4>修改pom.xml文件配置maven-compiler-plugin使用jdk1.7</H4>
+<PRE class="brush: xml;">&lt;project&gt;
+   [...]
+   &lt;build&gt;
+     [...]
+     &lt;plugins&gt;
+       &lt;plugin&gt;
+         &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+         &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+         &lt;version&gt;3.5.1&lt;/version&gt;
+         &lt;configuration&gt;
+           &lt;verbose&gt;true&lt;/verbose&gt;
+           &lt;fork&gt;true&lt;/fork&gt;
+           &lt;executable&gt;&lt;!-- path-to-javac --&gt;&lt;/executable&gt;
+           &lt;compilerVersion&gt;1.7&lt;/compilerVersion&gt;
+         &lt;/configuration&gt;
+       &lt;/plugin&gt;
+     &lt;/plugins&gt;
+     [...]
+   &lt;/build&gt;
+   [...]
+&lt;/project&gt;
+</PRE>
+<PRE class="brush: xml;">&lt;!-- 我们可以使用propertie配置executable --&gt;
+&lt;executable&gt;${JAVA_1_7_HOME}/bin/javac&lt;/executable&gt;
+</PRE>
+<H4>修改settings.xml</H4>
+<PRE class="brush: xml;">&lt;settings&gt;
+  [...]
+  &lt;profiles&gt;
+    [...]
+    &lt;profile&gt;
+      &lt;id&gt;compiler&lt;/id&gt;
+        &lt;properties&gt;
+          &lt;JAVA_1_7_HOME&gt;C:\Program Files\Java\jdk1.7&lt;/JAVA_1_7_HOME&gt;
+        &lt;/properties&gt;
+    &lt;/profile&gt;
+  &lt;/profiles&gt;
+  [...]
+  &lt;activeProfiles&gt;
+    &lt;activeProfile&gt;compiler&lt;/activeProfile&gt;
+  &lt;/activeProfiles&gt;
+&lt;/settings&gt;
+</PRE>
+<H4>设置 Java 编译器的-source and -target</H4>
+<PRE class="brush: xml;">&lt;project&gt;
+  [...]
+  &lt;build&gt;
+    [...]
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+        &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+        &lt;version&gt;3.5.1&lt;/version&gt;
+        &lt;configuration&gt;
+          &lt;source&gt;1.7&lt;/source&gt;
+          &lt;target&gt;1.7&lt;/target&gt;
+        &lt;/configuration&gt;
+      &lt;/plugin&gt;
+    &lt;/plugins&gt;
+    [...]
+  &lt;/build&gt;
+  [...]
+&lt;/project&gt;
+</PRE>
+<H4>设置Java使用内存等选项</H4>
+<PRE class="brush: xml;">&lt;project&gt;
+  [...]
+  &lt;build&gt;
+    [...]
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+        &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+        &lt;version&gt;3.5.1&lt;/version&gt;
+        &lt;configuration&gt;
+          &lt;fork&gt;true&lt;/fork&gt;
+          &lt;meminitial&gt;128m&lt;/meminitial&gt;
+          &lt;maxmem&gt;512m&lt;/maxmem&gt;
+        &lt;/configuration&gt;
+      &lt;/plugin&gt;
+    &lt;/plugins&gt;
+    [...]
+  &lt;/build&gt;
+  [...]
+&lt;/project&gt;
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

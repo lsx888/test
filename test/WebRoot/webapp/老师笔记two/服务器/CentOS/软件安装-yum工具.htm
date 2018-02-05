@@ -1,0 +1,132 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0076)http://172.13.19.31:6060/note_html/服务器/CentOS/10902-软件安装-yum工具.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>软件安装-yum工具</TITLE> <LINK href="软件安装-yum工具_files/standalone.css" rel="stylesheet"> 
+<LINK href="软件安装-yum工具_files/overlay-apple.css" rel="stylesheet"> <LINK href="软件安装-yum工具_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="软件安装-yum工具_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="软件安装-yum工具_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">软件安装-yum工具</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-08-26 10:22:47</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>简介</H3>
+<P style="text-indent: 0.8cm;">
+这个工具比rpm工具好用多了，当然前提是你使用的linux系统是支持yum的。yum最大的优势在于可以联网去下载所需要的rpm包，然后自动安装，在这个工程中如果要安装的rpm包有依赖关系，yum会帮你解决掉这些依赖关系依次安装所有rpm包。下面介绍常用的yum 
+命令。除了以下常用的yum命令之外还有许多命令，可以自己man一下了解 </P>
+<H4>1.列出所有可用的rpm包 “yum list “</H4>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" src="软件安装-yum工具_files/20150826-01.png"></DIV>
+<DIV 
+align="left"><FONT>这里只列举出来前7个包信息。从上例中可以看到有”mirrors.163.com”信息出现，这是在告诉用户，它是从mirrors.163.com这里下载到的rpm包资源。如果你使用的是CentOS则你可以从/etc/yum.repos.d/CentOS-Base.repo这个文件下看到相关的配置信息。从上面的例子中你还可以看到最左侧是rpm包名字，中间是版本信息，最右侧是安装信息，如果安装了就显示installed，未安装则显示base或者extras，如果是该rpm包已安装但需要升级则显示updates</FONT></DIV></DIV>
+<H4>2.搜索一个rpm包 “yum search [相关关键词]”</H4>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" src="软件安装-yum工具_files/20150826-02.png"></DIV>
+<DIV align="left"><FONT>除了这样搜索外，常用的是利用grep来过滤</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="软件安装-yum工具_files/20150826-03.png"></DIV>
+<DIV align="left"><FONT>这样看起来简明的多</FONT></DIV></DIV>
+<H4>3.安装一个rpm包 “yum install [-y] [rpm包名]”</H4>
+<DIV>
+<DIV 
+align="left"><FONT>如果不加-y选项，则会以与用户交互的方式安装，首先是列出需要安装的rpm包信息，然后会问用户是否需要安装，输入y则安装，输入n则不安装。嫌这样太麻烦，所以直接加上-y选项，这样就省略掉了问用户是否安装的那一步</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="软件安装-yum工具_files/20150826-04.png"></DIV></DIV>
+<H4>4.卸载一个rpm包 “yum remove [-y] [rpm包名]”</H4>
+<DIV>
+<DIV 
+align="left"><FONT>卸载和安装一样，你也可以直接加上-y选项来省略掉和用户交互的步骤。在这里要提醒一下，卸载某个rpm包一定要看清楚了，不要连其他重要的rpm包一起卸载了，以免影响正常的业务</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="软件安装-yum工具_files/20150826-05.png"></DIV></DIV>
+<H4>5.升级一个rpm包 “yum update [-y] [rpm包]”</H4>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="软件安装-yum工具_files/20150826-06.png"></DIV></DIV>
+<H3>使用本地的光盘来制作一个yum源</H3>
+<PRE class="brush: bash;">有时候你的linux系统不能联网，当然就不能很便捷的使用联网的yum源了，这时候就需要你自己会利用linux系统光盘制作一个yum源。具体步骤如下：
+
+a.挂载光盘
+
+[root@fortest Server]# mount -t iso9660 -o loop /dev/cdrom /mnt
+
+b.删除/etc/yum.repos.d目录所有的repo文件
+
+[root@fortest Server]# rm -rf /etc/yum.repos.d/*
+
+c.创建新文件dvd.repo
+
+[root@fortest Server]# vim /etc/yum.repos.d/dvd.repo
+
+加入以下内容：
+
+[dvd]
+
+name=install dvd
+
+baseurl=file:///mnt
+
+enabled=1
+
+gpgcheck=0
+
+d.刷新repos,生成缓存
+
+[root@fortest Server]#yum makecache
+
+然后就可以使用yum命令安装你所需要的软件包了
+</PRE>
+<H3>利用yum工具下载一个rpm包</H3>
+<PRE class="brush: bash;">有时，我们需要下载一个rpm包，只是下载下来，拷贝给其他机器使用，前面也介绍过yum安装rpm包的时候，首先得下载这个rpm包然后再去安装，所以使用yum完全可以做到只下载而不安装。
+
+a. 首选要安装 yum-downloadonly
+
+# yum install -y yum-downloadonly.noarch
+
+b. 下载一个rpm包而不安装
+
+# yum install test.rpm -y --downloadonly //这样虽然下载了，但是并没有保存到我们想要的目录下，那么如何指定目录呢？
+
+c. 下载到指定目录
+
+# yum install test.rpm -y --downloadonly --downloaddir=/usr/local/src 
+</PRE>
+<DIV>
+<DIV align="left"><FONT>yum下载包实例</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="软件安装-yum工具_files/20150826-07.png"></DIV></DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 2013 ~ 2015 作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

@@ -1,0 +1,111 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0071)http://172.13.19.31:6060/note_html/数据库/Redis/1001010-简介与入门.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>简介与入门</TITLE> <LINK href="简介与入门_files/standalone.css" rel="stylesheet"> 
+<LINK href="简介与入门_files/overlay-apple.css" rel="stylesheet"> <LINK href="简介与入门_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="简介与入门_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="简介与入门_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">简介与入门</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-04-22 21:39:55</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>简介，redis中文网：<A href="http://www.redis.cn/" 
+target="_blank">http://www.redis.cn/</A>，redis官网：<A href="http://redis.io/" 
+target="_blank">http://redis.io/</A></H3>
+<P style="text-indent: 0.8cm;">Redis是一个开源的使用ANSI 
+C语言编写、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，并提供多种语言的API。从2010年3月15日起，Redis的开发工作由VMware主持。从2013年5月开始，Redis的开发由Pivotal赞助。 
+</P>
+<H3>安装（linux）</H3>
+<H4>下载</H4>
+<P style="text-indent: 0.8cm;">官网<A href="http://redis.io/" 
+target="_blank">http://redis.io/</A>下载redis-3.0.7.tar.gz </P>
+<H4>解压安装</H4>
+<PRE class="brush: bash;">#需要root权限
+#进入redis-3.0.7.tar.gz所在文件夹
+$tar -zxvf redis-3.0.7.tar.gz
+$cd redis-3.0.7
+$make
+$make install
+</PRE>
+<P 
+style="text-indent: 0.8cm;">可以查看Makefile文件，可知道，默认安装目录为/usr/local/bin，也可以安装到自己指定的目录，make 
+PREFIX=/some/other/directory install.同样也可以修改默认端口，查看Makefile文件就知道了。 </P>
+<H4>启动服务</H4>
+<PRE class="brush: bash;">#启动redis非常简单，直接./redis-server就可以启动服务端了
+$redis-server
+
+#还可以用下面的方法指定要加载的配置文件../redis.conf为config文件的地址
+#$./redis-server ../redis.conf
+</PRE>
+<P style="text-indent: 0.8cm;">默认情况下，redis-server会以非daemon的方式来运行，且默认服务端口为6379。 
+</P>
+<H4>使用redis客户端</H4>
+<PRE class="brush: bash;">//这样来启动redis客户端了
+$ ./redis-cli
+#用set指令来设置key、value
+127.0.0.1:6379$ set name "roc"
+OK
+#来获取name的值
+127.0.0.1:6379$ get name
+"roc"
+#通过客户端来关闭redis服务端
+127.0.0.1:6379$ shutdown
+127.0.0.1:6379$
+</PRE>
+<H3>远程服务器上运行命令</H3>
+<PRE class="brush: bash;">#要在Redis远程服务器上运行的命令，需要通过同一个客户端redis-cli 连接到服务器
+
+#语法
+$ redis-cli -h host -p port -a password
+
+#下面的示例演示了如何连接到Redis主机：127.0.0.1，端口：6379 上的远程服务器，并加上验证密码为：mypass。
+
+$redis-cli -h 127.0.0.1 -p 6379 -a "mypass"
+redis 127.0.0.1:6379$
+redis 127.0.0.1:6379$ PING
+
+PONG
+</PRE>
+<H3>问题及解决</H3>
+<UL>
+  <LI>注意使用同一个用户启动和停止redis服务</LI></UL>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

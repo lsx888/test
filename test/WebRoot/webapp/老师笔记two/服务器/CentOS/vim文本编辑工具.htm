@@ -1,0 +1,615 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0075)http://172.13.19.31:6060/note_html/服务器/CentOS/10801-vim文本编辑工具.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>vim文本编辑工具</TITLE> <LINK href="vim文本编辑工具_files/standalone.css" rel="stylesheet"> 
+<LINK href="vim文本编辑工具_files/overlay-apple.css" rel="stylesheet"> <LINK href="vim文本编辑工具_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="vim文本编辑工具_files/shCoreEclipse.css" 
+rel="stylesheet">	 <LINK href="vim文本编辑工具_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">vim文本编辑工具</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-11-09 14:27:56</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>简介</H3>
+<P 
+style="text-indent: 0.8cm;">vim是linux中必不可少的一个工具。没有它很多工作都无法完成。早期的Unix都是使用的vi作为系统默认的编辑器的。vi与vim有什么区别？可以这样简单理解，vim是vi的升级版。很多linux系统管理员都习惯用vi，那是因为他们接触linux的时候用的就是vi，vim后来才比较流行。所以，vi和vim并无明显的区别。vi 
+和vim最大的区别就是编辑一个文本时，vi不会显示颜色，而vim会显示颜色。显示颜色更易于用户进行编辑。其他功能没有什么区别。 </P>
+<H3>vim的三种模式</H3>
+<UL>
+  <LI>* 一般模式： 当你vim filename 
+  编辑一个文件时，一进入该文件就是一般模式了。在这个模式下，你可以做的操作有，上下移动光标；删除某个字符；删除某行；复制、粘贴一行或者多行。</LI>
+  <LI>* 
+  编辑模式：一般模式下，是不可以修改某一个字符的，只能到编辑模式了。从一般模式进入编辑模式，只需你按一个键即可（i,I,a,A,o,O,r,R）。当进入编辑模式时，会在屏幕的最下一行出现“INSERT或REPLACE”的字样。从编辑模式回到一般模式只需要按一下键盘左上方的ESC键即可。</LI>
+  <LI>* 
+  命令模式：在一般模式下，输入”:”或者”/”即可进入命令模式。在该模式下，你可以搜索某个字符或者字符串，也可以保存、替换、退出、显示行号等等。</LI></UL>
+<H3>各模式下的键盘操作</H3>
+<P style="text-indent: 0.8cm;">以下列表中，红色部分为常用功能 </P>
+<TABLE cols="1" cellspacing="0" cellpadding="0">
+  <TBODY>
+  <TR align="left" valign="top">
+    <TD width="567" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 11pt;"><B>一般模式下移动光标</B></SPAN>       
+</DIV></TD></TR></TBODY></TABLE>
+<TABLE cols="2" cellspacing="0" cellpadding="0">
+  <TBODY>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>h</SPAN><SPAN 
+      style="color: rgb(255, 0, 0); font-size: 10.5pt;">或向左方向键</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">光标向左移动一个字符</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>j</SPAN><SPAN 
+      style="color: rgb(255, 0, 0); font-size: 10.5pt;">或者向下方向键</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">光标向下移动一个字符</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>K</SPAN><SPAN 
+      style="color: rgb(255, 0, 0); font-size: 10.5pt;">或者向上方向键</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">光标向上移动一个字符</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>l</SPAN><SPAN 
+      style="color: rgb(255, 0, 0); font-size: 10.5pt;">或者向右方向键</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">光标向右移动一个字符</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>Ctrl 
+      + f </SPAN><SPAN 
+      style="color: rgb(255, 0, 0); font-size: 10.5pt;">或者</SPAN><SPAN style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>pageUP</SPAN><SPAN 
+      style="color: rgb(255, 0, 0); font-size: 10.5pt;">键</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">屏幕向前移动一页</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>Ctrl 
+      + b </SPAN><SPAN 
+      style="color: rgb(255, 0, 0); font-size: 10.5pt;">或者</SPAN><SPAN style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>pageDOWN</SPAN><SPAN 
+      style="color: rgb(255, 0, 0); font-size: 10.5pt;">键</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">屏幕向后移动一页</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='font-family: "Calibri"; font-size: 10.5pt;'>Ctrl + 
+d</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">屏幕向前移动半页</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='font-family: "Calibri"; font-size: 10.5pt;'>Ctrl + 
+u</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">屏幕向后移动半页</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='font-family: "Calibri"; font-size: 10.5pt;'>+</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">光标移动到非空格符的下一列</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='font-family: "Calibri"; font-size: 10.5pt;'>-</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">光标移动到非空格符的上一列</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='font-family: "Calibri"; font-size: 10.5pt;'>n</SPAN><SPAN style="font-size: 10.5pt;">空格（</SPAN><SPAN 
+      style='font-family: "Calibri"; font-size: 10.5pt;'>n</SPAN><SPAN style="font-size: 10.5pt;">是数字）</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">按下数字</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>n</SPAN><SPAN 
+      style="font-size: 10.5pt;">然后按空格，则光标向右移动</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>n</SPAN><SPAN 
+      style="font-size: 10.5pt;">个字符，如果该行字符数小于</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>n</SPAN><SPAN 
+      style="font-size: 10.5pt;">，则光标继续从下行开始向右移动，一直到</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>n</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>0</SPAN><SPAN 
+      style="color: rgb(255, 0, 0); font-size: 10.5pt;">（数字</SPAN><SPAN style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>0</SPAN><SPAN 
+      style="color: rgb(255, 0, 0); font-size: 10.5pt;">）或者</SPAN><SPAN style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>Shift+6</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">移动到本行行首</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>Shift+4</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">即</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>’$’</SPAN><SPAN 
+      style="font-size: 10.5pt;">移动到本行行尾</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='font-family: "Calibri"; font-size: 10.5pt;'>H</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">光标移动到当前屏幕的最顶行</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='font-family: "Calibri"; font-size: 10.5pt;'>M</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">光标移动到当前屏幕的中央那一行</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='font-family: "Calibri"; font-size: 10.5pt;'>L</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">光标移动到当前屏幕的最底行</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>G</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">光标移动到文本的最末行</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>nG</SPAN><SPAN 
+      style="color: rgb(255, 0, 0); font-size: 10.5pt;">（</SPAN><SPAN style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>n</SPAN><SPAN 
+      style="color: rgb(255, 0, 0); font-size: 10.5pt;">是数字）</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">移动到该文本的第</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>n</SPAN><SPAN 
+      style="font-size: 10.5pt;">行</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>gg</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">移动带该文本的首行</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='font-family: "Calibri"; font-size: 10.5pt;'>n</SPAN><SPAN style="font-size: 10.5pt;">回车（</SPAN><SPAN 
+      style='font-family: "Calibri"; font-size: 10.5pt;'>n</SPAN><SPAN style="font-size: 10.5pt;">是数字）</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">光标向下移动</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>n</SPAN><SPAN 
+      style="font-size: 10.5pt;">行</SPAN></DIV></TD></TR></TBODY></TABLE>
+<TABLE cols="1" cellspacing="0" cellpadding="0">
+  <TBODY>
+  <TR align="left" valign="top">
+    <TD width="567" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 11pt;"><B>一般模式下查找与替换</B></SPAN></DIV></TD></TR></TBODY></TABLE>
+<TABLE cols="2" cellspacing="0" cellpadding="0">
+  <TBODY>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>/word</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">向光标之后寻找一个字符串名为</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>word</SPAN><SPAN 
+      style="font-size: 10.5pt;">的字符串，当找到第一个</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>word</SPAN><SPAN 
+      style="font-size: 10.5pt;">后，按</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>”n”</SPAN><SPAN 
+      style="font-size: 10.5pt;">继续搜后一个</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>?word</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">想光标之前寻找一个字符串名为</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>word</SPAN><SPAN 
+      style="font-size: 10.5pt;">的字符串，当找到第一个</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>word</SPAN><SPAN 
+      style="font-size: 10.5pt;">后，按</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>”n”</SPAN><SPAN 
+      style="font-size: 10.5pt;">继续搜前一个</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>:n1,n2s/word1/word2/g</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">在</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>n1</SPAN><SPAN 
+      style="font-size: 10.5pt;">和</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>n2</SPAN><SPAN 
+      style="font-size: 10.5pt;">行间查找</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>word1</SPAN><SPAN 
+      style="font-size: 10.5pt;">这个字符串并替换为</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>word2</SPAN><SPAN 
+      style="font-size: 10.5pt;">，你也可以把</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>”/”</SPAN><SPAN 
+      style="font-size: 10.5pt;">换成</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>”#”</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>:1,$s/word1/word2/g</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">从第一行到最末行，查找</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>word1</SPAN><SPAN 
+      style="font-size: 10.5pt;">并替换成</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>word2</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='font-family: "Calibri"; font-size: 10.5pt;'>:1,$s/word1/word2/gc</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">加上</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>c</SPAN><SPAN 
+      style="font-size: 10.5pt;">的作用是，在替换前需要用户确认</SPAN></DIV></TD></TR></TBODY></TABLE>
+<TABLE cols="1" cellspacing="0" cellpadding="0">
+  <TBODY>
+  <TR align="left" valign="top">
+    <TD width="567" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 11pt;"><B>一般模式下删除</B></SPAN><SPAN style='font-family: "Calibri"; font-size: 11pt;'><B>、</B></SPAN><SPAN 
+      style="font-size: 11pt;"><B>复制粘贴</B></SPAN></DIV></TD></TR></TBODY></TABLE>
+<TABLE cols="2" cellspacing="0" cellpadding="0">
+  <TBODY>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>x,X</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='font-family: "Calibri"; font-size: 10.5pt;'>x</SPAN><SPAN style="font-size: 10.5pt;">为向后删除一个字符，</SPAN><SPAN 
+      style='font-family: "Calibri"; font-size: 10.5pt;'>X</SPAN><SPAN style="font-size: 10.5pt;">为向前删除一个字符</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='font-family: "Calibri"; font-size: 10.5pt;'>nx</SPAN><SPAN style="font-size: 10.5pt;">（</SPAN><SPAN 
+      style='font-family: "Calibri"; font-size: 10.5pt;'>n</SPAN><SPAN style="font-size: 10.5pt;">为数字）</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">向后删除</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>n</SPAN><SPAN 
+      style="font-size: 10.5pt;">个字符</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>dd</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">删除光标所在的那一行</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>ndd</SPAN><SPAN 
+      style="color: rgb(255, 0, 0); font-size: 10.5pt;">（</SPAN><SPAN style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>n</SPAN><SPAN 
+      style="color: rgb(255, 0, 0); font-size: 10.5pt;">为数字）</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">删除光标所在的向下</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>n</SPAN><SPAN 
+      style="font-size: 10.5pt;">行</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='font-family: "Calibri"; font-size: 10.5pt;'>d1G</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">删除光标所在行到第一行的所有数据</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='font-family: "Calibri"; font-size: 10.5pt;'>dG</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">删除光标所在行到末行的所有数据</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>yy</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">复制光标所在的那行</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>nyy</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">复制从光标所在行起向下</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>n</SPAN><SPAN 
+      style="font-size: 10.5pt;">行</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>p,P</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='font-family: "Calibri"; font-size: 10.5pt;'>p</SPAN><SPAN style="font-size: 10.5pt;">复制的数据从光标下一行粘贴，</SPAN><SPAN 
+      style='font-family: "Calibri"; font-size: 10.5pt;'>P</SPAN><SPAN style="font-size: 10.5pt;">则从光标上一行粘贴</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='font-family: "Calibri"; font-size: 10.5pt;'>y1G</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">复制光标所在行到第一行的所有数据</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='font-family: "Calibri"; font-size: 10.5pt;'>yG</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">复制光标所在行到末行的所有数据</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='font-family: "Calibri"; font-size: 10.5pt;'>J</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">讲光标所在行与下一行的数据结合成同一行</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='font-family: "Calibri"; font-size: 10.5pt;'>u</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">还原过去的操作</SPAN></DIV></TD></TR></TBODY></TABLE>
+<TABLE cols="1" cellspacing="0" cellpadding="0">
+  <TBODY>
+  <TR align="left" valign="top">
+    <TD width="567" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 11pt;"><B>进入编辑模式</B></SPAN></DIV></TD></TR></TBODY></TABLE>
+<TABLE cols="2" cellspacing="0" cellpadding="0">
+  <TBODY>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>i</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">在当前字符前插入字符</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>I</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">在当前行行首插入字符</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>a</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">在当前字符后插入字符</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>A</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">在当前行行末插入字符</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>o</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">在当前行下插入新的一行</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>O</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">在当前行上插入新的一行</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='font-family: "Calibri"; font-size: 10.5pt;'>r</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">替换光标所在的字符，只替换一次</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='font-family: "Calibri"; font-size: 10.5pt;'>R</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">一直替换光标所在的字符，一直到按下</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>ESC</SPAN></DIV></TD></TR></TBODY></TABLE>
+<TABLE cols="1" cellspacing="0" cellpadding="0">
+  <TBODY>
+  <TR align="left" valign="top">
+    <TD width="567" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 11pt;"><B>命令模式</B></SPAN></DIV></TD></TR></TBODY></TABLE>
+<TABLE cols="2" cellspacing="0" cellpadding="0">
+  <TBODY>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>:w</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">将编辑过的文本保存</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>:w!</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">若文本属性为只读时，强制保存</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>:q</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">退出</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>vim</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>:q!</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">不管编辑或未编辑都不保存退出</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>:wq</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">保存，退出</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='font-family: "Calibri"; font-size: 10.5pt;'>:e!</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">将文档还原成最原始状态</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='font-family: "Calibri"; font-size: 10.5pt;'>ZZ</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">若文档没有改动，则不储存离开，若文档改动过，则储存后离开，等同于</SPAN><SPAN 
+      style='font-family: "Calibri"; font-size: 10.5pt;'>:wq</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='font-family: "Calibri"; font-size: 10.5pt;'>:w  
+      [filename]</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">编辑后的文档另存为</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>filename</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='font-family: "Calibri"; font-size: 10.5pt;'>:r  
+      [filename]</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">在当前光标所在行的下面读入</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>filename</SPAN><SPAN 
+      style="font-size: 10.5pt;">文档的内容</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>:set 
+       nu</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">在每行的行首显示行号</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='color: rgb(255, 0, 0); font-family: "Calibri"; font-size: 10.5pt;'>:set 
+       nonu</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">取消行号</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='font-family: "Calibri"; font-size: 10.5pt;'>n1,n2 w 
+      [filename]</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">将</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>n1</SPAN><SPAN 
+      style="font-size: 10.5pt;">到</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>n2</SPAN><SPAN 
+      style="font-size: 10.5pt;">的内容另存为</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>filename</SPAN><SPAN 
+      style="font-size: 10.5pt;">这个文档</SPAN></DIV></TD></TR>
+  <TR align="left" valign="top">
+    <TD width="176" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style='font-family: "Calibri"; font-size: 10.5pt;'>:!  
+    command</SPAN></DIV></TD>
+    <TD width="389" style="border: 1px solid black;">
+      <DIV style="margin: 0pt; text-align: left; line-height: 100%; text-indent: 0pt;"><SPAN 
+      style="font-size: 10.5pt;">暂时离开</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>vim</SPAN><SPAN 
+      style="font-size: 10.5pt;">运行某个</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>linux</SPAN><SPAN 
+      style="font-size: 10.5pt;">命令，例如</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'> 
+      :!  ls /home </SPAN><SPAN style="font-size: 10.5pt;">暂时列出</SPAN><SPAN 
+      style='font-family: "Calibri"; font-size: 10.5pt;'>/home</SPAN><SPAN 
+      style="font-size: 10.5pt;">目录下的文件，然后会提示按回车回到</SPAN><SPAN style='font-family: "Calibri"; font-size: 10.5pt;'>vim</SPAN></DIV></TD></TR></TBODY></TABLE>
+<H3>键盘图表</H3>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="vim文本编辑工具_files/20151109-01.png"></DIV></DIV>
+<H3>常见问题</H3>
+<H4>windows下建立的sh文件，在linux执行时出现异常/bin/sh^M: bad interpreter: No such file or 
+directory</H4>
+<PRE class="brush: bash;"> 分析：这是不同系统编码格式引起的：在windows系统中编辑的.sh文件可能有不可见字符，所以在Linux系统下执行会报以上异常信息。 
+
+解决：1）在windows下转换： 
+利用一些编辑器如UltraEdit或EditPlus等工具先将脚本编码转换，再放到Linux中执行。转换方式如下（UltraEdit）：File--&gt;Conversions--&gt;DOS-&gt;UNIX即可。 
+如果是 Notepad++ 则是在：  编辑 -&gt; EOL Conversion -&gt; 转换为 UNIX 格式  中。
+
+2）也可在Linux中转换： 
+首先要确保文件有可执行权限 
+#sh&gt;chmod a+x filename 
+
+然后修改文件格式 
+#sh&gt;vi filename 
+
+利用如下命令查看文件格式 
+:set ff 或 :set fileformat 
+
+可以看到如下信息 
+fileformat=dos 或 fileformat=unix 
+
+利用如下命令修改文件格式 
+:set ff=unix 或 :set fileformat=unix 
+
+:wq (存盘退出) 
+
+最后再执行文件 
+#sh&gt;./filename
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

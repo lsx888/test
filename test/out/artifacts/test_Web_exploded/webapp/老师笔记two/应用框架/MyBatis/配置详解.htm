@@ -1,0 +1,653 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0073)http://172.13.19.31:6060/note_html/应用框架/MyBatis/2001010-配置详解.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>配置详解</TITLE> <LINK href="配置详解_files/standalone.css" rel="stylesheet"> 
+<LINK href="配置详解_files/overlay-apple.css" rel="stylesheet"> <LINK href="配置详解_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="配置详解_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="配置详解_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">配置详解</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-08-12 17:03:48</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H4 style="margin: 0px; padding: 0px; top: 200px; right: 0px; position: fixed; z-index: 999;"><A 
+style="padding: 0px 2px; font-size: 12px; display: block;" href="http://172.13.19.31:6060/note_html/应用框架/MyBatis/2001010-配置详解.html#properties">属性(properties)</A><A 
+style="padding: 0px 2px; font-size: 12px; display: block;" href="http://172.13.19.31:6060/note_html/应用框架/MyBatis/2001010-配置详解.html#settings">设置(settings)</A><A 
+style="padding: 0px 2px; font-size: 12px; display: block;" href="http://172.13.19.31:6060/note_html/应用框架/MyBatis/2001010-配置详解.html#typeAliases">类型别名(typeAliases)</A><A 
+style="padding: 0px 2px; font-size: 12px; display: block;" href="http://172.13.19.31:6060/note_html/应用框架/MyBatis/2001010-配置详解.html#typeHandlers">类型处理(typeHandlers)</A><A 
+style="padding: 0px 2px; font-size: 12px; display: block;" href="http://172.13.19.31:6060/note_html/应用框架/MyBatis/2001010-配置详解.html#objectFactory">对象工厂(objectFactory)</A><A 
+style="padding: 0px 2px; font-size: 12px; display: block;" href="http://172.13.19.31:6060/note_html/应用框架/MyBatis/2001010-配置详解.html#plugins">插件(plugins)</A><A 
+style="padding: 0px 2px; font-size: 12px; display: block;" href="http://172.13.19.31:6060/note_html/应用框架/MyBatis/2001010-配置详解.html#environments">配置环境(environments)</A><A 
+style="padding: 0px 2px; font-size: 12px; display: block;" href="http://172.13.19.31:6060/note_html/应用框架/MyBatis/2001010-配置详解.html#databaseIdProvider">数据库厂商标识(databaseIdProvider)</A><A 
+style="padding: 0px 2px; font-size: 12px; display: block;" href="http://172.13.19.31:6060/note_html/应用框架/MyBatis/2001010-配置详解.html#mappers">映射器(mappers)</A></H4>
+<H3>配置文件名称及xml声明</H3>
+<H4>名称</H4>
+<P style="text-indent: 0.8cm;">一般情况下，配置文件的名称可以自定义，但是一般都定义为SqlMapConfig.xml </P>
+<H4>声明</H4>
+<PRE class="brush: xml;">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+&lt;!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd"&gt;
+</PRE>
+<H3 id="properties">属性(properties)</H3>
+<H4>可以通过属性文件配置，亦可通过 properties 元素配置</H4>
+<PRE class="brush: xml;">&lt;properties resource="org/mybatis/example/config.properties"&gt;
+  &lt;property name="username" value="dev_user"/&gt;
+  &lt;property name="password" value="F2Fa3!33TYyg"/&gt;
+&lt;/properties&gt;
+</PRE>
+<H4>使用如下，数据库厂商的配置</H4>
+<PRE class="brush: xml;">&lt;dataSource type="POOLED"&gt;
+  &lt;property name="driver" value="${driver}"/&gt;
+  &lt;property name="url" value="${url}"/&gt;
+  &lt;property name="username" value="${username}"/&gt;
+  &lt;property name="password" value="${password}"/&gt;
+&lt;/dataSource&gt;
+</PRE>
+<H4>其他配置方式</H4>
+<PRE class="brush: java;">SqlSessionFactory factory = sqlSessionFactoryBuilder.build(reader, props);
+
+// ... or ...
+
+SqlSessionFactory factory = sqlSessionFactoryBuilder.build(reader, environment, props);
+</PRE>
+<UL>
+  <LI>在 properties 元素体内指定的属性首先被读取。   </LI>
+  <LI>然后根据 properties 元素中的 resource 属性读取类路径下属性文件或根据 url 
+  属性指定的路径读取属性文件，并覆盖已读取的同名属性。   </LI>
+  <LI>最后读取作为方法参数传递的属性，并覆盖已读取的同名属性。   </LI></UL>
+<H4>各种配置方式的优先级</H4>
+<OL>
+  <LI>通过方法参数传递的属性具有最高优先级</LI>
+  <LI>resource/url 属性中指定的配置文件次之</LI>
+  <LI>最低优先级的是 properties 属性中指定的属性</LI></OL>
+<H3 id="settings">设置(settings)</H3>
+<TABLE border="0">
+  <THEAD>
+  <TR class="a">
+    <TH>设置参数</TH>
+    <TH>描述</TH>
+    <TH>有效值</TH>
+    <TH>默认值</TH></TR></THEAD>
+  <TBODY>
+  <TR class="b">
+    <TD>      cacheEnabled       </TD>
+    <TD>该配置影响的所有映射器中配置的缓存的全局开关。       </TD>
+    <TD>true | false       </TD>
+    <TD>      true       </TD></TR>
+  <TR class="a">
+    <TD>      lazyLoadingEnabled       </TD>
+    <TD>延迟加载的全局开关。当开启时，所有关联对象都会延迟加载。      
+      特定关联关系中可通过设置<TT>fetchType</TT>属性来覆盖该项的开关状态。       </TD>
+    <TD>true | false       </TD>
+    <TD>      false       </TD></TR>
+  <TR class="b">
+    <TD>      aggressiveLazyLoading       </TD>
+    <TD>当启用时，对任意延迟属性的调用会使带有延迟加载属性的对象完整加载；反之，每种属性将会按需加载。       </TD>
+    <TD>true | false       </TD>
+    <TD>      true       </TD></TR>
+  <TR class="a">
+    <TD>      multipleResultSetsEnabled       </TD>
+    <TD>是否允许单一语句返回多结果集（需要兼容驱动）。       </TD>
+    <TD>true | false       </TD>
+    <TD>      true       </TD></TR>
+  <TR class="b">
+    <TD>      useColumnLabel       </TD>
+    <TD>使用列标签代替列名。不同的驱动在这方面会有不同的表现，      具体可参考相关驱动文档或通过测试这两种不同的模式来观察所用驱动的结果。   
+          </TD>
+    <TD>true | false       </TD>
+    <TD>      true       </TD></TR>
+  <TR class="a">
+    <TD>      useGeneratedKeys       </TD>
+    <TD>允许 JDBC 支持自动生成主键，需要驱动兼容。      如果设置为 true 
+      则这个设置强制使用自动生成主键，尽管一些驱动不能兼容但仍可正常工作（比如 Derby）。       </TD>
+    <TD>true | false       </TD>
+    <TD>      False       </TD></TR>
+  <TR class="b">
+    <TD>      autoMappingBehavior       </TD>
+    <TD>指定 MyBatis 应如何自动映射列到字段或属性。       NONE 表示取消自动映射；PARTIAL 
+      只会自动映射没有定义嵌套结果集映射的结果集。       FULL 会自动映射任意复杂的结果集（无论是否嵌套）。       </TD>
+    <TD>NONE, PARTIAL, FULL       </TD>
+    <TD>      PARTIAL       </TD></TR>
+  <TR class="a">
+    <TD>      autoMappingUnknownColumnBehavior       </TD>
+    <TD>      Specify the behavior when detects an unknown column (or unknown 
+      property type) of automatic mapping target.       
+      <UL>
+        <LI><TT>NONE</TT>: Do nothing</LI>
+        <LI><TT>WARNING</TT>: Output warning log (The log level of 
+        <TT>'org.apache.ibatis.session.AutoMappingUnknownColumnBehavior'</TT> 
+        must be set to <TT>WARN</TT>)</LI>
+        <LI><TT>FAILING</TT>: Fail mapping (Throw 
+        <TT>SqlSessionException</TT>)</LI></UL></TD>
+    <TD>      NONE, WARNING, FAILING       </TD>
+    <TD>      NONE       </TD></TR>
+  <TR class="b">
+    <TD>      defaultExecutorType       </TD>
+    <TD>配置默认的执行器。SIMPLE 就是普通的执行器；REUSE 执行器会重用预处理语句（prepared statements）；       
+      BATCH 执行器将重用语句并执行批量更新。       </TD>
+    <TD>SIMPLE      REUSE      BATCH       </TD>
+    <TD>      SIMPLE       </TD></TR>
+  <TR class="a">
+    <TD>      defaultStatementTimeout       </TD>
+    <TD>设置超时时间，它决定驱动等待数据库响应的秒数。       </TD>
+    <TD>Any positive integer       </TD>
+    <TD>      Not Set (null)       </TD></TR>
+  <TR class="b">
+    <TD>      defaultFetchSize       </TD>
+    <TD>      Sets the driver a hint as to control fetching size for return 
+      results.      This parameter value can be override by a query setting.     
+        </TD>
+    <TD>      Any positive integer       </TD>
+    <TD>      Not Set (null)       </TD></TR>
+  <TR class="a">
+    <TD>      safeRowBoundsEnabled       </TD>
+    <TD>允许在嵌套语句中使用分页（RowBounds）。       If allow, set the false.       </TD>
+    <TD>      true | false       </TD>
+    <TD>      False       </TD></TR>
+  <TR class="b">
+    <TD>      safeResultHandlerEnabled       </TD>
+    <TD>允许在嵌套语句中使用分页（ResultHandler）。       If allow, set the false.       </TD>
+    <TD>      true | false       </TD>
+    <TD>      True       </TD></TR>
+  <TR class="a">
+    <TD>      mapUnderscoreToCamelCase       </TD>
+    <TD>是否开启自动驼峰命名规则（camel case）映射，即从经典数据库列名 A_COLUMN 到经典 Java 属性名 aColumn 
+      的类似映射。       </TD>
+    <TD>true | false       </TD>
+    <TD>      False       </TD></TR>
+  <TR class="b">
+    <TD>      localCacheScope       </TD>
+    <TD>      MyBatis 利用本地缓存机制（Local Cache）防止循环引用（circular 
+      references）和加速重复嵌套查询。      默认值为 SESSION，这种情况下会缓存一个会话中执行的所有查询。      若设置值为 
+      STATEMENT，本地会话仅用在语句执行上，对相同 SqlSession 的不同调用将不会共享数据。       </TD>
+    <TD>SESSION | STATEMENT       </TD>
+    <TD>      SESSION       </TD></TR>
+  <TR class="a">
+    <TD>      jdbcTypeForNull       </TD>
+    <TD>当没有为参数提供特定的 JDBC 类型时，为空值指定 JDBC 类型。      某些驱动需要指定列的 JDBC 
+      类型，多数情况直接用一般类型即可，比如 NULL、VARCHAR 或 OTHER。       </TD>
+    <TD>JdbcType enumeration. Most common are: NULL, VARCHAR and OTHER       
+    </TD>
+    <TD>      OTHER       </TD></TR>
+  <TR class="b">
+    <TD>      lazyLoadTriggerMethods       </TD>
+    <TD>指定哪个对象的方法触发一次延迟加载。       </TD>
+    <TD>A method name list separated by commas       </TD>
+    <TD>      equals,clone,hashCode,toString       </TD></TR>
+  <TR class="a">
+    <TD>      defaultScriptingLanguage       </TD>
+    <TD>指定动态 SQL 生成的默认语言。       </TD>
+    <TD>A type alias or fully qualified class name.       </TD>
+    <TD>      org.apache.ibatis.scripting.xmltags.XMLDynamicLanguageDriver     
+        </TD></TR>
+  <TR class="b">
+    <TD>      callSettersOnNulls       </TD>
+    <TD>指定当结果集中值为 null 的时候是否调用映射对象的 setter（map 对象时为 put）方法，这对于有 Map.keySet() 
+      依赖或 null 值初始化的时候是有用的。注意基本类型（int、boolean等）是不能设置成 null 的。       </TD>
+    <TD>true | false       </TD>
+    <TD>      false       </TD></TR>
+  <TR class="a">
+    <TD>      logPrefix       </TD>
+    <TD>指定 MyBatis 增加到日志名称的前缀。       </TD>
+    <TD>Any String       </TD>
+    <TD>      Not set       </TD></TR>
+  <TR class="b">
+    <TD>      logImpl       </TD>
+    <TD>指定 MyBatis 所用日志的具体实现，未指定时将自动查找。       </TD>
+    <TD>SLF4J | LOG4J | LOG4J2 | JDK_LOGGING | COMMONS_LOGGING | 
+      STDOUT_LOGGING | NO_LOGGING       </TD>
+    <TD>      Not set       </TD></TR>
+  <TR class="a">
+    <TD>      proxyFactory       </TD>
+    <TD>指定 Mybatis 创建具有延迟加载能力的对象所用到的代理工具。       </TD>
+    <TD>CGLIB | JAVASSIST       </TD>
+    <TD>      JAVASSIST (MyBatis 3.3 or above)       </TD></TR>
+  <TR class="b">
+    <TD>      vfsImpl       </TD>
+    <TD>      Specifies VFS implementations       </TD>
+    <TD>      Fully qualified class names of custom VFS implementation 
+      separated by commas.       </TD>
+    <TD>      Not set       </TD></TR>
+  <TR class="a">
+    <TD>      useActualParamName       </TD>
+    <TD>      Allow referencing statement parameters by their actual names 
+      declared in the method signature.      To use this feature, your project 
+      must be compiled in Java 8 with <TT>-parameters</TT> option. (Since: 
+      3.4.1)       </TD>
+    <TD>      true | false       </TD>
+    <TD>      true       </TD></TR></TBODY></TABLE>
+<H4>配置完整的 settings 元素的示例</H4>
+<PRE class="brush: xml;">&lt;settings&gt;
+  &lt;setting name="cacheEnabled" value="true"/&gt;
+  &lt;setting name="lazyLoadingEnabled" value="true"/&gt;
+  &lt;setting name="multipleResultSetsEnabled" value="true"/&gt;
+  &lt;setting name="useColumnLabel" value="true"/&gt;
+  &lt;setting name="useGeneratedKeys" value="false"/&gt;
+  &lt;setting name="autoMappingBehavior" value="PARTIAL"/&gt;
+  &lt;setting name="autoMappingUnknownColumnBehavior" value="WARNING"/&gt;
+  &lt;setting name="defaultExecutorType" value="SIMPLE"/&gt;
+  &lt;setting name="defaultStatementTimeout" value="25"/&gt;
+  &lt;setting name="defaultFetchSize" value="100"/&gt;
+  &lt;setting name="safeRowBoundsEnabled" value="false"/&gt;
+  &lt;setting name="mapUnderscoreToCamelCase" value="false"/&gt;
+  &lt;setting name="localCacheScope" value="SESSION"/&gt;
+  &lt;setting name="jdbcTypeForNull" value="OTHER"/&gt;
+  &lt;setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString"/&gt;
+&lt;/settings&gt;
+</PRE>
+<H3 id="typeAliases">类型别名(typeAliases)</H3>
+<P style="text-indent: 0.8cm;">类型别名是为 Java 类型设置一个短的名字。它只和 XML 
+配置有关，存在的意义仅在于用来减少类完全限定名的冗余。例如: </P>
+<PRE class="brush: xml;">&lt;typeAliases&gt;
+  &lt;typeAlias alias="Author" type="domain.blog.Author"/&gt;
+  &lt;typeAlias alias="Blog" type="domain.blog.Blog"/&gt;
+  &lt;typeAlias alias="Comment" type="domain.blog.Comment"/&gt;
+  &lt;typeAlias alias="Post" type="domain.blog.Post"/&gt;
+  &lt;typeAlias alias="Section" type="domain.blog.Section"/&gt;
+  &lt;typeAlias alias="Tag" type="domain.blog.Tag"/&gt;
+&lt;/typeAliases&gt;
+
+当这样配置时，Blog可以用在任何使用domain.blog.Blog的地方。
+
+也可以指定一个包名，MyBatis 会在包名下面搜索需要的 Java Bean，比如:
+
+&lt;typeAliases&gt;
+  &lt;package name="domain.blog"/&gt;
+&lt;/typeAliases&gt;
+
+每一个在包 domain.blog 中的 Java Bean，在没有注解的情况下，会使用 Bean 的首字母小写的非限定类名来作为它的别名。
+比如 domain.blog.Author 的别名为 author；若有注解，则别名为其注解值。看下面的例子：
+
+@Alias("author")
+public class Author {
+    ...
+}
+</PRE>
+<P style="text-indent: 0.8cm;">已经为许多常见的 Java 
+类型内建了相应的类型别名。它们都是大小写不敏感的，需要注意的是由基本类型名称重复导致的特殊处理。 </P>
+<TABLE>
+  <THEAD>
+  <TR>
+    <TH>别名</TH>
+    <TH>映射的类型</TH></TR></THEAD>
+  <TBODY>
+  <TR>
+    <TD>_byte</TD>
+    <TD>byte</TD></TR>
+  <TR>
+    <TD>_long</TD>
+    <TD>long</TD></TR>
+  <TR>
+    <TD>_short</TD>
+    <TD>short</TD></TR>
+  <TR>
+    <TD>_int</TD>
+    <TD>int</TD></TR>
+  <TR>
+    <TD>_integer</TD>
+    <TD>int</TD></TR>
+  <TR>
+    <TD>_double</TD>
+    <TD>double</TD></TR>
+  <TR>
+    <TD>_float</TD>
+    <TD>float</TD></TR>
+  <TR>
+    <TD>_boolean</TD>
+    <TD>boolean</TD></TR>
+  <TR>
+    <TD>string</TD>
+    <TD>String</TD></TR>
+  <TR>
+    <TD>byte</TD>
+    <TD>Byte</TD></TR>
+  <TR>
+    <TD>long</TD>
+    <TD>Long</TD></TR>
+  <TR>
+    <TD>short</TD>
+    <TD>Short</TD></TR>
+  <TR>
+    <TD>int</TD>
+    <TD>Integer</TD></TR>
+  <TR>
+    <TD>integer</TD>
+    <TD>Integer</TD></TR>
+  <TR>
+    <TD>double</TD>
+    <TD>Double</TD></TR>
+  <TR>
+    <TD>float</TD>
+    <TD>Float</TD></TR>
+  <TR>
+    <TD>boolean</TD>
+    <TD>Boolean</TD></TR>
+  <TR>
+    <TD>date</TD>
+    <TD>Date</TD></TR>
+  <TR>
+    <TD>decimal</TD>
+    <TD>BigDecimal</TD></TR>
+  <TR>
+    <TD>bigdecimal</TD>
+    <TD>BigDecimal</TD></TR>
+  <TR>
+    <TD>object</TD>
+    <TD>Object</TD></TR>
+  <TR>
+    <TD>map</TD>
+    <TD>Map</TD></TR>
+  <TR>
+    <TD>hashmap</TD>
+    <TD>HashMap</TD></TR>
+  <TR>
+    <TD>list</TD>
+    <TD>List</TD></TR>
+  <TR>
+    <TD>arraylist</TD>
+    <TD>ArrayList</TD></TR>
+  <TR>
+    <TD>collection</TD>
+    <TD>Collection</TD></TR>
+  <TR>
+    <TD>iterator</TD>
+    <TD>Iterator</TD></TR></TBODY></TABLE>
+<H3 id="typeHandlers">类型处理(typeHandlers)</H3>
+<TABLE>
+  <THEAD>
+  <TR>
+    <TH>类型处理器</TH>
+    <TH>Java 类型</TH>
+    <TH>JDBC 类型</TH></TR></THEAD>
+  <TBODY>
+  <TR>
+    <TD>BooleanTypeHandler</TD>
+    <TD>java.lang.Boolean, boolean</TD>
+    <TD>数据库兼容的 BOOLEAN       </TD></TR>
+  <TR>
+    <TD>ByteTypeHandler</TD>
+    <TD>java.lang.Byte, byte</TD>
+    <TD>数据库兼容的 NUMERIC 或 BYTE       </TD></TR>
+  <TR>
+    <TD>ShortTypeHandler</TD>
+    <TD>java.lang.Short, short</TD>
+    <TD>数据库兼容的 NUMERIC 或 SHORT INTEGER       </TD></TR>
+  <TR>
+    <TD>IntegerTypeHandler</TD>
+    <TD>java.lang.Integer, int</TD>
+    <TD>数据库兼容的 NUMERIC 或 INTEGER       </TD></TR>
+  <TR>
+    <TD>LongTypeHandler</TD>
+    <TD>java.lang.Long, long</TD>
+    <TD>数据库兼容的 NUMERIC 或 LONG INTEGER       </TD></TR>
+  <TR>
+    <TD>FloatTypeHandler</TD>
+    <TD>java.lang.Float, float</TD>
+    <TD>数据库兼容的 NUMERIC 或 FLOAT       </TD></TR>
+  <TR>
+    <TD>DoubleTypeHandler</TD>
+    <TD>java.lang.Double, double</TD>
+    <TD>数据库兼容的 NUMERIC 或 DOUBLE       </TD></TR>
+  <TR>
+    <TD>BigDecimalTypeHandler</TD>
+    <TD>java.math.BigDecimal</TD>
+    <TD>数据库兼容的 NUMERIC 或 DECIMAL       </TD></TR>
+  <TR>
+    <TD>StringTypeHandler</TD>
+    <TD>java.lang.String</TD>
+    <TD>CHAR, VARCHAR</TD></TR>
+  <TR>
+    <TD>ClobReaderTypeHandler</TD>
+    <TD>java.io.Reader</TD>
+    <TD>-</TD></TR>
+  <TR>
+    <TD>ClobTypeHandler</TD>
+    <TD>java.lang.String</TD>
+    <TD>CLOB, LONGVARCHAR</TD></TR>
+  <TR>
+    <TD>NStringTypeHandler</TD>
+    <TD>java.lang.String</TD>
+    <TD>NVARCHAR, NCHAR</TD></TR>
+  <TR>
+    <TD>NClobTypeHandler</TD>
+    <TD>java.lang.String</TD>
+    <TD>NCLOB</TD></TR>
+  <TR>
+    <TD>BlobInputStreamTypeHandler</TD>
+    <TD>java.io.InputStream</TD>
+    <TD>-</TD></TR>
+  <TR>
+    <TD>ByteArrayTypeHandler</TD>
+    <TD>byte[]</TD>
+    <TD>数据库兼容的字节流类型</TD></TR>
+  <TR>
+    <TD>BlobTypeHandler</TD>
+    <TD>byte[]</TD>
+    <TD>BLOB, LONGVARBINARY</TD></TR>
+  <TR>
+    <TD>DateTypeHandler</TD>
+    <TD>java.util.Date</TD>
+    <TD>TIMESTAMP</TD></TR>
+  <TR>
+    <TD>DateOnlyTypeHandler</TD>
+    <TD>java.util.Date</TD>
+    <TD>DATE</TD></TR>
+  <TR>
+    <TD>TimeOnlyTypeHandler</TD>
+    <TD>java.util.Date</TD>
+    <TD>TIME</TD></TR>
+  <TR>
+    <TD>SqlTimestampTypeHandler</TD>
+    <TD>java.sql.Timestamp</TD>
+    <TD>TIMESTAMP</TD></TR>
+  <TR>
+    <TD>SqlDateTypeHandler</TD>
+    <TD>java.sql.Date</TD>
+    <TD>DATE</TD></TR>
+  <TR>
+    <TD>SqlTimeTypeHandler</TD>
+    <TD>java.sql.Time</TD>
+    <TD>TIME</TD></TR>
+  <TR>
+    <TD>ObjectTypeHandler</TD>
+    <TD>Any</TD>
+    <TD>OTHER 或未指定类型</TD></TR>
+  <TR>
+    <TD>EnumTypeHandler</TD>
+    <TD>Enumeration Type</TD>
+    <TD>VARCHAR-任何兼容的字符串类型，存储枚举的名称（而不是索引）</TD></TR>
+  <TR>
+    <TD>EnumOrdinalTypeHandler</TD>
+    <TD>Enumeration Type</TD>
+    <TD>任何兼容的 NUMERIC 或 DOUBLE 类型，存储枚举的索引（而不是名称）。       </TD></TR></TBODY></TABLE>
+<H4>自定义转换类。</H4>
+<P style="text-indent: 0.8cm;">实现 org.apache.ibatis.type.TypeHandler 接口， 
+或继承一个很便利的类 org.apache.ibatis.type.BaseTypeHandler， 然后可以选择性地将它映射到一个 JDBC 类型。 </P>
+<PRE class="brush: java;">// ExampleTypeHandler.java
+@MappedJdbcTypes(JdbcType.VARCHAR)
+public class ExampleTypeHandler extends BaseTypeHandler&lt;string&gt; {
+
+/*
+BaseTypeHandler&lt;string&gt;
+ 通过类型处理器的泛型，MyBatis 可以得知该类型处理器处理的 Java 类型，不过这种行为可以通过两种方法改变：
+
+    在类型处理器的配置元素（typeHandler element）上增加一个 javaType 属性（比如：javaType="String"）；
+    在类型处理器的类上（TypeHandler class）增加一个 @MappedTypes 注解来指定与其关联的 Java 类型列表。 如果在 javaType 属性中也同时指定，则注解方式将被忽略。
+
+*/
+
+  @Override
+  public void setNonNullParameter(PreparedStatement ps, int i, String parameter, JdbcType jdbcType) throws SQLException {
+    ps.setString(i, parameter);
+  }
+
+  @Override
+  public String getNullableResult(ResultSet rs, String columnName) throws SQLException {
+    return rs.getString(columnName);
+  }
+
+  @Override
+  public String getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
+    return rs.getString(columnIndex);
+  }
+
+  @Override
+  public String getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
+    return cs.getString(columnIndex);
+  }
+}
+</PRE>
+<PRE class="brush: xml;">&lt;!-- mybatis-config.xml --&gt;
+&lt;typeHandlers&gt;
+  &lt;typeHandler handler="org.mybatis.example.ExampleTypeHandler"/&gt;
+&lt;/typeHandlers&gt;
+</PRE>
+<P style="text-indent: 0.8cm;">可以通过两种方式来指定被关联的 JDBC 类型：</P>
+<UL>
+  <LI>  在类型处理器的配置元素上增加一个 <TT>jdbcType</TT> 属性（比如：<TT>jdbcType="VARCHAR"</TT>）；   
+  </LI>
+  <LI>在类型处理器的类上（TypeHandler class）增加一个 <TT>@MappedJdbcTypes</TT> 注解来指定与其关联的 JDBC 
+  类型列表。  如果在 <TT>jdbcType</TT> 属性中也同时指定，则注解方式将被忽略。   </LI></UL>
+<H3>保留BaseTypeHandler的泛型，可以实现处理多个类型</H3>
+<PRE class="brush: java;">//GenericTypeHandler.java
+public class GenericTypeHandler&lt;E extends MyObject&gt; extends BaseTypeHandler&lt;E&gt; {
+
+  private Class&lt;E&gt; type;
+
+  public GenericTypeHandler(Class&lt;E&gt; type) {
+    if (type == null) throw new IllegalArgumentException("Type argument cannot be null");
+    this.type = type;
+  }
+  ...
+</PRE>
+<H4>处理枚举类型</H4>
+<P style="text-indent: 0.8cm;">想映射枚举类型 Enum，则需要从 EnumTypeHandler 或者 
+EnumOrdinalTypeHandler 中选一个来使用。 </P>
+<P style="text-indent: 0.8cm;">比如说我们想存储取近似值时用到的舍入模式。默认情况下，MyBatis 会利用 
+EnumTypeHandler 来把 Enum 值转换成对应的名字。 </P>
+<P style="text-indent: 0.8cm;">注意 EnumTypeHandler 
+在某种意义上来说是比较特别的，其他的处理器只针对某个特定的类，而它不同，它会处理任意继承了 Enum 的类。 不过，我们可能不想存储名字，相反我们的 DBA 
+会坚持使用整形值代码。那也一样轻而易举： 在配置文件中把 EnumOrdinalTypeHandler 加到 typeHandlers 中即可， 这样每个 
+RoundingMode 将通过他们的序数值来映射成对应的整形。  </P>
+<PRE class="brush: xml;">&lt;!-- mybatis-config.xml --&gt;
+&lt;typeHandlers&gt;
+  &lt;typeHandler handler="org.apache.ibatis.type.EnumOrdinalTypeHandler" javaType="java.math.RoundingMode"/&gt;
+&lt;/typeHandlers&gt;
+
+但是怎样能将同样的 Enum 既映射成字符串又映射成整形呢？
+
+自动映射器（auto-mapper）会自动地选用 EnumOrdinalTypeHandler 来处理， 所以如果我们想用普通的 EnumTypeHandler，就非要为那些 SQL 语句显式地设置要用到的类型处理器不可。
+
+（下一节才开始讲映射器文件，所以如果是首次阅读该文档，你可能需要先越过这一步，过会再来看。）
+
+&lt;!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"&gt;
+
+&lt;mapper namespace="org.apache.ibatis.submitted.rounding.Mapper"&gt;
+	&lt;resultMap type="org.apache.ibatis.submitted.rounding.User" id="usermap"&gt;
+		&lt;id column="id" property="id"/&gt;
+		&lt;result column="name" property="name"/&gt;
+		&lt;result column="funkyNumber" property="funkyNumber"/&gt;
+		&lt;result column="roundingMode" property="roundingMode"/&gt;
+	&lt;/resultMap&gt;
+
+	&lt;select id="getUser" resultMap="usermap"&gt;
+		select * from users
+	&lt;/select&gt;
+	&lt;insert id="insert"&gt;
+	    insert into users (id, name, funkyNumber, roundingMode) values (
+	    	#{id}, #{name}, #{funkyNumber}, #{roundingMode}
+	    )
+	&lt;/insert&gt;
+	
+	&lt;resultMap type="org.apache.ibatis.submitted.rounding.User" id="usermap2"&gt;
+		&lt;id column="id" property="id"/&gt;
+		&lt;result column="name" property="name"/&gt;
+		&lt;result column="funkyNumber" property="funkyNumber"/&gt;
+		&lt;result column="roundingMode" property="roundingMode" typeHandler="org.apache.ibatis.type.EnumTypeHandler"/&gt;
+	&lt;/resultMap&gt;
+	&lt;select id="getUser2" resultMap="usermap2"&gt;
+		select * from users2
+	&lt;/select&gt;
+	&lt;insert id="insert2"&gt;
+	    insert into users2 (id, name, funkyNumber, roundingMode) values (
+	    	#{id}, #{name}, #{funkyNumber}, #{roundingMode, typeHandler=org.apache.ibatis.type.EnumTypeHandler}
+	    )
+	&lt;/insert&gt;
+
+&lt;/mapper&gt;
+
+注意，这里的 select 语句强制使用 resultMap 来代替 resultType。
+</PRE>
+<H3 id="objectFactory">对象工厂(objectFactory)</H3>
+<P style="text-indent: 0.8cm;">MyBatis 
+每次创建结果对象的新实例时，它都会使用一个对象工厂（ObjectFactory）实例来完成。 
+默认的对象工厂需要做的仅仅是实例化目标类，要么通过默认构造方法，要么在参数映射存在的时候通过参数构造方法来实例化。 
+如果想覆盖对象工厂的默认行为，则可以通过创建自己的对象工厂来实现。比如： </P>
+<PRE class="brush: java;">// ExampleObjectFactory.java
+public class ExampleObjectFactory extends DefaultObjectFactory {
+  public Object create(Class type) {
+    return super.create(type);
+  }
+  public Object create(Class type, List&lt;Class&gt; constructorArgTypes, List&lt;Object&gt; constructorArgs) {
+    return super.create(type, constructorArgTypes, constructorArgs);
+  }
+  public void setProperties(Properties properties) {
+    super.setProperties(properties);
+  }
+  public &lt;T&gt; boolean isCollection(Class&lt;T&gt; type) {
+    return Collection.class.isAssignableFrom(type);
+  }}
+</PRE>
+<PRE class="brush: xml;">&lt;!-- mybatis-config.xml --&gt;
+&lt;objectFactory type="org.mybatis.example.ExampleObjectFactory"&gt;
+  &lt;property name="someProperty" value="100"/&gt;
+&lt;/objectFactory&gt;
+</PRE>
+<P style="text-indent: 0.8cm;">ObjectFactory 
+接口很简单，它包含两个创建用的方法，一个是处理默认构造方法的，另外一个是处理带参数的构造方法的。 最后，setProperties 方法可以被用来配置 
+ObjectFactory，在初始化你的 ObjectFactory 实例后， objectFactory 元素体中定义的属性会被传递给 
+setProperties 方法。 </P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

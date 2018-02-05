@@ -1,0 +1,131 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0066)http://172.13.19.31:6060/note_html/数据库/Redis/1001019-键key.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>键key</TITLE> <LINK href="键key_files/standalone.css" rel="stylesheet"> 
+<LINK href="键key_files/overlay-apple.css" rel="stylesheet"> <LINK href="键key_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="键key_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="键key_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">键key</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-04-22 21:45:44</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<PRE class="brush: bash;">#Redis的keys命令用于管理键。使用Redis的keys命令语法如下所示：
+
+
+#语法
+redis 127.0.0.1:6379$ COMMAND KEY_NAME
+
+#例子
+redis 127.0.0.1:6379$ SET yiibai redis
+OK
+redis 127.0.0.1:6379$ DEL yiibai
+(integer) 1
+
+在上面的例子中DEL是命令，而yiibai是键。如果键被删除那么输出该命令将是 (integer) 1，否则它是 (integer) 0
+</PRE>
+<H3>Redis keys</H3>
+<P>Redis 
+key值是二进制安全的，这意味着可以用任何二进制序列作为key值，从形如”foo”的简单字符串到一个JPEG文件的内容都可以。空字符串也是有效key值。</P>
+<P>关于key的几条规则：</P>
+<UL>
+  <LI>太长的键值不是个好主意，例如1024字节的键值就不是个好主意，不仅因为消耗内存，而且在数据中查找这类键值的计算成本很高。</LI>
+  <LI>太短的键值通常也不是好主意，如果你要用”u:1000:pwd”来代替”user:1000:password”，这没有什么问题，但后者  
+  更易阅读，并且由此增加的空间消耗相对于key object和value  
+  object本身来说很小。当然，没人阻止您一定要用更短的键值节省一丁点儿空间。</LI>
+  <LI>最好坚持一种模式。例如：”object-type:id:field”就是个不错的注意，像这样”user:1000:password”。我喜欢对多单词的字段名中加上一个点，就像这样：”comment:1234:reply.to”。</LI></UL>
+<H3>Redis的键命令</H3>
+<TABLE class="src" style='border-color: rgb(214, 214, 214); width: 604px; color: rgb(49, 49, 49); line-height: 22px; font-family: "Open Sans", Arial, sans-serif; font-size: 14px; margin-top: 8px; margin-bottom: 8px; vertical-align: top; border-collapse: collapse; box-sizing: border-box; border-spacing: 0px; background-color: rgb(247, 247, 247);'>
+  <TBODY style="box-sizing: border-box;">
+  <TR style="box-sizing: border-box;">
+    <TH style="background: rgb(238, 238, 238); border-color: rgb(214, 214, 214); padding: 5px; width: 38px; border-collapse: collapse; box-sizing: border-box;">S.N.</TH>
+    <TH style="background: rgb(238, 238, 238); border-color: rgb(214, 214, 214); padding: 5px; border-collapse: collapse; box-sizing: border-box;">命令 
+      &amp; 描述</TH></TR>
+  <TR>
+    <TD>1</TD>
+    <TD>      DEL key<BR>此命令删除键，如果存在</TD></TR>
+  <TR>
+    <TD>2</TD>
+    <TD>      DUMP key&nbsp;<BR>该命令返回存储在指定键的值的序列化版本。</TD></TR>
+  <TR>
+    <TD>3</TD>
+    <TD>      EXISTS key&nbsp;<BR>此命令检查该键是否存在。</TD></TR>
+  <TR>
+    <TD>4</TD>
+    <TD>      EXPIRE key&nbsp;seconds<BR>指定键的过期时间</TD></TR>
+  <TR>
+    <TD>5</TD>
+    <TD>      EXPIREAT key timestamp&nbsp;<BR>指定的键过期时间。在这里，时间是在Unix时间戳格式</TD></TR>
+  <TR>
+    <TD>6</TD>
+    <TD>      PEXPIRE key milliseconds&nbsp;<BR>设置键以毫秒为单位到期</TD></TR>
+  <TR>
+    <TD>7</TD>
+    <TD>      PEXPIREAT key 
+    milliseconds-timestamp&nbsp;<BR>设置键在Unix时间戳指定为毫秒到期</TD></TR>
+  <TR>
+    <TD>      8</TD>
+    <TD>      KEYS pattern&nbsp;<BR>查找与指定模式匹配的所有键</TD></TR>
+  <TR>
+    <TD>      9</TD>
+    <TD>      MOVE key db&nbsp;<BR>移动键到另一个数据库</TD></TR>
+  <TR>
+    <TD>10</TD>
+    <TD>      PERSIST key&nbsp;<BR>移除过期的键</TD></TR>
+  <TR>
+    <TD>11</TD>
+    <TD>      PTTL key&nbsp;<BR>以毫秒为单位获取剩余时间的到期键。</TD></TR>
+  <TR>
+    <TD>12</TD>
+    <TD>      TTL key&nbsp;<BR>获取键到期的剩余时间。</TD></TR>
+  <TR>
+    <TD>13</TD>
+    <TD>      RANDOMKEY&nbsp;<BR>从Redis返回随机键</TD></TR>
+  <TR>
+    <TD>14</TD>
+    <TD>      RENAME key newkey&nbsp;<BR>更改键的名称</TD></TR>
+  <TR>
+    <TD>15</TD>
+    <TD>      RENAMENX key newkey&nbsp;<BR>重命名键，如果新的键不存在</TD></TR>
+  <TR>
+    <TD>16</TD>
+    <TD>      TYPE key&nbsp;<BR>返回存储在键的数据类型的值。</TD></TR></TBODY></TABLE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

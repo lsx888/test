@@ -1,0 +1,327 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0078)http://172.13.19.31:6060/note_html/服务器/CentOS/100301-ls、cat等查看命令.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>103-ls、cat等查看命令</TITLE> <LINK href="103-ls、cat等查看命令_files/standalone.css" 
+rel="stylesheet"> <LINK href="103-ls、cat等查看命令_files/overlay-apple.css" rel="stylesheet"> 
+<LINK href="103-ls、cat等查看命令_files/article_edit.css" rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="103-ls、cat等查看命令_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="103-ls、cat等查看命令_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">103-ls、cat等查看命令</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-05-21 15:01:58</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>ls命令</H3>
+<PRE class="brush: bash;">-a 全部的档案都列出，包括隐藏的。linux文件系统中同样也有隐藏文件。这些隐藏文件的文件名是以.开头的。
+例如.test, /root/.123, /root/.ssh 等等，隐藏文件可以是目录也可以是普通文件。
+
+-l 详细列出文件的属性信息，包括大小、创建日期、所属主所属组等等。ll 这个命令等同于ls –l 。
+其他选项大家可以用man ls查看
+
+ls命令是linux下最常用的命令。ls命令就是list的缩写，缺省下ls用来打印出当前目录的清单，如果ls指定其他目录，
+那么就会显示指定目录里的文件及文件夹清单。
+
+　　通过ls 命令不仅可以查看linux文件夹包含的文件，而且可以查看文件权限(包括目录、文件夹、文件权限)，查看目录信息等等，
+ls 命令在日常的linux操作中用的很多，在此给大家介绍一下ls 命令的使用方法。
+
+　　一、ls命令使用介绍
+
+　　ls命令格式：ls [选项] [目录名].
+
+　　ls命令功能：列出目标目录中所有的子目录和文件。
+
+　　ls 命令的参数选项说明：
+
+　　-a, –all 列出目录下的所有文件，包括以 . 开头的隐含文件。
+
+　　-A, –almost-all 列出除了 . 及 以外的任何项目
+
+　　–author 印出每个文件的作者
+
+　　-b, –escape 把文件名中不可输出的字符用反斜杠加字符编号的形式列出。
+
+　　–block-size=大小 块以指定&lt;大小&gt;的字节为单位
+
+　　-B, –ignore-backups 不列出任何以 ~ 字符结束的项目
+
+　　-c 输出文件的 ctime (文件状态最后更改的时间)，并根据 ctime 排序。
+
+　　-C 每栏由上至下列出项目
+
+　　–color[=WHEN] 控制是否使用色彩分辨文件。WHEN 可以是'never'、'always'或'auto'其中之一
+
+　　-d, –directory 将目录象文件一样显示，而不是显示其下的文件。
+
+　　-D, –dired 产生适合 Emacs 的 dired 模式使用的结果
+
+　　-f 对输出的文件不进行排序，-aU 选项生效，-lst 选项失效
+
+　　-F, –classify 加上文件类型的指示符号 (*/=@| 其中一个)
+
+　　–format=关键字 across -x,commas -m,horizontal -x,long -l,
+
+　　single-column -1,verbose -l,vertical -C
+
+　　–full-time 即 -l –time-style=full-iso
+
+　　-g 类似 -l,但不列出所有者
+
+　　-G, –no-group 不列出任何有关组的信息
+
+　　-h, –human-readable 以容易理解的格式列出文件大小 (例如 1K 234M 2G)
+
+　　–si 类似 -h,但文件大小取 1000 的次方而不是 1024
+
+　　-H, –dereference-command-line 使用命令列中的符号链接指示的真正目的地
+
+　　–indicator-style=方式 指定在每个项目名称后加上指示符号&lt;方式&gt;:
+
+　　none (默认)，classify (-F)，file-type (-p)
+
+　　-i, –inode 印出每个文件的 inode 号
+
+　　-I, –ignore=样式 不印出任何符合 shell 万用字符&lt;样式&gt;的项目
+
+　　-k 即 –block-size=1K,以 k 字节的形式表示文件的大小。
+
+　　-l 列出文件的详细信息。
+
+　　-L, –dereference 当显示符号链接的文件信息时，显示符号链接所指示的对象而并非符号链接本身的信息
+
+　　-m 所有项目以逗号分隔，并填满整行行宽
+
+　　-n, –numeric-uid-gid 类似 -l,用数字的 UID,GID 代替名称。
+
+　　-N, –literal 印出未经处理的项目名称 (例如不特别处理控制字符)
+
+　　-o 类似 -l,显示文件的除组信息外的详细信息。
+
+　　-p, -F 在每个文件名后附上一个字符以说明该文件的类型，"*"表示可执行的普通文件;"/"表示目录;"@"表示符号链接;"|"表示FIFOs;"="表示套接字
+
+　　(sockets)。
+
+　　-q, –hide-control-chars 以 ? 字符代替无法打印的字符
+
+　　–show-control-chars 直接显示无法打印的字符 (这是默认方式，除非调用的程序名称是'ls'而且是在终端机画面输出结果)
+
+　　-Q, –quote-name 将项目名称括上双引号
+
+　　–quoting-style=方式 使用指定的 quoting &lt;方式&gt;显示项目的名称：literal、locale、shell、shell-always、c、escape
+
+　　-r, –reverse 依相反次序排列
+
+　　-R, –recursive 同时列出所有子目录层
+
+　　-s, –size 以块大小为单位列出所有文件的大小
+
+　　-S 根据文件大小排序
+
+　　–sort=WORD 以下是可选用的 WORD 和它们代表的相应选项：
+
+　　extension -X status -c
+
+　　none -U time -t
+
+　　size -S atime -u
+
+　　time -t access -u
+
+　　version -v use -u
+
+　　-t 以文件修改时间排序
+
+　　-u 配合 -lt:显示访问时间而且依访问时间排序
+
+　　配合 -l:显示访问时间但根据名称排序
+
+　　否则：根据访问时间排序
+
+　　-U 不进行排序;依文件系统原有的次序列出项目
+
+　　-v 根据版本进行排序
+
+　　-w, –width=COLS 自行指定屏幕宽度而不使用目前的数值
+
+　　-x 逐行列出项目而不是逐栏列出
+
+　　-X 根据扩展名排序
+
+　　-1 每行只列出一个文件
+
+　　–help 显示此帮助信息并离开
+
+　　–version 显示版本信息并离开
+
+　　下面来举几个例子来说明Linux ls 命令如何使用。
+
+　　二、ls命令使用举例
+
+　　1&gt;列出/linux/ls-file 文件夹下的所有文件和目录的详细资料。
+
+　　[linux ~]$ ls -l -R /linux/ls-file
+
+　　输入上面的命令回车后，就会显示目录下所有文件的详细信息
+
+　　在使用 ls 命令时要注意命令的格式：在命令提示符后，首先是命令的关键字，接下来是命令参数，在命令参数之前要有一短横线"-",
+所有的命令参数都有特定的作用，自己可以根据需要选用一个或者多个参数，在命令参数的后面是命令的操作对象。
+
+　　在以上这条命令""ls -l -R /linux/ls-file"中，"ls" 是命令关键字，"-l -R"是参数，"/linux/ls-file"是命令的操作对象。在这条命令中，
+使用到了两个参数，分别为"l"和"R",你也可以把他们放在一起使用，如下所示：
+
+　　[linux ~]$ ls -lR /linux/ls-file
+
+　　这种形式和上面的命令形式执行的结果是完全一样的。
+
+　　2&gt;只列出子目录
+
+　　1. ls -F | grep /$
+
+　　2. ls -l | grep "^d"
+
+　　3&gt;列出目前工作目录下所有名称是s 开头的档案，愈新的排愈后面，可以使用如下命令：
+
+　　ls -ltr s*
+
+　　4&gt;将/linux 目录以下所有目录及档案详细资料列出：
+
+　　ls -lR /linux
+
+　　5&gt;列出目前工作目录下所有档案及目录;目录于名称后加"/", 可执行档于名称后加"*" :
+
+　　ls -AF
+
+　　用ls -l命令查看某一个目录会得到一个9个字段的列表。
+
+　　第1行显示的信息： 总用量(total) - 这个数值是该目录下所有文件及目录列表第5个字段的和(以k为单位)，也就是该目录的大小。
+
+　　第1字段： 文件属性字段
+
+　　文件属性字段总共有10个字母组成，第一个字母表示文件类型，如果这个字母是一个减号"-",则说明该文件是一个普通文件。字母"d"表示该文件是一个目录，字母"d",是dirtectory(目录)的缩写。
+
+　　请注意，一个目录或者说一个文件夹是一个特殊文件，这个特殊文件存放的是其他文件和文件夹的相关信息。
+
+　　第2字段
+
+　　文件硬链接数或目录子目录数
+
+　　第3字段：
+
+　　文件拥有者
+
+　　第4字段：
+
+　　文件拥有者所在的组
+
+　　第5字段：
+
+　　文件文件大小(以字节为单位)
+
+　　第6字段：
+
+　　文件创建月份
+
+　　第7字段：
+
+　　文件创建日期
+
+　　第8字段：
+
+　　文件创建时间
+
+　　第9字段：
+
+　　文件名 (如果是一个符号链接，那么会有一个 "-&gt;" 箭头符号，后面根一个它指向的文件)
+
+
+</PRE>
+<H3>cat：文件查看命令</H3>
+<PRE class="brush: bash;">cat主要有三大功能：
+1.一次显示整个文件。
+$ cat   filename
+2.从键盘创建一个文件。
+$ cat  &gt;  filename
+只能创建新文件,不能编辑已有文件.
+3.将几个文件合并为一个文件。
+$cat   file1   file2  &gt; file
+cat具体命令格式为 : cat [-AbeEnstTuv] [--help] [--version] fileName
+说明：把档案串连接后传到基本输出(屏幕或加 &gt; fileName 到另一个档案)
+参数：
+-n 或 –number 由 1 开始对所有输出的行数编号
+-b 或 –number-nonblank 和 -n 相似，只不过对于空白行不编号
+-s 或 –squeeze-blank 当遇到有连续两行以上的空白行，就代换为一行的空白行
+-v 或 –show-nonprinting
+范例：
+cat -n linuxfile1 &gt; linuxfile2 把 linuxfile1 的档案内容加上行号后输入 linuxfile2 这个档案里
+cat -b linuxfile1 linuxfile2 &gt;&gt; linuxfile3 把 linuxfile1 和 linuxfile2 的档案内容加上行号(空白行不加)之后将内容附加到linuxfile3 里。
+范例：
+把 linuxfile1 的档案内容加上行号后输入 linuxfile2 这个档案里
+cat -n linuxfile1 &gt; linuxfile2
+把 linuxfile1 和 linuxfile2 的档案内容加上行号(空白行不加)之后将内容附加到 linuxfile3 里。
+cat -b linuxfile1 linuxfile2 &gt;&gt; linuxfile3
+cat /dev/null &gt; /etc/test.txt 此为清空/etc/test.txt档案内容
+在linux shell脚本中我们经常见到类似于cat &lt;&lt; EOF的语句，不熟悉的童鞋可能觉得很奇怪：EOF好像是文件的结束符，用在这里起到什么作用？
+EOF是“end of file”，表示文本结束符。
+</PRE>
+<DIV>
+<DIV align="center"><IMG alt="图片不存在" 
+src="103-ls、cat等查看命令_files/20150521-01.png"></DIV>
+<DIV align="center"><FONT>键盘输入多行字符，并输出到a.txt文件</FONT></DIV></DIV>
+<DIV>
+<DIV align="center"><IMG alt="图片不存在" 
+src="103-ls、cat等查看命令_files/20150521-02.png"></DIV>
+<DIV align="center"><FONT></FONT></DIV></DIV>
+<H3>tac：文件查看命令</H3>
+<PRE class="brush: bash;">tac 其实是cat的反写，同样的功能也是反向打印文件的内容到屏幕上。
+</PRE>
+<H3>more：文件查看命令</H3>
+<PRE class="brush: bash;">也是用来查看一个文件的内容。当文件内容太多，一屏幕不能占下，而你用cat肯定是看不前面的内容的，那么使用more就可以解决这个问题了。
+当看完一屏后按空格键继续看下一屏。但看完所有内容后就会退出。如果你想提前退出，只需按q键即可。
+</PRE>
+<H3>less：文件查看命令</H3>
+<PRE class="brush: bash;">作用跟more一样，但比more好在可以上翻，下翻。空格键同样可以翻页，而按”j”键可以向下移动（按一下就向下移动一行），按”k”键向上移动。
+在使用more和less查看某个文件时，你可以按一下”/” 键，然后输入一个word回车，这样就可以查找这个word了。如果是多个该word可以按”n”键显示下一个。
+另外你也可以不按”/”而是按”?”后边同样跟word来搜索这个word，唯一不同的是，”/”是在当前行向下搜索，而”?”是在当前行向上搜索。
+</PRE>
+<H3>head：文件查看命令</H3>
+<PRE class="brush: bash;">head后直接跟文件名，则显示文件的前十行。如果加 –n 选项则显示文件前n行。如（head -n 5 fff.txt）
+</PRE>
+<H3>tail：文件查看命令</H3>
+<PRE class="brush: bash;">tail 和head一样，后面直接跟文件名，则显示文件最后十行。如果加-n 选项则显示文件最后n行。如（tail -n 5 fff.txt）
+-f 动态显示文件的最后十行，如果文件是不断增加的，则用-f 选项。如：tail -f /var/log/messages
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 2013 ~ 2015 作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

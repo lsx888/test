@@ -1,0 +1,432 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0070)http://172.13.19.31:6060/note_html/数据库/SQL/104014-SQL-转换函数.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>SQL-转换函数</TITLE> <LINK href="SQL-转换函数_files/standalone.css" rel="stylesheet"> 
+<LINK href="SQL-转换函数_files/overlay-apple.css" rel="stylesheet"> <LINK href="SQL-转换函数_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="SQL-转换函数_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="SQL-转换函数_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">SQL-转换函数</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-05-12 10:16:18</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>to_char</H3>
+<TABLE class="table-view log-set-param" log-set-param="table_view">
+  <TBODY>
+  <TR>
+    <TH width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">函数</DIV></TH>
+    <TH width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">返回</DIV></TH>
+    <TH width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">描述</DIV></TH>
+    <TH width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">例子</DIV></TH></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para"><B>to_char</B>(timestamp, 
+    text)</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">text</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">把 timestamp 转换成 string</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para"><B>to_char</B>(timestamp 
+      'now','HH12:MI:SS')</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para"><B>to_char</B>(int, text)</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">text</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">把 int4/int8 转换成 string</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para"><B>to_char</B>(125, 
+  '999')</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para"><B>to_char</B>(float, text)</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">text</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">把 float4/float8 转换成 string</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para"><B>to_char</B>(125.8, 
+    '999D9')</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para"><B>to_char</B>(numeric, 
+    text)</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">text</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">把 numeric 转换成 string</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para"><B>to_char</B>(numeric '-125.8', 
+      '999D99S')</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">to_date(text, text)</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">date</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">把 string 转换成 date</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">to_date('05 Dec 2000', 'DD Mon 
+      YYYY')</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">to_timestamp(text, text)</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">date</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">把 string 转换成 timestamp</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">to_timestamp('05 Dec 2000', 'DD Mon 
+      YYYY')</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">to_number(text, text)</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">numeric</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">把 string 转换成 numeric</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">to_number('12,454.8-', 
+      '99G999D9S')</DIV></TD></TR></TBODY></TABLE>
+<H4>用于 date/time 转换的模板</H4>
+<TABLE class="table-view log-set-param" log-set-param="table_view">
+  <TBODY>
+  <TR>
+    <TH width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">模板</DIV></TH>
+    <TH width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">描述</DIV></TH></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">HH</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">一天的小时数 (01-12)</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">HH12</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">一天的小时数 (01-12)</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">HH24</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">一天的小时数 (00-23)</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">MI</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">分钟 (00-59)</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">SS</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">秒 (00-59)</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">SSSS</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">午夜后的秒 (0-86399)</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">AM or A.M. or PM or P.M.</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">正午标识（大写）</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">am or a.m. or pm or p.m.</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">正午标识（小写）</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">Y,YYY</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">带逗号的年（4 和更多位）</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">YYYY</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">年（4和更多位）</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">YYY</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">年的后三位</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">YY</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">年的后两位</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">Y</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">年的最后一位</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">BC or B.C. or AD or A.D.</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">年标识（大写）</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">bc or b.c. or ad or a.d.</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">年标识（小写）</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">MONTH</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">全长大写月份名（9字符）</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">Month</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">全长混合大小写月份名（9字符）</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">month</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">全长小写月份名（9字符）</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">MON</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">大写缩写月份名（3字符）</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">Mon</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">缩写混合大小写月份名（3字符）</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">mon</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">小写缩写月份名（3字符）</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">MM</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">月份 (01-12)</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">DAY</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">全长大写日期名（9字符）</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">Day</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">全长混合大小写日期名（9字符）</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">day</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">全长小写日期名（9字符）</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">DY</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">缩写大写日期名（3字符）</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">Dy</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">缩写混合大小写日期名（3字符）</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">dy</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">缩写小写日期名（3字符）</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">DDD</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">一年里的日子(001-366)</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">DD</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">一个月里的日子(01-31)</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">D</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">一周里的日子(1-7；SUN=1)</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">W</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">一个月里的周数</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">WW</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">一年里的周数</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">CC</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">世纪（2 位）</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">J</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">Julian 
+  日期（自公元前4712年1月1日来的日期）</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">Q</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">季度</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">RM</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">罗马数字的月份（I-XII；I=JAN）－大写</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">rm</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" 
+  label-module="para">罗马数字的月份（I-XII；I=JAN）－小写</DIV></TD></TR></TBODY></TABLE>
+<H4>用于 to_char(numeric) 的模板</H4>
+<TABLE class="table-view log-set-param" log-set-param="table_view">
+  <TBODY>
+  <TR>
+    <TH width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">模板</DIV></TH>
+    <TH width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">描述</DIV></TH></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">9</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">带有指定位数的值</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">0</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">前导零的值</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">. （句点）</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para"><B>小数</B>点</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">, （逗号）</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">分组（千）分隔符</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">PR</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">尖括号内负值</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">S</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">带负号的负值（使用本地化）</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">L</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">货币符号（使用本地化）</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">D</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para"><B>小数</B>点（使用本地化）</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">G</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">分组分隔符（使用本地化）</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">MI</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">在指明的位置的负号（如果数字 &lt; 0）</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">PL</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">在指明的位置的正号（如果数字 &gt; 0）</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">SG</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">在指明的位置的正/负号</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">RN</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">罗马数字（输入在 1 和 3999 之间）</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">TH or th</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">转换成序数</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">V</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">移动 <I>n</I> 
+    位（<B>小数</B>）（参阅注解）</DIV></TD></TR>
+  <TR>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">EEEE</DIV></TD>
+    <TD width="0" align="left" valign="top">
+      <DIV class="para" label-module="para">科学记数。不支持。</DIV></TD></TR></TBODY></TABLE>
+<DIV class="para">使用 'SG'，'PL' 或 'MI' 的带符号字并不附着在数字上面；例如，<B>to_char</B>(-12, 
+'S9999') 生成 ' -12'，而 <B>to_char</B>(-12, 'MI9999') 生成 '- 12'。<B>Oracle</B> 
+里的实现不允许在 9 前面使用 MI，而是要求 9 在 MI 前面。</DIV>
+<DIV class="para">PL，SG，和 TH 是 Postgres 扩展。</DIV>
+<DIV class="para">9 表明一个与在 9 字串里面的一样的数字位数。如果没有可用的数字，那么使用一个空白（空格）。</DIV>
+<DIV class="para">TH 不转换小于零的值，也不转换<B>小数</B>。TH 是一个 Postgres 扩展。</DIV>
+<DIV class="para">V 方便地把输入值乘以 10^<I>n</I>，这里 <I>n</I> 是跟在 V 后面的数字。<B>to_char</B> 
+不支持把 V 与一个<B>小数</B>点绑在一起使用（例如. "99.9V99" 是不允许的）。</DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

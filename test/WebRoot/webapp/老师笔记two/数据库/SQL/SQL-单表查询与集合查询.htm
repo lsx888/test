@@ -1,0 +1,254 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0080)http://172.13.19.31:6060/note_html/数据库/SQL/105009-SQL-单表查询与集合查询.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>SQL-单表查询与集合查询</TITLE> <LINK href="SQL-单表查询与集合查询_files/standalone.css" 
+rel="stylesheet"> <LINK href="SQL-单表查询与集合查询_files/overlay-apple.css" rel="stylesheet"> 
+<LINK href="SQL-单表查询与集合查询_files/article_edit.css" rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="SQL-单表查询与集合查询_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="SQL-单表查询与集合查询_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">SQL-单表查询与集合查询</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-06-14 17:32:42</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>select查询</H3>
+<H4>查询的3要素</H4>
+<UL>
+  <LI>查询哪些表</LI>
+  <LI>条件有哪些</LI>
+  <LI>查询的结果有哪些</LI></UL>
+<PRE class="brush: sql;">--查询所有列
+select * from emp;
+
+--查询所有员工的名称和职位
+select ename,job from emp;
+
+--查询所有与员工的名称和职位(别名)
+select ename as "姓名",job as "职位" from emp;
+
+
+--从员工表中查询有哪些部门编号(不可重复)
+select distinct deptno from emp;
+
+--distinct表示查询结果中的每行的所有列都相同才叫重复
+select distinct deptno,ename from emp;
+
+--查询所有员工的薪水+300
+select sal+300 as 新薪水,sal as 旧薪水 from emp;
+
+--包含空值的数学表达式的值都为空值(sql的运算 空值 + 任何值  = 空值)
+select comm+300 as 新奖金,comm as 旧奖金 from emp; 
+
+
+--查询所有员工，结果以 "SMITH的职位是CLERK所在部门的部门编号为20" 的形式(字符的连接)
+--字符用单引号
+select ename || '的职位是：' || job || '，所在的部门的部门编号为：' || deptno as 结果 from emp;
+</PRE>
+<H3>where子句</H3>
+<PRE class="brush: sql;">--查询部门编号为10的所有员工的姓名、职位和薪金
+select ename,job,sal,deptno from emp where deptno = 10;
+
+--查询部门30中的SALESMAN的所有信息
+--( sql语句不区分大小写，但是字段的值是要区分大小写的.所有的值如果是字符类型，需要用单引号)
+select * from emp where deptno = 30 and job = 'SALESMAN';
+--select * from emp where deptno = 30 and job = 'salesman';注意区分大小写
+
+--查询不在部门30中的所有员工的所有信息
+select * from emp where deptno != 30;--&lt;&gt;也是不等于的意思
+
+--查询薪金在1500--3000之间的所有员工的所有信息(between .. and ... 包括边界)
+select * from emp where sal between 1500 and 3000;
+--select * from emp where sal between 1000 and 1200;一定是前面的数字小于后面的数字,下边界小于上边界
+select * from emp where sal &gt;= 1500 and sal &lt;= 3000;
+
+--查询部门10和部门30中的所有工资大于1500的员工的所有信息
+select * from emp where (deptno = 10 or deptno = 30) and sal &gt; 1500;
+--select * from emp where deptno = 10 or deptno = 30 and sal &gt; 1500;
+select * from emp where deptno in(10,30) and sal &gt; 1500;
+
+--查询姓名中有S这个字符的所有员工的所有信息
+select * from emp where ename like '%S%';
+--查询姓名中以S这个字符开头的所有员工的信息
+select * from emp where ename like 'S%';
+--查询姓名中以S这个字符结尾的所有员工的信息
+select * from emp where ename like '%S';
+--查询姓名中第二个字符为I的所有员工的所有信息(%表示匹配任意长度的字符,_下划线表示匹配一个任意字符)
+select * from emp where ename like '_I%';
+--查询姓名中不包含S这个字符的所有员工的所有信息
+select * from emp where ename not like '%S%';
+
+--查询有奖金的员工的所有信息
+select * from emp where comm is not null;
+select * from emp where comm &gt;= 0;
+--查询所有没有奖金的员工的所有信息
+select * from emp where comm is null;
+</PRE>
+<H3>order by 子句</H3>
+<PRE class="brush: sql;">--/*
+-- ORDER BY 子句:
+--        只能在语句的最后出现
+        可以使用第一个查询中的列名, 别名或相对位置
+--*/
+--查询所有员工信息并按薪金升序排列(ORDER BY 默认就是asc升序排列)
+select * from emp order by sal asc;
+--查询所有员工信息并按薪金降序排列
+select * from emp order by sal desc;
+
+--按员工姓名升序和工资降序排列
+select * from emp order by ename asc,sal desc;
+
+--查询结果如： SMITH的工资为：800，奖金为：
+select ename || '的工资为：' || sal || '，奖金为：' || comm from emp;
+
+--查询所有员工的工资和奖金之和
+select sal+nvl(comm,0) from emp;
+--查询所有员工的所有信息和他的工资和奖金之和
+select p.*,p.sal+nvl(p.comm,0) as total from emp p;
+
+--查询所有员工的所有信息和他的工资和奖金之和，并按员工的工资和奖金之和降序排列 
+select p.*,p.sal+nvl(p.comm,0) as total from emp p order by total desc;
+</PRE>
+<H3>分组函数</H3>
+<PRE class="brush: sql;">--计算所有员工总工资的平均值、最大值、最小值和工资总和
+select avg(sal+nvl(comm,0)) 平均,max(sal+nvl(comm,0)) 最大,
+min(sal+nvl(comm,0)) 最小,sum(sal+nvl(comm,0)) 总和 from emp;
+-- 表示整个表的数据为一组，所以可以不用group by
+ 
+--计算所有部门的员工总工资的平均值、最大值、最小值和工资总和
+select deptno,avg(sal+nvl(comm,0)) 平均,max(sal+nvl(comm,0)) 最大,
+min(sal+nvl(comm,0)) 最小,sum(sal+nvl(comm,0)) 总和 from emp group by deptno;
+-- 表示以部门为组，每个部门为一组 ，所以用了group by deptno
+ 
+--计算部门20 的员工总工资的平均值、最大值、最小值和工资总和
+select avg(sal+nvl(comm,0)) 平均,max(sal+nvl(comm,0)) 最大,
+min(sal+nvl(comm,0)) 最小,sum(sal+nvl(comm,0)) 总和 from emp where deptno = 20;
+
+select deptno,avg(sal+nvl(comm,0)) 平均,max(sal+nvl(comm,0)) 最大,
+min(sal+nvl(comm,0)) 最小,sum(sal+nvl(comm,0)) 总和 from emp 
+group by deptno having deptno = 20;
+-- 以部门分组后 添加了条件。注：分组后添加条件不用where 用 having 
+-- having 条件中，不能用于过滤没有分组的列，反之必须是分组的列(group by 后面的列)才能出现在having 条件里面
+-- 分组查询中，结果列，不能出现没有分组的列，除非放在分组函数中
+
+ 
+--计算平均总工资高于2000 的部门，并显示员工总工资的平均值、最大值、最小值和工资总和
+select deptno,avg(sal+nvl(comm,0)) 平均,max(sal+nvl(comm,0)) 最大,
+min(sal+nvl(comm,0)) 最小,sum(sal+nvl(comm,0)) 总和 from emp 
+group by deptno having avg(sal+nvl(comm,0)) &gt; 2000;
+-- 分组结果的别名，不能直接在having 字句中使用
+
+
+--wmsys.wm_concat(s5) 分组后，将每条数据的s5字段链接起来，中间用逗号隔开
+
+
+-----总结：1.必须是分组的列(group by后面的列)才能出现在having条件里面
+--         2.where子句中不能使用分组函数
+--         3.所用包含于SELECT 列表中，而未包含于组函数中的列都必须包含于 GROUP BY 子句中。
+--                       (出现在结果集中的列，必须使用分组函数或者必须出现在group by后面)
+---        4.having子句中，不能使用分组结果的别名过滤     
+--         5.多列分组，列之间用逗号隔开就行了  
+--         6.order by子句可以使用组函数 order by 放在所有语句之后（放在最后）
+
+--语法：
+--    SELECT	column, group_function
+--    FROM		table
+--    [WHERE	condition]
+--    [GROUP BY	group_by_expression]
+--    [HAVING	group_condition]
+--    [ORDER BY	column];
+
+---COUNT(*) 返回表中记录总数
+select count(*) from emp;
+select count(1) from emp;-- 效率较count(*)高
+
+select count(empno) from emp;
+--组函数会过滤掉null值(返回不为null的记录)
+select count(comm) from emp;
+select avg(comm) from emp;
+---去重复统计(非空且不重复)
+select count(distinct deptno) from emp;
+</PRE>
+<H3>集合运算</H3>
+<UL>
+  <LI>UNION和UNION ALL 并集：这两个操作符都是用来获取两个或两个以上结果集的并集。区别在与UNION会自动去掉合并后重复记录，而UNION 
+  ALL则返回两个结果集中的所有行，包括重复的行。UNION会将查询结果以第一列的字段升序排列</LI>
+  <LI>INTERSECT 交集：INTERSECT操作符用于获得两个结果集的交集，只有同时在这两个结果集中的数据才会被显示出来</LI>
+  <LI>MINUS 差集：MINUS操作符用于获取两个结果集的差集。只有在第一个结果集中存在，在第二个结果集中不存在的数据才会被显示出来。</LI></UL>
+<P 
+style="text-indent: 0.8cm;">注意：使用UNION等关键字的时候，查询的字段的数据类型需要兼容。而且最终的字段名称以第一个查询语句为准，ORDER 
+BY字句必须放在最后一个查询语句的后面。 </P>
+<PRE class="brush: sql;">--union并集，并且要去重复
+select deptno from emp
+union
+select deptno from dept;
+
+--union all并集，并且不去重复
+select deptno from emp
+union all
+select deptno from dept;
+
+---找出部门20中工资最高的员工和部门30中工资最高的员工
+select * from emp where sal = (select max(sal) from emp where deptno = 20 group by deptno) and deptno = 20
+union
+select * from emp where sal = (select max(sal) from emp where deptno = 30 group by deptno) and deptno = 30;
+
+---交集
+select * from emp1
+intersect
+select * from emp;
+
+
+select * from emp1 p1
+union all
+select * from emp p2
+minus
+select * from emp1 p3;
+
+--括号改变执行顺序
+select * from emp1 p1
+union all
+(select * from emp p2
+minus
+select * from emp1 p3);
+
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

@@ -1,0 +1,148 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0079)http://172.13.19.31:6060/note_html/应用框架/Struts/1002010-Struts-常见配置.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>Struts-常见配置</TITLE> <LINK href="Struts-常见配置_files/standalone.css" rel="stylesheet"> 
+<LINK href="Struts-常见配置_files/overlay-apple.css" rel="stylesheet"> <LINK href="Struts-常见配置_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="Struts-常见配置_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="Struts-常见配置_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">Struts-常见配置</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-08-09 10:42:59</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV id="content_div_2">
+<H3>Struts.xml配置文件中包的配置</H3>
+<UL>
+  <LI>name：包的名称，必须</LI>
+  <LI>extends：声明继承的包，就是它的父包(所有包都要直接或间接的继承struts-default包)</LI>
+  <LI>namespace：命名空间。如果该值为"/"表示应用上下文根路径，如果为"/user"，访问该包下的Action时，地址为"/user/Action路径"</LI>
+  <LI>abstract：将包声明成抽象类型(包中不能定义action)</LI></UL></DIV>
+<DIV id="content_div_1">
+<H3>com.opensymphony.xwork2.Action接口</H3>
+<UL>
+  <LI>SUCCESS：Action执行成功的返回值，需要返回到成功页面</LI>
+  <LI>NONE：也是Action执行成功的返回值，但不需要返回到成功页面</LI>
+  <LI>ERROR：Action执行失败的返回值</LI>
+  <LI>INPUT：需要返回到某个输入信息的页面的返回值</LI>
+  <LI>LOGIN：需要用户登录的返回值。例如：验证用户是否登录时，Action验证失败，需要用户重新登录，就可以返回该值</LI></UL>
+<DIV class="fileImgDiv" id="1353904851406">
+<DIV id="apple"><IMG class="fileImg" id="1353904851406_img" alt="图片不存在" src="" 
+rel="#1353904851406_rel"> <FONT>Action接口代码图</FONT> </DIV>
+<DIV class="apple_overlay" id="1353904851406_rel"><IMG alt="图片不存在" src=""> 
+</DIV></DIV></DIV>
+<DIV id="content_div_6">
+<H3>Struts2中的常用静态属性</H3>
+<UL>
+  <LI>struts.action.extension：url后缀</LI>
+  <LI>struts.devMode：是否为开发者模式</LI>
+  <LI>struts.configuration.xml.reload：在struts.xml修改时，是否重新加载</LI>
+  <LI>struts.enable.DynamicMethodInvocation：是否允许通过URL来确定所要执行的action方法</LI>
+  <LI>struts.ognl.allowStaticMethodAccess：是否允许OGNL调用静态方法或静态成员变量</LI></UL>
+<DIV class="fileImgDiv" id="1353908567546">
+<DIV id="apple"><IMG class="fileImg" id="1353908567546_img" alt="图片不存在" src="" 
+rel="#1353908567546_rel"> <FONT>在struts.xml中配置</FONT> </DIV>
+<DIV class="apple_overlay" id="1353908567546_rel"><IMG alt="图片不存在" src=""> 
+</DIV></DIV></DIV>
+<DIV id="content_div_4">
+<H3>通配符简化配置</H3>
+<UL>
+  <LI>"*"：匹配0或多个字符</LI>
+  <LI>"\"如需匹配"/"，则使用"\/"进行匹配</LI></UL>
+<P 
+style="text-indent: 0.8cm;">如图action元素的name属性值为"add*"，它匹配以字符"add"开头的字符串，如"addUser"、"addBook"等都可以匹配。通配符匹配的字符，在框架的配置文件中是可以获取的，它使用表达式{1}、{2}、{3}的方式获取。如果name属性有两个*号，那么{1}取的是第一个*号表示的值，{2}取的是第二个*号表示的值</P>
+<DIV><SPAN style="font-size: 13px;">*</SPAN> 
+<TABLE border="0">
+  <TBODY>
+  <TR>
+    <TD><BR></TD>
+    <TD><SPAN style="font-size: 13px;">匹配0个或多个字符除了“/”</SPAN></TD></TR>
+  <TR>
+    <TD><SPAN style="font-size: 13px;">**</SPAN></TD>
+    <TD><SPAN style="font-size: 13px;">匹配0个或多个字符包含“/”</SPAN></TD></TR>
+  <TR>
+    <TD><SPAN 
+      style="font-size: 13px;">\character&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      &nbsp; </SPAN></TD>
+    <TD><SPAN 
+  style="font-size: 13px;">转义字符，“\\”匹配“\”；“\*”匹配“*”&nbsp;</SPAN></TD></TR></TBODY></TABLE></DIV>
+<DIV class="fileImgDiv" id="1353920089843">
+<DIV id="apple"><IMG class="fileImg" id="1353920089843_img" alt="图片不存在" src="" 
+rel="#1353920089843_rel"> <FONT>通配符配置Action</FONT> </DIV>
+<DIV class="apple_overlay" id="1353920089843_rel"><IMG alt="图片不存在" src=""> 
+</DIV></DIV></DIV>
+<DIV id="content_div_7">
+<P 
+style="color: red; text-indent: 0.8cm;">Action与servlet不一样，默认情况下，每次请求都会new一个新的Action对象。因为每次请求的参数不一样，而参数是Action的成员变量。</P>
+<P 
+style="color: red; text-indent: 0.8cm;">如果配置有add*和addUser两个路径，当前url为/上下文/addUser.action则匹配addUser而不匹配通配符的配置。</P></DIV>
+<DIV id="content_div_3">
+<H3>Struts.xml配置文件中Action相关配置</H3>
+<UL>
+  <LI>name：Action对象被请求的URL映射</LI>
+  <LI>class：Action对象的类名(包括包名)</LI>
+  <LI>method：设置请求Action时，调用Action的哪一个方法(如果每次请求的参数相同，可以使用该属性，推荐不使用)</LI>
+  <LI>converter：知道Action对象的类型转换器类</LI></UL></DIV>
+<DIV id="content_div_8">
+<H3>struts.xml中引入其他xml配置文件</H3>
+<P style="text-indent: 0.8cm;">struts标签的子标签include 
+file="path"可以引入其他的xml配置文件</P></DIV>
+<DIV id="content_div_5">
+<H3>返回结果的配置(action标签的子标签result)</H3>
+<UL>
+  <LI>name：指定返回结果的逻辑名称，对应Action的返回值，success等</LI>
+  <LI>type：设置返回结果的类型，如请求转发、重定向等</LI></UL>
+<P 
+style="color: red; text-indent: 0.8cm;">type的取值可以到struts2-core-2.3.4.jar去找struts-default.xml文件中的[result-types]的定义，还可以自己定义结果处理方式。如下解释常用的结果处理方式：</P>
+<UL>
+  <LI>stream   
+  <UL>
+    <LI>contentType：设置MIME类型。其默认值为text/plain。文件下载应设置为：text/html;charset=UTF-8;和application/x-msdownload;</LI>
+    <LI>contentLength：设置输出到浏览器的数据流的字节数，主要用于帮助浏览器显示下载进度。</LI>
+    <LI>contentDisposition：设置浏览器处理数据流的方式。默认：inline。</LI>
+    <LI>inputName：设置Action中InputStream属性的名称。默认：InputStream。</LI>
+    <LI>bufferSize：指定从输入流向输出流中传递数据时所使用的缓冲区大小。默认：1024字节</LI></UL></LI>
+  <LI>velocity   
+  <UL>
+    <LI>location：指定velocity模板文件的位置</LI>
+    <LI>parse：指定是否将location参数的值作为OGNL表达式来进行处理。默认：true。</LI></UL></LI></UL></DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

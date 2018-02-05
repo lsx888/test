@@ -1,0 +1,263 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0079)http://172.13.19.31:6060/note_html/Java/JavaSE/1008030-JavaSE-范型、新特性.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>JavaSE-范型、新特性</TITLE> <LINK href="JavaSE-范型、新特性_files/standalone.css" 
+rel="stylesheet"> <LINK href="JavaSE-范型、新特性_files/overlay-apple.css" rel="stylesheet"> 
+<LINK href="JavaSE-范型、新特性_files/article_edit.css" rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="JavaSE-范型、新特性_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="JavaSE-范型、新特性_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">JavaSE-范型、新特性</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-06-02 15:19:41</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>范型：就是变量类型的参数化</H3>
+<H4>示例</H4><SPAN><STRONG>GenericFoo.java</STRONG></SPAN> <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=show&amp;uri=/code/javase/objectdetail/GenericFoo.java" 
+target="_blank">查看</A> <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=down&amp;uri=/code/javase/objectdetail/GenericFoo.java" 
+target="_blank">下载</A> 
+<H3>范型定义之前：</H3>
+<UL>
+  <LI>类别定义时的逻辑完全一样，只是里面的成员变量的类型不同</LI>
+  <LI>如果需要多个相似的类，需要定义多个文件，不同的只是变量的类别，而逻辑是完全一样的</LI></UL>
+<H3>范型：</H3>
+<UL>
+  <LI>泛型类：public class Info&lt;T&gt;{}</LI>
+  <LI>泛型接口：public interface Info&lt;T&gt;{}</LI>
+  <LI>泛型方法：public &lt;T&gt; T 方法名称([T t])</LI></UL>
+<H3>受限泛型：</H3>
+<UL>
+  <LI>设置上限：   
+  <UL>
+    <LI>声明对象：类名称&lt;? extends 类&gt; 对象名称；如：List&lt;? extends Person&gt; 
+list</LI>
+    <LI>声明类：访问权限 类名称&lt;? extends 类&gt;{}；如：public class My&lt;T extends 
+    Person&gt;{}</LI></UL></LI>
+  <LI>设置下限：   
+  <UL>
+    <LI>声明对象：类名称&lt;? super 类&gt; 对象名称；如：List&lt;? super Person&gt; list</LI><!--<li>声明类：访问权限 类名称&lt;? super 类&gt;{}；如：public class My&lt;? super Person&gt;{}</li>--> 
+      </UL></LI></UL>
+<H3><FONT style="color: red;">范型注意</FONT>：</H3>
+<UL style="color: red;">
+  <LI>范型不能实例化(一般在范型类中)就是不能new T();</LI><!--
+  <li>在定义泛型类别时,预设可以使用任何的类型来实例化泛型类型中的类型,但是如果想
+  要限制使用泛型类别时,只能用某个特定类型或者是其子类型才能实例化该类型时,可以在定义类型时,
+  使用extends关键字指定这个类型必须是继承某个类,或者实现某个接口
+  </li>
+  <li>当没有指定泛型继承的类型或接口时,默认使用T extends Object，所以默认情况下
+  任何类型都可以作为参数传入
+  </li>
+  <li>T extends List&lt;T&gt;接口也用extends</li>
+  --> 
+    
+  <LI>泛型的类型转换：Info&lt;String&gt;和Info&lt;Object&gt;不是同一类型，  前者不会自动向上类型转换为后者。   
+  </LI>
+  <LI>泛型接口都实现有两种方式：   
+  <OL>
+    <LI>在实现类的定义上继续使用泛型：public class InfoImpl&lt;T&gt; implements Info&lt;T&gt;{  
+    }</LI>
+    <LI>在实现类的定义上指定泛型类：public class InfoImpl implements Info&lt;String&gt;{  
+    }</LI></OL></LI>
+  <LI>泛型可以嵌套使用如：List&lt;Map&lt;String,Integer&gt;&gt;</LI></UL>
+<H3>EnumSet&lt;E extends 
+Enum&lt;E&gt;&gt;</H3><SPAN><STRONG>EnumSetTest1.java</STRONG></SPAN> <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=show&amp;uri=/code/javase/objectdetail/EnumSetTest1.java" 
+target="_blank">查看</A> <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=down&amp;uri=/code/javase/objectdetail/EnumSetTest1.java" 
+target="_blank">下载</A> 
+<H3>EnumMap&lt;K extends 
+Enum&lt;E&gt;,T&gt;</H3><SPAN><STRONG>EnumMapTest1.java</STRONG></SPAN> <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=show&amp;uri=/code/javase/objectdetail/EnumMapTest1.java" 
+target="_blank">查看</A> <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=down&amp;uri=/code/javase/objectdetail/EnumMapTest1.java" 
+target="_blank">下载</A> 
+<H3>静态导入：(import static)不能写成static import <FONT 
+style="color: red;">不宜过度使用静态导入</FONT></H3>
+<UL>
+  <LI>a) import static comm.Comm.CONN;</LI>
+  <LI>a) import static comm.Comm.output;</LI>
+  <LI>b) import static comm.Enum.COO;</LI>
+  <LI>表示导入Comm类中的静态成员变量CONN以及静态方法output。<FONT style="color: red;">注意：使用import  
+  static 时，要一直导入到类中的静态成员变量或静态方法。 </FONT>   </LI></UL>
+<H3>增强的for循环：for(int i : array)</H3><SPAN><STRONG>ForTest.java</STRONG></SPAN> 
+<A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=show&amp;uri=/code/javase/objectdetail/ForTest.java" 
+target="_blank">查看</A> <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=down&amp;uri=/code/javase/objectdetail/ForTest.java" 
+target="_blank">下载</A> 
+<UL>
+  <LI>当遍历集合或数组时，如果需要访问集合或数组的下标，那么最好使用旧式的方式  来实现循环或遍历，而不要使用增强的 for 循环，因为它丢失了下标信息。 
+    </LI></UL>
+<H3>可变参数：</H3><SPAN><STRONG>VargsTest.java</STRONG></SPAN> <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=show&amp;uri=/code/javase/objectdetail/VargsTest.java" 
+target="_blank">查看</A> <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=down&amp;uri=/code/javase/objectdetail/VargsTest.java" 
+target="_blank">下载</A> 
+<UL>
+  <LI>可变参数：可变参数本质上就是一个数组，对于某个声明了可变参数的方法来说，  我们既可以传递离散的值，也可以传递数组对象。但如果将方法中的参数定义为数 
+   组，那么只能传递数组对象而不能传递离散的值。   </LI>
+  <LI>可变参数必须要作为方法参数的最后一个参数，即一个方法不可能具有两个或两个  以上的可变参数。(一个方法只能有一个可变参数)   </LI></UL>
+<H3>枚举(Enum)：JDK1.5加入了一个全新类型的"类"--枚举类型.为此JDK1.5加入了一个 新关键字enum	.(访问权限控制可以使用枚举) 
+<SPAN><STRONG>示例1EnumTest.java</STRONG></SPAN> <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=show&amp;uri=/code/javase/objectdetail/EnumTest.java" 
+target="_blank">查看</A> <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=down&amp;uri=/code/javase/objectdetail/EnumTest.java" 
+target="_blank">下载</A> <SPAN><STRONG>示例2EnumTest1.java</STRONG></SPAN> <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=show&amp;uri=/code/javase/objectdetail/EnumTest1.java" 
+target="_blank">查看</A> <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=down&amp;uri=/code/javase/objectdetail/EnumTest1.java" 
+target="_blank">下载</A> </H3>
+<UL>
+  <LI>枚举表示在编译的时候，该类的实例就已经确定了。</LI>
+  <LI>我们所定义的每个枚举类型都继承自 java.lang.Enum类，枚举中的每  个成员(属性和方法)默认都是 public static 
+  final的。   </LI>
+  <LI><FONT style="color: red;">而每个枚举的成员其实就是您定义的枚举类型的一個实例(Instance) 。</FONT>  
+  换句话说，当定义了一个枚举类型后，在编译时刻就能确定该枚举类型有几个实例，分别是什  
+  么。在运行期间我们无法再使用该枚举类型创建新的实例了，这些实例在编译期间  就已经完全确定下来了。   </LI>
+  <LI>values()方法：返回指定枚举类型数组</LI>
+  <LI>valueOf(String s)方法： 返回带指定名称的指定枚举类型的枚举常量。</LI></UL>
+<H3>语法定义</H3>
+<P style="text-indent: 0.8cm;">创建枚举类型要使用 enum 关键字，隐含了所创建的类型都是 java.lang.Enum 
+类的子类（java.lang.Enum 是一个抽象类）。枚举类型符合通用模式 Class Enum<e enum<e="" extends="">&gt;，而 
+E 表示枚举类型的名称。枚举类型的每一个值都将映射到 protected Enum(String name, int ordinal) 
+构造函数中，在这里，每个值的名称都被转换成一个字符串，并且序数设置表示了此设置被创建的顺序。 </e></P>
+<PRE class="brush: java;">package com.hmw.test;
+/**
+ * 枚举测试类
+ */
+public enum EnumTest {
+    MON, TUE, WED, THU, FRI, SAT, SUN;
+}
+
+/*
+这段代码实际上调用了7次 Enum(String name, int ordinal)：
+new Enum&amp;tl;enumtest&gt;("MON",0);
+new Enum&amp;tl;enumtest&gt;("TUE",1);
+new Enum&amp;tl;enumtest&gt;("WED",2);
+    ... ...
+
+
+以上代码等价于：
+public enum EnumTest {
+   public static final com.hmw.test.EnumTest MON;  
+   ...
+   ...
+   ...
+}
+
+*/
+</PRE>
+<H4>遍历、switch 等常用操作</H4>
+<PRE class="brush: java;">public class Test {
+    public static void main(String[] args) {
+        for (EnumTest e : EnumTest.values()) {
+            System.out.println(e.toString());
+        }
+         
+        System.out.println("---------------------------------");
+         
+        EnumTest test = EnumTest.TUE;
+        switch (test) {
+        case MON:
+            System.out.println("今天是星期一");
+            break;
+        case TUE:
+            System.out.println("今天是星期二");
+            break;
+        // ... ...
+        default:
+            System.out.println(test);
+            break;
+        }
+    }
+}
+
+</PRE>
+<H3>常用方法</H3>
+<PRE class="brush: java;">int compareTo(E o)
+          比较此枚举与指定对象的顺序。
+
+Class&lt;E&gt; getDeclaringClass()
+          返回与此枚举常量的枚举类型相对应的 Class 对象。
+
+String name()
+          返回此枚举常量的名称，在其枚举声明中对其进行声明。
+
+int ordinal()
+          返回枚举常量的序数（它在枚举声明中的位置，其中初始常量序数为零）。
+
+String toString()
+
+           返回枚举常量的名称，它包含在声明中。
+
+static &lt;T extends Enum&lt;T&gt;&gt; T valueOf(Class&lt;T&gt; enumType, String name)
+          返回带指定名称的指定枚举类型的枚举常量。
+</PRE>
+<H3>自定义属性和方法</H3>
+<PRE class="brush: java;">ackage com.hmw.test;
+ 
+/**
+ * 枚举测试类
+ * 
+ */
+public enum EnumTest {
+    MON(1), TUE(2), WED(3), THU(4), FRI(5), SAT(6) {
+        @Override
+        public boolean isRest() {
+            return true;
+        }
+    },
+    SUN(0) {
+        @Override
+        public boolean isRest() {
+            return true;
+        }
+    };
+ 
+    private int value;
+ 
+    private EnumTest(int value) {
+        this.value = value;
+    }
+ 
+    public int getValue() {
+        return value;
+    }
+ 
+    public boolean isRest() {
+        return false;
+    }
+}
+public class Test {
+    public static void main(String[] args) {
+        System.out.println("EnumTest.FRI 的 value = " + EnumTest.FRI.getValue());
+    }
+}
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

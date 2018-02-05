@@ -1,0 +1,168 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0075)http://172.13.19.31:6060/note_html/应用框架/MyBatis/1001010-简介与入门.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>简介与入门</TITLE> <LINK href="简介与入门_files/standalone.css" rel="stylesheet"> 
+<LINK href="简介与入门_files/overlay-apple.css" rel="stylesheet"> <LINK href="简介与入门_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="简介与入门_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="简介与入门_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">简介与入门</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-08-05 17:06:49</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>简介</H3>
+<P style="text-indent: 0.8cm;">MyBatis 本是apache的一个开源项目iBatis, 2010年这个项目由apache 
+software foundation 迁移到了google code，并且改名为MyBatis 。2013年11月迁移到Github </P>
+<H4>官方中文教程：<A href="http://www.mybatis.org/mybatis-3/zh/index.html" target="_blank">http://www.mybatis.org/mybatis-3/zh/index.html</A></H4>
+<H4>GitHub下载：<A href="https://github.com/mybatis" 
+target="_blank">https://github.com/mybatis</A></H4>
+<DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>下载mybatis</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="简介与入门_files/20160805-01.png"></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="简介与入门_files/20160805-02.png"></DIV></DIV>
+<H3>Maven 构建</H3>
+<PRE class="brush: xml;">&lt;dependency&gt;
+  &lt;groupId&gt;org.mybatis&lt;/groupId&gt;
+  &lt;artifactId&gt;mybatis&lt;/artifactId&gt;
+  &lt;version&gt;x.x.x&lt;/version&gt;
+&lt;/dependency&gt;
+</PRE>
+<H3>Hello World</H3>
+<OL>
+  <LI>将mybatis-3.4.1.jar文件加入lib目录，并添加入执行环境</LI>
+  <LI>在src根路径下创建DBPool.properties文件，代码如下：   
+<PRE class="brush: java;">driver = oracle.jdbc.OracleDriver
+
+url = jdbc:oracle:thin:@127.0.0.1:1521:xe
+
+user = SCOTT
+
+password = TIGER
+</PRE></LI>
+  <LI>在src根路径下创建SqlMapConfig.xml文件，代码如下：   
+<PRE class="brush: xml;">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+&lt;!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd"&gt;
+&lt;configuration&gt;
+	&lt;!-- 读取配置文件 --&gt;
+	&lt;properties resource="DBPool.properties"&gt;&lt;/properties&gt;
+  &lt;!-- 定义执行环境 --&gt;
+  &lt;environments default="development"&gt;
+    &lt;environment id="development"&gt;
+      &lt;transactionManager type="JDBC"/&gt;
+      &lt;dataSource type="POOLED"&gt;
+        &lt;property name="driver" value="${driver}"/&gt;
+        &lt;property name="url" value="${url}"/&gt;
+        &lt;property name="username" value="${user}"/&gt;
+        &lt;property name="password" value="${password}"/&gt;
+      &lt;/dataSource&gt;
+    &lt;/environment&gt;
+  &lt;/environments&gt;
+  &lt;!-- 加载mappers，也就是映射文件 --&gt;
+  &lt;mappers&gt;
+    &lt;mapper resource="com/yyoo/test/TestMapper.xml"/&gt;
+  &lt;/mappers&gt;
+&lt;/configuration&gt;
+</PRE></LI>
+  <LI>在包com/yyoo/test下创建文件TestMapper.xml，代码如下：   
+<PRE class="brush: xml;">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+&lt;!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd"&gt;
+  
+&lt;mapper namespace="com.yyoo.test.TestMapper"&gt;
+
+  &lt;select id="selectEmp" resultType="com.yyoo.beans.Emp"&gt;
+    select * from emp where empno = #{empno}
+  &lt;/select&gt;
+  
+&lt;/mapper&gt;
+</PRE></LI>
+  <LI>创建com.yyoo.beans.Emp对象，注意Emp类对应表emp，每个字段是类中的属性，并定义每个属性的get、set方法。（因为mybatis是通过set方法给返回对象赋值的）</LI>
+  <LI>创建com.yyoo.test.HelloWorld类，代码如下：   
+<PRE class="brush: java;">package com.yyoo.test;
+
+import java.io.InputStream;
+
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+
+import com.yyoo.beans.Emp;
+
+public class HelloWorld {
+	public static void main(String[] args) throws Exception{
+		SqlSession session = null;
+		try{
+		//-- 主配置文件，文件位置在classPath根路径（也就是src根路径）
+		String resource = "SqlMapConfig.xml";
+		//--通过org.apache.ibatis.io.Resources获取输入流
+		InputStream inputStream = Resources.getResourceAsStream(resource);
+		//--org.apache.ibatis.session.SqlSessionFactoryBuilder创建SqlSessionFactory对象
+		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+		//-- 创建SqlSession
+		session = sqlSessionFactory.openSession();
+		
+		//-- 执行sql语句
+		Emp emp = session.selectOne("com.yyoo.test.TestMapper.selectEmp", 7369);
+		
+		System.out.println(emp);
+		
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			if(session != null)
+				session.close();
+		}
+	}
+}
+
+</PRE></LI>
+  <LI>代码执行结果：   
+<PRE class="brush: java;">Emp [empNo=7369, eName=SMITH, job=CLERK, mgr=7902, hiredate=Wed Dec 17 00:00:00 CST 1980, sal=800.0, comm=null, deptno=20]
+</PRE></LI>
+  <LI>注意：示例中使用了Oracle的scott用户的emp表。你可以根据自己的数据库创建不同的表来做测试。</LI></OL>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

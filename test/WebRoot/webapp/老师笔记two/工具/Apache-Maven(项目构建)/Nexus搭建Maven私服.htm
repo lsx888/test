@@ -1,0 +1,96 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0096)http://172.13.19.31:6060/note_html/工具/Apache-Maven（项目构建）/1006010-Nexus搭建Maven私服.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>Nexus搭建Maven私服</TITLE> <LINK href="Nexus搭建Maven私服_files/standalone.css" 
+rel="stylesheet"> <LINK href="Nexus搭建Maven私服_files/overlay-apple.css" rel="stylesheet"> 
+<LINK href="Nexus搭建Maven私服_files/article_edit.css" rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="Nexus搭建Maven私服_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="Nexus搭建Maven私服_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">Nexus搭建Maven私服</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-01-30 21:09:12</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>私服图解</H3>
+<DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>私服是架设在局域网的一种特殊的远程仓库，目的是代理远程仓库及部署第三方构件。有了私服之后，当 
+Maven 
+需要下载构件时，直接请求私服，私服上存在则下载到本地仓库；否则，私服请求外部的远程仓库，将构件下载到私服，再提供给本地仓库下载。</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="Nexus搭建Maven私服_files/20160129-09.png">&nbsp;&nbsp;<IMG alt="图片不存在" src="Nexus搭建Maven私服_files/20160129-10.png"></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>我们可以使用专门的 Maven 
+仓库管理软件来搭建私服，比如：Apache Archiva，Artifactory，Sonatype Nexus。这里我们使用 Sonatype 
+Nexus。</FONT></DIV></DIV>
+<H3>Nexus安装</H3>
+<H4>1.下载Nexus，官网地址：<A href="http://www.sonatype.org/nexus/go" 
+target="_blank">http://www.sonatype.org/nexus/go</A></H4>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="Nexus搭建Maven私服_files/20160129-11.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>下载后的文件为：nexus-2.12.0-01-bundle.zip或nexus-2.12.0-01-bundle.tar.gz</FONT></DIV></DIV>
+<H4>2.安装Nexus</H4>
+<DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>解压nexus-2.12.0-01-bundle.zip到指定路径即可（路径上最好还是不要有中文）。包中文件夹如下图：</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="Nexus搭建Maven私服_files/20160129-12.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>解压后进入/nexus-2.12.0-01/bin目录，键入nexus命令（为方便启动和退出Nexus，可将bin目录添加到环境变量）：</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="Nexus搭建Maven私服_files/20160129-13.png"></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>先执行 nexus install 
+将Nexus安装为Windows服务。可将服务启动方式设为手动，以后通过 nexus start 即可启动Nexus ，通过 nexus stop 
+退出Nexus：（这里win7至win10有权限的问题如下图：自己百度即可解决）</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="Nexus搭建Maven私服_files/20160129-14.png"></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>执行nexus start之后，可用浏览器访问：<A 
+href="http://localhost:8081/nexus/" 
+target="_blank">http://localhost:8081/nexus/</A>如下图：</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="Nexus搭建Maven私服_files/20160129-15.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>若要改变nexus的端口等配置，请修改${nexus_HOME}/conf/nexus.properties文件</FONT></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>点击右上角 Log In，使用用户名：admin 
+，密码：admin123 登录，可使用更多功能：</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="Nexus搭建Maven私服_files/20160129-16.png"></DIV></DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

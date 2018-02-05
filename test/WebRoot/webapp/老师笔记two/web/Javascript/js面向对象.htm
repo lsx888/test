@@ -1,0 +1,186 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0073)http://172.13.19.31:6060/note_html/web/Javascript/1001080-js面向对象.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>js面向对象</TITLE> <LINK href="js面向对象_files/standalone.css" rel="stylesheet"> 
+<LINK href="js面向对象_files/overlay-apple.css" rel="stylesheet"> <LINK href="js面向对象_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="js面向对象_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="js面向对象_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">js面向对象</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-06-30 16:58:27</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>面向对象的实现</H3>
+<PRE class="brush: js;">//-- js中的每个对象都是函数，创建对象的函数就是该对象的构造函数
+//-- js中没有类的说法，都是对象
+function Zoo(){
+	
+};
+
+console.log(Zoo);//-- 打印函数本身
+console.log(Zoo());//-- 打印调用函数后的返回值
+console.log(new Zoo());//-- 打印新创建的Zoo对象实例
+
+console.log(typeof Zoo);//-- 函数本身，function
+console.log(typeof Zoo());//-- 打印调用函数后的返回值，Undefined
+console.log(typeof new Zoo());//-- 打印新创建的Zoo对象实例，Object
+
+//-- 注：js创建对象还是用new关键字
+
+//--------------------------------------------------------------
+//-- 原始方式定义对象
+
+//-- js的对象可以在运行时任意给它添加属性或对象
+//-- 如：
+var obj = new Object();
+//-- 添加属性
+obj.name = "颜俊";
+
+console.log(obj.name);//-- 颜俊
+
+//-- 添加方法
+obj.getName = function(){
+	return this.name;
+};
+console.log(obj.getName());
+//-- 弊端：如果要定义多个同类型的对象，该方式就必须重复定义name和getName
+
+//----------------------------------------------------------------
+//-- 工厂方式定义对象
+function Person(name){
+	var p = new Object();
+	p.name = name;
+	p.getName = function(){
+		return this.name;
+	}
+	return p;
+}
+//-- 此方式，将Person这个函数当作了工厂，产出p对象
+var p1 = Person("颜俊");
+var p2 = Person("张凡");
+
+console.log(p1.getName());
+console.log(p2.getName());
+
+//-- 弊端：每次都要创建Object对象，比为其分别设置方法和属性
+//-- 不使用Object对象，构造函数方式
+function Person1(name){
+	//-- this关键字：在函数中使用，表示当前函数构造的对象。
+	//-- this具体表示哪个对象呢？表示当前调用该函数的对象
+	this.name = name;
+	
+	this.getName = function(){
+		return this.name;
+	}
+	
+}
+console.log("========================");
+var p1 = new Person("颜俊");
+var p2 = new Person("张凡");
+console.log(p1.getName());
+console.log(p2.getName());
+console.log(p1.getName === p2.getName);//-- false
+//-- 弊端：每次新创建对象时，都要执行一次构造方法，每次执行，都创建了一个getName方法。
+//-- 原型方式定义对象
+function Person2(){}
+
+//-- prototype：原型每个对象都有该属性，Person2.prototype是所有Person2构造的对象所公有
+Person2.prototype.name = "张凡";
+Person2.prototype.getName = function(){
+	return this.name;
+}
+
+var p1 = new Person2();
+var p2 = new Person2();
+console.log(p1.getName());
+console.log(p2.getName());
+//-- 弊端：属性没办法在新建的时候指定值
+
+//-- 混合方式定义对象（构造函数+原型方式）
+//-- 用构造函数方式定属性，并赋值
+function Person3(name){
+	this.name = name;
+}
+
+Person3.prototype.getName = function(){
+	return this.name;
+}
+
+//-- 用原型方式定义函数，使函数公有
+var p1 = new Person3("颜俊");
+var p2 = new Person3("张凡");
+console.log(p1.getName());
+console.log(p2.getName());
+console.log(p1.getName === p2.getName);//-- true
+</PRE>
+<DIV id="content_div_1">
+<H3>call方法：fn1.call(obj[,arg1,arg2...]);</H3>
+<UL>
+  <LI>call方法是Function对象中的方法，因此每个函数对象都具有该方法。</LI>
+  <LI>可以通过函数名来调用call方法，该方法的第一个参数会传递给函数中的this，从第二个函数开始，逐一给函数中的参数赋值。</LI>
+  <LI 
+  style="color: red;">通常解释为，用obj对象去调用fn1方法。所以此时如果fn1有this，那么该this就是obj对象。</LI>
+  <LI style="color: red;">call方法可以实现多继承(继承多个父类)，只需调用多个call方法就行了。</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_2">
+<H3>apply方法：fn1.apply(obj,arg_arr);第二个参数为数组</H3>
+<UL>
+  <LI>apply方法和call方法的作用几乎一样，只有第二个参数不一样。</LI>
+  <LI>常常用argments对象作为第二个参数传递，但apply的第二个参数是顺序传递的，所以被apply劫持的方法的参数和argments对象的参数顺序要一致，否则就只能用call方法。</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_3">
+<H3>apply的一些巧妙用法：(apply会将一个数组装换为一个参数接一个参数的传递给方法)</H3>
+<UL style="color: red;">
+  <LI>Math.max可以实现得到数组中最大的一项：因为Math.max 
+  参数里面不支持Math.max([param1,param2])也就是数组。但是它支持Math.max(param1,param2,param3…),所以可以根据刚才apply的那个特点来解决 
+  var 
+  max=Math.max.apply(null,array),这样轻易的可以得到一个数组中最大的一项(apply会将一个数组装换为一个参数接一个参数的传递给方法)这块在调用的时候第一个参数给了一个null,这个是因为没有对象去调用这个方法,我只需要用这个方法帮我运算,得到返回的结果就行,所以直接传递了一个null过去</LI>
+  <LI>Math.min可以实现得到数组中最小的一项同样和 max是一个思想var min=Math.min.apply(null,array);</LI>
+  <LI>Array.prototype.push 可以实现两个数组合并 
+  同样push方法没有提供push一个数组,但是它提供了push(param1,param,…paramN) 
+  所以同样也可以通过apply来装换一下这个数组,即: vararr1=new Array("1","2","3"); vararr2=new 
+  Array("4","5","6"); Array.prototype.push.apply(arr1,arr2); 
+  也可以这样理解,arr1调用了push方法,参数是通过apply将数组装换为参数列表的集合.</LI></UL></DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

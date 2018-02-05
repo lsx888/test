@@ -1,0 +1,122 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0073)http://172.13.19.31:6060/note_html/web/Javascript/1001120-js运行顺序.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>js运行顺序</TITLE> <LINK href="js运行顺序_files/standalone.css" rel="stylesheet"> 
+<LINK href="js运行顺序_files/overlay-apple.css" rel="stylesheet"> <LINK href="js运行顺序_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="js运行顺序_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="js运行顺序_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">js运行顺序</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-05-03 20:01:42</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>js运行顺序</H3>
+<P>如果一个文档流中包含多个script代码段（用script标签分隔的js代码或引入的js文件），运行顺序是： </P>
+<UL>
+  <LI>step1. 读入第一个代码段，JavaScript执行引擎并非一行一行地执行程序，而是一段一段地分析执行的（以标签来分割）</LI>
+  <LI>step2. 做语法分析，有错则报语法错误（比如括号不匹配等）</LI>
+  <LI>step3. 对var变量做声明（初始为undefined）和function定义做“预解析”（永远不会报错的，因为只解析正确的声明） </LI>
+  <LI>step4. 执行代码段，有错则报错（比如变量未定义）</LI>
+  <LI>step5. 如果还有下一个代码段，则读入下一个代码段，重复step2 </LI>
+  <LI>step6. 结束</LI></UL>
+<P>要理解这个过程，我们有必要先了解一下几个术语，代码块、声明式函数与赋值式函数、预编译期与执行期</P>
+<H3>代码块</H3>
+<P>JavaScript中的代码块是指由标签分割的代码段：</P>
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="js运行顺序_files/20150408-01.png" 
+rel="#20150408-01"> <FONT>代码块</FONT> </DIV>
+<DIV class="apple_overlay" id="20150408-01"><IMG alt="图片不存在" src="js运行顺序_files/20150408-01.png"> 
+</DIV></DIV>
+<P>JS是按照代码块来进行编译和执行的，代码块间相互独立，但变量和方法共享： 
+下面的代码中代码块一中运行报错，但不影响代码块二的执行，这就是代码块间的独立性，而代码块二中能调用到代码一中的变量，则是块间共享性</P>
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="js运行顺序_files/20150408-02.png" 
+rel="#20150408-02"> <FONT>代码块变量共享</FONT> </DIV>
+<DIV class="apple_overlay" id="20150408-02"><IMG alt="图片不存在" src="js运行顺序_files/20150408-02.png"> 
+</DIV></DIV>
+<P>我们将上面的两个代码块调换一下执行顺序会怎样：</P>
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="js运行顺序_files/20150408-03.png" 
+rel="#20150408-03"> <FONT>代码块变量共享2</FONT> </DIV>
+<DIV class="apple_overlay" id="20150408-03"><IMG alt="图片不存在" src="js运行顺序_files/20150408-03.png"> 
+</DIV></DIV>
+<P>如果用声明式函数呢：</P>
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="js运行顺序_files/20150408-04.png" 
+rel="#20150408-04"> <FONT>代码块变量共享3</FONT> </DIV>
+<DIV class="apple_overlay" id="20150408-04"><IMG alt="图片不存在" src="js运行顺序_files/20150408-04.png"> 
+</DIV></DIV>
+<H3>声明式函数与赋值式函数</H3>
+<P>JS中的函数定义分为两种：声明式函数与赋值式函数： </P>
+<PRE class="brush: js;">function(){
+};//声明式函数
+
+var fn = function(){
+};//赋值式函数
+</PRE>
+<P>声明式函数与赋值式函数的区别在于：在JS的预编译期，声明式函数将会先被提取出来，然后才按顺序执行js代码 </P>
+<H3>预编译期与执行期</H3>
+<P>S的解析过程分为两个阶段：预编译期(预处理)与执行期 </P>
+<P>预编译期JS会对本代码块中的所有声明的变量和函数进行处理（类似与C语言的编译），但需要注意的是此时处理函数的只是声明式函数，而且变量也只是进行了声明但未进行初始化以及赋值 
+</P>
+<PRE class="brush: js;">fn();//执行结果：fn函数定义2。函数同名，后定义的函数会覆盖之前定义的函数。
+
+function fn(){
+	alert("fn函数定义1");	
+};
+
+function fn(){
+	alert("fn函数定义2");
+};
+</PRE>
+<PRE class="brush: js;">fn();
+//执行结果：fn函数定义1。函数同名，但是声明式函数在预编译的时候处理了，而预编译的时候赋值式函数的变量fn的值还是undefined。
+//而执行fn()的时候，赋值式的函数fn还未赋值，因为顺序执行，执行在赋值之前。所以没有覆盖。
+
+function fn(){//声明式函数
+	alert("fn函数定义1");	
+};
+
+var fn = function(){//赋值式函数
+	alert("fn函数定义2");
+};
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

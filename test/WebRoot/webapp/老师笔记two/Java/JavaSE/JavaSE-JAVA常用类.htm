@@ -1,0 +1,311 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0077)http://172.13.19.31:6060/note_html/Java/JavaSE/1008040-JavaSE-JAVA常用类.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>JavaSE-JAVA常用类</TITLE> <LINK href="JavaSE-JAVA常用类_files/standalone.css" 
+rel="stylesheet"> <LINK href="JavaSE-JAVA常用类_files/overlay-apple.css" rel="stylesheet"> 
+<LINK href="JavaSE-JAVA常用类_files/article_edit.css" rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="JavaSE-JAVA常用类_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="JavaSE-JAVA常用类_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">JavaSE-JAVA常用类</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-06-08 16:41:43</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<HR>
+
+<DIV id="content_div_2">
+<H3>Runtime类</H3>
+<UL>
+  <LI>public static Runtime getRuntime()：取得Runtime类的实例。</LI>
+  <LI>public long freeMemory()：返回java虚拟机中的空闲内存量。</LI>
+  <LI>public long maxMemory()：返回JVM的最大内存量</LI>
+  <LI>public void gc()：运行垃圾回收器，释放空间。一般都使用System对象的静态方法，System.gc();</LI>
+  <LI>public Process exec(String command)throws IOException：执行本机命令</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_3">
+<H3>gc(什么是gc)</H3>
+<H4 
+style="color: red; text-indent: 0.8cm;">一个对象如果不再被任何栈内存所引用，那么此对象就可以称为垃圾对象，等待被回收，并不是没有栈内存引用就回收，等待回收的时间不确定。大多数情况下，是JVM自动调用gc方法回收，程序员也可以手动调用Runtime或System对象的垃圾回收方法回收。在回收之前会调用该对象的finalize()方法，之后再回收。如果在回收之前要做一些操作，可以在该对象的类中，重写finalize方法，进行操作。</H4></DIV>
+<HR>
+
+<DIV id="content_div_4">
+<H3>对象的生命周期</H3>
+<H4 
+style="color: red; text-indent: 0.8cm;">一个类加载后，初始化，然后进行对象的实例化(实例化就是调用构造方法)，当一个对象不再使用时，就要等待垃圾回收，然后对象终结，最后卸载。</H4></DIV>
+<HR>
+
+<H3>System类</H3>
+<H3>Math类</H3>
+<H3>日期类</H3>
+<H3>资源文件类</H3>
+<PRE class="brush: java;">package com.chinasoft.javase.reflect;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
+
+public abstract class GlobalInfo {
+	
+	private static final Properties p = new Properties();
+	
+	static{
+		//test.properties放在com.chinasoft.javase包中。最前面的/表示classPath跟路径
+		InputStream in = GlobalInfo.class.getResourceAsStream("/com/chinasoft/javase/test.properties");
+		try {
+			p.load(in);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private GlobalInfo() {
+	}
+	
+	public static String getProperties(String key) {
+		return p.getProperty(key);
+	}
+	
+}
+</PRE>
+<DIV id="content_div_5">
+<H3>国际化</H3>
+<H4 style="text-indent: 0.8cm;">Java程序的国际化必须通过以下3个类完成：</H4>
+<UL>
+  <LI>java.util.Locale：用于表示一个国家的语言类。</LI>
+  <LI>java.util.ResourceBundle：用于访问资源文件。</LI>
+  <LI>java.text.MessageFormat：格式化资源文件的占位字符串</LI></UL>
+<H4 style="text-indent: 0.8cm;">资源文件</H4>
+<UL>
+  <LI>源文件的命名规范：(资源名)_(语言代码)_(国家/地区代码).properties</LI>
+  <LI>其中，语言代码和国家/地区代码都是可选的。(资源名).properties命名的国际化资源文件是默认的资源文件，即某个本地化类型在系统中找不到对应的资源文件，就采用这个默认的资源文件</LI>
+  <LI>(资源名)_(语言代码).properties命名的国际化资源文件是某一语言默认的资源文件，即某个本地化类型在系统中找不到精确匹配的资源文件，将采用相应语言默认的资源文件</LI>
+  <LI>如果资源文件同时出现，则按照优先级使用，顺序为Message_zh_CN.class、Message_zh_CN.properties、Message.properties。Message_zh_CN.class很少使用，其必须继承ListResourceBundle类</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_6">
+<H3>抽象类java.text.Format(其有以下3个子类)：</H3>
+<UL>
+  <LI>java.text.MessageFormat：具体的类，可以通过其静态的format(文本模板,可变参数)方法设置动态文本内容。文本模板形式为："你好,{0}"</LI>
+  <LI>java.text.DateFormat：抽象类，通常使用其子类java.text.SimpleDateFormat的public final 
+  String format(Date date)方法进行日期格式化，也可以使用其public Date parse(String 
+  source)方法将格式化日期转换为Date。</LI>
+  <LI>java.text.NumberFormat：抽象类，通常使用其子类java.text.DecimalFormat的format方法进行数字格式化</LI></UL></DIV>
+<HR>
+
+<H4>文本格式化</H4>
+<PRE class="brush: java;">import java.util.*;
+import java.text.*;
+
+public class Demo2{
+	public static void main(String[] args){
+		ResourceBundle r = ResourceBundle.getBundle("Msg",new Locale("en","GB"));
+		
+		System.out.println(r.getString("info"));
+		
+		//动态文本
+		String info = "你好，{0}。{1}";
+
+		String rs = MessageFormat.format(info,"李建","今天是");
+		System.out.println(rs);
+	}
+}
+</PRE>
+<H4>日期、数字格式化</H4>
+<PRE class="brush: java;">import java.text.*;
+import java.util.*;
+
+public class FormatDate{
+	public static void main(String[] args)throws ParseException{
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+		String d = df.format(new Date());
+		System.out.println(d);
+
+
+		DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
+		String d1 = "1960-01-01";
+		Date dd = df1.parse(d1);
+		System.out.println(dd.getTime());
+
+		System.out.println("***********************************");
+
+		Calendar c = Calendar.getInstance();
+		c.set(2013,0,5);//设置Calendar日期，月份是从0到11
+		System.out.println(df1.format(c.getTime()));
+
+		c.add(Calendar.MONTH,2);//加2个月
+		System.out.println(df1.format(c.getTime()));
+		c.add(Calendar.DAY_OF_MONTH,30);//加30天
+		System.out.println(df1.format(c.getTime()));
+
+		/*
+			YEAR ： 年
+			MONTH： 月份减1 因为0到11
+			DAY_OF_MONTH：日
+			HOUR_OF_DAY： 时
+			MINUTE： 分
+			SECOND： 秒
+			MILLISECOND： 毫秒			
+		*/
+
+		NumberFormat nf = new DecimalFormat("\u00A4###,###,##0.00");
+		double a = 2109232113.0876;
+		System.out.println(nf.format(a));
+
+	}
+}
+</PRE>
+<H4>比较器</H4>
+<PRE class="brush: java;">import java.util.*;
+
+public class Demo3{
+	public static void main(String[] args){
+		
+		int[] a = {4234,123,5325,6,457,547865,54,212,6,89,133};
+
+		Arrays.sort(a);
+
+		for(int i : a){
+			System.out.println(i);
+		}
+
+		Student[] s = {new Student(10,"李建"),new Student(20,"何奇斋"),
+			new Student(30,"王舟易"),new Student(40,"彭厚冰")};
+
+		//对s进行排序，按成绩降序姓名升序排列
+		Arrays.sort(s);
+
+		for(Student i : s){
+			System.out.println(i);
+		}
+		
+
+	}
+
+
+	//如果Student没有实现Comparable&lt;T&gt;接口
+	public static void comparator(Student[] s){
+		Arrays.sort(s,new Comparator&lt;Student&gt;(){
+			public int compare(Student t1,Student t2){
+				if(t1.getScore() &gt; t2.getScore()){
+					return -1;
+				}else if(t1.getScore() &lt; t2.getScore()){
+					return 1;
+				}else{
+					return t1.getName().compareTo(t2.getName());
+				}
+			}
+		});
+
+		for(Student i : s){
+			System.out.println(i);
+		}
+	}
+
+
+}
+</PRE>
+<H4>使对象可比较</H4>
+<PRE class="brush: java;">public class Student implements Comparable&lt;Student&gt;{
+
+	private int score;
+
+	private String name;
+	
+	public Student(){}
+	public Student(int score,String name){
+		this.score = score;
+		this.name = name;
+	}
+
+	public void test(){
+		System.out.println(this.getName() + "正在进行测验!");
+	}
+
+	public int compareTo(Student s){
+		if(this.score &gt; s.getScore()){
+			return -1;
+		}else if(this.score &lt; s.getScore()){
+			return 1;
+		}else{
+			return this.name.compareTo(s.getName());
+		}
+	}
+
+
+	//getter、setter
+	public void setScore(int score){
+		this.score = score;
+	}
+
+	public int getScore(){
+		return this.score;
+	}
+	
+	public void setName(String name){
+		this.name = name;
+	}
+
+	public String getName(){
+		return this.name;
+	}
+
+	public String toString(){
+		StringBuffer sbf = new StringBuffer();
+		sbf.append("姓名：").append(this.name);
+		sbf.append("；成绩：").append(this.score);
+
+		return sbf.toString();
+	}
+
+}
+</PRE>
+<H3>Comparable&lt;T&gt;和Comparator&lt;T&gt;的区别</H3>
+<UL>
+  <LI>都是比较器泛型接口<BR></LI>
+  <LI>Comparable&lt;T&gt;里面有一个抽象方法，compareTo(T 
+  o).Comparator&lt;T&gt;里面的抽象方法是compare(T o1,T o2)</LI>
+  <LI>Comparable&lt;T&gt;用于使对象可比较，规则定义在对象上。Comparator&lt;T&gt; 
+  也是是对象可比较，但是规则定义在排序的时候。</LI>
+  <LI>Comparable&lt;T&gt;定义在对象里面，Comparator&lt;T&gt; 定义在对象外面</LI></UL>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

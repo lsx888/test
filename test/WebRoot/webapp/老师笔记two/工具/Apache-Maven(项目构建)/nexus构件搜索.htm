@@ -1,0 +1,101 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0091)http://172.13.19.31:6060/note_html/工具/Apache-Maven（项目构建）/1008010-nexus构件搜索.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>nexus构件搜索</TITLE> <LINK href="nexus构件搜索_files/standalone.css" rel="stylesheet"> 
+<LINK href="nexus构件搜索_files/overlay-apple.css" rel="stylesheet"> <LINK href="nexus构件搜索_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="nexus构件搜索_files/shCoreEclipse.css" 
+rel="stylesheet">	 <LINK href="nexus构件搜索_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">nexus构件搜索</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-02-03 13:43:57</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>设置proxy代理仓库，准许远程下载(Apache Snapshots/Central/Codehaus Snapshots)，构件搜索</H3>
+<OL>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>为了更好的使用 Nexus 的搜索，我们可以设置所有 
+  proxy 仓库的 Download Remote Indexes 为 true，即允许下载远程仓库索引。</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="nexus构件搜索_files/20160130-06.png"></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>索引下载成功之后，在 Browse Index 
+  选项卡下，可以浏览到所有已被索引的构件信息，包括坐标、格式、Maven 依赖的 xml 代码：</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="nexus构件搜索_files/20160130-07.png"></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>有了索引，我们就可以搜索了：</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="nexus构件搜索_files/20160130-08.png"></DIV></DIV></LI></OL>
+<H3>常见问题解决</H3>
+<H4>索引无法更新问题</H4>
+<P style="text-indent: 0.8cm;">
+如果有耐心的话，完全可以通过在线更新索引的方式来做，但所消耗的时间较长，下面介绍一种简单、可行的方式来手动更新索引文件。但是由于网络等原因，索引很可能更新不了，或更新非常慢。如遇这种情况，我们可以通过以下方式更新索引。 
+</P>
+<OL>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>访问<A href="http://repo.maven.apache.org/maven2/.index/" 
+  target="_blank">http://repo.maven.apache.org/maven2/.index/</A>下载中心仓库最新版本的索引文件，在一长串列表中，我们需要下载如下两个文件（一般在列表的末尾位置）</FONT></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>nexus-maven-repository-index.gz</FONT></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>nexus-maven-repository-index.properties</FONT></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>下载完成之后最好是通过md5或者sha1校验一下文件是否一致，因为服务器并不在国内，网络传输可能会造成文件损坏。</FONT></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>nexus-maven-repository-index.gz这个文件解压方式比较特别，我们需要下载一个jar包indexer-cli-5.1.1.jar，我们需要通过这个特殊的jar来解压这个索引文件</FONT></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>indexer-cli-5.1.1.jar是专门用来解析和发布索引的工具，<A href="https://maven.apache.org/maven-indexer/indexer-cli/index.html" 
+  target="_blank">关于它的详细信息请见这里</A>。前往maven中央仓库下载<A href="http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22org.apache.maven.indexer%22%20AND%20a%3A%22indexer-cli%22" 
+  target="_blank">indexer-cli-5.1.1.jar</A></FONT></DIV></DIV></LI>
+  <LI>
+  <P style="text-indent: 0.8cm;">将上面三个文件（.gz &amp; .properties &amp; 
+  .jar）放置到同一目录下，运行如下命令（windows和linux下都可以如下执行）   </P>
+<PRE class="brush: bash;">java -jar indexer-cli-5.1.1.jar -u nexus-maven-repository-index.gz -d indexer
+</PRE></LI>
+  <LI>等待程序运行完成之后可以发现indexer文件夹下出现了很多文件，将这些文件放置到{nexus-home}/sonatype-work/nexus/indexer/central-ctx目录下，重新启动nexus 
+    
+<PRE class="brush: bash;">nexus restart
+</PRE></LI></OL>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

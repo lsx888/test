@@ -1,0 +1,98 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0075)http://172.13.19.31:6060/note_html/web/XML/1001020-文档类型定义DOCTYPE.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>文档类型定义DOCTYPE</TITLE> <LINK href="文档类型定义DOCTYPE_files/standalone.css" 
+rel="stylesheet"> <LINK href="文档类型定义DOCTYPE_files/overlay-apple.css" rel="stylesheet"> 
+<LINK href="文档类型定义DOCTYPE_files/article_edit.css" rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="文档类型定义DOCTYPE_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="文档类型定义DOCTYPE_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">文档类型定义DOCTYPE</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-05-19 21:19:42</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV id="content_div_1">
+<H3>DOCTYPE</H3>
+<UL>
+  <LI>文档类型声明，紧跟XML声明之后，包含所有实体声明。</LI>
+  <LI>语法：&lt;?xml version="1.0" encoding="UTF-8"?&gt; &lt;!DOCTYPE 
+  根元素标记名也就是文档的根元素[ &lt;!实体声明&gt; ]&gt;   
+<PRE class="brush: xml;">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+
+&lt;!DOCTYPE company[
+
+	&lt;!ENTITY companyName "公司名字"&gt;
+	&lt;!ENTITY companyAddress "四川成都龙泉"&gt;
+
+]&gt;
+
+&lt;company&gt;
+	&lt;name&gt;某某公司&lt;/name&gt;
+	&lt;address&gt;四川成都&lt;/address&gt;
+	&lt;!-- 引用上面定义的实体 --&gt;
+	&lt;name1&gt;&amp;companyName;&lt;/name1&gt;
+	&lt;address&gt;&amp;companyAddress;&lt;/address&gt;
+
+&lt;/company&gt;
+
+</PRE></LI></UL></DIV>
+<DIV id="content_div_2">
+<H3>格式正规(well formed)的XML文档</H3>
+<UL>
+  <LI>必须有XML声明语句&lt;?xml version="1.0" encoding="UTF-8"?&gt;</LI>
+  <LI>必须有且仅有一个根元素</LI>
+  <LI>标记大小写敏感</LI>
+  <LI>属性值用引号</LI>
+  <LI>标记成对</LI>
+  <LI>空标记关闭</LI>
+  <LI>元素正确嵌套</LI></UL></DIV>
+<DIV id="content_div_3">
+<H3>元素语法</H3>
+<UL>
+  <LI>名称中可以包含字母、数字或者其他字符</LI>
+  <LI>名称不能以数字开头</LI>
+  <LI>不能以XML/xml/Xml/...开头</LI>
+  <LI>名称中不能含冒号(注：冒号是留给命名空间使用的)</LI></UL></DIV>
+<DIV id="content_div_4">
+<H3>有效(valid)的XML文档</H3>
+<UL>
+  <LI>XML文档是个格式正规的XML文档</LI>
+  <LI>满足DTD的要求</LI></UL></DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

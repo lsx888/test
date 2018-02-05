@@ -1,0 +1,106 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0070)http://172.13.19.31:6060/note_html/服务器/CentOS/11013-shell-练习.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>shell-练习</TITLE> <LINK href="shell-练习_files/standalone.css" rel="stylesheet"> 
+<LINK href="shell-练习_files/overlay-apple.css" rel="stylesheet"> <LINK href="shell-练习_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="shell-练习_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="shell-练习_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">shell-练习</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-09-07 16:14:53</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H4>编写shell脚本，计算1-100的和</H4>
+<PRE class="brush: bash;">#! /bin/bash
+
+#sum 1 to 100 使用while计算
+
+sum=0
+i=0
+while [ ${i} -le 100 ]
+do
+
+sum=$[ ${sum} + ${i} ]
+i=$[ ${i} + 1 ]
+
+done
+
+echo "whlie sum 1 to 100 is : "${sum}
+
+echo "=============================="
+
+# 使用for计算
+fsum=0
+for k in `seq 1 100`
+do
+
+fsum=$[ $fsum + k ]
+
+done
+
+echo "for sum 1 to 100 is : "${fsum}
+</PRE>
+<P 
+style="color: red; text-indent: 0.8cm;">注意：[]中括号中，前后都有空格，且中括号里面的运算符左右两边也要有空格。中括号中运算的结果要赋值给变量，要使用$符号 
+</P>
+<H4>要求输入一个数字，然后计算出从1到输入数字的和，要求，如果输入的数字小于1，则重新输入，直到输入正确的数字为止</H4>
+<PRE class="brush: bash;">#! /bin/bash
+n=0
+while [ ${n} -lt 1 ]
+do
+
+read -p "Plesses input a numbe,it's must more than 1:" n
+
+done
+
+echo "you input "${n}
+
+sum=0
+for i in `seq 1 ${n}`;do
+
+sum=$[ ${sum} + ${i} ]
+
+done
+
+echo "sum 1 to ${n} is :"${sum}
+</PRE>
+<P 
+style="color: red; text-indent: 0.8cm;">注意：read命令，是接收命令行输入。for循环do语句前面打了分号，是因为，两条语句写在一行了，所以打分号.建议还是换行，增加可读性 
+</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

@@ -1,0 +1,1011 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0087)http://172.13.19.31:6060/note_html/服务器/CentOS/101001-软连接ln、内容比较diff命令.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>11001-软连接ln、内容比较diff命令</TITLE> <LINK href="11001-软连接ln、内容比较diff命令_files/standalone.css" 
+rel="stylesheet"> <LINK href="11001-软连接ln、内容比较diff命令_files/overlay-apple.css" 
+rel="stylesheet"> <LINK href="11001-软连接ln、内容比较diff命令_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="11001-软连接ln、内容比较diff命令_files/shCoreEclipse.css" 
+rel="stylesheet">	 <LINK href="11001-软连接ln、内容比较diff命令_files/my-highlighter.css" 
+rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">11001-软连接ln、内容比较diff命令</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-08-14 14:09:04</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>ln命令</H3>
+<H4>命令说明</H4>
+<PRE class="brush: bash;">ln是linux中又一个非常重要命令，它的功能是为某一个文件在另外一个位置建立一个同步的链接.当我们需要在不同的目录，用到相同的文件时，我们不需要在每一个
+需要的目录下都放一个必须相同的文件，我们只要在某个固定的目录，放上该文件，然后在 其它的目录下用ln命令链接（link）它就可以，不必重复的占用磁盘空间。
+
+1．命令格式：
+
+ ln [参数][源文件或目录][目标文件或目录]
+
+2．命令功能：
+
+Linux文件系统中，有所谓的链接(link)，我们可以将其视为档案的别名，而链接又可分为两种 : 硬链接(hard link)与软链接(symbolic link)，硬链接的意思是一个
+档案可以有多个名称，而软链接的方式则是产生一个特殊的档案，该档案的内容是指向另一个档案的位置。硬链接是存在同一个文件系统中，而软链接却可以跨越不同
+的文件系统。
+
+软链接：
+
+1.软链接，以路径的形式存在。类似于Windows操作系统中的快捷方式
+
+2.软链接可以 跨文件系统 ，硬链接不可以
+
+3.软链接可以对一个不存在的文件名进行链接
+
+4.软链接可以对目录进行链接
+
+硬链接:
+
+1.硬链接，以文件副本的形式存在。但不占用实际空间。
+
+2.不允许给目录创建硬链接
+
+3.硬链接只有在同一个文件系统中才能创建
+
+ 	这里有两点要注意：
+
+第一，ln命令会保持每一处链接文件的同步性，也就是说，不论你改动了哪一处，其它的文件都会发生相同的变化；
+
+第二，ln的链接又分软链接和硬链接两种，软链接就是ln –s 源文件 目标文件，它只会在你选定的位置上生成一个文件的镜像，不会占用磁盘空间，硬链接 ln 源文件 目标文件，
+没有参数-s， 它会在你选定的位置上生成一个和源文件大小相同的文件，无论是软链接还是硬链接，文件都保持同步变化。
+
+ln指令用在链接文件或目录，如同时指定两个以上的文件或目录，且最后的目的地是一个已经存在的目录，则会把前面指定的所有文件或目录复制到该目录中。若同时指定多个文件
+或目录，且最后的目的地并非是一个已存在的目录，则会出现错误信息。
+
+3．命令参数：
+
+必要参数:
+
+-b 删除，覆盖以前建立的链接
+
+-d 允许超级用户制作目录的硬链接
+
+-f 强制执行
+
+-i 交互模式，文件存在则提示用户是否覆盖
+
+-n 把符号链接视为一般目录
+
+-s 软链接(符号链接)
+
+-v 显示详细的处理过程
+
+选择参数:
+
+-S “-S&lt;字尾备份字符串&gt; ”或 “--suffix=&lt;字尾备份字符串&gt;”
+
+-V “-V&lt;备份方式&gt;”或“--version-control=&lt;备份方式&gt;”
+
+--help 显示帮助信息
+
+--version 显示版本信息
+</PRE>
+<H4>使用实例</H4>
+<PRE class="brush: bash;">实例1：给文件创建软链接
+
+命令：
+
+ln -s log2013.log link2013
+
+输出：
+
+[root@localhost test]# ll
+
+-rw-r--r-- 1 root bin      61 11-13 06:03 log2013.log
+
+[root@localhost test]# ln -s log2013.log link2013
+
+[root@localhost test]# ll
+
+lrwxrwxrwx 1 root root     11 12-07 16:01 link2013 -&gt; log2013.log
+
+-rw-r--r-- 1 root bin      61 11-13 06:03 log2013.log
+
+说明：
+
+为log2013.log文件创建软链接link2013，如果log2013.log丢失，link2013将失效
+
+实例2：给文件创建硬链接
+
+命令：
+
+ln log2013.log ln2013
+
+输出：
+
+[root@localhost test]# ll
+
+lrwxrwxrwx 1 root root     11 12-07 16:01 link2013 -&gt; log2013.log
+
+-rw-r--r-- 1 root bin      61 11-13 06:03 log2013.log
+
+[root@localhost test]# ln log2013.log ln2013
+
+[root@localhost test]# ll
+
+lrwxrwxrwx 1 root root     11 12-07 16:01 link2013 -&gt; log2013.log
+
+-rw-r--r-- 2 root bin      61 11-13 06:03 ln2013
+
+-rw-r--r-- 2 root bin      61 11-13 06:03 log2013.log
+
+说明：
+
+为log2013.log创建硬链接ln2013，log2013.log与ln2013的各项属性相同
+
+实例3：接上面两实例，链接完毕后，删除和重建链接原文件
+
+命令：
+
+输出：
+
+[root@localhost test]# ll
+
+lrwxrwxrwx 1 root root     11 12-07 16:01 link2013 -&gt; log2013.log
+
+-rw-r--r-- 2 root bin      61 11-13 06:03 ln2013
+
+-rw-r--r-- 2 root bin      61 11-13 06:03 log2013.log
+
+[root@localhost test]# rm -rf log2013.log 
+
+[root@localhost test]# ll
+
+lrwxrwxrwx 1 root root     11 12-07 16:01 link2013 -&gt; log2013.log
+
+-rw-r--r-- 1 root bin      61 11-13 06:03 ln2013
+
+[root@localhost test]# touch log2013.log
+
+[root@localhost test]# ll
+
+lrwxrwxrwx 1 root root     11 12-07 16:01 link2013 -&gt; log2013.log
+
+-rw-r--r-- 1 root bin      61 11-13 06:03 ln2013
+
+---xrw-r-- 1 root bin  302108 11-13 06:03 log2012.log
+
+-rw-r--r-- 1 root root      0 12-07 16:19 log2013.log
+
+[root@localhost test]# vi log2013.log 
+
+2013-01
+
+2013-02
+
+2013-03
+
+2013-04
+
+2013-05
+
+2013-06
+
+2013-07
+
+2013-08
+
+2013-09
+
+2013-10
+
+2013-11
+
+2013-12[root@localhost test]# ll
+
+lrwxrwxrwx 1 root root     11 12-07 16:01 link2013 -&gt; log2013.log
+
+-rw-r--r-- 1 root bin      61 11-13 06:03 ln2013
+
+-rw-r--r-- 1 root root     96 12-07 16:21 log2013.log
+
+[root@localhost test]# cat link2013 
+
+2013-01
+
+2013-02
+
+2013-03
+
+2013-04
+
+2013-05
+
+2013-06
+
+2013-07
+
+2013-08
+
+2013-09
+
+2013-10
+
+2013-11
+
+2013-12
+
+[root@localhost test]# cat ln2013 
+
+hostnamebaidu=baidu.com
+
+hostnamesina=sina.com
+
+hostnames=true
+
+说明：
+
+1.源文件被删除后，并没有影响硬链接文件；软链接文件在centos系统下不断的闪烁，提示源文件已经不存在
+
+2.重建源文件后，软链接不在闪烁提示，说明已经链接成功，找到了链接文件系统；重建后，硬链接文件并没有受到源文件影响，硬链接文件的内容还是保留
+了删除前源文件的内容，说明硬链接已经失效
+
+实例4：将文件链接为另一个目录中的相同名字
+
+命令：
+
+ln log2013.log test3
+
+输出：
+
+[root@localhost test]# ln log2013.log test3
+
+[root@localhost test]# ll
+
+lrwxrwxrwx 1 root root     11 12-07 16:01 link2013 -&gt; log2013.log
+
+-rw-r--r-- 1 root bin      61 11-13 06:03 ln2013
+
+-rw-r--r-- 2 root root     96 12-07 16:21 log2013.log
+
+[root@localhost test]# cd test3
+
+[root@localhost test3]# ll
+
+-rw-r--r-- 2 root root 96 12-07 16:21 log2013.log
+
+[root@localhost test3]# vi log2013.log 
+
+2013-01
+
+2013-02
+
+2013-03
+
+2013-04
+
+2013-05
+
+2013-06
+
+2013-07
+
+2013-08
+
+2013-09
+
+2013-10[root@localhost test3]# ll
+
+-rw-r--r-- 2 root root 80 12-07 16:36 log2013.log
+
+[root@localhost test3]# cd ..
+
+[root@localhost test]# ll
+
+lrwxrwxrwx 1 root root     11 12-07 16:01 link2013 -&gt; log2013.log
+
+-rw-r--r-- 1 root bin      61 11-13 06:03 ln2013
+
+-rw-r--r-- 2 root root     80 12-07 16:36 log2013.log
+
+[root@localhost test]#
+
+说明：
+
+在test3目录中创建了log2013.log的硬链接，修改test3目录中的log2013.log文件，同时也会同步到源文件
+
+实例5：给目录创建软链接
+
+命令：
+
+ln -sv /opt/soft/test/test3 /opt/soft/test/test5
+
+输出：
+
+[root@localhost test]# ll
+
+drwxr-xr-x 2 root root   4096 12-07 16:36 test3
+
+drwxr-xr-x 2 root root   4096 12-07 16:57 test5
+
+[root@localhost test]# cd test5
+
+[root@localhost test5]# ll
+
+lrwxrwxrwx 1 root root 5 12-07 16:57 test3 -&gt; test3
+
+[root@localhost test5]# cd test3
+
+-bash: cd: test3: 符号连接的层数过多
+
+[root@localhost test5]# 
+
+[root@localhost test5]# 
+
+[root@localhost test5]# ll
+
+lrwxrwxrwx 1 root root 5 12-07 16:57 test3 -&gt; test3
+
+[root@localhost test5]# rm -rf test3
+
+[root@localhost test5]# ll
+
+[root@localhost test5]# ln -sv /opt/soft/test/test3 /opt/soft/test/test5
+
+创建指向“/opt/soft/test/test3”的符号链接“/opt/soft/test/test5/test3”
+
+[root@localhost test5]# ll
+
+lrwxrwxrwx 1 root root 20 12-07 16:59 test3 -&gt; /opt/soft/test/test3
+
+[root@localhost test5]# 
+
+[root@localhost test5]# cd test3
+
+[root@localhost test3]# ll
+
+总计 4
+
+-rw-r--r-- 2 root root 80 12-07 16:36 log2013.log
+
+[root@localhost test3]# touch log2014.log
+
+[root@localhost test3]# ll
+
+总计 4
+
+-rw-r--r-- 2 root root 80 12-07 16:36 log2013.log
+
+-rw-r--r-- 1 root root  0 12-07 17:05 log2014.log
+
+[root@localhost test3]# cd ..
+
+[root@localhost test5]# cd ..
+
+说明：
+
+1.目录只能创建软链接
+
+2.目录创建链接必须用绝对路径，相对路径创建会不成功，会提示：符号连接的层数过多 这样的错误
+
+3.在链接目标目录中修改文件都会在源文件目录中同步变化
+</PRE>
+<H3>diff命令</H3>
+<H4>命令说明</H4>
+<PRE class="brush: bash;">diff 命令是 linux上非常重要的工具，用于比较文件的内容，特别是比较两个版本不同的文件以找到改动的地方。diff在命令行中打印每一个行的改动。
+最新版本的diff还支持二进制文件。diff程序的输出被称为补丁 (patch)，因为Linux系统中还有一个patch程序，可以根据diff的输出将a.c的文件内容更新为b.c。
+diff是svn、cvs、git等版本控制工具不可或缺的一部分。
+
+1．命令格式：
+
+diff[参数][文件1或目录1][文件2或目录2]
+
+2．命令功能：
+
+diff命令能比较单个文件或者目录内容。如果指定比较的是文件，则只有当输入为文本文件时才有效。以逐行的方式，比较文本文件的异同处。如果指定比较的是目录的的时候，
+diff 命令会比较两个目录下名字相同的文本文件。列出不同的二进制文件、公共子目录和只在一个目录出现的文件。
+
+3．命令参数：
+
+- 　指定要显示多少行的文本。此参数必须与-c或-u参数一并使用。
+
+　-a或--text 　diff预设只会逐行比较文本文件。
+
+-b或--ignore-space-change 　不检查空格字符的不同。
+
+-B或--ignore-blank-lines 　不检查空白行。
+
+-c 　显示全部内文，并标出不同之处。
+
+-C或--context 　与执行"-c-"指令相同。
+
+-d或--minimal 　使用不同的演算法，以较小的单位来做比较。
+
+-D或ifdef 　此参数的输出格式可用于前置处理器巨集。
+
+-e或--ed 　此参数的输出格式可用于ed的script文件。
+
+-f或-forward-ed 　输出的格式类似ed的script文件，但按照原来文件的顺序来显示不同处。
+
+-H或--speed-large-files 　比较大文件时，可加快速度。
+
+-l或--ignore-matching-lines 　若两个文件在某几行有所不同，而这几行同时都包含了选项中指定的字符或字符串，则不显示这两个文件的差异。
+
+-i或--ignore-case 　不检查大小写的不同。
+
+-l或--paginate 　将结果交由pr程序来分页。
+
+-n或--rcs 　将比较结果以RCS的格式来显示。
+
+-N或--new-file 　在比较目录时，若文件A仅出现在某个目录中，预设会显示：Only in目录：文件A若使用-N参数，则diff会将文件A与一个空白的文件比较。
+
+-p 　若比较的文件为C语言的程序码文件时，显示差异所在的函数名称。
+
+-P或--unidirectional-new-file 　与-N类似，但只有当第二个目录包含了一个第一个目录所没有的文件时，才会将这个文件与空白的文件做比较。
+
+-q或--brief 　仅显示有无差异，不显示详细的信息。
+
+-r或--recursive 　比较子目录中的文件。
+
+-s或--report-identical-files 　若没有发现任何差异，仍然显示信息。
+
+-S或--starting-file 　在比较目录时，从指定的文件开始比较。
+
+-t或--expand-tabs 　在输出时，将tab字符展开。
+
+-T或--initial-tab 　在每行前面加上tab字符以便对齐。
+
+-u,-U或--unified= 　以合并的方式来显示文件内容的不同。
+
+-v或--version 　显示版本信息。
+
+-w或--ignore-all-space 　忽略全部的空格字符。
+
+-W或--width 　在使用-y参数时，指定栏宽。
+
+-x或--exclude 　不比较选项中所指定的文件或目录。
+
+-X或--exclude-from 　您可以将文件或目录类型存成文本文件，然后在=中指定此文本文件。
+
+-y或--side-by-side 　以并列的方式显示文件的异同之处。
+
+--help 　显示帮助。
+
+--left-column 　在使用-y参数时，若两个文件某一行内容相同，则仅在左侧的栏位显示该行内容。
+
+--suppress-common-lines 　在使用-y参数时，仅显示不同之处。
+</PRE>
+<H4>使用实例</H4>
+<PRE class="brush: bash;">实例1：比较两个文件
+
+命令：
+
+输出：
+
+[root@localhost test3]# diff log2014.log log2013.log 
+
+3c3
+
+&lt; 2014-03
+
+---
+
+&gt; 2013-03
+
+8c8
+
+&lt; 2013-07
+
+---
+
+&gt; 2013-08
+
+11,12d10
+
+&lt; 2013-11
+
+&lt; 2013-12
+
+说明：
+
+上面的“3c3”和“8c8”表示log2014.log和log20143log文件在3行和第8行内容有所不同；"11,12d10"表示第一个文件比第二个文件多了第11和12行。
+
+diff 的normal 显示格式有三种提示:
+
+a - add
+
+c - change
+
+d - delete 
+
+实例2：并排格式输出
+
+命令：
+
+diff log2013.log log2014.log  -y -W 50
+
+输出：
+
+[root@localhost test3]# diff log2014.log log2013.log  -y -W 50
+
+2013-01                 2013-01
+
+2013-02                 2013-02
+
+2014-03               | 2013-03
+
+2013-04                 2013-04
+
+2013-05                 2013-05
+
+2013-06                 2013-06
+
+2013-07                 2013-07
+
+2013-07               | 2013-08
+
+2013-09                 2013-09
+
+2013-10                 2013-10
+
+2013-11               &lt;
+
+2013-12               &lt;
+
+[root@localhost test3]# diff log2013.log log2014.log  -y -W 50
+
+2013-01                 2013-01
+
+2013-02                 2013-02
+
+2013-03               | 2014-03
+
+2013-04                 2013-04
+
+2013-05                 2013-05
+
+2013-06                 2013-06
+
+2013-07                 2013-07
+
+2013-08               | 2013-07
+
+2013-09                 2013-09
+
+2013-10                 2013-10
+
+                      &gt; 2013-11
+
+                      &gt; 2013-12
+
+说明：
+
+“|”表示前后2个文件内容有不同
+
+“&lt;”表示后面文件比前面文件少了1行内容
+
+“&gt;”表示后面文件比前面文件多了1行内容
+
+实例3：上下文输出格式
+
+命令：
+
+diff log2013.log log2014.log  -c
+
+输出：
+
+[root@localhost test3]# diff log2013.log log2014.log  -c
+
+*** log2013.log 2012-12-07 16:36:26.000000000 +0800
+
+--- log2014.log 2012-12-07 18:01:54.000000000 +0800
+
+***************
+
+*** 1,10 ****
+
+  2013-01
+
+  2013-02
+
+! 2013-03
+
+  2013-04
+
+  2013-05
+
+  2013-06
+
+  2013-07
+
+! 2013-08
+
+  2013-09
+
+  2013-10
+
+--- 1,12 ----
+
+  2013-01
+
+  2013-02
+
+! 2014-03
+
+  2013-04
+
+  2013-05
+
+  2013-06
+
+  2013-07
+
+! 2013-07
+
+  2013-09
+
+  2013-10
+
++ 2013-11
+
++ 2013-12[root@localhost test3]# diff log2014.log log2013.log  -c
+
+*** log2014.log 2012-12-07 18:01:54.000000000 +0800
+
+--- log2013.log 2012-12-07 16:36:26.000000000 +0800
+
+***************
+
+*** 1,12 ****
+
+  2013-01
+
+  2013-02
+
+! 2014-03
+
+  2013-04
+
+  2013-05
+
+  2013-06
+
+  2013-07
+
+! 2013-07
+
+  2013-09
+
+  2013-10
+
+- 2013-11
+
+- 2013-12
+
+--- 1,10 ----
+
+  2013-01
+
+  2013-02
+
+! 2013-03
+
+  2013-04
+
+  2013-05
+
+  2013-06
+
+  2013-07
+
+! 2013-08
+
+  2013-09
+
+  2013-10[root@localhost test3]#
+
+说明：
+
+这种方式在开头两行作了比较文件的说明，这里有三中特殊字符：
+
+“＋” 比较的文件的后者比前着多一行
+
+“－” 比较的文件的后者比前着少一行
+
+“！” 比较的文件两者有差别的行
+
+实例4：统一格式输出
+
+命令：
+
+diff log2014.log log2013.log  -u
+
+输出：
+
+[root@localhost test3]# diff log2014.log log2013.log  -u
+
+--- log2014.log 2012-12-07 18:01:54.000000000 +0800
+
++++ log2013.log 2012-12-07 16:36:26.000000000 +0800
+
+@@ -1,12 +1,10 @@
+
+ 2013-01
+
+ 2013-02
+
+-2014-03
+
++2013-03
+
+ 2013-04
+
+ 2013-05
+
+ 2013-06
+
+ 2013-07
+
+-2013-07
+
++2013-08
+
+ 2013-09
+
+ 2013-10
+
+-2013-11
+
+-2013-12
+
+说明：
+
+它的第一部分，也是文件的基本信息：
+
+--- log2014.log 2012-12-07 18:01:54.000000000 +0800
+
++++ log2013.log 2012-12-07 16:36:26.000000000 +0800
+
+"---"表示变动前的文件，"+++"表示变动后的文件。
+
+第二部分，变动的位置用两个@作为起首和结束。
+
+　　	@@ -1,12 +1,10 @@
+
+前面的"-1,12"分成三个部分：减号表示第一个文件（即log2014.log），"1"表示第1行，"12"表示连续12行。合在一起，就表示下面是第一个文件从第1行开始的连续12行。同样的，"+1,10"
+表示变动后，成为第二个文件从第1行开始的连续10行。
+
+实例5：比较文件夹不同
+
+命令：
+
+diff  test3 test6
+
+输出：
+
+[root@localhost test]# diff test3 test6
+
+Only in test6: linklog.log
+
+Only in test6: log2012.log
+
+diff test3/log2013.log test6/log2013.log
+
+1,10c1,3
+
+&lt; 2013-01
+
+&lt; 2013-02
+
+&lt; 2013-03
+
+&lt; 2013-04
+
+&lt; 2013-05
+
+&lt; 2013-06
+
+&lt; 2013-07
+
+&lt; 2013-08
+
+&lt; 2013-09
+
+&lt; 2013-10
+
+---
+
+&gt; hostnamebaidu=baidu.com
+
+&gt; hostnamesina=sina.com
+
+&gt; hostnames=true
+
+diff test3/log2014.log test6/log2014.log
+
+1,12d0
+
+&lt; 2013-01
+
+&lt; 2013-02
+
+&lt; 2014-03
+
+&lt; 2013-04
+
+&lt; 2013-05
+
+&lt; 2013-06
+
+&lt; 2013-07
+
+&lt; 2013-07
+
+&lt; 2013-09
+
+&lt; 2013-10
+
+&lt; 2013-11
+
+&lt; 2013-12
+
+Only in test6: log2015.log
+
+Only in test6: log2016.log
+
+Only in test6: log2017.log
+
+[root@localhost test]# 
+
+说明：
+
+实例6：比较两个文件不同，并生产补丁
+
+命令：
+
+diff -ruN log2013.log log2014.log &gt;patch.log
+
+输出：
+
+[root@localhost test3]# diff -ruN log2013.log log2014.log &gt;patch.log
+
+[root@localhost test3]# ll
+
+总计 12
+
+-rw-r--r-- 2 root root  80 12-07 16:36 log2013.log
+
+-rw-r--r-- 1 root root  96 12-07 18:01 log2014.log
+
+-rw-r--r-- 1 root root 248 12-07 21:33 patch.log
+
+[root@localhost test3]# cat patc.log
+
+cat: patc.log: 没有那个文件或目录
+
+[root@localhost test3]# cat patch.log 
+
+--- log2013.log 2012-12-07 16:36:26.000000000 +0800
+
++++ log2014.log 2012-12-07 18:01:54.000000000 +0800
+
+@@ -1,10 +1,12 @@
+
+ 2013-01
+
+ 2013-02
+
+-2013-03
+
++2014-03
+
+ 2013-04
+
+ 2013-05
+
+ 2013-06
+
+ 2013-07
+
+-2013-08
+
++2013-07
+
+ 2013-09
+
+ 2013-10
+
++2013-11
+
++2013-12[root@localhost test3]#
+
+说明：
+
+实例7：打补丁
+
+命令：
+
+输出：
+
+[root@localhost test3]# cat log2013.log
+
+2013-01
+
+2013-02
+
+2013-03
+
+2013-04
+
+2013-05
+
+2013-06
+
+2013-07
+
+2013-08
+
+2013-09
+
+2013-10[root@localhost test3]# patch log2013.log patch.log 
+
+patching file log2013.log
+
+[root@localhost test3]# 
+
+[root@localhost test3]# cat log2013.log 
+
+2013-01
+
+2013-02
+
+2014-03
+
+2013-04
+
+2013-05
+
+2013-06
+
+2013-07
+
+2013-07
+
+2013-09
+
+2013-10
+
+2013-11
+
+2013-12[root@localhost test3]#
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 2013 ~ 2015 作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

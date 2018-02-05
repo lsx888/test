@@ -1,0 +1,595 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0078)http://172.13.19.31:6060/note_html/数据库/Oracle/106010-Oracle-PL_SQL编程.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>PL_SQL编程</TITLE> <LINK href="PL_SQL编程_files/standalone.css" rel="stylesheet"> 
+<LINK href="PL_SQL编程_files/overlay-apple.css" rel="stylesheet"> <LINK href="PL_SQL编程_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="PL_SQL编程_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="PL_SQL编程_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">PL_SQL编程</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-09-17 10:28:52</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV id="content_div_1">
+<H3>简介</H3>
+<P style="text-indent: 0.8cm;">PL/SQL(Procedural Language/Structured Query 
+Language)，即过程语言/SQL，是结合了Oracle 过程语言和结构化查询语言(SQL)的一种扩展语言，是Oracle对标准SQL 
+的扩展。PL/SQL支持多种数据类型，可以使用条件语句和循环语句等控制结构，是过程控制结构和SQL 
+的数据处理能力无缝结合形成的功能强大的编程语言。</P></DIV>
+<HR>
+
+<DIV id="content_div_2">
+<H3>优点</H3>
+<OL>
+  <LI>支持SQL：PL/SQL支持所有SQL数据类型和所有SQL函数，用户可以轻松地操纵数据库中的数据。同时，PL/SQL还支持动态SQL，利用这种高级编程技术可以在程序运行过程中动态生成和运行SQL命令，使应用程序更加灵活和通用</LI>
+  <LI>支持面向对象编程：面向对象的编程技术是现在软件业公认的一种较为先进的编程技术，使用这种技术开发应用程序可以大减少建立复杂应用程序所需的时间和成本。PL/SQL 
+  全面支持面向对象的编程。</LI>
+  <LI>可移植性：PL/SQL 程序可移植到支持ORACLE 和PL/SQL 的任何操作系统或平台上。</LI>
+  <LI>更好的性能：标准SQL 是一种非过程语言，每次只能处理一条SQL 语句，而 PL/SQL 
+  可以则可以一次处理整个语句块，这样就明显减少了应用程序和Oracle 服务器之间的通信和调用，从而提高了性能。</LI>
+  <LI>更高的安全性：通过PL/SQL的过程可以对客户端和服务器之间的应用程序逻辑进行分隔，阻止客户端操纵敏感数据</LI></OL></DIV>
+<HR>
+
+<DIV id="content_div_3">
+<H3>语言特征</H3>
+<OL style="color: red;">
+  <LI>PL/SQL对大小写不敏感，但是建议每个开发团队应该选择一个合适的编码标准，这样可以更好地使用共享池</LI>
+  <LI>PL/SQL中的一些特殊符号</LI>
+  <LI>PL/SQL是一种块结构语言，它将一组逻辑上相关的声明和语句放在一个逻辑块中。PL/SQL块可以分为匿名块(未在数据库中命名的PL/SQL块)和命名块(如过程和函数等)</LI>
+  <LI>在PL/SQL块中可以使用SELECT、INSERT、DELETE、UPDATE等DML语句、事务控制语句及SQL 
+  函数等，但不能直接使用CREATE、DROP 等DDL 语句，要想使用DDL 语句可以借助于动态SQL</LI></OL></DIV>
+<HR>
+
+<DIV id="content_div_4">
+<H3>PL/SQL块分为3个部分</H3>
+<OL style="color: red;">
+  <LI>声明部分：在此可以声明块在要使用的变量、游标和自定义异常等，这些声明的作用域仅限于块内。如果不需要声明变量或常量等，也可以忽略这一部分</LI>
+  <LI>执行部分：该部分是PL/SQL 块的主体，由关键字BEGIN开始，所有的可执行语句都放在这一部分，其他的PL/SQL 
+  块也可以嵌套在这一部分。该部分是改选项，即每个PL/SQL块都必须包含一个执行部分。</LI>
+  <LI>异常处理部分：处理执行块时可能引发的异常。</LI></OL></DIV>
+<HR>
+
+<DIV id="content_div_5">
+<H3>变量相关说明</H3>
+<PRE class="brush: sql;">--PL/SQL 块的语法如下： 
+[DECLARE 
+ declarations] 
+BEGIN 
+ executable statements 
+[EXCEPTION 
+ exception handlers] 
+END;
+
+/***********************************************************************/
+/*
+				PL/SQL中的一些特殊符号
+					
+			:=  			赋值操作符 
+			
+			||  			连接操作符 
+			
+			--  			单行注释 
+			
+			/*   */  		多行注释 
+			 
+			&lt;&lt;   &gt;&gt;  		标签 
+			
+			..    			范围操作符 
+			
+			&lt;&gt;，!=			不等于 
+*/
+/***********************************************************************/
+
+
+/***********************************************************************/
+/***********************************************************************/
+/*
+    声明变量：PL/SQL 中声明变量时必须指定变量的数据类型，且每条语句只能声明一个变量。 
+变量声明的语法如下： 
+
+	variable_name DATATYPE[(SIZE)][{:=|DEFAULT }init_value]; 
+ 	其中：variable_name 是变量名称，DATATYPE 表示变更的数据类型
+ 	(可以是 Oracle或PL/SQL数据类型)，SIZE 指定变量的范围，init_value指变量的初始值。
+
+	--如：
+	l_deptno NUMBER(2):=10; 
+*/
+/***********************************************************************/
+
+/***********************************************************************/
+/*
+	为变量赋值，有两种方式：
+		1：通过赋值操作符，
+		2：通过SELECT…INTO 语句从数据库中提值赋给变量。
+	
+	PL/SQL 中的SELECT 语句与标准SQL 中的SELECT 语句有所不同：在PL/SQL 中，每
+个SELECT 语句中都必须有INTO 关键字（游标中的SELECT 语句除外），用于把从数据库
+中取出的值赋给变量
+	需要注意的是SELECT…INTO 语句的结果必须有且只能有一行，即每
+次只能从数据库的一行中提取记录，而且SELECT 出的字段数要与INTO 后的变量数相匹配
+	如果查询没有返回行，PL/SQL 就会抛出NO_DATA_FOUND 异常
+	如果查询返回多行，PL/SQL 就会抛出TOO_MANY_ROWS 异常
+*/
+/***********************************************************************/
+
+/***********************************************************************/
+/*
+	声明常量：常量用CONSTANT 关键字声明，且在声明时必须被赋予初始值。语法如下：
+		variable_name CONSTANT DATATYPE {:=|DEFAULT }value 
+*/
+/***********************************************************************/
+
+/***********************************************************************/
+/*
+ 	输出语句：
+ 		1.DBMS_OUTPUT.PUT_LINE 是一个最常用的系统过程，用于将一条信息及一个
+ 	行结束标记存储在缓冲区中。 
+		2.要显示缓冲区的内容，可以先在SQL 提示符下执行SET SERVEROUT ON 命令 
+		3.该过程有一个输入参数，以接收要显示的信息。 
+ */
+/***********************************************************************/
+
+/***********************************************************************/
+/*
+	PL/SQL 块的执行：
+	匿名PL/SQL 块的执行：可以用反斜杠"/"或RUN命令来执行，
+过程和函数等的执行在后面的专题中讨论。
+*/
+/***********************************************************************/
+
+---示例代码：
+DECLARE 
+ l_deptno NUMBER(2):=10; 
+ l_dept dept%ROWTYPE; 
+BEGIN 
+ l_deptno:=&amp;部门编号; 
+  SELECT * INTO l_dept FROM dept WHERE deptno=l_deptno; 
+ DBMS_OUTPUT.PUT_LINE('部门编号是'||l_deptno||' 的部门名称是
+'||l_dept.dname); 
+END; 
+/
+</PRE></DIV>
+<HR>
+
+<DIV id="content_div_6">
+<H3>数据类型、逻辑控制、循环控制、异常处理</H3>
+<H4>数据类型</H4>
+<PRE class="brush: sql;">/***********************************************************************/
+/*
+	PL/SQL 除了支持前面专题二中介绍过的Oracle 数据类型外(对原Oracle 数据类型
+有的在精度上有所变化)，还支持一些附加类型，如布尔型、属性类型等。
+	概括来讲，PL/SQL 提供的数据类型主要有：
+		标量数据类型、
+		属性数据类型、
+		LOB 数据类型、
+		复合数据类型
+		引用数据类型等。我们主要讨论前面两种
+*/
+/***********************************************************************/
+
+/***********************************************************************/
+/*
+	标量数据类型用来存储单个值，没有内部组件。 
+	标量数据类型可分为四类：
+		数字数据类型：
+			数字数据类型存储的数据为数字，用此数据类型存储的数据可用于计算
+		字符数据类型：
+			字符数据类型用于存储字符串或字符数据
+		日期时间数据类型：
+			日期时间数据类型用于存储日期和时间值
+		布尔数据类型：
+			布尔数据类型用于存储逻辑值，它只有一种类型即BOOLEAN类型，它的取值只能是TRUE、
+		FALSE和NULL，需注意在Oracle 数据列中不能使用该类型		
+*/
+/***********************************************************************/
+
+/***********************************************************************/
+/*
+						数字数据类型	
+						
+NUMBER[(precision,scale)] 	可用来存储整数、定点数和浮点数。
+							Precision 是精度，scale 是小数位数，
+							最高精度是38个十进制位。
+							
+							如果不指定精度，默认为38位。 
+							
+DECIMAL  					NUMBER的子类型，用于存储最高精度38位的定点数。
+ 
+FLOAT  						NUMBER的子类型，用于存储最高精度38位的浮点数。 
+
+REAL  						NUMBER的子类型，用于存储最高精度18位的浮点数。 
+
+INTEGER，INT 				NUMBER 的子类型，用于存储最高精度38位的整数。 
+
+BINARY_FLOAT  				10g 中新增的数据类型，用来存储最高精度32 位的浮点数，
+							一般比NUMBER类型速度更快，占用5 个字节的存储空间。 
+							
+BINARY_FLOAT  				10g 中新增的数据类型，用来存储最高精度64 位的浮点数，
+							一般比NUMBER类型速度更快，占用9 个字节的存储空间。
+							
+BINARY_INTEGER  			用于存储带符号的整数，大小范围介于－231-1 和231-1 之间。 
+
+NATURAL  					BINARY_INTEGER 的子类型，可用于存储非负整数，即自然数。
+ 
+NATURALN  					BINARY_INTEGER 的子类型，可用于存储自然数，且不能为空。
+ 
+POSITIVE  					BINARY_INTEGER 的子类型，可用于存储正整数。 
+
+POSITIVEN  					BINARY_INTEGER 的子类型，可用于存储正整数，且不能为空。 
+
+SIGNTYPE  					BINARY_INTEGER 的子类型，只能存储-1 、0 和1。 
+
+PLS_INTEGER  				用于存储带符号的整数，大小范围介于－231-1 和231-1 之间。
+							它类似于	BINARY_INTEGER，但它所需的存储空间更小，
+							运算速度更快，因此建议在PLS_INTEGER数值范围之内的
+							所有计算都使用此类型。 							
+*/
+
+/*
+						字符数据类型
+						
+CHAR[(max_size[CHAR|BYTE])]  	用于存储固定长度的字符数据。最大长度32767 个字节。如
+								果不指定最大长度，默认值为1。如果没有写CHAR 或BYTE，
+								默认为BYTE。需注意与Oracle 中CHAR 类型的区别，向
+								Oracle 数据库表中插入CHAR 类型的值时，其长度不要超出
+								2000个字节。
+								 
+VARCHAR2(max_size[CHAR|BYTE])  	用于存储可变长度的字符数据。最大长度32767 个字节。如
+								果没有写CHAR 或BYTE，默认为BYTE。需注意与Oracle
+								中VARCHAR2 类型的区别，向Oracle 数据库表中插入
+								VARCHAR2类型的值时，其长度不要超出4000个字节。 
+								
+STRING(max_size[CHAR|BYTE])  	类似于VARCHAR2 
+
+LONG  							类似于VARCHAR2，最大长度为32760 个字节，注意Oracle
+								中的该类型最大长度为2GB 。 
+								
+RAW(max_size)  					用于存储固定长度的二进制数据，最大长度为32760 个字节。
+								如有必要可在字符集之间自动转换。注意 Oracle 中的该类型
+								最大长度为2000个字节。 
+								
+LONG RAW  						类似于RAW，最大长度为32760 个字节。不能在字符集之
+								间自动转换。注意Oracle 中的该类型最大长度为2GB 。 
+*/
+
+/*
+						日期时间数据类型
+DATE  							用于存储固定长度的日期和时间数据。支持的日期范围为：
+								公元前4712年1 月1 日到公元9999年12月31日。日期函
+								数SYSDATE 能返回当前的日期和时间。 
+								
+TIMESTAMP[(precision )]  		从9i 开始新增的类型，也用于存储日期和时间，比DATE 类
+								型存储的时间更精确。Precision 代表秒的小数部分的位数，
+								取值范围0 到9，默认为6。日期函数SYSTIMESTAMP 返
+								回当前的日期时间信息。
+*/
+
+/*
+ 						
+*/
+/***********************************************************************/
+
+
+/***********************************************************************/
+/*
+属性类型：
+	属性类型是用于引用变量或数据库表列的数据类型，以及表示表中一行的记录类型。
+PL/SQL支持两种属性类型：
+	1.%TYPE：引用某个变量或数据库列的数据类型来声明变量。声明的语法如下：
+		variable_name other_var_name%TYPE|table_name.column_name%TYPE; 
+		如：
+		DECLARE 
+		l_num1 NUMBER; 
+		l_num2 l_num%TYPE; 
+		l_char dept.dname%TYPE
+		......
+	   	该段代码先声明了一个NUMBER 类型的变量l_num1，然后声明了一个属性类型的变量
+	l_num2，它的数据类型与l_num1 相同，接着又声明了一个属性类型的变量l_char，它的
+	数据类型与dept 表中的dname列的数据类型相同。 
+	
+	2.%ROWTYPE ：引用数据库表中的一行的记录类型，可以存储从表中选择或由游标提
+取出的整行数据。声明语法如下：
+		variable_name table_name%ROWTYPE; 
+
+*/
+/***********************************************************************/
+</PRE>
+<H4>逻辑控制</H4>
+<PRE class="brush: sql;">/***********************************************************************/
+/*
+逻辑控制：
+	IF条件控制语句：三种形式：IF—THEN、IF—THEN—ELSE 和IF—THEN—ELSIF
+		1. 	IF condition THEN 
+		  		statements; 
+			END IF; 
+			
+		2.	IF condition THEN 
+			 statements1; 
+			ELSE 
+			 statements2; 
+			END IF; 
+			
+		3.	IF condition1 THEN 
+			 statements1; 
+			ELSIF condition2 THEN 
+			 statements2; 
+			ELSE 
+			 statements3; 
+			END IF;
+	CASE 条件控制语句：
+		CASE selector 
+		  WHEN expression1 THEN statements1; 
+		  WHEN expression2 THEN statements2; 
+		  … … 
+		  WHEN expressionN THEN statementsN; 
+		 [ELSE statementsN] 
+		END CASE; 
+*/
+
+/*
+	员工编号是7934的员工因为表现较好，领导决定为其加薪，加薪的原则是：如果原工资
+小于1000，则加200 元；如果原工资大于等于1000且小于2000，则加150 元；否则的话加
+100 元
+	先用IF —THEN —ELSIF 条件控制语句来实现功能。在SQL 提示符下，输入以下代码： 
+*/
+
+	DECLARE 
+	 l_sal NUMBER; --或者 l_sal emp.sal%TYPE; 
+	BEGIN 
+	  SELECT sal INTO l_sal FROM emp WHERE empno=7934;   
+	  IF l_sal&lt;1000 THEN 
+	    UPDATE emp SET sal=sal+200 WHERE empno=7934; 
+	  ELSIF l_sal&gt;=1000 AND l_sal&lt;2000 THEN 
+	    UPDATE emp SET sal=sal+150 WHERE empno=7934; 
+	 ELSE 
+	    UPDATE emp SET sal=sal+100 WHERE empno=7934; 
+	 END IF; 
+	END; 
+	/
+	
+	--再用CASE 条件控制语句来实现加薪功能。在SQL 提示符下，输入以下代码： 
+	DECLARE 
+	 l_sal NUMBER; 
+	BEGIN  
+	  SELECT sal INTO l_sal FROM emp WHERE empno=7934;   
+	 CASE 
+	  WHEN l_sal&lt;1000 THEN 
+	    UPDATE emp SET sal=sal+200 WHERE empno=7934; 
+	  WHEN l_sal&gt;=1000 AND l_sal&lt;2000 THEN 
+	    UPDATE emp SET sal=sal+150 WHERE empno=7934; 
+	 ELSE 
+	    UPDATE emp SET sal=sal+100 WHERE empno=7934; 
+	 END CASE; 
+	END; 
+	/ 
+/***********************************************************************/
+</PRE>
+<H4>循环控制</H4>
+<PRE class="brush: sql;">/***********************************************************************/
+/*
+ 	循环控制包括LOOP 和EXIT 语句，使用 EXIT 语句可以立即退出循环，
+ 使用EXIT WHEN语句可以根据条件结束循环。  
+ 
+ 	循环有三种类型：LOOP 循环、WHILE循环和FOR 循环。 
+ 	
+ 	LOOP循环：包括 LOOP 与END LOOP 之间的一系列语句。为了避免进入死循环，
+ 必须在循环中加入EXIT 或EXIT WHEN语句。
+ 		LOOP 
+		 statements; 
+		END LOOP; 
+	
+	WHILE循环：将条件与一系列的语句结合在一起的循环。WHILE循环根据条件执行语句。每次在执行
+语句前，先判断条件，如果条件为TRUE，则执行LOOP 和END LOOP 之间的语句，如果为 
+FALSE，则退出循环。WHILE循环的次数到循环结束时才知道。
+		WHILE condition LOOP 
+		 statements; 
+		END LOOP; 
+		
+	FOR循环：在执行语句前，FOR 循环中的循环次数是已知的，也就是说，FOR 循环适于用在循环次
+数为已知的情况下。在 FOR 循环中，循环计数器变量无需事先声明，且在循环体语句中不能
+给计数器变量赋值。FOR 循环的步长总为1
+		FOR counter IN [REVERSE] value1..value2 
+		LOOP 
+		 statements; 
+		END LOOP; 
+ 	其中：counter为循环计数器变量。关键字REVERSE为可选项，只有在需要对值从大
+到小执行循环时才会使用它。value1 应小于value2
+*/
+/***********************************************************************/
+
+
+/***********************************************************************/
+/*
+顺序控制语句：
+	1.  GOTO 语句 
+	GOTO 语句用于无条件地将控制权转到标签指定的语句。标签是用双尖括号括起来的标识
+符。在 PL/SQL 块内标签必须具有唯一的名称，标签后必须紧跟执行语句或PL/SQL 块。
+GOTO 语句不能跳转到IF语句、CASE 语句、LOOP 语句或子块中。 
+	
+	2.  NULL 语句 
+	NULL 语句什么也不做，只是将控制权转移到下一条语句。NULL 语句是可执行语句。
+NULL 语句用在IF 或其它语句语法要求至少需要一条可执行语句，但又不需要执行操作的情
+况下。 
+
+	
+	公司经过技能评定后，人事部门决定，编号是7499的员工如果原工资低于2000，则给
+其长到2000，如果等于或高于2000，则维持原工资不变。下面用顺序控制语句来实现这一功
+能，操作如下： 
+*/
+	DECLARE 
+	 l_sal emp.sal%TYPE; 
+	BEGIN 
+	  SELECT sal INTO l_sal FROM emp WHERE empno=7499; 
+	  IF l_sal&lt;2000 THEN 
+	  GOTO UPDATION; 
+	 ELSE 
+	  NULL; 
+	 END IF; 
+	 &lt;<updation>&gt; 
+	  UPDATE emp SET sal=2000 WHERE empno=7499; 
+	END; 
+	/ 
+/***********************************************************************/
+</updation></PRE>
+<H4>异常处理</H4>
+<PRE class="brush: sql;">/***********************************************************************/
+/*
+	异常的分类：
+		1.  预定义异常：预定义异常是指由PL/SQL 所提供的系统异常，是当PL/SQL 
+	违反Oracle 规则或超越系统限制时，隐式地自动地引发的内部异常。Oracle 把一些常
+	见的错误预定义为异常，每个预定义异常都有一个错误号和一个名字，在PL/SQL 块的异
+	常处理部分必须通过名字来捕获异常。
+		常用的系统预定义异常：
+			ACCESS_INTO_NULL		未初始化对象时出现 
+			
+			CASE_NOT_FOUND			用户的输入与CASE 语句中的各个WHEN 条件都不匹配，且CASE
+									语句中没有ELSE分支时会出现 
+									
+			COLLECTION_IS_NULL  	在给未初始化的集合元素（如数组）赋值进会出现 
+			
+			CURSOR_ALREADY_OPEN  	企图打开一个已经打开的游标时出现 
+			
+			DUP_VAL_ON_INDEX  		试图破坏一个唯一性约束时出现 
+			
+			INVALID_CURSOR  		在执行非法的游标操作(如从未打开的游标中提取数据)时出现 
+			
+			INVALID_NUMBER  		在不能将字符串有效地转换为数字时出现 
+			
+			LOGIN_DENIED  			企图用无效的用户名或密码登录Oracle 时出现 
+			
+			NO_DATA_FOUND  			在表中不存在请求的数据时出现，当引用一个已经删除的元素
+									时也会出现 
+									
+			STORAGE_ERROR  			内存溢出或内存冲突会出现 
+			
+			TOO_MANY_ROWS  			在执行SELECT INTO语句后返回超过一行时出现 
+			
+			VALUE_ERROR  			在PL/SQL 块中执行赋值操作，而被赋值的变量不足以
+									容纳实际数据时出现 
+									
+			ZERO_DIVIDE  			用零作除数时出现 
+	
+		2.  自定义异常：自定义异常又被称为用户定义异常，是由开发人员为特定情况所定
+	义的异常，它可以与Oracle 内部错误没有任何关联，让PL/SQL 程序用与处理内部错误相
+	同的方式来处理自定义的异常。这是一种很好的编程习惯，可以获得更直观的代码。 
+		要使用自定义异常应该先在声明部分声明。声明的语法如下：
+			 DECLARE 
+ 				exception_name EXCEPTION; 
+*/
+/***********************************************************************/
+
+
+/***********************************************************************/
+/*
+ 异常的抛出：
+ 	1.  自动抛出：如发生预定义异常及其它Oracle 内部错误时，会自动引发异常。
+ 	
+ 	2.  用RAISE语句显示抛出：用RAISE语句不仅可以显示抛出自定义异常，也可以抛出
+预定义异常。使用的语法如下： 
+		RAISE exception_name;
+	
+	3.  用RAISE_APPLICATION_ERROR 语句抛出：RAISE_APPLICATION_ERROR 语句用于
+引发应用程序错误，它抛出一个异常并给异常赋予一个错误号以及错误信息。
+RAISE_APPLICATION_ERROR语句既可以在PL/SQL 程序的执行部分使用，也可以在异常
+处理部分使用。 
+	使用RAISE_APPLICATION_ERROR 语句的语法如下： 
+		RAISE_APPLICATION_ERROR(error_number,error_message)； 
+		
+	其中：error_number表示错误号，取值范围是-20,000到-20,999。error_message
+表示错误信息字符串，最大为2048 个字节。 
+*/
+/***********************************************************************/
+
+/***********************************************************************/
+/*
+异常的处理：
+	EXCEPTION 
+	  WHEN exception_name1 THEN 
+	  statements1; 
+	  WHEN exception_name2 THEN 
+	  statements2; 
+	  …… 
+	  WHEN OTHERS THEN 
+	  Other_statements; 
+	END; 
+	如果发生与某一个异常名称相匹配的异常时，程序就会执行与其相应的THEN 后面的代
+码，执行完成后退出程序。OTHERS 处理程序可以确保不会漏过任何异常，可以提高程序捕
+获异常的能力。在PL/SQL 块中可以只有OTHERS 处理程序，用以捕获全部异常。可以在异
+常处理的语句中使用SQLCODE和SQLERRM来返回错误代码和错误信息。 	
+*/
+/***********************************************************************/
+</PRE>
+<H4>动态sql</H4>
+<PRE class="brush: sql;">/***********************************************************************/
+/*
+	静态SQL：是直接嵌到PL/SQL 块中的SQL 语句，用于完成特定或固定的任务。静态
+SQL的性能要优于动态SQL ，因此在编写PL/SQL 块时，如果功能完全确定，应使用动态 SQL。
+	
+	动态SQL：是指在运行时动态形成的SQL 语句。如果需要在PL/SQL 中执行DDL语句(如
+CREATE 、ALTER、DROP)、DCL 语句(GRANT、REVOKE)，或者在PL/SQL 块中需要执行更
+加灵活的SQL语句(如在 SELECT 语句中使用不同的WHERE条件)，那么就必须借助于动态SQL。
+*/
+/***********************************************************************/
+
+/***********************************************************************/
+/*
+	在大部分情况下，可以使用EXECUTE IMMEDIATE 来执行动态SQL 语句，语法如下： 
+		EXECUTE IMMEDIATE dynamic_sql_string 
+		[INTO variable_list] 
+		[USING bind_argument_list]; 
+	其中：dynamic_sql_string 是动态SQL 语句字符串。INTO 子句用于接受SELECT 语句选
+择的记录值。USING子句用于绑定输入参数变量。 
+*/
+/***********************************************************************/
+--例如：
+	DECLARE 
+	 sql_string VARCHAR2(200); 
+	 emp_rec emp%ROWTYPE; 
+	BEGIN 
+	  sql_string:='SELECT * FROM emp WHERE empno=:id'; 
+	  EXECUTE IMMEDIATE sql_string INTO emp_rec USING &amp;emp_id; 
+	 DBMS_OUTPUT.PUT_LINE('查询出的员工姓名是：'||emp_rec.ename); 
+	EXCEPTION 
+	  WHEN NO_DATA_FOUND THEN 
+	  DBMS_OUTPUT.PUT_LINE('该编号的员工不存在!'); 
+	END; 
+	/ 
+--按回车后，系统提示“输入 emp_id 的值：”，输入员工编号，如 7934
+</PRE></DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

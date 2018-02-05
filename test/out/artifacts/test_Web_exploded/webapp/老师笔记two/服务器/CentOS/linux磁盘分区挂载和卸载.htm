@@ -1,0 +1,145 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0083)http://172.13.19.31:6060/note_html/服务器/CentOS/10702-linux磁盘分区挂载和卸载.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>linux磁盘分区挂载和卸载</TITLE> <LINK href="linux磁盘分区挂载和卸载_files/standalone.css" 
+rel="stylesheet"> <LINK href="linux磁盘分区挂载和卸载_files/overlay-apple.css" rel="stylesheet"> 
+<LINK href="linux磁盘分区挂载和卸载_files/article_edit.css" rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="linux磁盘分区挂载和卸载_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="linux磁盘分区挂载和卸载_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">linux磁盘分区挂载和卸载</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-08-24 15:24:55</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>挂载/卸载磁盘</H3>
+<P 
+style="text-indent: 0.8cm;">在前面的内容中讲到了磁盘的分区和格式化，那么格式化完了后，如何去用它呢？这就涉及到了挂载这块磁盘。格式化后的磁盘其实是一个块设备文件，类型为b，也许你会想，既然这个块文件就是那个分区，那么直接在那个文件中写数据不就写到了那个分区中么？当然不行。</P>
+<P style="text-indent: 0.8cm;">
+在挂载某个分区前需要先建立一个挂载点，这个挂载点是以目录的形式出现的。一旦把某一个分区挂载到了这个挂载点（目录）下，那么再往这个目录写数据使，则都会写到该分区中。这就需要你注意一下，<SPAN 
+style="color: rgb(255, 0, 0);">在挂载该分区前，挂载点（目录）下必须是个空目录</SPAN>。其实目录不为空并不影响所挂载分区的使用，<SPAN 
+style="color: rgb(255, 0, 0);">但是一旦挂载上了，那么该目录下以前的东西就不能看到了</SPAN>。只有卸载掉该分区后才能看到。 
+</P>
+<H4>mount命令挂载设备</H4>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="linux磁盘分区挂载和卸载_files/20150824-01.png"></DIV>
+<DIV align="left"><FONT>先建立/test1 /test2 
+目录，然后在/test1目录下建立一个1.txt文件。</FONT></DIV></DIV>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="linux磁盘分区挂载和卸载_files/20150824-02.png"></DIV>
+<DIV 
+align="left"><FONT>把/dev/hdb1分区挂载到/test1目录，然后再查看/test1目录发下，1.txt不存在了。此时往/test1目录下写数据，则会写到/dev/hdb1分区中。</FONT></DIV></DIV>
+<H4>/etc/fstab文件</H4>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="linux磁盘分区挂载和卸载_files/20150824-03.png"></DIV>
+<DIV align="left"><FONT>这个文件是系统启动时，需要挂载的各个分区。</FONT></DIV></DIV>
+<UL>
+  <LI>第一列就是分区的label</LI>
+  <LI>第二列是挂载点</LI>
+  <LI>第三列是分区的格式</LI>
+  <LI>第四列则是mount的一些挂载参数，一般情况下，直接写defaults即可   
+  <UL>
+    <LI>async/sync 
+：async表示和磁盘和内存不同步，系统每隔一段时间把内存数据写入磁盘中，而sync则会时时同步内存和磁盘中数据；</LI>
+    <LI>auto/noauto ：开机自动挂载/不自动挂载；</LI>
+    <LI>default：按照大多数永久文件系统的缺省值设置挂载定义，它包含了rw, suid, dev, exec, auto, 
+    nouser,async </LI>
+    <LI>ro：按只读权限挂载 </LI>
+    <LI>rw：按可读可写权限挂载</LI>
+    <LI>exec/noexec 
+    ：允许/不允许可执行文件执行，但千万不要把根分区挂载为noexec，那就无法使用系统了，连mount命令都无法使用了，这时只有重新做系统了</LI>
+    <LI>user/nouser ：允许/不允许root外的其他用户挂载分区，为了安全考虑，请用nouser</LI>
+    <LI>suid/nosuid ：允许/不允许分区有suid属性，一般设置nosuid </LI>
+    <LI>usrquota ：启动使用者磁盘配额模式，磁盘配额相关内容在下面会做介绍</LI>
+    <LI>grquota ：启动群组磁盘配额模式</LI></UL></LI>
+  <LI>第五列的数字表示是否被dump备份，是的话这里就是1，否则就是0</LI>
+  <LI>第六列是开机时是否自检磁盘，就是讲过的那个fsck检测。1，2都表示检测，0表示不检测，在Redhat中，这个1，2还有个说法，/ 
+  分区必须设为1，而且整个fstab中只允许出现一个1，这里有一个优先级的说法。1比2优先级高，所以先检测1，然后再检测2，如果有多个分区需要开机检测那么都设置成2吧，1检测完了后会同时去检测2。</LI></UL>
+<P style="text-indent: 0.8cm;">我们可以自己修改/etc/fstab这个文件，增加一行来挂载新增分区。例如：/dev/hdb1 
+/test1 ext3 defaults 0 0。系统再重启时就会挂载这个分区了</P>
+<H4>mout -a 命令</H4>
+<P style="text-indent: 0.8cm;">mout -a 
+如果运行了这个命令，则会把/etc/fstab中出现的所有磁盘分区挂载上。所以当你在/etc/fstab文件中增加一行后，你完全可以直接运行mount -a 
+来挂载你增加的那行，这样就不用重启啦。</P>
+<H4>mout -o 命令</H4>
+<DIV>
+<DIV align="left"><FONT>使用mount -o 选项来重新挂载一个分区，并同时指定你想要的选项</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="linux磁盘分区挂载和卸载_files/20150824-04.png"></DIV>
+<DIV align="left"><FONT>如图：使用了ro选项，则不能新建文件了。</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="linux磁盘分区挂载和卸载_files/20150824-05.png"></DIV>
+<DIV align="left"><FONT>再重新挂载一次就恢复正常了，如果不加任何其他选项，则就是defaults</FONT></DIV></DIV>
+<H4>blkid 命令</H4>
+<P style="text-indent: 0.8cm;">
+在日常的运维工作中遇到过这样的情况，一台服务器上新装了亮块磁盘，磁盘a（在服务器上显示为sdc）和磁盘b（在服务器上显示为sdd），有一次把这两块磁盘都拔掉了，然后再重新插上，重启机器，结果磁盘编号调换了，a变成了sdd，b变成了sdc（这是因为把磁盘插错了插槽），问题来了。通过上边的学习，你挂载磁盘是通过/dev/hdb1 
+这样的分区名字来挂载的，如果先前加入到了/etc/fstab 中，结果系统启动后则会挂载错分区。那么怎么样避免这样的情况发生？ </P>
+<DIV>
+<DIV align="left"><FONT>blkid 
+这个命令是用来显示磁盘分区uuid的，uuid其实就是一大串字符，在linux系统中每一个分区都会有唯一的一个uuid。说到这，聪明的你想到了吧，没有错，我们就用这唯一的uuid来挂载磁盘分区</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="linux磁盘分区挂载和卸载_files/20150824-06.png"></DIV></DIV>
+<DIV>
+<DIV align="left"><FONT>也可以在命令后边跟某一个分区，只显示该分区的uuid。并使用uuid的方式挂载硬盘</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="linux磁盘分区挂载和卸载_files/20150824-07.png"></DIV></DIV>
+<H4>/etc/rc.d/rc.local文件</H4>
+<DIV>
+<DIV 
+align="left"><FONT>系统启动完后会执行这个文件中的命令。所以只要你想开机后运行什么命令统统写入到这个文件下面吧。</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="linux磁盘分区挂载和卸载_files/20150824-08.png"></DIV>
+<DIV align="left"><FONT>其实这个文件就是一个shell 
+脚本。行开头的”#”是注释的意思，代表这行在这个脚本中不生效。你想让系统开机后运行什么命令，就把什么命令写到这里面来。就比如刚才挂载的那条命令。你可以这样实现：</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="linux磁盘分区挂载和卸载_files/20150824-09.png"></DIV></DIV>
+<H4>mount -t</H4>
+<DIV>
+<DIV align="left"><FONT>mount 还有一个比较常用的选项就是-t ，后边指定文件系统的类型，比如挂载软盘时就需要指定 
+vfat，而挂载光盘时就需要指定iso9660，但在笔者多年来的经验，目前的系统都是智能识别所要挂载分区的系统格式类别的。也就是说，用不着你去指定，它会自动判断的</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="linux磁盘分区挂载和卸载_files/20150824-10.png"></DIV></DIV>
+<H4>umount 卸载设备</H4>
+<DIV align="left"><FONT>这个命令也简单的很，后边可以跟挂载点，也可以跟分区名(/dev/hdb1) </FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="linux磁盘分区挂载和卸载_files/20150824-11.png"></DIV>
+<DIV align="left"><FONT>有时也许你会遇到比较难卸载的设备，就像在windows下无法删除U盘一样，教你一个特管用的方法就是 umount 
+-l /dev/hdb1 ，这个-l选项有强制卸载的意思，你一定要记住哦，非常有用的</FONT></DIV></DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 2013 ~ 2015 作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </BODY></HTML>

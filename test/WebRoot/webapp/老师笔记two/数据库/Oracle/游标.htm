@@ -1,0 +1,358 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0072)http://172.13.19.31:6060/note_html/数据库/Oracle/107010-Oracle-游标.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>游标</TITLE> <LINK href="游标_files/standalone.css" rel="stylesheet"> <LINK 
+href="游标_files/overlay-apple.css" rel="stylesheet"> <LINK href="游标_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="游标_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="游标_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">游标</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-09-17 10:31:32</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV id="content_div_1">
+<H3>什么是游标</H3>
+<P style="text-indent: 0.8cm;">为了处理SQL 
+语句，Oracle将在内存中分配一个区域，这就是上下文区。上下文区包含了完成该处理所需的信息，比如已经处理完的行数、指向被分析语句的指针，查询语句返回的数据行集等。游标就是指向上下文区的句柄或指针。通过游标，PL/SQL程序可以控制上下文区和在处理语句时上下文区会发生些什么事情。</P>
+<P style="color: red; text-indent: 0.8cm;">游标有两种类型：显式游标、隐式游标。</P></DIV>
+<HR>
+
+<DIV id="content_div_2">
+<H3>显式游标和隐式游标的差别</H3>
+<UL style="color: red;">
+  <LI>隐式游标：PL/SQL维护，当执行查询时自动打开和关闭。显示游标：在程序中显式定义、打开、关闭，游标有一个名字。</LI>
+  <LI>隐式游标：游标属性前缀是SQL。显示游标：游标属性的前缀是游标名</LI>
+  <LI>隐式游标：属性百分号ISOPEN 总是为FALSE。显示游标：百分号ISOPEN 根据游标的状态确定值</LI>
+  <LI>隐式游标：SELECT 语句带有INTO 
+子句，只有一行数据被处理。显示游标：可以处理多行数据，在程序中设置循环，取出每一行数据。</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_3">
+<H3>使用显示游标的4个步骤</H3>
+<OL>
+  <LI>声明游标：CURSOR cursor_name IS select_statement;</LI>
+  <P style="color: red; text-indent: 0.8cm;">在PL/SQL 
+  中游标名是一个未声明变量，不能给游标名赋值或用于表达式中。在游标定义中SELECT 
+  语句中不一定非要是数据表，也可以是视图，也可以从多个表或视图中选择的列，甚至可以使用*来选择所有的列。</P>
+  <LI>打开游标：OPEN cursor_name;</LI>
+  <LI>从游标提取数据：FETCH cursor_name INTO variable[,variable,...]</LI>
+  <P 
+  style="color: red; text-indent: 0.8cm;">对于SELECT定义的游标的每一列，FETCH变量列表都应该有一个变量与之相对应，变量的类型也要相同。如果有多行返回结果，可以使用循环逐行提取数据，然后以游标属性作为结束循环的条件。(参见参考代码PL_SQL/游标.sql)</P>
+  <LI>关闭游标：CLOSE cursor_name;</LI></OL></DIV>
+<HR>
+
+<DIV id="content_div_4">
+<H3>游标属性</H3>
+<PRE class="brush: sql;">/***********************************************************************/
+/*
+当执行一条DML 语句后，DML 语句的结果保存在四个游标属性中，它们是：
+	1. SQL %FOUND
+		在执行任何DML 语句前SQL %FOUND和SQL %NOTFOUND 的值都是NULL，在执行DML
+语句后，SQL %FOUND的属性值在下面的情况下将是TRUE
+		1.  成功执行一条INSERT 语句时； 
+		2.  执行DELETE 或UPDATE，至少有一行被DELETE 或UPDATE 时； 
+		3.  用SELECT INTO 至少返回一行时。 
+		当SQL %FOUND为TRUE 时，SQL %NOTFOUND 为FALSE ，反之亦然。 
+		
+	2. SQL %NOTFOUND 
+	
+	3. SQL %ROWCOUNT 
+		在执行任何DML 语句之前，SQL %ROWCOUNT 的值都是NULL，对于SELECT INTO 语
+句，如果执行成功，SQL %ROWCOUNT 的值为1，如果没有成功，SQL %ROWCOUNT 的值为0，
+同时产生一个异常NO_DATA_FOUND 。
+
+	4. SQL %ISOPEN
+		SQL %ISOPEN 是一个布尔值，如果游标打开，则为TRUE；如果游标关闭，则为FALSE。
+	对于隐式游标而言SQL ％ISOPEN 总是FALSE，这是因为隐式游标在DML 语句执行时打开，
+	结束时就立即关闭。
+
+	注意：游标属性不能直接用于SQL 语句中。如果需要在SQL 语句中使用，可先将其放入
+一PL/SQL 变量中，然后在SQL 语句中通过该变量使用游标属性值。
+*/
+/***********************************************************************/
+</PRE>
+<H3>示例</H3>
+<PRE class="brush: sql;">/***********************************************************************/
+/*
+ 用游标生成员工报表 ：
+	现要求用游标查询出表emp 中的员工编号、员工姓名和工资三列的数据，按工资（sal）
+排序。
+*/
+DECLARE 
+  CURSOR c_emp IS 
+    SELECT empno,ename,sal FROM emp ORDER BY sal; 
+ v_empno emp.empno%TYPE; 
+ v_ename emp.ename%TYPE; 
+ v_sal emp.sal%TYPE; 
+BEGIN 
+ OPEN c_emp; 
+ LOOP 
+    FETCH c_emp INTO v_empno,v_ename,v_sal; 
+  EXIT WHEN c_emp%NOTFOUND; 
+    DBMS_OUTPUT.PUT_LINE (v_empno||'    '||v_ename||'    '||v_sal); 
+ END LOOP; 
+ CLOSE c_emp; 
+END; 
+/***********************************************************************/
+
+/***********************************************************************/
+/*
+	如果有多行返回结果，可以使用循环逐行提取数据，然后以游标属性作为结束循环的条
+件。即：
+		OPEN cursor_name; 
+		LOOP 
+		  FETCH cursor_name INTO variable[,variable,...]; 
+		  EXIT WHEN cursor_name%NOTFOUND; 
+		 -- 使用数据 
+		END LOOP; 
+		CLOSE OPEN cursor_name;
+	
+	属性类型%ROWTYPE 也可用于游标，利用它可以把上面的代码改写为： 
+		DECLARE 
+		  CURSOR c_emp IS 
+		    SELECT empno,ename,sal FROM emp ORDER BY sal; 
+		 r_emp c_emp%ROWTYPE; 
+		BEGIN 
+		 OPEN c_emp; 
+		 LOOP 
+		    FETCH c_emp INTO r_emp; 
+		  EXIT WHEN c_emp%NOTFOUND; 
+		    DBMS_OUTPUT.PUT_LINE(r_emp.empno||'    '||r_emp.ename 
+		    ||'    '||r_emp.sal); 
+		 END LOOP; 
+		 CLOSE c_emp; 
+		END; 
+	
+	上面的实现代码仍较多，可用循环游标来简化：
+		DECLARE 
+		  CURSOR c_emp IS 
+		    SELECT empno, ename, sal FROM emp ORDER BY sal; 
+		BEGIN 
+		  FOR r_emp IN c_emp LOOP 
+		    DBMS_OUTPUT.PUT_LINE( r_emp.empno||'    '||r_emp.ename 
+		    ||'    '||r_emp.sal); 
+		 END LOOP; 
+		END; 
+		
+	游标FOR 循环在使用时不需要显式的打开、关闭、取数据，测试数据的存在、
+定义存放数据的变量等等。游标FOR 循环的语法如下：
+		FOR record_name IN 
+			(corsor_name[(parameter[,parameter]...)] 
+			| (query_difinition) 
+		LOOP 
+			statements 
+		END LOOP;
+	record_name 为隐式声明的记录变量，可直接使用，无需打开关闭，也不用在声明部
+分再定义此变量。 
+	query_difinition 为一子查询，可以不在前面声明游标，而直接在此写一个查询语句。
+
+
+上述的代码还可以写成： 
+*/
+BEGIN 
+  FOR r_emp IN (SELECT empno, ename, sal FROM emp ORDER BY sal) LOOP 
+    DBMS_OUTPUT.PUT_LINE( r_emp.empno||'    '||r_emp.ename 
+    ||'    '||r_emp.sal); 
+ END LOOP; 
+END; 
+/***********************************************************************/
+
+/***********************************************************************/
+/*
+用游标生成分部门员工报表 ：
+*/
+DECLARE 
+ v_deptno emp.deptno%TYPE; 
+  CURSOR c_emp IS 
+    SELECT empno,ename,sal FROM emp WHERE deptno=v_deptno; 
+ r_emp c_emp%ROWTYPE; 
+BEGIN 
+  FOR r_dept IN (SELECT * FROM dept) LOOP 
+    DBMS_OUTPUT.PUT_LINE(r_dept.deptno||'     '||r_dept.dname 
+      ||'     '||r_dept.dname); 
+  	DBMS_OUTPUT.PUT_LINE('-------------------------------------'); 
+  	v_deptno:=r_dept.deptno; 
+ 	OPEN c_emp; 
+ 	LOOP 
+    	FETCH c_emp INTO r_emp; 
+  		EXIT WHEN c_emp%NOTFOUND; 
+    	DBMS_OUTPUT.PUT_LINE(r_emp.empno||'     '||r_emp.ename 
+      		||'     '||r_emp.sal); 
+ 	END LOOP; 
+  	DBMS_OUTPUT.PUT_LINE(''); 
+  	CLOSE c_emp; 
+  END LOOP; 
+END; 
+/*
+用带参数的游标来实现该功能：
+*/
+DECLARE 
+  CURSOR c_emp(p_deptno emp.deptno%TYPE) IS 
+  SELECT empno,ename,sal FROM emp WHERE deptno=p_deptno; 
+BEGIN 
+  FOR r_dept IN (SELECT * FROM dept) LOOP 
+    DBMS_OUTPUT.PUT_LINE(r_dept.deptno||'     '||r_dept.dname 
+      	||'     '||r_dept.dname); 
+  	DBMS_OUTPUT.PUT_LINE('-------------------------------------'); 
+    FOR r_emp IN c_emp(r_dept.deptno) LOOP 
+      DBMS_OUTPUT.PUT_LINE(r_emp.empno||'     '||r_emp.ename||'     ' 
+    	||r_emp.sal); 
+  	END LOOP; 
+  	DBMS_OUTPUT.PUT_LINE(''); 
+ END LOOP; 
+END;
+/*
+  参数传递给游标，它的声明语法如下：
+   CURSOR cursor_name[(parameter[,parameter],...)] IS select_statement; 
+   
+ 定义参数的语法为： 
+	Parameter_name [IN] data_type[{:=|DEFAULT} value] 
+	游标只能接受传递的值，而不能返回值。参数只定义数据类型，没有大小。 
+另外可以给参数设定一个缺省值，当没有参数值传递给游标时，就使用缺省值。游标中
+定义的参数只是一个占位符，在别处引用该参数不一定可靠。 
+
+在打开游标时给参数赋值，语法如下： 
+	OPEN cursor_name[value[,value]....]; 
+	参数值可以是字面值（常量）或变量。
+*/
+/***********************************************************************/
+
+/***********************************************************************/
+/*
+用游标更新员工工资：
+	将emp 表中员工按工资sal字段降序排列。工资最高的员工不加工资，次高的加100，第
+三名加200，第四名加300…，依次类推。并显示输出各员工的编号，姓名及更新前后的工资。
+*/
+DECLARE 
+  CURSOR c_emp IS 
+    SELECT empno,ename,sal FROM emp ORDER BY sal DESC FOR UPDATE; 
+  v_increase NUMBER := 0; 
+  v_new_sal  NUMBER; 
+BEGIN 
+  FOR r_emp IN c_emp LOOP 
+    v_new_sal := r_emp.sal + v_increase; 
+    UPDATE emp SET sal = v_new_sal WHERE CURRENT OF c_emp; 
+    DBMS_OUTPUT.PUT_LINE(r_emp.empno||'      '||r_emp.ename||' old salary 
+      = '||r_emp.sal||' new salary = '||v_new_sal); 
+  	v_increase:=v_increase+100; 
+ END LOOP; 
+END; 
+/*
+PL/SQL 提供了仅仅使用游标就可以执行删除或更新记录的方法：
+	UPDATE 或DELETE 语句中的WHERE CURRENT OF 子句专门处理要执行UPDATE 
+或DELETE操作的表中取出的最近的数据。要使用这个方法，在声明游标时必须使用
+FOR UPDATE 子句，当对话使用FOR UPDATE 子句打开一个游标时，所有返回集中
+的数据行都将处于行级独占式锁定，其他对象只能查询这些数据行，不能进行UPDATE、
+DELETE 或SELECT...FOR UPDATE 操作。语法为： 
+	FOR UPDATE [OF [schema.]table.column[,[schema.]table.column] [nowait]; 
+
+	在多表查询中，使用OF子句来锁定特定的表,如果忽略了OF子句，那么所有表中选择
+的数据行都将被锁定。如果这些数据行已经被其他会话锁定，那么正常情况下ORACLE 将等
+待，直到数据行解锁。
+
+在UPDATE 和DELETE 中使用WHERE CURRENT OF 子句的语法如下： 
+	WHERE{CURRENT OF cursor_name|search_condition}
+*/
+/***********************************************************************/
+
+/***********************************************************************/
+/*
+ 使用REF游标动态返回结果集：
+ 	按部门查询员工信息，先让用户输入部门编号，程序可以查询出该部门的员
+工信息，并把员工编号和员工姓名输出。
+*/
+DECLARE 
+  TYPE refcur IS REF CURSOR; 
+  refcur_test refcur; 
+  l_emp emp%ROWTYPE; 
+  l_deptno emp.deptno%TYPE; 
+BEGIN 
+  L_deptno:=&amp;部门编号; 
+  OPEN refcur_test FOR 
+    SELECT * FROM emp WHERE deptno=l_deptno; 
+  DBMS_OUTPUT.PUT_LINE('---部门'||l_deptno||'的员工信息---'); 
+  FETCH refcur_test INTO l_emp; 
+  
+  WHILE refcur_test%FOUND LOOP 
+	  DBMS_OUTPUT.PUT_LINE('员工编号:'||l_emp.empno||'   员工姓名:' 
+	    ||l_emp.ename); 
+	  FETCH refcur_test INTO l_emp; 
+  END LOOP; 
+  CLOSE refcur_test; 
+END; 
+/ 
+/***********************************************************************/
+
+
+/***********************************************************************/
+/*
+游标子查询：
+	游标子查询（有时被称为嵌套游标表达式）是在SELECT 语句内部使用游标表达式。当
+FETCH外层游标中的数据时，游标子查询对应返回类型总是游标变量REF CURSOR。该游
+标变量不需要再打开，可以直接使用
+*/
+DECLARE 
+ c_emp SYS_REFCURSOR; 
+  CURSOR c_dept IS 
+    SELECT deptno, dname,CURSOR(SELECT * FROM emp WHERE  
+   deptno=dept.deptno) 
+    FROM dept ORDER BY deptno; 
+ v_name dept.dname%TYPE; 
+ v_no dept.deptno%TYPE; 
+ r_emp emp%ROWTYPE; 
+BEGIN 
+ OPEN c_dept; 
+ LOOP 
+    FETCH c_dept INTO v_no, v_name, c_emp; 
+  EXIT WHEN c_dept%NOTFOUND; 
+    DBMS_OUTPUT.PUT_LINE(v_no || '       ' || v_name); 
+  DBMS_OUTPUT.PUT_LINE('-------------------------------------'); 
+  LOOP 
+   FETCH c_emp INTO r_emp; 
+  EXIT WHEN c_emp%NOTFOUND; 
+      DBMS_OUTPUT.PUT_LINE(r_emp.ename || '       ' || r_emp.sal); 
+  END LOOP; 
+   DBMS_OUTPUT.PUT_LINE(''); 
+ END LOOP; 
+ CLOSE c_dept; 
+END; 
+/ 
+/***********************************************************************/
+</PRE></DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

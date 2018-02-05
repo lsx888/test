@@ -1,0 +1,117 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0083)http://172.13.19.31:6060/note_html/Java/JavaSE/1019010-JavaSE-格式化、正则规范.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>JavaSE-格式化、正则规范</TITLE> <LINK href="JavaSE-格式化、正则规范_files/standalone.css" 
+rel="stylesheet"> <LINK href="JavaSE-格式化、正则规范_files/overlay-apple.css" rel="stylesheet"> 
+<LINK href="JavaSE-格式化、正则规范_files/article_edit.css" rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="JavaSE-格式化、正则规范_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="JavaSE-格式化、正则规范_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">JavaSE-格式化、正则规范</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-07-01 14:21:50</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>常用正则规范</H3>
+<UL>
+  <LI>\\：表示反斜线(\)字符</LI>
+  <LI>\t：表示制表符</LI>
+  <LI>\n：表示换行符</LI>
+  <LI>[abc]：表示字符a、b或c</LI>
+  <LI>[^abc]：表示除了a、b、c之外的任意字符</LI>
+  <LI>[a-zA-Z0-9]：表示有字母、数字组成</LI>
+  <LI>\d：表示数字</LI>
+  <LI>\D：表示非数字</LI>
+  <LI>\w：表示字母、数字、下划线</LI>
+  <LI>\W：表示非字母、数字、下划线</LI>
+  <LI>\s：表示所有空白字符(换行、空格等)</LI>
+  <LI>\S：表示所有非空白字符</LI>
+  <LI>^：行的开头</LI>
+  <LI>$：行的结尾</LI>
+  <LI>.：匹配除换行符之外的任意字符</LI>
+  <LI>数量表示(X表示一组规范)			 
+  <UL>
+    <LI>X：必须出现一次</LI>
+    <LI>X?：可以出现0次或1次</LI>
+    <LI>X*：可以出现0次、1次或多次</LI>
+    <LI>X+：可以出现1次或多次</LI>
+    <LI>X{n}：必须出现n次</LI>
+    <LI>X{n,}：必须出现n次以上</LI>
+    <LI>X{n,m}：必须出现n—m次</LI></UL></LI>
+  <LI>逻辑运算符(X、Y表示一组规范)			 
+  <UL>
+    <LI>XY：X规范后跟着Y规范</LI>
+    <LI>X|Y：X规范或Y规范</LI>
+    <LI>(X)：作为一个捕获组规范</LI></UL></LI>
+  <LI>示例：			 
+  <UL>
+    <LI>汉字表示范围：[\一-\龥]</LI>
+    <LI>金额，保留两位小数：/^([1-9]\d{1,}|\d)(\.\d{1,2})?$/</LI></UL></LI></UL>
+<H3>打印流格式化规范System.out.print()</H3>
+<UL>
+  <LI>%s：表示内容为字符串</LI>
+  <LI>%d：表示内容为整数</LI>
+  <LI>%f：表示内容为小数</LI>
+  <LI>%c：表示内容为字符</LI></UL>
+<H3>日期格式化规范java.text.DateFormat、java.text.SimpleDateFormat</H3>
+<UL>
+  <LI>y：年，年份是4位数字，所以需要使用yyyy来表示</LI>
+  <LI>M：年中的月份，月份是两位数字，所以用MM来表示</LI>
+  <LI>d：月中的天数，天数是两位数字，所以用dd表示</LI>
+  <LI>H：一天中的小时数(24小时)，小时是两位数字，用HH表示</LI>
+  <LI>m：小时中的分钟数，分钟是两位数字，用mm表示</LI>
+  <LI>s：分钟中的秒数，秒是两位数字，使用ss表示</LI>
+  <LI>S：毫秒数，毫秒是3位数字，使用SSS表示</LI></UL>
+<H3>数字格式化规范java.text.NumberFormat、java.text.DecimalFormat</H3>
+<UL>
+  <LI>0：表示阿拉伯数字，每一个0表示一位阿拉伯数字，如果该位不存在则显示0</LI>
+  <LI>#：代表阿拉伯数字，没一个#表示一位阿拉伯数字，如果该位不存在则不显示</LI>
+  <LI>.：小数点分隔符或货币的小数分隔符</LI>
+  <LI>-：代表负号</LI>
+  <LI>,：分组分隔符。如：千分符</LI>
+  <LI>E：分隔科学计数法中的尾数和指数</LI>
+  <LI>;：分隔正数和负数子模式</LI>
+  <LI>%：数字乘以100并显示为百分数</LI>
+  <LI>\u2030：乘以1000并显示为千分数</LI>
+  <LI>\u00A4：货币记号，由货币号替换。如果两个同时出现，则用国际货币符号替换；如果出现在某个模式中则使用货币小数分隔符，而不使用小数分隔符。
+  		 </LI>
+  <LI>'：用于在前缀或后缀中为特殊字符加引号，例如："'#'#"将123格式化为"#123"。要创建单引号本身，则连续使用两个单引号，如："#0''clock''"</LI></UL>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

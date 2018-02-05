@@ -1,0 +1,206 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0081)http://172.13.19.31:6060/note_html/服务器/CentOS/100101-用户组、用户相关命令.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>用户组、用户相关命令</TITLE> <LINK href="用户组、用户相关命令_files/standalone.css" rel="stylesheet"> 
+<LINK href="用户组、用户相关命令_files/overlay-apple.css" rel="stylesheet"> <LINK href="用户组、用户相关命令_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="用户组、用户相关命令_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="用户组、用户相关命令_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">用户组、用户相关命令</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-08-31 15:16:19</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>groupadd：创建用户组</H3>
+<PRE class="brush: bash;">1.作用
+groupadd命令用于将新组加入系统。
+
+2.格式
+groupadd [－g gid] [－o]] [－r] [－f] groupname
+
+3.主要参数
+－g gid：指定组ID号。
+－o：允许组ID号，不必惟一。
+－r：加入组ID号，低于499系统账号。
+－f：加入已经有的组时，发展程序退出。
+
+4.应用实例
+建立一个新组，并设置组ID加入系统：
+＃groupadd －g 344 men
+此时在/etc/passwd文件中产生一个组ID（GID）是344的用户组：men。
+
+</PRE>
+<P style="text-indent: 0.8cm;">不加-g 则按照系统默认的gid创建组，跟用户一样，gid也是从500开始的</P>
+<H3>groupmod：修改组</H3>
+<PRE class="brush: bash;">语　　法：groupmod [-g &lt;群组识别码&gt; &lt;-o&gt;][-n &lt;新群组名称&gt;][群组名称] 
+补充说明：需要更改群组的识别码或名称时，可用groupmod指令来完成这项工作。 
+参　　数： 
+　-g &lt;群组识别码&gt; 　设置欲使用的群组识别码。 
+　-o 　重复使用群组识别码。 
+　-n &lt;新群组名称&gt; 　设置欲使用的群组名称。 
+
+
+示例:修改组名. 
+[root@jb51.net ~]# groupadd linuxso 
+
+[root@jb51.net ~]# tail -1 /etc/group 
+linuxso:x:500: 
+
+[root@jb51.net ~]# groupmod -n linux linuxso 
+
+[root@jb51.net ~]# tail -1 /etc/group 
+linux:x:500: 
+</PRE>
+<H3>groupdel：删除组</H3>
+<PRE class="brush: bash;">语　　法：groupdel [群组名称] 
+
+补充说明：需要从系统上删除群组时，可用groupdel指令来完成这项工作。倘若该群组中仍包括某些用户，则必须先删除这些用户后，方能删除群组。 
+
+示例：
+&gt;groupadd damon 
+&gt;groupdel damon
+</PRE>
+<H3>useradd：添加用户</H3>
+<PRE class="brush: bash;">语法：useradd [-u UID] [-g GID] [-d HOME] [-M] [-s] usernames
+
+-u 自定义UID
+
+-g 使其属于已经存在的某个GID(现在可以使用组名代替)
+
+-d 自定义用户的家目录
+
+-M	不建立家目录(注意大小写)
+
+-s	自定义shell
+
+例如：
+
+#useradd -u 501 -g 501 -M
+
+创建test11时，加上了-M选项后，在/etc/passwd文件中test11那行的第六字段依然有/home/test11，可是ls查看该目录时，会提示该目录不存在
+</PRE>
+<H3>userdel：删除用户</H3>
+<PRE class="brush: bash;">userdel [-r] username
+
+-r 选项的作用是删除用户时，连同用户的家目录一起删除。
+</PRE>
+<H3>usermod：修改用户</H3>
+<PRE class="brush: bash;">语　　法：usermod [-LU][-c &lt;备注&gt;][-d &lt;登入目录&gt;][-e &lt;有效期限&gt;][-f &lt;缓冲天数&gt;][-g &lt;群组&gt;][-G &lt;群组&gt;][-l &lt;帐号名称&gt;][-s <shell>][-u <uid>][用户帐号] 
+
+补充说明：usermod可用来修改用户帐号的各项设定。 
+
+参　　数： 
+
+　-c&lt;备注&gt; 　修改用户帐号的备注文字。 
+　-d登入目录&gt; 　修改用户登入时的目录。 
+　-e&lt;有效期限&gt; 　修改帐号的有效期限。 
+　-f&lt;缓冲天数&gt; 　修改在密码过期后多少天即关闭该帐号。 
+　-g&lt;群组&gt; 　修改用户所属的群组。 
+　-G&lt;群组&gt; 　修改用户所属的附加群组。 
+　-l&lt;帐号名称&gt; 　修改用户帐号名称。 
+　-L 　锁定用户密码，使密码无效。 
+　-s<shell> 　修改用户登入后所使用的shell。 
+　-u<uid> 　修改用户ID。 
+　-U 　解除密码锁定。 
+
+
+应用举例： 
+
+1、将 newuser2 添加到组 staff 中 
+# usermod -G staff newuser2 
+2、修改 newuser 的用户名为 newuser1 
+# usermod -l newuser1 newuser 
+3、锁定账号 newuser1 
+# usermod -L newuser1 
+4、解除对 newuser1 的锁定 
+# usermod -U newuser1
+
+</uid></shell></uid></shell></PRE>
+<H3>chfn 更改用户的finger （不常用）</H3>
+<PRE class="brush: bash;">语　　法：chfn [-f &lt;真实姓名&gt;][-h &lt;家中电话&gt;][-o &lt;办公地址&gt;][-p &lt;办公电话&gt;][-uv][帐号名称] 
+　 补充说明：chfn指令可用来更改执行finger指令时所显示的信息。若不指定任何参数，则chfn指令会进入问答式界面。
+                linux系统提供的finger命令显示的4中信息为、姓名、工作地址、帮工电话和家庭电话，它们可以被chfn命令改变. 
+　 参　　数： 
+　 
+　 -f&lt;真实姓名&gt;或--full-name&lt;真实姓名&gt; 　设置真实姓名。 
+　 
+　 -h&lt;家中电话&gt;或--home-phone&lt;家中电话&gt; 　设置家中的电话号码。 
+　 
+　 -o&lt;办公地址&gt;或--office&lt;办公地址&gt; 　设置办公室的地址。 
+　 
+　 -p&lt;办公电话&gt;或--office-phone&lt;办公电话&gt; 　设置办公室的电话号码。 
+　 
+　 -u或--help 　在线帮助。 
+　 -v或-version 　显示版本信息。 
+
+修改完后，就会在/etc/passwd文件中的test的那一行第五个字段中看到相关信息了，默认是空的。
+</PRE>
+<H3>passwd：修改用户密码</H3>
+<DIV>
+<DIV align="center"><IMG alt="图片不存在" 
+src="用户组、用户相关命令_files/20150502-01.png"></DIV>
+<DIV align="center"><FONT>修改密码</FONT></DIV></DIV>
+<PRE class="brush: bash;">等创建完账户后，默认是没有设置密码的，虽然没有密码，但该账户同样登录不了系统。只有设置好密码后方可登录系统。
+passwd 后面不跟用户名则是更改当前用户的密码，当前用户为root，所以此时修改的是root的密码，后面跟test则修改的是test的密码。
+</PRE>
+<H3>su ：切换用户</H3>
+<PRE class="brush: bash;">语法为： su [-] username
+
+加”-“后会连同用户的环境变量一起切换过来。su test 后虽然切换到了test用户，但是当前目录还是切换前的/root目录，
+然后当用su - test时切换用户后则到了test的家目录/home/test。当用root切换普通用户时，是不需要输入密码的。
+这也体现了root用户至高无上的权利
+
+</PRE>
+<P 
+style="text-indent: 0.8cm;">用su是可以切换用户身份，如果每个普通用户都能切换到root身份，如果某个用户不小心泄漏了root的密码，那岂不是系统非常的不安全？没有错，为了改进这个问题，产生了sudo这个命令。使用sudo执行一个root才能执行的命令是可以办到的，但是需要输入密码，这个密码并不是root的密码而是用户自己的密码。默认只有root用户能使用sudo命令，普通用户想要使用sudo，是需要root预先设定的，即，使用visudo命令去编辑相关的配置文件/etc/sudoers。如果没有visudo这个命令，请使用” 
+yum install -y sudo”安装。 </P>
+<DIV>
+<DIV align="center"><IMG alt="图片不存在" 
+src="用户组、用户相关命令_files/20150502-02.png"></DIV>
+<DIV align="center"><FONT>默认root能够sudo是因为这个文件中有一行” root ALL=(ALL) ALL” 在该行下面加入” 
+test ALL=(ALL) 
+ALL”就可以让test用户拥有了sudo的权利。如果每增加一用户就设置一行，这样太麻烦了。所以你可以这样设置。</FONT></DIV></DIV>
+<DIV>
+<DIV align="center"><IMG alt="图片不存在" 
+src="用户组、用户相关命令_files/20150502-03.png"></DIV>
+<DIV 
+align="center"><FONT>把这一行前面的”#”去掉，让这一行生效。它的意思是，wheel这个组的所有用户都拥有了sudo的权利。接下来就需要你把想让有sudo权利的所有用户加入到wheel这个组中即可。</FONT></DIV></DIV>
+<DIV>
+<DIV align="center"><IMG alt="图片不存在" 
+src="用户组、用户相关命令_files/20150502-04.png"></DIV></DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

@@ -1,0 +1,235 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0091)http://172.13.19.31:6060/note_html/服务器/CentOS/11102-linux系统日常管理-linux的防火墙.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>linux系统日常管理-linux的防火墙</TITLE> <LINK href="linux系统日常管理-linux的防火墙_files/standalone.css" 
+rel="stylesheet"> <LINK href="linux系统日常管理-linux的防火墙_files/overlay-apple.css" 
+rel="stylesheet"> <LINK href="linux系统日常管理-linux的防火墙_files/article_edit.css" rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="linux系统日常管理-linux的防火墙_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="linux系统日常管理-linux的防火墙_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">linux系统日常管理-linux的防火墙</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-11-24 16:25:07</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>selinux</H3>
+<DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>Selinux是Redhat/CentOS系统特有的安全机制。不过因为这个东西限制太多，配置也特别繁琐所以几乎没有人去真正应用它。所以装完系统，我们一般都要把selinux关闭，以免引起不必要的麻烦。关闭selinux的方法如下：</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-linux的防火墙_files/20150916-01.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>把’SELINUX=enforcing’改成’SELINUX=disabled’，然后重启机器。临时关闭selinux的命令为</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-linux的防火墙_files/20150916-02.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>getenforce命令可以得到selinux的状态，其中有两种（Enforcing|Permissive），前者表示开放，后者表示关闭，但是会发出警告。setenforce用来设置selinux的状态，后面跟0则设置成Permissive后面跟1设置成Enforcing。关闭selinux的命令为setenforce 
+0，但是这只是临时关闭，重启后恢复，想要永久生效，请更改配置文件/etc/selinux/config</FONT></DIV></DIV>
+<P 
+style="color: red; text-indent: 0.8cm;">以上为一般情况下的做法，关于selinux的管理，比较复杂，这里不做讲解。如有兴趣可以搜一搜。 
+</P>
+<H3>iptables</H3>
+<H4>新增端口和删除端口命令</H4>
+<PRE class="brush: bash;">#新增
+sudo iptables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+#删除
+sudo iptables -D INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+#新增和删除命令内容必须一样，唯一的区别就是-I和-D的区别
+</PRE>
+<P 
+style="text-indent: 0.8cm;">Iptables是linux上特有的防火墙机制，其功能非常强大，日常的管理工作中一般仅仅用到了一两个应用，这并不代表iptables不重要。作为一个网络管理员，iptables是必要要熟练掌握的。但是作为系统管理员，我们也应该会最基本的iptables操作，认识iptables的基本规则 
+</P>
+<H4>iptalbes的三个表</H4>
+<UL>
+  <LI>filter 
+  ：这个表主要用于过滤包的，是系统预设的表，这个表也是用的最多的。内建三个链INPUT、OUTPUT以及FORWARD。INPUT作用于进入本机的包；OUTPUT作用于本机送出的包；FORWARD作用于那些跟本机无关的包。</LI>
+  <LI>nat ：主要用处是网络地址转换，也有三个链。PREROUTING 
+  链的作用是在包刚刚到达防火墙时改变它的目的地址，如果需要的话。OUTPUT链改变本地产生的包的目的地址。POSTROUTING链在包就要离开防火墙之前改变其源地址。该表用的不多，但有时候会用到。</LI>
+  <LI>mangle 
+  ：这个表主要是用于给数据包打标记，然后根据标记去操作哪些包。这个表几乎不怎么用。除非你想成为一个高级网络工程师，否则你就没有必要花费很多心思在它上面。</LI></UL>
+<H4>iptables 基本语法</H4>
+<OL>
+  <LI>查看规则以及清除规则   
+  <DIV>
+  <DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-linux的防火墙_files/20150916-03.png"></DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>如上图，-t 后面跟表名，-nvL 
+  即查看该表的规则，其中-n表示不针对IP反解析主机名；-L表示列出的意思；而-v表示列出的信息更加详细。如果不加-t 
+  ，则打印filter表的相关信息</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-linux的防火墙_files/20150916-04.png"></DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>这个和-t filter 
+  打印的信息是一样的。关于清除规则的命令中，用的最多就是</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-linux的防火墙_files/20150916-05.png"></DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>不加-t默认是针对表filter来操作的，-F 
+  表示把所有规则全部删除；-Z表示把包以及流量计数器置零</FONT></DIV></DIV></LI>
+  <LI>增加/删除一条规则   
+  <DIV>
+  <DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-linux的防火墙_files/20150916-06.png"></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>这就是增加了一条规则，省略-t所以针对的是filter表。-A 
+  表示增加一条规则，另外还有-I 表示插入一条规则，-D删除一条规则；后面的INPUT即链名称，还可以是OUTPUT或者FORWORD；-s 后跟源地址；-p 
+  协议（tcp, udp, icmp）； --sport/--dport 后跟源端口/目标端口；-d 后跟目的IP（主要针对内网或者外网）；-j 
+  后跟动作（DROP即把包丢掉，REJECT即包拒绝；ACCEPT即允许包）。这样讲可能很乱，多举几个例子来帮助理解：</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-linux的防火墙_files/20150916-07.png"></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>上例表示：插入一条规则，把来自10.0.2.36的所有数据包丢掉</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-linux的防火墙_files/20150916-08.png"></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>删除刚刚插入的规则。注意要删除一条规则时，必须和插入的规则一致，也就是说，两条iptables命令，除了-I 
+  和-D不一样外，其他地方都一样</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-linux的防火墙_files/20150916-09.png"></DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>上例表示把来自10.0.2.36 
+  并且是tcp协议到本机的80端口的数据包丢掉。这里要说的是，--dport/--sport 必须要和-p选项一起使用，否则会出错</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-linux的防火墙_files/20150916-10.png"></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>把发送到10.0.2.34的22端口的数据包丢掉。下面做一个小试验：</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-linux的防火墙_files/20150916-11.png"></DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>一开始用本机ping 
+  10.0.2.34是通的，然后使用iptables增加一条规则，使到10.0.2.34的icmp包丢掉，再ping 
+  10.0.2.34则不通了。此时用’iptables –nvL’查看iptalbes规则</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-linux的防火墙_files/20150916-12.png"></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>会有一条这样的记录，看pkts那列显示4个数据包，因为我们ping 
+  的时候给10.0.2.34发送了4个数据包，第二列表示这4个数据包一共有多大（336bytes）。此时使用’iptables -Z' 
+  清零。</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-linux的防火墙_files/20150916-13.png"></DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>现在你明白’iptables 
+  -Z’的意义了吧。至于FORWORD链的应用几乎没有用到过，所以不再举例。再总结一下各个选项的作用：</FONT></DIV></DIV>
+<PRE class="brush: bash;">-A/-D ：增加删除一条规则；
+
+-I ：插入一条规则，其实跟-A的效果一样；
+
+-p ：指定协议，可以是tcp，udp或者icmp；
+
+--dport ：跟-p一起使用，指定目标端口；
+
+--sport ：跟-p一起使用，指定源端口；
+
+-s ：指定源IP（可以是一个ip段）；
+
+-d ：指定目的IP（可以是一个ip段）；
+
+-j ：后跟动作，其中ACCEPT表示允许包，DROP表示丢掉包，REJECT表示拒绝包；
+
+-i ：指定网卡（不常用，但有时候能用到）；
+</PRE>
+  <DIV>
+  <DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-linux的防火墙_files/20150916-14.png"></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>上例中表示，把来自10.0.2.0/24这个网段的并且作用在eth0上的包放行。有时候你的服务器上iptables过多了，想删除某一条规则时，又不容易掌握当时创建时的规则。其实有一种比较简单的方法：</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-linux的防火墙_files/20150916-15.png"></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>看到上图中红框标出的部分了吧，现在所有进来的数据包全部DROP了。这个策略一旦设定后，只能使用iptables 
+  -P ACCEPT才能恢复成原始状态，而不能使用-F参数。下面笔者针对一个小需求讲述一下这个iptables规则如何设定</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-linux的防火墙_files/20150916-16.png"></DIV></DIV></LI>
+  <LI>nat表的应用   
+  <DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>假设你的机器上有两块网卡eth0和eth1，其中eth0的IP为10.0.2.68 
+  ，eth1的IP为192.168.1.1 。eth0连接了intnet 
+  但eth1没有连接，现在有另一台机器（192.168.1.2）和eth1是互通的，那么如何设置也能够让连接eth1的这台机器能够连接intnet（即能和10.0.2.68互通）?</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-linux的防火墙_files/20150916-17.png"></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>其实就是这样简单的两个命令就能实现上面的需求。第一个命令涉及到了内核参数相关的配置文件，它的目的是为了打开路由转发功能，否则无法实现我们的应用。第二个命令则是iptables对nat表做了一个IP转发的操作，-o 
+  选项后跟设备名，表示出口的网卡，MASQUERADE表示伪装的意思</FONT></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>关于nat表的其他知识有兴趣的话，自己学习咯</FONT></DIV></DIV></LI>
+  <LI>保存以及备份iptalbes规则   
+  <DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>设定的防火墙规则只是保存在内存中，并没有保存到某一个文件中，也就说当系统重启后以前设定的规则就没有了，所以设定好规则后要先保存一下</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-linux的防火墙_files/20150916-18.png"></DIV></DIV></LI></OL>
+<H3>iptables防火墙设置（centOS7）</H3>
+<OL>
+  <LI>
+  <H4>关闭firewall</H4>
+<PRE class="brush: bash;">centOS 7.0默认使用的是firewall作为防火墙，这里改为iptables防火墙。
+#停止firewall
+systemctl stop firewalld.service
+#禁止firewall开机启动
+systemctl disable firewalld.service 
+</PRE></LI>
+  <LI>
+  <H4>安装iptables防火墙</H4>
+<PRE class="brush: bash;">#yum安装
+yum install iptables-services
+</PRE></LI>
+  <LI>
+  <H4>编辑防火墙配置文件</H4>
+<PRE class="brush: bash;">vi /etc/sysconfig/iptables #编辑防火墙配置文件(如果文件不存在，将新建)
+
+# Firewall configuration written by system-config-firewall
+
+# Manual customization of this file is not recommended.
+
+*filter
+
+:INPUT ACCEPT [0:0]
+
+:FORWARD ACCEPT [0:0]
+
+:OUTPUT ACCEPT [0:0]
+
+-A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+-A INPUT -p icmp -j ACCEPT
+
+-A INPUT -i lo -j ACCEPT
+
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT
+
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 80 -j ACCEPT
+
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 3306 -j ACCEPT
+
+-A INPUT -j REJECT --reject-with icmp-host-prohibited
+
+-A FORWARD -j REJECT --reject-with icmp-host-prohibited
+#如果有新增规则，可在此新增一行如下(-A貌似就没有作用了，-I才能有作用，至于原因，有待思考)
+-I INPUT -m state --state NEW -m tcp -p tcp --dport 8080 -j ACCEPT
+COMMIT
+
+#:wq! #保存退出 
+</PRE></LI>
+  <LI>
+  <H4>重启生效</H4>
+<PRE class="brush: bash;">#最后重启防火墙使配置生效
+systemctl restart iptables.service
+ 
+#设置防火墙开机启动 
+systemctl enable iptables.service 
+</PRE></LI></OL>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

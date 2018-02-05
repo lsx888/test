@@ -1,0 +1,226 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0079)http://172.13.19.31:6060/note_html/服务器/CentOS/10601-Linux文件与目录管理.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>Linux文件与目录管理</TITLE> <LINK href="Linux文件与目录管理_files/standalone.css" rel="stylesheet"> 
+<LINK href="Linux文件与目录管理_files/overlay-apple.css" rel="stylesheet"> <LINK href="Linux文件与目录管理_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="Linux文件与目录管理_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="Linux文件与目录管理_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">Linux文件与目录管理</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-08-20 11:45:42</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>绝对路径和相对路径</H3>
+<P style="text-indent: 0.8cm;"><SPAN 
+style="color: rgb(255, 0, 0);">绝对路径</SPAN>：路径的写法一定由根目录”/”写起，例如/usr/local/mysql 
+这就是绝对路径。</P>
+<P style="text-indent: 0.8cm;"><SPAN 
+style="color: rgb(255, 0, 0);">相对路径</SPAN>：路径的写法不是由根目录”/”写起，例如，首先用户进入到/ 
+然后再进入到home ，命令为 cd /home 然后 cd test 此时用户所在的路径为 /home/test 。第一个cd命令后跟 /home 
+第二个cd命令后跟test ，并没有斜杠，这个test是相对于/home 目录来讲的，所以叫做相对路径。</P>
+<H3>文件的所属主以及所属组</H3>
+<P style="text-indent: 0.8cm;">一个linux目录或者文件，都会有一个所属主和所属组。 </P>
+<UL>
+  <LI>所属主：即文件的拥有者</LI>
+  <LI>所属组：即该文件所属主所在的一个组</LI></UL>Linux这样设置文件属性的目的是为了文件的安全。 
+<P></P>
+<P style="text-indent: 0.8cm;">例如，test文件的所属主是user0 
+而test1文件的所属主是user1，那么user1是不能查看test文件的，相应的user0也不能查看test1文件。然后有这样一个应用，我想创建一个文件同时让user0和user1来查看怎么办呢？
+ 这时“所属组”就派上用场了。即，创建一个群组users，让user0和user1同属于users组，然后建立一个文件test2，且其所属组为users，那么user0和user1都可以访问test2文件。 
+Linux文件属性不仅规定了所属主和所属组，还规定了所属主（user）、所属组(group)以及其他用户（others）对该文件的权限。你可以通过ls -l 
+来查看这些属性。</P>
+<H3>linux文件属性</H3>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="Linux文件与目录管理_files/20150521-03.png"></DIV>
+<DIV align="left"><FONT>使用ls -l(ll)命令查看文件属性</FONT></DIV></DIV>
+<P style="text-indent: 0.8cm;">用ls –l 查看当前目录下的文件时，共显示了9列内容（用空格划分列） </P>
+<UL>
+  <LI>第一列：包含的东西有该文件类型和所属主、所属组以及其他用户对该文件的权限。第一列共10位。</LI>
+  <LI>第2列，表示为连接占用的节点（inode），若为目录时，通常与该目录地下还有多少目录有关系</LI>
+  <LI>第3列，表示该文件的所属主。</LI>
+  <LI>第4列，表示该文件的所属组。</LI>
+  <LI>第5列，表示该文件的大小。</LI>
+  <LI>第6列、第7列和第8列为该文件的创建日期或者最近的修改日期，分别为月份日期以及时间。</LI>
+  <LI>第9列，文件名。如果前面有一个. 则表示该文件为隐藏文件。</LI></UL>
+<H3>linux文件的权限</H3>
+<P style="text-indent: 0.8cm;">上面所说的第一列，包括10位 </P>
+<UL>
+  <LI>第1位：用来描述该文件的类型。   
+  <UL>
+    <LI>d 表示该文件为目录</LI>
+    <LI>- 表示该文件为普通文件</LI>
+    <LI>l 表示该文件为连接文件（linux file），软连接即为该类型</LI>
+    <LI>b 表示该文件为块设备文件，比如磁盘分区</LI>
+    <LI>c 表示该文件为串行端口设备，例如键盘、鼠标</LI>
+    <LI>s 表示该文件为套接字文件（socket），用于进程间通信</LI></UL></LI>
+  <LI>第2~4位：文件所属主（user）的权限</LI>
+  <LI>第5~7位：文件所属组（group）的权限</LI>
+  <LI>第8~10位：其他非本群组（other）的权限</LI></UL>
+<H3 style="color: red;">linux文件的权限说明</H3>
+<P style="text-indent: 0.8cm;">后边的9位，每三个为一组。均为rwx 三个参数的组合。其中r 
+代表可读（r用数字4代表），w代表可写（用数字2代表），x代表可执行（用数字1代表）。前三位为所属主（user）的权限，中间三位为所属组（group）的权限，
+ 最后三位为其他非本群组（others）的权限。下面拿一个具体的例子来述说一下。 一个文件的属性为-rwxr-xr-- 
+，它代表的意思是，该文件为普通文件，文件拥有者可读可写可执行，文件所属组对其可读不可写可执行，其他用户对其只可读。
+ 对于一个目录来讲，打开这个目录即为执行这个目录，所以任何一个目录必须要有x权限才能打开并查看该目录。例如一个目录的属性为 drwxr--r-- 
+其所属主为root，那么除了root外的其他用户是不能打开这个目录的。 </P>
+<H3 style="color: red;">修改文件的权限</H3>
+<H4>更改所属组 chgrp</H4>
+<P style="text-indent: 0.8cm;">语法：chgrp [组名] [文件名] </P>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="Linux文件与目录管理_files/20150729-01.png"></DIV>
+<DIV align="left"><FONT>更改所属组</FONT></DIV></DIV>
+<H4>更改文件的所属主 chown</H4>
+<PRE class="brush: bash;">语法：chown [ -R ] 账户名 文件名
+chown [ -R ] 账户名：组名 文件名
+这里的-R选项只作用于目录，作用是级联更改，即不仅更改当前目录，连目录里的目录或者文件全部更改。
+</PRE>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="Linux文件与目录管理_files/20150729-02.png"></DIV>
+<DIV align="left"><FONT>更改所属主</FONT></DIV></DIV>
+<P style="text-indent: 0.8cm;">
+上例中，首先建立一个目录test，然后在test目录下创建一个普通文件test2，因为是以root的身份创建的目录和文件，所以所属主以及所属组都是root。chown 
+user1 test 这使test的目录所属主由root变为了user1 ，然后test目录下的test2文件所属主以及所属组还是root。接着 chown 
+–R user1:testgroup test 这样把test连同test目录下的test2 的所属主以及所属组都改变了。 </P>
+<H4>改变用户对文件的读写执行权限 chmod</H4>
+<PRE class="brush: bash;">在linux中为了方便更改这些权限，linux使用数字去代替rwx ，具体规则为r: 4 w:2 x:1 -:0 举个例子，-rwxrwx---用数字表示就是 770，具体是这样来的：
+
+rwx = 4+2+1=7; rwx= 4+2+1=7; --- = 0+0+0=0
+
+chmod 语法： chmod [-R] xyz 文件名 （这里的xyz，表示数字）
+
+-R 选项作用同chown，级联更改。
+
+值得提一下的是，在linux系统中，默认一个目录的权限为 755，而一个文件的默认权限为644.
+
+如果你创建了一个目录，而该目录不想让其他人看到内容，则只需设置成 rwxr----- (740) 即可。
+
+</PRE>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="Linux文件与目录管理_files/20150729-03.png"></DIV>
+<DIV align="left"><FONT>chmod更改权限</FONT></DIV></DIV>
+<PRE class="brush: bash;">chmod 还支持使用rwx的方式来设置权限。！从之前的介绍中我们可以发现，基本上就九个属性分别是(1)user (2)group (3)others 三群！
+那么我们就可以藉由 u, g, o 来代表三群的属性！此外， a 则代表 all 亦即全部的三群！那么读写的属性就可以写成了 r, w, x！也就是可以使用底下的方式来
+</PRE>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="Linux文件与目录管理_files/20150729-04.png"></DIV>
+<DIV align="left"><FONT>chmod更改权限</FONT></DIV></DIV>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="Linux文件与目录管理_files/20150729-05.png"></DIV>
+<DIV align="left"><FONT>设置权限rwxr-xr-x (755)</FONT></DIV></DIV>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="Linux文件与目录管理_files/20150729-06.png"></DIV>
+<DIV align="left"><FONT>针对u, g, o, a增加或者减少某个权限（读，写，执行）</FONT></DIV></DIV>
+<H4>umask</H4>
+<PRE class="brush: bash;">上边也提到了默认情况下，目录权限值为766，普通文件权限值为644。那么这个值是由谁规定呢？追究其原因就涉及到了umask。
+
+umask语法： umask xxx （这里的xxx代表三个数字）
+
+查看umask值只要输入umask然后回车。 umask预设是022，其代表什么含义？先看一下下面的规则：
+
+1）若用户建立为普通文件，则预设“没有可执行权限”，只有rw两个权限。最大为666（-rw-rw-rw-）
+
+2）若用户建立为目录，则预设所有权限均开放，即777（drwxrwxrwx）
+
+umask数值代表的含义为，上边两条规则中的默认值（文件为666，目录为777）需要减掉的权限。所以目录的权限为(rwxrwxrwx) – (----w--w-) = (rwxr-xr-x)，
+普通文件的权限为(rw-rw-rw-) – (----w--w-) = (rw-r--r--)。umask的值是可以自定义的，比如设定umask 为 002，你再创建目录或者文件时，
+默认权限分别为(rwxrwxrwx) – (-------w-) = (rwxrwxr-x)和(rw-rw-rw-) – (-------w-) = (rw-rw-r--)。
+umask 可以在/etc/bashrc里面更改，预设情况下，root的umask为022，而一般使用者则为002，因为可写的权限非常重要，因此预设会去掉写权限。
+</PRE>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="Linux文件与目录管理_files/20150729-07.png"></DIV>
+<DIV align="left"><FONT>umask默认要减去的权限</FONT></DIV></DIV>
+<H4>chattr 修改文件的特殊属性</H4>
+<PRE class="brush: bash;">语法： chattr [+-=][ASaci [文件或者目录名]
+
++-= ：分别为增加、减少、设定
+
+A：增加该属性后，文件或目录的atime将不可被修改；
+
+S：增加该属性后，会将数据同步写入磁盘中；
+
+a：增加该属性后，只能追加不能删除，非root用户不能设定该属性；
+
+c：自动压缩该文件，读取时会自动解压；
+
+i：增加后，使文件不能被删除、重命名、设定连接、写入、新增数据；
+</PRE>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="Linux文件与目录管理_files/20150729-08.png"></DIV>
+<DIV align="left"><FONT>增加i属性后不能在该目录中建立文件</FONT></DIV></DIV>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="Linux文件与目录管理_files/20150729-09.png"></DIV>
+<DIV align="left"><FONT>增加a属性后，只能追加不能删除</FONT></DIV></DIV>
+<H4>lsattr 列出文件/目录的特殊属性</H4>
+<PRE class="brush: bash;">语法： lsattr [-aR] [文件/目录名]
+
+-a：类似与ls 的-a 选项，即连同隐藏文件一同列出；
+
+-R：连同子目录的数据一同列出
+</PRE>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="Linux文件与目录管理_files/20150729-10.png"></DIV>
+<DIV align="left"><FONT>列出文件/目录的特殊属性</FONT></DIV></DIV>
+<H3>关于inode</H3>
+<PRE class="brush: bash;">inode 译成中文就是索引节点。每个存储设备或存储设备的分区（存储设备是硬盘、软盘、U盘等等）被格式化为文件系统后，应该有两部份，
+一部份是inode，另一部份是Block，Block是用来存储数据用的。而inode呢，就是用来存储这些数 据的信息，这些信息包括文件大小、属主、
+归属的用户组、读写权限等。inode为每个文件进行信息索引，所以就有了inode的数值。操作系统根据指令， 能通过inode值最快的找到相对应的文件。
+
+做个比喻，比如一本书，存储设备或分区就相当于这本书，Block相当于书中的每一页，inode 就相当于这本书前面的目录，一本书有很多的内容，
+如果想查找某部份的内容，我们可以先查目录，通过目录能最快的找到我们想要看的内容。虽然不太恰当，但还是比较形象。
+
+当我们用ls 查看某个目录或文件时，如果加上-i 参数，就可以看到inode节点了；比如我们前面所说的例子：
+
+[root@localhost test]#  ls -li log2012.log 
+
+2095112 -rw-r--r-- 1 root root 302108 11-13 06:03 log2012.log
+
+log2012.log 的inode值是 2095112 ； 查看一个文件或目录的inode，要通过ls 命令的的 -i参数。
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 2013 ~ 2015 作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

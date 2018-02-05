@@ -1,0 +1,210 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0074)http://172.13.19.31:6060/note_html/服务器/CentOS/10302-设置开机自启动.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>设置开机自启动</TITLE> <LINK href="设置开机自启动_files/standalone.css" rel="stylesheet"> 
+<LINK href="设置开机自启动_files/overlay-apple.css" rel="stylesheet"> <LINK href="设置开机自启动_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="设置开机自启动_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="设置开机自启动_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">设置开机自启动</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-11-20 15:21:48</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>/etc/rc.local</H3>
+<PRE class="brush: bash;">这是一个最简单的方法，编辑“/etc/rc.local”，把启动程序的shell命令输入进去即可（要输入命令的全路径），类似于windows下的“启动”。
+
+使用命令 vi  /etc/rc.local   
+
+然后在文件最后一行添加要执行程序的全路径。
+
+例如，每次开机时要执行一个haha.sh，这个脚本放在/opt下面，那就可以在“/etc/rc.local”中加一行“/opt/./haha.sh”，或者两行“cd /opt”和“./haha.sh”。
+</PRE>
+<H3>crontab</H3>
+<PRE class="brush: bash;">通过crontab可以设定程序的执行时间表，例如让程序在每天的8点，或者每个星期一的10点执行一次。(关于crontab，请参考crontab的命令说明)。
+使用crontab有一个问题，如果程序已经启动呢？这个可以通过启动的脚本判断。这里不再多说。
+</PRE>
+<H3>设置服务自启动</H3>
+<PRE class="brush: bash;">设置服务自启动有三种方式：
+
+ln -s                  在/etc/rc.d/rc*.d目录中建立/etc/init.d/服务的软链接(*代表0～6七个运行级别之一）
+
+chkonfig               命令行运行级别设置
+
+ntsysv                 伪图形运行级别设置
+
+ 
+
+注意：     1.这三种方式在不同的linux版本上可能不同（如：redHat、CentOS等）
+
+           2.如果还不知道运行级别是什么，请查看前一章
+</PRE>
+<H4>第一种方式：ln -s 建立启动软连接</H4>
+<DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>在Linux中有7种运行级别（可在/etc/inittab文件设置），每种运行级别分别对应着/etc/rc.d/rc[0~6].d这7个目录</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="设置开机自启动_files/20151120-01.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>注意：/etc/rc[0~6].d其实是/etc/rc.d/rc[0~6].d的软连接，主要是为了保持和Unix的兼容性才做此策</FONT></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>这7个目录中，每个目录分别存放着对应运行级别加载时需要关闭或启动的服务</FONT></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>由详细信息可以知道，其实每个脚本文件都对应着/etc/init.d/目录下具体的服务</FONT></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>K开头的脚本文件代表运行级别加载时需要关闭的，S开头的代表需要执行</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="设置开机自启动_files/20151120-02.png"></DIV></DIV>
+<PRE class="brush: bash;">因此，当我们需要开机启动自己的脚本时，只需要将可执行脚本丢在/etc/init.d目录下，然后在/etc/rc.d/rc*.d中建立软链接即可
+
+[root@localhost ~]# ln -s /etc/init.d/sshd /etc/rc.d/rc3.d/S100ssh
+
+此处sshd是具体服务的脚本文件，S100ssh是其软链接，S开头代表加载时自启动
+
+如果需要在多个运行级别下设置自启动，则需建立多个软链接
+
+这种方式比较繁琐，适用于自定义的服务脚本
+
+如果系统中已经存在某些服务（比如安装apache时就会有httpd服务项），可以使用下面的两种方式
+</PRE>
+<H4>第二种方式：chkconfig（注册系统服务）</H4>
+<PRE class="brush: bash;">操作系统自带的服务，如ssh，ftp等等，开机都是自动启动的，我们也可以通过这种方式让自己开发的程序提高“身价”。
+
+ 
+
+比如我想把某个已经安装了的服务添加为系统服务，可以执行以下命令：
+
+chkconfig --add 服务名称          (首先，添加为系统服务,注意add前面有两个横杠)
+
+ 
+
+chkconfig -leve 启动级别 服务名 on         
+
+（说明，3级别代表在命令行模式启动，5级别代表在图形界面启动，on表示开启）
+
+ 
+
+chkconfig -leve 启动级别 服务名 off              
+
+（说明，off表示关闭自启动）
+
+ 
+
+例如：chkconfig -level 3 mysql on                     (说明：让mysql服务在命令行模式，随系统启动)
+
+也可以使用   chkconfig --add 服务名称    来删除系统服务
+
+#******************************************************************************************
+
+如果要查看哪些服务被添加为系统服务可以使用命令 ：
+
+   ntsysv  或者chkconfig --list
+
+ 
+
+如果要查看哪些程序被添加为自启动，可以使用命令  ：
+
+cat   /etc/rc.local    （查看这个文件中添加了哪些程序路径）
+
+#*******************************************************************************************
+
+ 
+
+ 下面举例说说，如何把一个shell脚本添加为系统服务，并跟随系统启动：
+
+可以看到“/etc/rc.d/init.d”下有很多的文件，每个文件都是可以看到内容的，其实都是一些shell脚本。
+系统服务的启动就是通过“/etc/rc.d/init.d”中的脚本文件实现的。我们也可以写一个自己的脚本放在这里。
+脚本文件的内容也很简单，类似于这个样子（例如起个名字叫做“hahad”）：
+. /etc/init.d/functions
+start() {
+        echo "Starting my process "
+        cd /opt
+        ./haha.sh
+}
+stop() {
+        killall haha.sh
+        echo "Stoped"
+}
+写了脚本文件之后事情还没有完，继续完成以下几个步骤：
+chmod +x hahad                    #增加执行权限
+chkconfig --add hahad             #把hahad添加到系统服务列表
+chkconfig hahad on                 #设定hahad的开关（on/off）
+chkconfig --list hahad               #就可以看到已经注册了hahad的服务
+ 
+这时候才完成了全部工作。
+</PRE>
+<DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>如果需要自启动某些服务，只需使用chkconfig 服务名 
+on即可，若想关闭，将on改为off</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="设置开机自启动_files/20151120-03.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>在默认情况下，chkconfig会自启动2345这四个级别，如果想自定义可以加上--level选项</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="设置开机自启动_files/20151120-04.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>上面我们先将sshd服务的所有启动级别关闭，然后使用--level选项启动自定义级别</FONT></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>Tips：--list选项可查看指定服务的启动状态，chkconfig不带任何选项则查看所有服务状态</FONT></DIV></DIV>
+<H3>第三种方式：ntsysv 伪图形</H3>
+<DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>ntsysv和chkconfig其实是一样的，只不过加上了图形而已。启动ntsysv有两种方式，一是直接在命令行中输入ntsysv，二是使用setup命令，然后选择系统服务</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="设置开机自启动_files/20151120-05.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>默认情况下，当前运行级别为多少，在ntsysv中设置的启动服务的级别便是多少。比如，我当前的运行级别是3,那么我在伪图形界面中选择启动服务后，它的运行级别也会是3</FONT></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>如果想自定义运行级别可使用ntsysv 
+--level方式</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="设置开机自启动_files/20151120-06.png"></DIV></DIV>
+<H3>总结</H3>
+<PRE class="brush: bash;">以上三种操作需要保证服务脚本文件可执行，并且要有root权限
+
+其中，第一种方式多用于自定义脚本，第二、三种多用于系统已存在的服务
+
+比如ftp、samba、ssh、httpd等等
+
+并且，要做相关设置需要弄清楚运行级别的问题
+</PRE>
+<DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>如果想手动启动某服务，传统的方式是 /etc/init.d 
+服务名 start</FONT></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>实际上还可以这样，service 服务名 
+start</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="设置开机自启动_files/20151120-07.png"></DIV></DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

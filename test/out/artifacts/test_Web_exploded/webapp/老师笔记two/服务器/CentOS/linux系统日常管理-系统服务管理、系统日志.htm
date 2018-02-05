@@ -1,0 +1,96 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0100)http://172.13.19.31:6060/note_html/服务器/CentOS/11103-linux系统日常管理-系统服务管理、系统日志.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>linux系统日常管理-系统服务管理、系统日志</TITLE> <LINK href="linux系统日常管理-系统服务管理、系统日志_files/standalone.css" 
+rel="stylesheet"> <LINK href="linux系统日常管理-系统服务管理、系统日志_files/overlay-apple.css" 
+rel="stylesheet"> <LINK href="linux系统日常管理-系统服务管理、系统日志_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="linux系统日常管理-系统服务管理、系统日志_files/shCoreEclipse.css" 
+rel="stylesheet">	 <LINK href="linux系统日常管理-系统服务管理、系统日志_files/my-highlighter.css" 
+rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">linux系统日常管理-系统服务管理、系统日志</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-09-16 16:29:06</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>linux的系统服务管理</H3>
+<H4>ntsysv</H4>
+<DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>用来配置哪些服务开启或者关闭，有点想图形界面，不过是使用键盘来控制的。如果没有这个命令请使用 
+yum install -y ntsysv 安装它</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-系统服务管理、系统日志_files/20150916-19.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>敲完这个命令后则显示出如上图中的画面。在屏幕的最上面有’Red 
+Hat’等字样，这是在告诉我们这个工具是由Red 
+Hat公司开发的。按键盘的上下方向键可以调节红色光标，按空格可以选择开启或者不开启，如果前面的中括号内显示有’*’ 
+则表示开启否则不开启。通过这个工具也可以看到目前系统中所有的服务。建议除’crond, iptables, network, sshd, syslog, 
+irqbalance, sendmail, microcode_ctl’ 
+外其他服务全部停掉。选择好后，按’tab’键选择ok然后回车。需要重启机器才能生效。</FONT></DIV></DIV>
+<H4>chkconfig</H4>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-系统服务管理、系统日志_files/20150916-20.png"></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-系统服务管理、系统日志_files/20150916-21.png"></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-系统服务管理、系统日志_files/20150916-22.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>这个功能常用在把自定义的启动脚本加入到系统服务当中</FONT></DIV></DIV>
+<H3>linux系统日志</H3>
+<P style="text-indent: 0.8cm;">
+日志重要吗？必须的，没有日志你怎么知道你的系统状况？没有日志你如何排查一个trouble？日志记录了系统每天发生的各种各样的事情，你可以通过他来检查错误发生的原因，或者受到攻击时攻击者留下的痕迹。日志主要的功能有：审计和监测。他还可以实时的监测系统状态，监测和追踪侵入者等等。 
+</P>
+<P style="text-indent: 0.8cm;">常查看的日志文件为/var/log/message. 
+它是核心系统日志文件，包含了系统启动时的引导消息，以及系统运行时的其他状态消息。IO 
+错误、网络错误和其他系统错误都会记录到这个文件中。另外其他信息，比如某个人的身份切换为 
+root以及用户自定义安装的软件（apache）的日志也会在这里列出。通常，/var/log/messages 
+是在做故障诊断时首先要查看的文件。那你肯定会说了，这么多日志都记录到这个文件中，那如果服务器上有很多服务岂不是这个文件很快就会写的很大，没有错，但是系统有一个日志轮询的机制，每星期切换一个日志，变成message.1, 
+message.2,…messages.4 
+连同message一共有5个这样的日志文件。这是通过logrotate工具的控制来实现的，它的配置文件是/etc/logrotate.conf. 
+如果没有特殊需求请不要修改这个配置文件。 </P>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-系统服务管理、系统日志_files/20150916-23.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>/var/log/message是由syslogd这个守护进程产生的，如果停掉这个服务则系统不会产生/var/log/message，所以这个服务不要停。Syslogd服务的配置文件为/etc/syslog.conf这个文件定义了日志的级别，具体详细的东西笔者不再阐述，因为若没有特殊需求是不需要修改这个配置文件的，请使用”man 
+syslog.conf” 获得更多关于它的信息</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-系统服务管理、系统日志_files/20150916-24.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>除了关注/var/log/message外，你还应该多关注一下’dmesg’这个命令，它可以显示系统的启动信息，如果你的某个硬件有问题（比如说网卡）用这个命令也是可以看到的</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-系统服务管理、系统日志_files/20150916-25.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>日常的管理工总中要养成多看日志的习惯，尤其是一些应用软件的日志，比如apache, mysql, 
+php等常用的软件，看它们的日志（错误日志）可以帮助你排查问题以及监控它们的运行状况是否良好。</FONT></DIV></DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

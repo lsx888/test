@@ -1,0 +1,149 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0079)http://172.13.19.31:6060/note_html/Java/JavaSE/1016010-JavaSE-IO输入输出流.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>JavaSE-IO输入输出流</TITLE> <LINK href="JavaSE-IO输入输出流_files/standalone.css" 
+rel="stylesheet"> <LINK href="JavaSE-IO输入输出流_files/overlay-apple.css" rel="stylesheet"> 
+<LINK href="JavaSE-IO输入输出流_files/article_edit.css" rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="JavaSE-IO输入输出流_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="JavaSE-IO输入输出流_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">JavaSE-IO输入输出流</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-07-08 10:05:00</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>分类与继承结构</H3>
+<DIV>
+<DIV align="center"><IMG alt="图片不存在" 
+src="JavaSE-IO输入输出流_files/20160603-01.png"></DIV>
+<DIV align="center" style="padding: 5px 0px;"><FONT>分类</FONT></DIV></DIV>
+<DIV>
+<DIV align="center"><IMG alt="图片不存在" 
+src="JavaSE-IO输入输出流_files/20160603-02.png"></DIV>
+<DIV align="center" style="padding: 5px 0px;"><FONT>字节流</FONT></DIV></DIV>
+<DIV>
+<DIV align="center"><IMG alt="图片不存在" 
+src="JavaSE-IO输入输出流_files/20160603-03.png"></DIV>
+<DIV align="center" style="padding: 5px 0px;"><FONT>字符流</FONT></DIV></DIV>
+<DIV id="content_div_1">
+<H3>字节流(InputStream/OutputStream抽象类)</H3>
+<UL>
+  <LI>FileInputStream/FileOutputStream：字节文件输入、输出流。</LI>
+  <LI>ByteArrayInputStream/ByteArrayOutputStream：内存输入、输出流</LI>
+  <LI>PipedInputStream/PipedOutputStream：管道流。主要用于进行两个线程间的通信，如果要进行管道输出，必须把输出流连在输入流上，在PipedInputStream类上用如下方法连接管道。public 
+  void connect(PipedInputStream snk)throws IOException</LI>
+  <LI>PrintStream：字节打印流</LI>
+  <LI>DataOutputStream/DataInputStream：数据输入、输出流</LI>
+  <LI>ObjectInputStream/ObjectOutputStream：对象输入/输出流</LI>
+  <LI>ZipOutputStream/ZipInputStream：压缩流</LI>
+  <LI>SequenceInputStream：合并流，合并两个输入流。</LI>
+  <LI>PushbackInputStream：回退流，可以将不需要的数据回退到数据缓冲区中以待重新读取。</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_2">
+<H3>字符流(Reader/Writer抽象类)</H3>
+<UL>
+  <LI>InputStreamReader/OutputStreamWriter：转换流，将字节流转换为字符流。</LI>
+  <LI>FileReader/FileWriter：字符文件输入、输入流。</LI>
+  <LI>PrintWriter：字符打印流。</LI>
+  <LI>BufferedReader/BufferedWriter：缓冲输入输出流</LI>
+  <LI>PushbackReader：字符回退流</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_3">
+<H3>System类提供了3个支持IO操作的常量：</H3>
+<UL>
+  <LI>System.out：是PrintStream对象，可以使用System.setOut()方法重定向。</LI>
+  <LI>System.err：PrintStream对象，可以使用System.setErr()重定向。</LI>
+  <LI>System.in：InputStream对象，可以使用System.setIn()重定向。</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_4">
+<H3>压缩流</H3>
+<H4 style="text-indent: 0.8cm;">JAR压缩的支持类保存在java.util.jar包中，常用类有如下几个：</H4>
+<UL>
+  <LI>JAR压缩输出流：JarOutputStream</LI>
+  <LI>JAR压缩输入流：JarInputStream</LI>
+  <LI>JAR文件：JARFile</LI>
+  <LI>JAR实体：JAREntry</LI></UL>
+<H4 
+style="text-indent: 0.8cm;">GZIP是用于UNIX系统的文件压缩，在Linux中经常会使用到*.gz的文件，就是GZIP格式，GZIP格式的支持类保存在java.util.zip包中：</H4>
+<UL>
+  <LI>GZIP压缩输出流：GZIPOutputStream</LI>
+  <LI>GZIPInputStream</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_5">
+<H3>字符编码</H3>
+<UL>
+  <LI>ISO8859-1：属于单字节编码，最多只能表示0—255的字符范围，主要在英文上应用。</LI>
+  <LI>GBK/GB2312：中文的国际编码，专门用来表示汉字，是双字节编码，如果在此编码中出现中文，则使用ISO8859-1编码，GBK可以表示简体中文和繁体中文，而GB2312只能表示简体中文，GBK兼容GB2312。</LI>
+  <LI>unicode：java中使用此编码方式，是最标准的一种编码，使用十六进制表示编码，但此编码不兼容ISO8859-1编码。</LI>
+  <LI>UTF：由于unicode不支持ISO8859-1编码，而且容易占用更多的空间，而且对于英文字母也需要使用两个字节编码，这样使用unicode不便于传输和存储，因此产生了UTF编码。UTF编码兼容了ISO8859-1编码，同时也可以用来表示所有的语言字符，不够UTF编码是不定长编码，每一个字符长度为1—6个字节不等，一般在中文网页中使用此编码，可以节省空间。</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_6">
+<H3>对象序列化</H3>
+<P 
+style="text-indent: 0.8cm;">对象序列化就是把一个对象变为二进制数据流的一种方法。反序列化就是反过程，将序列化好的二进制流数据，转换回对象。要序列化的对象必须实现标识性接口Serializable，使其成为可序列化的对象，再使用java 
+IO的ObjectOutputStream的writeObject方法进行序列化操作。</P>
+<H4 style="text-indent: 0.8cm;">序列化应注意：</H4>
+<UL>
+  <LI>对象序列化和对象反序列化操作时的版本兼容问题：在对象进行序列化或反序列化操作时，要考虑JDK的版本问题，如果序列化的JDK版本和反序列化的JDK版本不统一则就有可能造成异常，所以在序列化操作中引入了一个serialVersionUID常量，可以通过此常量来验证版本的一致性。在进行反序列化是，JVM会把传来的字节流中的serialVersionUID与本地相应实体类的serialVersionUID进行比较，如果相同就认为是一致的，可以进行反序列化，否则就会出现序列化版本不一致异常。</LI>
+  <LI>transient关键字：在要序列化的对象的类中，如果某个属性被该关键字修饰，那么该属性将不被序列化。</LI>
+  <LI>到底序列化了哪些内容：只有属性被序列化。</LI>
+  <LI>static修饰的属性不会被序列化。</LI>
+  <LI>Externalizable：另外一个序列化接口，实现该接口的writeExternal和readExternal方法，自定义实现类的序列化。该方式可以无视transient关键字而序列化该关键字修饰的属性。</LI>
+  <LI>特殊情况-父类不可序列化而子类可序列化(父类没有实现序列化接口，而子类实现了)：子类从父类继承的属性，不会被序列化。</LI>
+  <LI>序列化过程是否会调用构造方法？<BR></LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_7">
+<H3>对象克隆</H3>
+<UL>
+  <LI>必须实现标识性接口Cloneable</LI>
+  <LI>重写Object类中的protected Object clone()throws 
+  CloneNotSupportedException方法，最好扩大它的访问权限，这样才能被外部调用。</LI>
+  <LI>对该类中的自定义对象属性，需要手动调用该属性的clone方法，才能实现深克隆。这种方式如果属性嵌套很多的话，很麻烦。</LI>
+  <LI>可以使用序列化和反序列化对对象进行深克隆，这中方式代码的重用性很高。</LI></UL></DIV>
+<HR>
+
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

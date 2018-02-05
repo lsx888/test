@@ -1,0 +1,84 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0073)http://172.13.19.31:6060/note_html/web/Javascript/1001060-cookie对象.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>5-cookie对象</TITLE> <LINK href="5-cookie对象_files/standalone.css" rel="stylesheet"> 
+<LINK href="5-cookie对象_files/overlay-apple.css" rel="stylesheet"> <LINK href="5-cookie对象_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="5-cookie对象_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="5-cookie对象_files/my-highlighter.css" rel="stylesheet">     
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+	 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+		
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+	 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+	 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+		
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">5-cookie对象</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-03-26 19:53:16</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV id="content_div_5">
+<H3>Cookie对象(见W3CSchool.chm)</H3>
+<P 
+style="color: red; text-indent: 0.8cm;">是一种以文件形式(Cookie文件)保存在客户端硬盘的Cookie文件夹中的用户数据信息。cookie文件有所访问的web站点建立以长久的保存客户端与web站点间的会话数据，并且该数据只允许被所访问的web站点进行读取。</P>
+<P style="text-indent: 0.8cm;">cookie文件的格式：NS：Cookie.txt。IE：用户名@域名.txt。</P>
+<P style="text-indent: 0.8cm;">写人cookie的格式：document.cookie = 
+"key=value[;expires=有效日期[;....]]"</P></DIV>
+<HR>
+
+<DIV id="content_div_6">
+<H3>设置cookie说明：</H3>
+<UL>
+  <LI style="color: red;">expires有效日期格式：Wdy,DD-Mon-YY HH:MM:SS 
+  GMT(Wdy/Mon：英文星期/月份)</LI>
+  <LI style="color: red;">path属性：控制cookie可以访问的目录.如：document.cookie="userId=320; 
+  path=/"; 表示应用程序根目录。/shop表示shop目录及其子目录可以访问该cookie</LI>
+  <LI 
+  style="color: red;">domain属性：默认情况下，一个主机中创建的cookie在另一个主机下是不能被访问的，但可以通过domain参数来实现对其的控制.如：document.cookie="name=value;domain=.google.com"; 
+  这样，所有google.com下的主机都可以访问该cookie。跨域问题就可以使用该属性解决。</LI>
+  <LI 
+  style="color: red;">secure属性：值为true时，表示为网站使用SSL加密,cookie在http中是无效的；在https中才有效。</LI>
+  <LI>每个web站点(domain)可建立20个cookie数据，每个浏览器可储存300可cookie数据，4字节。</LI>
+  <LI>客户有权禁止cookie数据写入。</LI>
+  <LI 
+  style="color: red;">含多个子键值对的cookie格式是name=key1=value1&amp;key2=value2。可以理解为单键值对的值保存一个自定义的多键值字符串，其中的键值对分割符为&amp;，当然可以自定义一个任意的分隔符</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_7">
+<H3>有两种类型的cookie</H3>
+<UL>
+  <LI>持久性cookie：会被储存到客户端硬盘上。(需要设置expires属性)</LI>
+  <LI>会话cookie：不会储存到客户端硬盘上，而是放在浏览器进程所处的内存中，当浏览器关闭则该会话cookie就销毁了。(servlet的session就是通过该类型的cookie实现)不设置expires属性</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_8">
+<H3>删除cookie</H3>
+<P style="text-indent: 0.8cm;">将cookie的值设置为空，并将过期时间设置为当前时间之前就可了。</P></DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 2013 ~ 2030 作者：zzy</DIV><!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

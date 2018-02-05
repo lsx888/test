@@ -1,0 +1,111 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0073)http://172.13.19.31:6060/note_html/web/Javascript/1001030-js数组对象.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>2-js数组对象</TITLE> <LINK href="2-js数组对象_files/standalone.css" rel="stylesheet"> 
+<LINK href="2-js数组对象_files/overlay-apple.css" rel="stylesheet"> <LINK href="2-js数组对象_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="2-js数组对象_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="2-js数组对象_files/my-highlighter.css" rel="stylesheet">     
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+	 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+		
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+	 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+	 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+		
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">2-js数组对象</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-03-26 18:12:25</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>1、数组的创建</H3>
+<UL>
+  <LI>var arrayObj = new Array();　//创建一个数组</LI>
+  <LI>var arrayObj = new Array([size]);　//创建一个数组并指定长度，注意不是上限，是长度</LI>
+  <LI>var arrayObj = new Array([element0[, element1[, ...[, 
+  elementN]]]]);　//创建一个数组并赋值</LI></UL>
+<H3>3、数组元素的添加</H3>
+<UL>
+  <LI>arrayObj.push([item1 [item2 [. . . [itemN ]]]]);// 
+  将一个或多个新元素添加到数组结尾，并返回数组新长度</LI>
+  <LI>arrayObj.unshift([item1 [item2 [. . . [itemN ]]]]);// 
+  将一个或多个新元素添加到数组开始，数组中的元素自动后移，返回数组新长度</LI>
+  <LI>arrayObj.splice(insertPos,0,[item1[, item2[, . . . 
+  [,itemN]]]]);//将一个或多个新元素插入到数组的指定位置，插入位置的元素自动后移，返回""。</LI></UL>
+<H3>4、数组元素的删除</H3>
+<UL>
+  <LI>arrayObj.pop(); //移除最后一个元素并返回该元素值</LI>
+  <LI>arrayObj.shift(); //移除最前一个元素并返回该元素值，数组中元素自动前移</LI>
+  <LI>arrayObj.splice(deletePos,deleteCount); 
+  //删除从指定位置deletePos开始的指定数量deleteCount的元素，数组形式返回所移除的元素</LI></UL>
+<H3>5、数组的截取和合并</H3>
+<UL>
+  <LI>arrayObj.slice(start, [end]); //以数组的形式返回数组的一部分，注意不包括 end 对应的元素，如果省略 end 
+  将复制 start 之后的所有元素</LI>
+  <LI>arrayObj.concat(addArray); 
+  //将多个数组（也可以是字符串，或者是数组和字符串的混合）连接为一个数组，返回连接好的新的数组</LI></UL>
+<H3>6、数组的拷贝</H3>
+<UL>
+  <LI>arrayObj.slice(0); //返回数组的拷贝数组，注意是一个新的数组，不是指向</LI>
+  <LI>arrayObj.concat(); //返回数组的拷贝数组，注意是一个新的数组，不是指向</LI></UL>
+<SCRIPT type="text/javascript">
+		var tSort = function(){			
+			var sortFn = function(a,b){
+				return b - a;
+			};
+			var arr = [1,3,22];
+			arr.sort();
+			alert("默认排序规则："+arr.join("->"));
+			arr.sort(sortFn);
+			alert("自定义排序规则："+arr.join("->"));
+		};
+	
+	</SCRIPT>
+ 
+<H3>7、数组元素的排序</H3>
+<UL>
+  <LI>arrayObj.reverse(); //反转元素（最前的排到最后、最后的排到最前），返回数组地址</LI>
+  <LI>arrayObj.sort(); //对数组元素排序，返回数组地址<A onclick="tSort();" href="javascript:void(0)">点击查看结果</A> 
+    
+<PRE class="brush: js;">				//默认排序规则为，将数组中的数据用toString方法变成String类型，再进行比较。
+			//我们可以自定义排序规则，这和java中的Comparable接口差不多。如：
+			var sortFn = function(a,b){
+				return b - a;
+			};
+			var arr = [1,3,22];
+			arr.sort();
+			alert("默认排序规则："+arr.join("-&gt;"));
+			arr.sort(sortFn);
+			alert("自定义排序规则："+arr.join("-&gt;"));
+		</PRE></LI></UL>
+<H3>8、数组元素的字符串化</H3>
+<UL>
+  <LI>arrayObj.join(separator); //返回字符串，这个字符串将数组的每一个元素值连接在一起，中间用 separator 
+  隔开。</LI></UL>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 2013 ~ 2030 作者：zzy</DIV><!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

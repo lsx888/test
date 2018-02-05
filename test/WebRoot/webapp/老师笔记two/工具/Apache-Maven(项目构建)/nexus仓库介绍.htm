@@ -1,0 +1,93 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0091)http://172.13.19.31:6060/note_html/工具/Apache-Maven（项目构建）/1007010-nexus仓库介绍.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>nexus仓库介绍</TITLE> <LINK href="nexus仓库介绍_files/standalone.css" rel="stylesheet"> 
+<LINK href="nexus仓库介绍_files/overlay-apple.css" rel="stylesheet"> <LINK href="nexus仓库介绍_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="nexus仓库介绍_files/shCoreEclipse.css" 
+rel="stylesheet">	 <LINK href="nexus仓库介绍_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">nexus仓库介绍</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-01-30 21:46:52</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>nexus仓库分类</H3>
+<H4>Nexus 的仓库分如下几类：</H4>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" src="nexus仓库介绍_files/20160130-01.png"></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="nexus仓库介绍_files/20160130-02.png"></DIV></DIV>
+<UL>
+  <LI>hosted 宿主仓库：主要用于部署无法从公共仓库获取的构件（如 oracle 的 JDBC 驱动）以及自己或第三方的项目构件；    
+  <UL>
+    <LI>3rd party：第三方的项目构件（如 oracle 的 JDBC 驱动），不能从公共仓库下载到，就需要将其部署到自己的仓库中。</LI>
+    <LI>Releases：部署我们自己的release构件</LI>
+    <LI>Snapshots：部署我们自己的snapshot构件</LI></UL></LI>
+  <LI>proxy 代理仓库：代理公共的远程仓库；</LI>
+  <LI>virtual 虚拟仓库：用于适配 Maven 1；</LI>
+  <LI>group 仓库组：Nexus 通过仓库组的概念统一管理多个仓库，这样我们在项目中直接请求仓库组即可请求到仓库组管理的多个仓库。</LI></UL>
+<H3>添加代理仓库（Sonatype 为例，添加一个代理仓库）</H3>
+<OL>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>点击菜单 Add - Proxy Repository 
+  ：</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="nexus仓库介绍_files/20160130-03.png"></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>填写相应值</FONT></DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>填写Repository ID = 
+  sonatype；Repository Name = Sonatype Repository；</FONT></DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>Remote Storage Location = 
+  http://repository.sonatype.org/content/groups/public/</FONT></DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>然后点击save保存</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="nexus仓库介绍_files/20160130-04.png"></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>将添加的 Sonatype 代理仓库加入 Public 
+  Repositories 仓库组</FONT></DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>选中 Public Repositories，在 
+  Configuration 选项卡中，将 Sonatype Repository 从右侧 Available Repositories 移到左侧 
+  Ordered Group Repositories，save 保存：</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="nexus仓库介绍_files/20160130-05.png"></DIV></DIV></LI></OL>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

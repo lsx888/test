@@ -1,0 +1,98 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0071)http://172.13.19.31:6060/note_html/Java/JavaSE/1018010-JavaSE-JDBC.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>JavaSE-JDBC</TITLE> <LINK href="JavaSE-JDBC_files/standalone.css" rel="stylesheet"> 
+<LINK href="JavaSE-JDBC_files/overlay-apple.css" rel="stylesheet"> <LINK href="JavaSE-JDBC_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="JavaSE-JDBC_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="JavaSE-JDBC_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">JavaSE-JDBC</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-09-17 22:35:27</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV id="content_div_1">
+<H3>JDBC数据源(DataSource)</H3>
+<P 
+style="text-indent: 0.8cm;">DataSource接口(javax.sql.DataSource)替代DriverManager获取Connection的方法，有以下好处:</P>
+<UL>
+  <LI>可以在部署时灵活更换Connection实现</LI>
+  <LI>可以更好的屏蔽数据库的相关性</LI></UL>
+<P style="text-indent: 0.8cm;">有两种方式定义数据源：</P>
+<OL>
+  <LI>使用厂商DataSource，数据库厂商在提高JDBC2.0和以上版本的JDBC驱动中应该包含厂商的DataSource实现，如Oracle数据库的OracleDataSource实现。</LI>
+  <LI>第三方厂商也可提供DataSource实现，比如免费开源的有DBCP，C3P0和proxool等，中间件厂商比如ibm的websphere，bea的weblogic等也都有实现</LI></OL></DIV>
+<HR>
+
+<DIV id="content_div_2">
+<H3>OracleDataSource实现：</H3>
+<OL>
+  <LI>OracleDataSource ods = new OracleDataSource();</LI>
+  <LI>ods.setUser("my_user");</LI>
+  <LI>ods.setPassword("my_password");</LI>
+  <LI>ods.setURL("jdbc:oracle:thin:@127.0.0.1:1521:XE");</LI>
+  <LI>Connection conn = ods.getConnection();</LI></OL></DIV>
+<HR>
+
+<DIV id="content_div_3">
+<H3>DBCP实现：</H3>
+<OL>
+  <LI>BasicDataSource basicDataSource = new BasicDataSource();</LI>
+  <LI>basicDataSource.setDriverClassName("oracle.jdbc.OracleDriver");;</LI>
+  <LI>basicDataSource.setUrl("jdbc:oracle:thin:@127.0.0.1:1521:XE");</LI>
+  <LI>basicDataSource.setUsername("user");</LI>
+  <LI>basicDataSource.setPassword("password");</LI>
+  <LI>Connection connection=basicDataSource.getConnection();</LI></OL></DIV>
+<HR>
+
+<DIV id="content_div_4">
+<H3>JNDI实现(以tomcat为例)：</H3>
+<OL>
+  <LI>将数据库驱动库复制到{tomcat}/commmon/lib目录下</LI>
+  <LI>配置{tomcat}/conf/context.xml文件，加入以下内容：</LI>
+  <P>[Resource name="jdbc/demo" auth="Container" type="javax.sql.DataSource" 
+  driverClassName="org.apache.derby.jdbc.ClientDriver" 
+  url="jdbc:derby://localhost:1527/demo" username="test" password="test" 
+  maxActive="2" maxIdle="1" removeAbandoned="true" maxWait="300" /]</P>
+  <LI>在程序中访问DataSource： Context initContext = new InitialContext();</LI></OL>
+<P style="text-indent: 0.8cm;">注意: 以下写法只适用于tomcat(java:/comp/env). Context 
+envContext = (Context) initContext.lookup("java:/comp/env"); dataSource = 
+(DataSource) envContext.lookup("jdbc/demo");</P></DIV>
+<HR>
+
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

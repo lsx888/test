@@ -1,0 +1,149 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0078)http://172.13.19.31:6060/note_html/工具/Subversion-SVN/1002010-配置与启动.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>配置与启动</TITLE> <LINK href="配置与启动_files/standalone.css" rel="stylesheet"> 
+<LINK href="配置与启动_files/overlay-apple.css" rel="stylesheet"> <LINK href="配置与启动_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="配置与启动_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="配置与启动_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">配置与启动</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-01-27 11:06:21</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>配置</H3>
+<H4>1. 建立版本库目录(可建立多个，新建库后以下各项都需重新配置。注意区别安装目录与版本库目录,以下讲的都是版本库目录)</H4>
+<PRE class="brush: bash;">$mkdir –p ${HOME}/CODE/test
+</PRE>
+<H4>2. 建立svn版本库(与上面目录对应)</H4>
+<PRE class="brush: bash;">$svnadmin create ${HOME}/CODE/test
+</PRE>
+<H4>3. 建立svn版本库(与上面目录对应)</H4>
+<PRE class="brush: bash;">$svnadmin create ${HOME}/CODE/test
+#    执行此命令后svn自动在repos目录下添加必须的配置文件.
+#
+#　　注意:版本库不同于一般的文件夹, 直接在操作系统上新建文件无法被SVN识别, 必须使用import等命令将文件导入版本库.
+#
+#　　此为svn内部指令，create用于新建版本库。请使用svn help查看详细说明。
+
+</PRE>
+<H4>4. 修改版本库配置文件</H4>
+<PRE class="brush: bash;">$vi ~/CODE/test/conf/svnserve.conf
+
+　　各参数功能在配置文件的注释中有说明, 此处配置如下:
+
+　　[general]
+
+　　anon-access = none # 使非授权用户无法访问
+
+　　auth-access = write # 使授权用户有写权限
+
+　　password-db = passwd # 指明密码文件路径
+
+　　authz-db = authz # 访问控制文件
+
+　　realm = ~/CODE/test # 认证命名空间，subversion会在认证提示里显示，并且作为凭证缓存的关键字。
+
+　　其它采用默认配置. 各语句都必须顶格写, 左侧不能留空格, 否则会出错.
+</PRE>
+<H4>5. 配置用户</H4>
+<PRE class="brush: bash;">$vi ~/CODE/test/conf/passwd
+
+　　输入以下内容：
+
+　　[users]
+
+　　username1 = password1
+
+　　username2 = password2
+
+　　可以添加多个，此为用户名密码对。
+</PRE>
+<H4>6. 配置权限</H4>
+<PRE class="brush: bash;">$vi ~/CODE/test/conf/authz
+
+输入以下内容：
+[aliases]
+# joe = /C=XZ/ST=Dessert/L=Snake City/O=Snake Oil, Ltd./OU=Research Institute/CN=Joe Average
+
+[groups]
+# harry_and_sally = harry,sally
+# harry_sally_and_joe = harry,sally,&amp;joe
+user_rw = username1
+
+# [/foo/bar]
+# harry = rw
+# &amp;joe = r
+# * =
+
+# [repository:/baz/fuz]
+# @harry_and_sally = rw
+# * = r
+#配置根路径权限(test为建立的版本库的文件夹名称，冒号后面的/为当前版本库的根路径)
+[test:/]
+#引用上面配置的user_rw用户组，并配置为rw读写
+@user_rw = rw
+#设置其他用户，没有任何权限
+* = 
+</PRE>
+<H3>启动</H3>
+<H4>以默认端口：3690启动</H4>
+<PRE class="brush: bash;">$svnserve -d -r ~/CODE/
+# 其中 -d 表示守护进程， -r 表示在后台执行
+# 可以使用svnserve --help查看命令其他选项
+</PRE>
+<H4>或以8080端口启动</H4>
+<PRE class="brush: bash;">$svnserve -d --listen-port 8080 -r ~/CODE/
+</PRE>
+<H4>查看是否启动成功</H4>
+<PRE class="brush: bash;">$ps -ef | grep svnserve
+#客户端就可以进行资源库的访问，访问路径为svn://IP:8080/test/，该路径直接访问到该版本库的根路径。
+</PRE>
+<H4>关闭</H4>
+<PRE class="brush: bash;">$ps -ef | grep svnserve
+#使用上述方式查看进程后，使用kill命令杀掉进程
+</PRE>
+<H3>启动常见问题</H3>
+<H4>启动后远程无法访问</H4>
+<PRE class="brush: bash;">查看防火墙设置：
+   iptables -nvL | grep tcp或者iptables -nvL | grep 3690
+   查看端口是否开通，如果未开通，使用iptables开通即可（开通方式请查看 服务器 - CentOS - 11102-linux系统日常管理-linux的防火墙），注意：iptables需要root权限
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

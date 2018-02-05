@@ -1,0 +1,192 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0072)http://172.13.19.31:6060/note_html/数据库/Oracle/105010-Oracle-索引.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>5-索引</TITLE> <LINK href="5-索引_files/standalone.css" rel="stylesheet"> 
+<LINK href="5-索引_files/overlay-apple.css" rel="stylesheet"> <LINK href="5-索引_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="5-索引_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="5-索引_files/my-highlighter.css" rel="stylesheet">     
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+	 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+		
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+	 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+	 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+		
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">5-索引</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-03-21 11:22:58</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV id="content_div_1">
+<H3>Oracle索引原理</H3>
+<P style="text-indent: 0.8cm;">索引是与表关联的可选结构。通过有目的的创建索引，可以加快对表执行SELECT 
+语句的速度。给定一包含若干条记录的数据集，如果数据集是没有规则排列的，也就是无序的，对这个数据集的查找只能是从头到尾的遍历整个数据集，当数据集很大的时候，遍历的效率是很低的。但如果数据集是根据某关键字排序的，而且查找正好是根据关键字来查询，那就可以使用二分法查找来提高效率。Oracle 
+数据库就是根据以上原理来提高查询效率的。</P>
+<P 
+style="color: red; text-indent: 0.8cm;">索引和表是单独存储的，更好的情况是和表存储在不同的表空间（硬盘），这样就可以并行执行，从而较少磁盘竞争，提高查询效率。创建普通索引的语法如下：</P>
+<P style="text-indent: 1.8cm;">CREATE INDEX index_name ON 
+table_name(column_list) [TABLESPACE tablespace_name];</P>
+<P style="text-indent: 0.8cm;">创建索引时，Oracle 将获取要创建索引的列，并对其进行排序。然后，将 
+ROWID连同每一行的索引值存储起来，组成键值对(目录名和页码)。使用索引时，Oracle 
+首先通过已排序的列值执行快速搜索，然后使用相关联的ROWID值来定位具有所要查找值的行。</P>
+<P 
+style="text-indent: 0.8cm;">索引在逻辑上和物理上都独立于关联表中的数据，在任何时候都可以创建或删除索引，而不会影响基表或其它索引。如果删除索引，所有的应用程序都将继续运行，但在访问原先被索引的数据时，速度可能会降低。与视图不同的是，索引是独立的结构，因此需要存储空间。</P>
+<P style="color: red; text-indent: 0.8cm;">一旦创建了索引，Oracle 
+会自动维护和使用它们。只要修改了数据，如添加新行、更新现有行或删除行，Oracle 
+都会自动更新索引。但是为表创建过多的索引会降低更新、删除以及插入的性能，因为Oracle 
+还必须更新与该表关联的索引。所以如果要将几百万条数据导入某个表中，应该等数据导入完成后再给表创建索引。</P>
+<P style="color: red; text-indent: 0.8cm;">在Oracle 中，通过查询获取数据有两种方式，一种是全表扫描（TABLE 
+SCAN），一种是索引扫描（INDEX SCAN）。何时使用全表扫描，何时使用索引扫描一般情况下是由Oracle 数据库决定的。</P></DIV>
+<HR>
+
+<DIV id="content_div_2">
+<H3>索引分类</H3>
+<UL>
+  <LI>普通索引</LI>
+  <LI>唯一索引</LI>
+  <P 
+  style="text-indent: 0.8cm;">创建索引时，使用的列的值可以是唯一的、也可以是非唯一的。唯一索引可以确保在此列中，表的任意两行的值不能相同。非唯一索引没有在列值上规定此限制。Oracle 
+  自动为表的主键列创建唯一索引。创建在非主键列上的唯一性索引，如果没有创建NOT NULL 约束，可以在列中使用NULL，但在所有列上只能由一个NULL。 
+  使用唯一索引可以保证创建索引的列上不会出现重复值。可以使用CREATE UNIQUE INDEX命令创建唯一索引</P>
+  <LI>组合索引</LI>
+  <P 
+  style="text-indent: 0.8cm;">组合索引是在表中的多个列上创建的索引。组合索引中列的顺序是任意的，可以是相邻的列，也可以是不相邻的列。如果SELECT 
+  语句中的WHERE条件中引用了组合索引中的所有列或按顺序前面的某些列，则组合索引可以提高数据检索的速度。创建索引时，应注意定义中使用的列的顺序。通常，最经常访问的列应放置在列表的最前面</P>
+  <LI>反向键索引</LI>
+  <P 
+  style="text-indent: 0.8cm;">当数据的查当数据的查询或插入修改正好分布在某一个较小的连续区域，往往会由于数据过于密集而降低读取效率。这时就可以创建反向键索引，将集中在一个小区域上的查询平均分布在整个索引上，从而提高效率。比如向表中插入关键字为1234、1235、1236 
+  的列，如果是标准索引，这三个关键字肯定会被存放在一起，但反转后变为4321、5321、6321，从而使这些关键字均匀的分布在索引上。因此，反向键索引通常建立在一些值连续增长的列上，例如列中的值是由序列产生的情况。创建语法：</P>
+  <P style="text-indent: 0.8cm;">CREATE INDEX rev_index ON emp(deptno) 
+  REVERSE;</P>
+  <P style="text-indent: 0.8cm;">使用关键字 NOREVERSE 可以将反向键索引重建为标准索引，例如：</P>
+  <P style="text-indent: 0.8cm;">ALTER INDEX rev_index REBUILD NOREVERSE;</P>
+  <LI>位图索引</LI>
+  <P 
+  style="text-indent: 0.8cm;">索引一般建立在高基数列上，使用位图索引的优点在于，它最适用于低基数列，也就是不同值的数目比表的行数少的 
+  列。如果某个列的值重复了超过一百次，则可以考虑在该列上创建位图索引。位图索引具有下列优点：1.对于大批量查询，可以减少响应时间。2.相比其它索引技术，占用空间明显减少。3.即使在配置很低的终端硬件上，也能获得显著的性能。</P>
+  <P 
+  style="color: red; text-indent: 0.8cm;">使用标准索引对一个大型表进行完全索引极其浪费空间，因为索引可能比表中的数据大 
+  几倍，而位图索引的大小通常仅是表中被索引数据的一小部分。位图索引不应当用在频繁发生INSERT，UPDATE ，DELETE 操作的表上，这些 DML 
+  操作在性能方面的代价很高。它们会引起位图级的加锁发生，而且要求动态重建所有可能值的位图。位图索引最适合于数据仓库和决策支持系统。</P>
+  <LI>示例代码   
+<PRE class="brush: sql;">---------索引
+
+---索引的类型主要有：唯一索引、组全索引、反向键索引、位图索引等。
+
+create sequence seq_tab_student increment by 1 start with 5  maxvalue 999999 minvalue 1 nocycle;
+
+drop sequence seq_tab_student;
+
+---为tab_student表创建100000条数据
+BEGIN 
+  FOR l_temp IN 1..100000 LOOP 
+    INSERT INTO tab_student VALUES(seq_tab_student.nextval,'abcde',1,20); 
+ END LOOP; 
+END; 
+
+commit;
+
+--创建索引前
+select * from tab_student where id = '李建';--0.438秒
+
+
+---为name这个字段创建索引
+--创建标准索引(普通索引)
+create index  index_tab_student_name on tab_student(name);
+---普通索引
+select * from tab_student where name = '李建';---0.718秒
+--删除索引
+drop index index_tab_student_name;
+
+---创建唯一性索引
+create unique index index_tab_student_name on tab_student(name);
+--唯一性索引
+select * from tab_student where name = '李建';---0.38秒
+
+
+--创建组合索引
+/*
+       如果在job 和deptno 列上创建了组合索引，但并不
+       是只要在查询条件中有列的信息就使用索引，而是有先后顺序的。在创建索引时的顺序应该
+       是最频繁访问的列放置在列表的最前面。
+*/
+create index  index_tab_student_name on tab_student(name,age);
+
+
+--创建反向键索引
+create index index_tab_student_name on tab_student(name) reverse;
+---修改反向键索引为标准索引
+alter index index_tab_student_name rebuild noreverse;
+
+---前面使用的索引都是创建在高基数列上，也就是在此列上重复值较少。对低基数列上可以创建位图索引，来提高查询效率
+create bitmap index_tab_student_name on tab_student(name);
+
+
+--删除索引
+drop index index_tab_student_name;
+
+
+--创建位图索引
+CREATE BITMAP INDEX bit_index ON emp(job);
+
+
+/*
+     索引表(索引组织表)：
+           前面建立的各种索引都是与表关联的可选结构，查询时先在索引中查找，然后根据 
+          ROWID到表中取数据。每次查询都要重复这样的操作。如果表不是太大，并且主要以查询操
+          作为主时，能不能考虑将表的数据也存储在索引中，从而提高性能。Oracle 提出了索引组织
+          表的概念。数据存储在索引中原来存放ROWID的位置。
+          
+          
+          
+      创建语法：
+          CREATE TABLE ind_org_table 
+        (id number(5) primary key, 
+        Name varchar2(10) 
+        ) ORGANIZATION INDEX; 
+
+*/
+</PRE></LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_3">
+<H3>索引组织表</H3>
+<P 
+style="text-indent: 0.8cm;">如果表不是太大，并且主要以查询操作为主时，可以使用索引组织表。索引组织表要求一定要有主键，查询是基于主键列。对索引组织表的操作和普通表一样。</P>
+<P 
+style="text-indent: 0.8cm;">索引组织表与普通表的不同之处在于，该表的数据存储在与其关联的索引中。对表数据进行的修改，如添加新行、更新行或删除行，只会导致对索引的更新。</P>
+<P 
+style="text-indent: 0.8cm;">索引组织表与在一个或多个列上建立索引的普通表相似，但它无需为表和索引维护两个单独的存储空间，数据库系统仅维护一个索引，该索引包含相应行的已编码键值和与其关联的列值。</P>
+<H4>索引组织表的优点：</H4>
+<UL>
+  <LI>由于行存储在索引中，对于要求精确匹配的查询和基于范围的搜索，索引组织表提供了一种更快的、基于键的表数据访问方法</LI>
+  <LI>由于键列在表和索引中不重复，因此降低了存储需求</LI>
+  <LI>与键一起存储的数据行仅包含非键列的值。而且将数据行同键存储在一起，还可以消除ROWID所需的额外存储空间，而对于普通表的索引，需要使用ROWID将键值与相应的行链接起来</LI></UL></DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 2013 ~ 2030 作者：zzy</DIV><!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

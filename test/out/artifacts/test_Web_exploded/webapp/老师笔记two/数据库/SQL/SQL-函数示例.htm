@@ -1,0 +1,273 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0070)http://172.13.19.31:6060/note_html/数据库/SQL/104010-SQL-函数示例.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>SQL-函数示例</TITLE> <LINK href="SQL-函数示例_files/standalone.css" rel="stylesheet"> 
+<LINK href="SQL-函数示例_files/overlay-apple.css" rel="stylesheet"> <LINK href="SQL-函数示例_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="SQL-函数示例_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="SQL-函数示例_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">SQL-函数示例</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-06-14 17:34:11</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>日期函数</H3>
+<PRE class="brush: sql;">------日期的相关操作
+--查询当前系统日期
+select sysdate from dual;
+select systimestamp from dual;
+
+
+--日期加上或减去一个数，表示加上或减去多少天
+select sysdate - 20 from dual;
+--天数除以24表示减去的小时数，(分钟和秒以此类推)
+select sysdate - 2/24 from dual;
+--两个日期相减返回日期之间相差的天数
+-- -2天
+select (sysdate - 2) - sysdate from dual;
+
+--加上若干月数
+select add_months(sysdate,4) from dual;
+select add_months(sysdate,-4) from dual;
+
+--两个日期相差的月数
+select months_between(add_months(sysdate,4),sysdate) from dual;
+select months_between(sysdate,add_months(sysdate,4)) from dual;
+
+--下一个日期，下一个星期二
+select next_day(sysdate,'星期二') from dual;
+--下个一星期天（1~7,1：星期天，2~7：周一至周六）
+select next_day(sysdate,1) from dual;
+--日期所在月份的最后一天(可用来查询当月是30日还是31日)
+select last_day(sysdate) from dual;
+
+--四舍五入
+--默认按小时四舍五入,(超过12小时入一天)
+select round(sysdate) from dual;
+---按月份四舍五入
+select round(sysdate,'month') from dual;
+--按
+--select round(sysdate,'day') from dual;
+--按年份四舍五入
+select round(sysdate,'year') from dual;
+
+--截断
+--默认按小时截断
+select trunc(sysdate) from dual;
+---按月份截断
+select trunc(sysdate,'month') from dual;
+--按
+--select trunc(sysdate,'day') from dual;
+--按年份截断
+select trunc(sysdate,'year') from dual;
+</PRE>
+<H3>字符数字函数</H3>
+<PRE class="brush: sql;">----单行函数--大小写控制函数
+--小写转换为大写
+select lower('AAAA') from dual;
+select lower(ename) from emp;
+--大写转换为小写
+select upper('aaa') from dual;
+--首字母大写
+select initcap('zhou') from dual;
+
+--字符控制函数
+--连接连个字符串
+select concat('hello','world') from dual;
+--取子字符串，从第三个字符开始取5个字符，字符从1开始不是从0开始。
+select substr('helloworld',3,5) from dual;
+--字符串的长度
+select length('hello') from dual;
+--指定字符在字符串中的位置(第一次出现的位置)
+select instr('hello','l') from dual;
+--结果：3
+--前面的L表示left左边，当不足10位时，在左边添加第三个参数字符串，当大于等于10位时，只取前十位。
+select lpad(12345,10,'%') from dual;
+select lpad('abcde',10,'*') from dual;
+select lpad(123456789013,10,'%') from dual;
+select lpad(12345,10,'%*') from dual;
+
+select rpad(12345,10,'*') from dual;
+select rpad(123456789013,10,'%') from dual;
+--只能截取一个字符，只能截取首尾
+select trim('o' from 'hello') from dual;
+--LTRIM、RTRIM
+select ltrim('hello','he') from dual;
+
+--给出整数，返回对应的字符
+SELECT CHR(15045032) zhou,CHR(65) chr65 FROM dual;
+--给出字符，得到字符对应的十进制数
+select ASCII('A') from dual;
+select ascii('周') from dual;
+---字符串替换(第一个参数：原来的字符串，第二个参数：要替换掉的字符串，第三个参数：要替换成的字符串)
+select replace('王舟易','王','李') from dual;
+
+
+
+------数字函数
+--四舍五入
+--12
+select round(12.2356) from dual;
+--13
+select round(12.5356) from dual;
+--12.54
+select round(12.5356,2) from dual;
+--10
+select round(12.5356,-1) from dual;
+
+--截断
+--12
+select trunc(12.2356) from dual;
+--12
+select trunc(12.6356) from dual;
+--12.835
+select trunc(12.8356,3) from dual;
+--10
+select trunc(12.8356,-1) from dual;
+
+--求余(取模)
+--1
+select mod(10,3) from dual;
+
+--取整
+---向下取整
+select floor(12.56) from dual;
+select floor(-12.56) from dual;
+--向上取整
+select ceil(12.56) from dual;
+---求指定值的绝对值
+select abs(-100) from dual;
+---指数运算
+select power(2,3) from dual;
+---函数SIGN(n)取数字n 的符号，大于0 返回1，小于0 返回-1，等于0 返回0
+select sign(-100) from dual;
+select sign(0) from dual;
+select sign(100) from dual;
+--求一个数字的平方根
+select sqrt(9) from dual;
+
+
+---DENSE_RANK的行排位相同，计算一个行在一组有序行中的排位，排位是以1 开头的连续整数。
+--如果值相等则排名相同，并且排位是连续的。 
+---DENSE_RANK函数的语法为： 
+-------DENSE_RANK() OVER ([PARTITION BY column] ORDER BY column) 
+select p.*,dense_rank() over(partition by deptno order by sal+nvl(comm,0)) rank from emp p;
+
+------ROW_NUMBER为查询中的每一行返回一个唯一的排名值，序号根据ORDER BY子句指定，从1 开始。 
+select p.*,row_number() over(partition by deptno order by sal+nvl(comm,0)) rank from emp p;
+
+----RANK 函数计算一个值在一组值中的排位，排位是以1 开头的连续整数。具有相等值的
+---行排位相同，序数随后跳跃相应的数值，即如果两行的序数为1，则没有序数2，下一行的序号为3。
+select p.*,rank() over(partition by deptno order by sal) rank from emp p;
+</PRE>
+<H3>转换函数</H3>
+<PRE class="brush: sql;">--自动转换
+--char or varchar2 自动转换为 number
+select * from emp where sal &gt; '1500';
+--char or varchar2 自动转换为 date(注意日期格式)
+select * from emp where hiredate &gt; '1-8月-81';
+
+--日期转换为字符
+--2013
+select to_char(sysdate,'YYYY') from dual;
+--TWENTY THIRTEEN
+select to_char(sysdate,'YEAR') from dual;
+--1月
+select to_char(sysdate,'MONTH') from dual; 
+--1月
+select to_char(sysdate,'MON') from dual;
+--星期二
+select to_char(sysdate,'DY') from dual;
+--星期二
+select to_char(sysdate,'DAY') from dual;
+--22
+select to_char(sysdate,'DD') from dual;
+--2013-01-22 14:26:36 星期二
+select to_char(sysdate,'yyyy-mm-dd hh24:mi:ss day') from dual;
+
+---数字转换为字符(数字格式化，注意：数字的位数不得超过格式的位数)
+select to_char(1200000.556,'L99,999,999.99') from dual;
+
+--字符转换为数字
+select to_number('￥1,200,000.56','L99,999,999.99') from dual;
+--字符转换为日期
+select to_date('2012-12-21 18:56:33','yyyy-mm-dd hh24:mi:ss') from dual;
+
+
+--通用函数
+--如果第一个参数为null则返回第二个参数的值，否则返回第一个参数的值
+select nvl(null,2) from dual;
+select nvl(5,10) from dual;
+
+--如果第一个参数为null则返回第三个参数的值，否则返回第二个参数的值
+select nvl2(null,'zhou',5) from dual;
+select nvl2(222,'zhou',5) from dual;
+--查询员工表，有奖金的员工显示有奖金，没有奖金的员工显示无奖金
+select ename,nvl2(comm,'有奖金','无奖金') 有无奖金,comm from emp;
+
+--如果两个参数相等返回null，如果不相等返回第一个参数，注意：第一个参数不能为null
+select nullif('121','222') from dual;
+select nullif(111,111) from dual;
+
+--返回第一个不为空的值
+--coalesce(第一个参数,第二个参数,第三个参数....第N个参数)
+select coalesce(null,null,100,200,300) from dual;
+
+--case表达式的使用
+--查询员工的所有信息，并按总工资分类 1000以下：低工资，1000-3000：中等工资，3000以上：高工资
+select p.*,(sal+nvl(comm,0)) total,
+       case when (sal+nvl(comm,0)) &lt; 1000 then '低工资'
+            when (sal+nvl(comm,0)) between 1000 and 3000 then '中等工资'
+            else '高工资' end 工资等级
+from emp p;
+
+
+--
+select p.*,decode(job,'CLERK',nvl(comm,0)+sal+200,
+                      'SALESMAN',sal+nvl(comm,0)+500,
+                      'ANALYST',nvl(comm,0)+sal+100,
+                      'MANAGER',nvl(comm,0)+sal+1000,
+                      'PRESIDENT',nvl(comm,0)+sal)
+from emp p;
+
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

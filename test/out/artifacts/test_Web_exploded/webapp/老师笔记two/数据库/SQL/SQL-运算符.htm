@@ -1,0 +1,354 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0068)http://172.13.19.31:6060/note_html/数据库/SQL/103011-SQL-运算符.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>SQL-运算符</TITLE> <LINK href="SQL-运算符_files/standalone.css" rel="stylesheet"> 
+<LINK href="SQL-运算符_files/overlay-apple.css" rel="stylesheet"> <LINK href="SQL-运算符_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="SQL-运算符_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="SQL-运算符_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">SQL-运算符</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-05-11 11:14:06</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<P 
+style="text-align: justify; background-color: rgb(255, 255, 255);">运算符是一个保留字或字符，主要用于在SQL语句的WHERE子句来执行，比较和算术运算等操作。 
+</P>
+<P style="text-align: justify; background-color: rgb(255, 255, 255);">
+运算符用于指定一个SQL语句中的条件，并作为连词多个条件在一份声明中。 </P>
+<UL style="text-align: left; background-color: rgb(255, 255, 255);">
+  <LI>
+  <P style="text-align: justify;">  算术运算符   </P></LI>
+  <LI>
+  <P style="text-align: justify;">  比较操作符   </P></LI>
+  <LI>
+  <P style="text-align: justify;">  逻辑运算符   </P></LI>
+  <LI>
+  <P style="text-align: justify;">  运算符用来作为否定条件   </P></LI></UL>
+<H2 style='text-align: left; font-family: Helvetica, Arial, "Liberation Sans", FreeSans, sans-serif; font-size: 16px; background-color: rgb(255, 255, 255);'>SQL算术运算符： 
+</H2>
+<P style="text-align: justify; background-color: rgb(255, 255, 255);">
+假设变量的一个持有值为10，变量b持有20： </P>
+<TABLE width="100%" style="border: 1px solid rgb(170, 170, 170); border-image: none; width: 552px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; background-color: rgb(241, 241, 241);" 
+border="1" cellspacing="0" cellpadding="5">
+  <TBODY>
+  <TR>
+    <TH width="10%" style="border: 1px solid rgb(170, 170, 170); border-image: none; background-color: rgb(205, 205, 205);"> 
+           操作符       </TH>
+    <TH width="45%" style="border: 1px solid rgb(170, 170, 170); border-image: none; background-color: rgb(205, 205, 205);"> 
+           描述       </TH>
+    <TH style="border: 1px solid rgb(170, 170, 170); border-image: none; background-color: rgb(205, 205, 205);"> 
+           例子       </TH></TR>
+  <TR>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;">+ 
+            </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;">加法 
+      -添加任一侧上的操作符的值       </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;">a 
+      + b 得到&nbsp;30       </TD></TR>
+  <TR>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;"> 
+           -       </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;">减法 
+      - 从左边<SPAN style="background-color: rgb(241, 241, 241);">减去右边<SPAN style="background-color: rgb(241, 241, 241);">操作数的</SPAN></SPAN>操作 
+            </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;">a 
+      - b <SPAN style="background-color: rgb(241, 241, 241);">得到</SPAN><SPAN 
+      style="background-color: rgb(241, 241, 241);">&nbsp;</SPAN> -10       
+  </TD></TR>
+  <TR>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;"> 
+           *       </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;">乘法 
+      - 操作符<SPAN style="background-color: rgb(241, 241, 241);">两侧</SPAN>的值相乘     
+        </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;">a 
+      * b <SPAN style="background-color: rgb(241, 241, 241);">得到</SPAN><SPAN 
+      style="background-color: rgb(241, 241, 241);">&nbsp;</SPAN> 200       
+  </TD></TR>
+  <TR>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;"> 
+           /       </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;">除 
+      - 将左边除<SPAN style="background-color: rgb(241, 241, 241);">以右边</SPAN>的操作数   
+          </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;">b 
+      / a <SPAN style="background-color: rgb(241, 241, 241);">得到</SPAN><SPAN 
+      style="background-color: rgb(241, 241, 241);">&nbsp;</SPAN> 2       </TD></TR>
+  <TR>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;"> 
+           mod<BR></TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;">取模 
+      - 没有%操作符，使用mod(a,b)代替<BR></TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;">mod(a,b) 
+      得到 10<BR></TD></TR></TBODY></TABLE>
+<H2 style='text-align: left; font-family: Helvetica, Arial, "Liberation Sans", FreeSans, sans-serif; font-size: 16px; background-color: rgb(255, 255, 255);'>
+SQL比较操作符： </H2>
+<P style="text-align: justify; background-color: rgb(255, 255, 255);"><SPAN 
+style="background-color: rgb(255, 255, 255);">假设变量的一个持有值为10，变量b持有20：</SPAN> </P>
+<TABLE width="100%" style="border: 1px solid rgb(170, 170, 170); border-image: none; width: 552px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; background-color: rgb(241, 241, 241);" 
+border="1" cellspacing="0" cellpadding="5">
+  <TBODY>
+  <TR>
+    <TH width="10%" style="border: 1px solid rgb(170, 170, 170); border-image: none; background-color: rgb(205, 205, 205);"><SPAN 
+      style="line-height: normal; font-weight: bold; background-color: rgb(205, 205, 205);">操作符</SPAN> 
+            </TH>
+    <TH width="45%" style="border: 1px solid rgb(170, 170, 170); border-image: none; background-color: rgb(205, 205, 205);"><SPAN 
+      style="line-height: normal; font-weight: bold; background-color: rgb(205, 205, 205);">描述</SPAN> 
+            </TH>
+    <TH style="border: 1px solid rgb(170, 170, 170); border-image: none; background-color: rgb(205, 205, 205);"><SPAN 
+      style="line-height: normal; font-weight: bold; background-color: rgb(205, 205, 205);">例子</SPAN> 
+            </TH></TR>
+  <TR>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;">= 
+            </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;">检查如果两个操作数的值是相等或不相等，如果是的话，条件为真。 
+            </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;">(a 
+      = b) is not true.       </TD></TR>
+  <TR>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;"> 
+           !=       </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;">检查如果两个操作数的值是否相等，如果值不相等，则条件为真。 
+            </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;">(a 
+      != b) is true.       </TD></TR>
+  <TR>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;"> 
+           &lt;&gt;      </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;">检查如果两个操作数的值是否相等，如果值不相等，则条件为真。 
+            </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;">(a 
+      &lt;&gt; b) is true.       </TD></TR>
+  <TR>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;"> 
+           &gt;      </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;">检查<SPAN 
+      style="background-color: rgb(241, 241, 241);">值，</SPAN>如果左操作数大于右操作数的值，如果是的话，条件为真。 
+            </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;">(a 
+      &gt; b) is not true.       </TD></TR>
+  <TR>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;"> 
+           &lt;      </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;">检查如果左操作数的值小于右操作数的值，如果是的话，条件为真。 
+            </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;">(a 
+      &lt; b) is true.       </TD></TR>
+  <TR>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;"> 
+           &gt;=       </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;">检查如果左操作数的值大于或等于右操作数的值，如果是的话，条件为真。 
+            </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;">(a 
+      &gt;= b) is not true.       </TD></TR>
+  <TR>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;"> 
+           &lt;=       </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;">检查如果左操作数的值小于或等于右操作数的值，如果是的话，条件为真。 
+            </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;">(a 
+      &lt;= b) is true.       </TD></TR>
+  <TR>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;"> 
+           !&lt;       </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;">检查如果左操作数的值不小于右操作数的值，如果是的话，条件为真。 
+            </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;">(a 
+      !&lt; b) is false.       </TD></TR>
+  <TR>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;"> 
+           !&gt;       </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;">检查如果左操作数的值是不大于右操作数的值，如果是的话，条件为真。 
+            </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;">(a 
+      !&gt; b) is true.       </TD></TR></TBODY></TABLE>
+<H2 style='text-align: left; font-family: Helvetica, Arial, "Liberation Sans", FreeSans, sans-serif; font-size: 16px; background-color: rgb(255, 255, 255);'>
+SQL逻辑运算符： </H2>
+<P style="text-align: justify; background-color: rgb(255, 255, 255);">
+这是在SQL所有的逻辑运算符的列表。 </P>
+<TABLE width="100%" style="border: 1px solid rgb(170, 170, 170); border-image: none; width: 552px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; background-color: rgb(241, 241, 241);" 
+border="1" cellspacing="0" cellpadding="5">
+  <TBODY>
+  <TR>
+    <TH width="20%" style="border: 1px solid rgb(170, 170, 170); border-image: none; background-color: rgb(205, 205, 205);"><SPAN 
+      style="line-height: 18px; font-weight: normal;">运算符 </SPAN>       </TH>
+    <TH width="80%" style="border: 1px solid rgb(170, 170, 170); border-image: none; background-color: rgb(205, 205, 205);"><SPAN 
+      style="line-height: 18px; font-weight: normal;">描述 </SPAN>       </TH></TR>
+  <TR>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;"><SPAN><SPAN><SPAN><SPAN><SPAN><SPAN>ALL</SPAN> 
+      </SPAN> </SPAN> </SPAN> </SPAN> </SPAN>       </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;"><SPAN><SPAN><SPAN><SPAN><SPAN><SPAN>所有运算符用于比较的值到另一个值组中的所有值。</SPAN> 
+      </SPAN> </SPAN> </SPAN> </SPAN> </SPAN>       </TD></TR>
+  <TR>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;"><SPAN><SPAN><SPAN><SPAN><SPAN><SPAN>AND</SPAN> 
+      </SPAN> </SPAN> </SPAN> </SPAN> </SPAN>       </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;"><SPAN><SPAN><SPAN><SPAN><SPAN><SPAN>AND运算符允许多个条件的存在，在一个SQL语句中的WHERE子句。</SPAN> 
+      </SPAN> </SPAN> </SPAN> </SPAN> </SPAN>       </TD></TR>
+  <TR>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;"><SPAN><SPAN><SPAN><SPAN><SPAN><SPAN>ANY</SPAN> 
+      </SPAN> </SPAN> </SPAN> </SPAN> </SPAN>       </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;"><SPAN><SPAN><SPAN><SPAN><SPAN><SPAN>ANY运算符用于比较的值在列表中根据任何适用的条件。</SPAN> 
+      </SPAN> </SPAN> </SPAN> </SPAN> </SPAN>       </TD></TR>
+  <TR>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;"><SPAN><SPAN><SPAN><SPAN><SPAN><SPAN>BETWEEN</SPAN> 
+      </SPAN> </SPAN> </SPAN> </SPAN> </SPAN>       </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;"><SPAN><SPAN><SPAN><SPAN><SPAN><SPAN>BETWEEN运算符用于搜索一组值的范围内的值，给定的最小值和最大值。</SPAN> 
+      </SPAN> </SPAN> </SPAN> </SPAN> </SPAN>       </TD></TR>
+  <TR>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;"><SPAN><SPAN><SPAN><SPAN><SPAN><SPAN>EXISTS</SPAN> 
+      </SPAN> </SPAN> </SPAN> </SPAN> </SPAN>       </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;"><SPAN><SPAN><SPAN><SPAN><SPAN><SPAN>存在指定的表中符合特定条件的运算符用于搜索存在的一行记录。</SPAN> 
+      </SPAN> </SPAN> </SPAN> </SPAN> </SPAN>       </TD></TR>
+  <TR>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;"><SPAN><SPAN><SPAN><SPAN><SPAN><SPAN>IN</SPAN> 
+      </SPAN> </SPAN> </SPAN> </SPAN> </SPAN>       </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;"><SPAN><SPAN><SPAN><SPAN><SPAN><SPAN>IN操作符用来比较的文字值已指定一个值的列表。</SPAN> 
+      </SPAN> </SPAN> </SPAN> </SPAN> </SPAN>       </TD></TR>
+  <TR>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;"><SPAN><SPAN><SPAN><SPAN><SPAN><SPAN>LIKE</SPAN> 
+      </SPAN> </SPAN> </SPAN> </SPAN> </SPAN>       </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;"><SPAN><SPAN><SPAN><SPAN><SPAN><SPAN>LIKE运算符用于比较相似的值，使用通配符的值。</SPAN> 
+      </SPAN> </SPAN> </SPAN> </SPAN> </SPAN>       </TD></TR>
+  <TR>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;"><SPAN><SPAN><SPAN><SPAN><SPAN><SPAN>NOT</SPAN> 
+      </SPAN> </SPAN> </SPAN> </SPAN> </SPAN>       </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;"><SPAN><SPAN><SPAN><SPAN><SPAN><SPAN>NOT运算符的含义相反的逻辑运算符，它被使用如 
+      NOT EXISTS, NOT BETWEEN, NOT IN 等，这是一个相反的运算符。 </SPAN> </SPAN> </SPAN> 
+      </SPAN> </SPAN> </SPAN>       </TD></TR>
+  <TR>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;"><SPAN><SPAN><SPAN><SPAN><SPAN><SPAN>OR</SPAN> 
+      </SPAN> </SPAN> </SPAN> </SPAN> </SPAN>       </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;"><SPAN><SPAN><SPAN><SPAN><SPAN><SPAN>使用OR运算符结合SQL语句的WHERE子句中的多个条件。</SPAN> 
+      </SPAN> </SPAN> </SPAN> </SPAN> </SPAN>       </TD></TR>
+  <TR>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;"><SPAN><SPAN><SPAN><SPAN><SPAN><SPAN>IS 
+      NULL</SPAN> </SPAN> </SPAN> </SPAN> </SPAN> </SPAN>       </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;"><SPAN><SPAN><SPAN><SPAN><SPAN><SPAN>NULL操作符用来比较NULL的值。</SPAN> 
+      </SPAN> </SPAN> </SPAN> </SPAN> </SPAN>       </TD></TR>
+  <TR>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;"><SPAN><SPAN><SPAN><SPAN><SPAN><SPAN>UNIQUE</SPAN> 
+      </SPAN> </SPAN> </SPAN> </SPAN> </SPAN>       </TD>
+    <TD style="border: 1px solid rgb(170, 170, 170); border-image: none; vertical-align: top;"><SPAN><SPAN><SPAN><SPAN><SPAN><SPAN>独特的操作符搜索指定的表中的每一行的唯一性（不重复）。</SPAN> 
+      </SPAN> </SPAN> </SPAN> </SPAN> </SPAN></TD></TR></TBODY></TABLE>
+<H3>运算符的优先级</H3>
+<P style="text-indent: 0.8cm;">运算符的优先级别如下表中所示:优先级由高到低<BR></P>
+<TABLE responsive="true">
+  <TBODY>
+  <TR responsive="true">
+    <TH>
+      <P><SPAN class="sentence" id="mt6" data-guid="c9e9a848920877e76685b2e4e76de38d" 
+      data-source="Level" xml:space="preserve"><sentencetext xmlns="http://www.w3.org/1999/xhtml">Level</sentencetext></SPAN></P></TH>
+    <TH>
+      <P><SPAN class="sentence" id="mt7" data-guid="0997fb356c249146ffe97cce96f88459" 
+      data-source="Operators" xml:space="preserve"><sentencetext xmlns="http://www.w3.org/1999/xhtml">运算符</sentencetext></SPAN></P></TH></TR>
+  <TR>
+    <TD data-th="Level">
+      <P><SPAN class="sentence" id="mt8" data-guid="c4ca4238a0b923820dcc509a6f75849b" 
+      data-source="1" xml:space="preserve"><sentencetext xmlns="http://www.w3.org/1999/xhtml">1</sentencetext></SPAN></P></TD>
+    <TD data-th="运算符">
+      <P><SPAN class="sentence" id="mt9" data-guid="5e0e0f1f1a08171ffc3ddc416e7833d5" 
+      data-source="~ (Bitwise NOT)" xml:space="preserve"><sentencetext xmlns="http://www.w3.org/1999/xhtml">~（位非）</sentencetext></SPAN></P></TD></TR>
+  <TR>
+    <TD data-th="Level">
+      <P><SPAN class="sentence" id="mt10" data-guid="c81e728d9d4c2f636f067f89cc14862c" 
+      data-source="2" xml:space="preserve"><sentencetext xmlns="http://www.w3.org/1999/xhtml">2</sentencetext></SPAN></P></TD>
+    <TD data-th="运算符">
+      <P><SPAN class="sentence" id="mt11" data-guid="7d56ce04be72138af836228e88c7a268" 
+      data-source="* (Multiply), / (Division), % (Modulo)" 
+      xml:space="preserve"><sentencetext 
+      xmlns="http://www.w3.org/1999/xhtml">*（乘）、/（除）、%（取模）</sentencetext></SPAN></P></TD></TR>
+  <TR>
+    <TD data-th="Level">
+      <P><SPAN class="sentence" id="mt12" data-guid="eccbc87e4b5ce2fe28308fd9f2a7baf3" 
+      data-source="3" xml:space="preserve"><sentencetext xmlns="http://www.w3.org/1999/xhtml">3</sentencetext></SPAN></P></TD>
+    <TD data-th="运算符">
+      <P><SPAN class="sentence" id="mt13" data-guid="7a931adf4211b0ad2651cc47d957db76" 
+      data-source="+ (Positive), - (Negative), + (Add), (+ Concatenate), - (Subtract), &amp;amp; (Bitwise AND), ^ (Bitwise Exclusive OR), | (Bitwise OR)" 
+      xml:space="preserve"><sentencetext 
+      xmlns="http://www.w3.org/1999/xhtml">+（正）、-（负）、+（加）、（+连接）、-（减）、&amp;（位与）、^（位异或）、|（位或）</sentencetext></SPAN></P></TD></TR>
+  <TR>
+    <TD data-th="Level">
+      <P><SPAN class="sentence" id="mt14" data-guid="a87ff679a2f3e71d9181a67b7542122c" 
+      data-source="4" xml:space="preserve"><sentencetext xmlns="http://www.w3.org/1999/xhtml">4</sentencetext></SPAN></P></TD>
+    <TD data-th="运算符">
+      <P><SPAN class="sentence" id="mt15" data-guid="7ca456fd4a6646c85c16e43a55b85e4e" 
+      data-source="=, &amp;gt;, &amp;lt;, &amp;gt;=, &amp;lt;=, &amp;lt;&amp;gt;, !=, !&amp;gt;, !&amp;lt; (Comparison operators)" 
+      xml:space="preserve"><sentencetext xmlns="http://www.w3.org/1999/xhtml">=, 
+      &gt;, &lt;, &gt;=, &lt;=, &lt;&gt;, !=, !&gt;, !&lt; 
+      （比较运算符）</sentencetext></SPAN></P></TD></TR>
+  <TR>
+    <TD data-th="Level">
+      <P><SPAN class="sentence" id="mt16" data-guid="e4da3b7fbbce2345d7772b0674a318d5" 
+      data-source="5" xml:space="preserve"><sentencetext xmlns="http://www.w3.org/1999/xhtml">5</sentencetext></SPAN></P></TD>
+    <TD data-th="运算符">
+      <P><SPAN class="sentence" id="mt17" data-guid="d529e941509eb9e9b9cfaeae1fe7ca23" 
+      data-source="NOT" xml:space="preserve"><sentencetext xmlns="http://www.w3.org/1999/xhtml">NOT</sentencetext></SPAN></P></TD></TR>
+  <TR>
+    <TD data-th="Level">
+      <P><SPAN class="sentence" id="mt18" data-guid="1679091c5a880faf6fb5e6087eb1b2dc" 
+      data-source="6" xml:space="preserve"><sentencetext xmlns="http://www.w3.org/1999/xhtml">6</sentencetext></SPAN></P></TD>
+    <TD data-th="运算符">
+      <P><SPAN class="sentence" id="mt19" data-guid="be5d5d37542d75f93a87094459f76678" 
+      data-source="AND" xml:space="preserve"><sentencetext xmlns="http://www.w3.org/1999/xhtml"><sentencetext 
+      xmlns="http://www.w3.org/1999/xhtml">And</sentencetext> 
+      </sentencetext></SPAN></P></TD></TR>
+  <TR>
+    <TD data-th="Level">
+      <P><SPAN class="sentence" id="mt20" data-guid="8f14e45fceea167a5a36dedd4bea2543" 
+      data-source="7" xml:space="preserve"><sentencetext xmlns="http://www.w3.org/1999/xhtml">7</sentencetext></SPAN></P></TD>
+    <TD data-th="运算符">
+      <P><SPAN class="sentence" id="mt21" data-guid="316564973586bd24bc00f717f9846591" 
+      data-source="ALL, ANY, BETWEEN, IN, LIKE, OR, SOME" 
+      xml:space="preserve"><sentencetext 
+      xmlns="http://www.w3.org/1999/xhtml">ALL、ANY、BETWEEN、IN、LIKE、OR、SOME</sentencetext></SPAN></P></TD></TR>
+  <TR>
+    <TD data-th="Level">
+      <P><SPAN class="sentence" id="mt22" data-guid="c9f0f895fb98ab9159f51fd0297e236d" 
+      data-source="8" xml:space="preserve"><sentencetext xmlns="http://www.w3.org/1999/xhtml">8</sentencetext></SPAN></P></TD>
+    <TD data-th="运算符">
+      <P><SPAN class="sentence" id="mt23" data-guid="acc8e660c13cc78fc6e4aed4a05cc44e" 
+      data-source="= (Assignment)" xml:space="preserve"><sentencetext xmlns="http://www.w3.org/1999/xhtml">=（赋值）</sentencetext></SPAN></P></TD></TR></TBODY></TABLE>
+<P 
+style="text-indent: 0.8cm;">当一个表达式中的两个运算符有相同的运算符优先级别时，将按照它们在表达式中的位置对其从左到右进行求值。 
+<BR></P>
+<P style="text-indent: 0.8cm;"><SPAN 
+style="color: rgb(255, 0, 0);">如果要提升运算的优先级，可以使用()小括号，如果小括号中有小括号，优先执行里面的小括号中的运算。</SPAN><BR></P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

@@ -1,0 +1,197 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0073)http://172.13.19.31:6060/note_html/工具/QTP测试工具/1001010-vbs-入门.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>vbs-入门</TITLE> <LINK href="vbs-入门_files/standalone.css" rel="stylesheet"> 
+<LINK href="vbs-入门_files/overlay-apple.css" rel="stylesheet"> <LINK href="vbs-入门_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="vbs-入门_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="vbs-入门_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">vbs-入门</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-09-29 16:58:45</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>Hello World</H3>
+<PRE class="brush: vb;">'新建文本文档，并保存为xxxx.vbs文件，双击即可执行
+
+MsgBox("Hello world!")
+MsgBox "Hello world!"
+result = MsgBox("Hello World!", vbOKOnly, "Greeting")
+MsgBox "Hello World!", vbOKOnly, "Greeting"
+
+'vbOKOnly是常量，后面将作介绍
+
+'********************************************************
+' MsgBox(prompt[, buttons][, title][, helpfile, context])
+' 主要参数：
+'
+'   prompt：为要显示的消息，其他带[]参数为可选参数；
+'   buttons：为显示对话框按钮及类型，默认值为0，即只显示“确定”按钮；
+'   title：为对话框标题栏文字。
+'
+MsgBox函数也有返回值，当你点击确定或取消按钮时，其返回的值是不一样的
+'********************************************************
+</PRE>
+<H3>数据类型</H3>
+<P 
+style="text-indent: 0.8cm;">VBScript只有一种数据类型——Variant，它是根据上下文来判断是数字还是字符串。因为Variant是VBScript中唯一的数据类型，所以它也是VBScript中所有函数的返回值的数据类型。为了进一步区分数据类型，它包含如下数据子类型： 
+</P>
+<TABLE>
+  <TBODY>
+  <TR>
+    <TH>子类型</TH>
+    <TH>描述</TH></TR>
+  <TR>
+    <TD>Empty</TD>
+    <TD>未初始化的<STRONG>Variant</STRONG>。对于数值变量，值为0；对于字符串变量，值为零长度字符串 ("")。</TD></TR>
+  <TR>
+    <TD>Null</TD>
+    <TD>不包含任何有效数据的<STRONG>Variant</STRONG>。</TD></TR>
+  <TR>
+    <TD>Boolean</TD>
+    <TD>包含True或False。</TD></TR>
+  <TR>
+    <TD>Byte</TD>
+    <TD>包含0到255之间的整数。</TD></TR>
+  <TR>
+    <TD>Integer</TD>
+    <TD>包含-32,768到32,767之间的整数。</TD></TR>
+  <TR>
+    <TD>Currency</TD>
+    <TD>-922,337,203,685,477.5808到922,337,203,685,477.5807。</TD></TR>
+  <TR>
+    <TD>Long</TD>
+    <TD>包含-2,147,483,648到2,147,483,647之间的整数。</TD></TR>
+  <TR>
+    <TD>Single</TD>
+    <TD>包含单精度浮点数，负数范围从-3.402823E38到-1.401298E-45，正数范围从1.401298E-45到3.402823E38。</TD></TR>
+  <TR>
+    <TD>Double</TD>
+    <TD>包含双精度浮点数，负数范围从-1.79769313486232E308到-4.94065645841247E-324，正数范围从4.94065645841247E-324到1.79769313486232E308。</TD></TR>
+  <TR>
+    <TD>Date (Time)</TD>
+    <TD>包含表示日期的数字，日期范围从公元100年1月1日到公元9999年12月31日。</TD></TR>
+  <TR>
+    <TD>String</TD>
+    <TD>包含变长字符串，最大长度可为20亿个字符。</TD></TR>
+  <TR>
+    <TD>Object</TD>
+    <TD>包含对象。</TD></TR>
+  <TR>
+    <TD>Error</TD>
+    <TD>包含错误号。</TD></TR></TBODY></TABLE>
+<P 
+style="text-indent: 0.8cm;">可以使用转换函数（CInt，CStr等等）来转换数据的子类型。另外，可使用VarType函数返回数据的Variant子类型 
+</P>
+<PRE class="brush: vb;">Cbool函数将变量转换成布尔值；
+
+Cbyte函数将变量转换为0到255之间的整数。
+
+Ccur函数、Cdbl函数和Csng函数将变量转换为浮点数值，前者只精确到小数点后四位，后两者要更加精确，数值的范围也要大的多。
+CCur 函数可把表达式转换为货币（Currency）类型
+CSng 函数可把表达式转换为单精度（Single）类型。
+
+Cdate函数将变量转换为日期值。
+
+Cint函数和Clng函数将变量转换为整数，后者的范围比前者要大的多。
+
+Cstr函数将变量转换为字符串。
+</PRE>
+<H3>变量</H3>
+<PRE class="brush: vb;">1. 变量声明
+
+变量声明有两种方式——显式与隐式，显式使用Dim、Public、Private语句进行声明，隐式直接使用变量名。使用隐式声明方式的习惯不好，因为这样有时会由于变量名拼错而
+导致程序运行出现意外，因此，最好在每个脚本开始第一行使用Option Explicit语句强制显式声明所有变量。声明示例如下:
+	
+Option Explicit
+Dim i, conn   '声明多个变量时用逗号隔开
+Public UserName, Password
+Private m_id
+
+注意：在VBScript中，变量名是不区分大小写，即userName与UserName是指同一个变量。
+2. 命名规则
+
+VBScript中变量命名是有其规则标准的，变量命名必须遵循：
+
+    第一个字符必须是字母。
+    不能包含嵌入的句点。
+    长度不能超过255个字符。
+    在被声明的作用域内必须唯一。
+
+3. 作用域与存活期
+
+变量的作用域由声明它的位置所决定。如果在过程中声明的，则只有该过程可以使用，即过程级变量；如果在过程之外声明的，则该变量可以被脚本中所有过程所使用，
+即Script级变量。
+
+变量所存在的时间为存活期。Script级变量的存活期为从被声明开始，直到脚本运行结束为止；过程级变量的存活期仅是过程被调用执行开始到结束的时间。不同的过程
+可以使用相同的变量名，因为局部变量只有声明它的过程才能识别。
+4. 变量赋值
+
+给变量赋值很简单，使用等号进行赋值，等号左边为变量名，右边为变量值。若该变量是对象引用级别的，则需使用Set语句。示例代码如下：
+	
+Dim i, conn, ui
+i = 0
+Set conn = CreateObject("ADODB.Connection")
+Set ui = New UserInfo
+
+5. 标量与数组
+
+只包含一个值的变量成为标量变量；有时候为了方便将一组相关值赋给一个变量,则成为数组变量。区别标量与数组的唯一方式是声明时数组变量名后面带有括号()。
+变量声明就不说了，前面已经提到，这里我们看看怎样声明一维数组及多维数组（最大60维——:)只要您能够理解）。
+	
+Dim a(9), table(2, 3)
+a(0) = 1
+...
+a(9) = 11
+MsgBox(a(1))   '输出数组变量值
+ 
+table(0, 0) = 1
+...
+table(2, 3) = 10
+
+我们也可以声明动态数组（在运行脚本时大小发生变化的数组），使用Dim或ReDim语句，但括号中不包含任何数字。要使用动态数组，必须随后使用ReDim确定维数
+和每一维的大小。若同时使用Preserve关键字，则在重新调整大小时保留数组的内容。
+	
+Dim count, a()
+count = 9
+ReDim a(count)
+ReDim Preserve a(10)
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

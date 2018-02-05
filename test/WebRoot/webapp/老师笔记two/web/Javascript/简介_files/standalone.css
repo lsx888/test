@@ -1,0 +1,9 @@
+body {
+	margin: 0px 5px; padding: 0px; font-family: "Lucida Grande","bitstream vera sans","trebuchet ms",sans-serif,verdana;
+}
+a:active {
+	
+}
+:focus {
+	-moz-outline-style: none;
+}

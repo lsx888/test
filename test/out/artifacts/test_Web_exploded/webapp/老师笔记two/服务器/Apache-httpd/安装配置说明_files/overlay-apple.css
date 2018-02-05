@@ -1,0 +1,6 @@
+.apple_overlay {
+	padding: 35px; width: 640px; font-size: 11px; display: none; background-image: url("imgs/white.png");
+}
+.apple_overlay .close {
+	top: 5px; width: 35px; height: 35px; right: 5px; position: absolute; cursor: pointer; background-image: url("imgs/close.png");
+}

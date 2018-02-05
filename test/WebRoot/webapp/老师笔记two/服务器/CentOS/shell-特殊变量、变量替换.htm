@@ -1,0 +1,219 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0084)http://172.13.19.31:6060/note_html/服务器/CentOS/11005-shell-特殊变量、变量替换.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>shell-特殊变量、变量替换</TITLE> <LINK href="shell-特殊变量、变量替换_files/standalone.css" 
+rel="stylesheet"> <LINK href="shell-特殊变量、变量替换_files/overlay-apple.css" rel="stylesheet"> 
+<LINK href="shell-特殊变量、变量替换_files/article_edit.css" rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="shell-特殊变量、变量替换_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="shell-特殊变量、变量替换_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">shell-特殊变量、变量替换</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-08-31 17:18:06</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>特殊变量</H3>
+<UL>
+  <LI>$0：当前脚本的文件名</LI>
+  <LI>$n：传递给脚本或函数的参数。n 是一个数字，表示第几个参数。例如，第一个参数是$1，第二个参数是$2。</LI>
+  <LI>$#：传递给脚本或函数的参数个数。</LI>
+  <LI>$*：传递给脚本或函数的所有参数。</LI>
+  <LI>$@：传递给脚本或函数的所有参数。被双引号(" ")包含时，与 $* 稍有不同，下面将会讲到</LI>
+  <LI>$?：上个命令的退出状态，或函数的返回值。</LI>
+  <LI>$$：当前Shell进程ID。对于 Shell 脚本，就是这些脚本所在的进程ID</LI></UL>
+<H4>$n实例</H4>
+<PRE class="brush: bash;">    #!/bin/bash
+    echo "File Name: $0"
+    echo "First Parameter : $1"
+    echo "First Parameter : $2"
+    echo "Quoted Values: $@"
+    echo "Quoted Values: $*"
+    echo "Total Number of Parameters : $#"
+
+运行结果：
+
+$./test.sh Zara Ali
+File Name : ./test.sh
+First Parameter : Zara
+Second Parameter : Ali
+Quoted Values: Zara Ali
+Quoted Values: Zara Ali
+Total Number of Parameters : 2
+</PRE>
+<H4>$* 和 $@ 的区别</H4>
+<PRE class="brush: bash;">$* 和 $@ 都表示传递给函数或脚本的所有参数，不被双引号(" ")包含时，都以"$1" "$2" … "$n" 的形式输出所有参数。
+
+但是当它们被双引号(" ")包含时，"$*" 会将所有的参数作为一个整体，以"$1 $2 … $n"的形式输出所有参数；"$@" 会将各个参数分开，以"$1" "$2" … "$n" 的形式输出所有参数。
+
+下面的例子可以清楚的看到 $* 和 $@ 的区别：
+
+    #!/bin/bash
+    echo "\$*=" $*
+    echo "\"\$*\"=" "$*"
+    echo "\$@=" $@
+    echo "\"\$@\"=" "$@"
+    echo "print each param from \$*"
+    for var in $*
+    do
+        echo "$var"
+    done
+    echo "print each param from \$@"
+    for var in $@
+    do
+        echo "$var"
+    done
+    echo "print each param from \"\$*\""
+    for var in "$*"
+    do
+        echo "$var"
+    done
+    echo "print each param from \"\$@\""
+    for var in "$@"
+    do
+        echo "$var"
+    done
+
+执行 ./test.sh "a" "b" "c" "d"，看到下面的结果：
+
+$*=  a b c d
+"$*"= a b c d
+$@=  a b c d
+"$@"= a b c d
+print each param from $*
+a
+b
+c
+d
+print each param from $@
+a
+b
+c
+d
+print each param from "$*"
+a b c d
+print each param from "$@"
+a
+b
+c
+d
+</PRE>
+<H4>退出状态</H4>
+<PRE class="brush: bash;">$? 可以获取上一个命令的退出状态。所谓退出状态，就是上一个命令执行后的返回结果。
+
+退出状态是一个数字，一般情况下，大部分命令执行成功会返回 0，失败返回 1。
+
+不过，也有一些命令返回其他值，表示不同类型的错误。
+
+下面例子中，命令成功执行：
+
+$./test.sh Zara Ali
+File Name : ./test.sh
+First Parameter : Zara
+Second Parameter : Ali
+Quoted Values: Zara Ali
+Quoted Values: Zara Ali
+Total Number of Parameters : 2
+$echo $?
+0
+$
+
+
+$? 也可以表示函数的返回值，后续将会讲解
+</PRE>
+<H3>变量替换</H3>
+<H4>特殊字符替换</H4>
+<PRE class="brush: bash;">如果表达式中包含特殊字符，Shell 将会进行替换。例如，在双引号中使用变量就是一种替换，转义字符也是一种替换。
+
+如：
+    #!/bin/bash
+    a=10
+    echo -e "Value of a is $a \n"
+
+运行结果：
+
+Value of a is 10
+
+这里 -e 表示对转义字符进行替换。如果不使用 -e 选项，将会原样输出：
+
+Value of a is 10\n
+
+
+下面的转义字符都可以用在 echo 中：
+转义字符 	含义
+\\ 	        反斜杠
+\a 	        警报，响铃
+\b 	        退格（删除键）
+\f 	        换页(FF)，将当前位置移到下页开头
+\n 	        换行
+\r 	        回车
+\t 	        水平制表符（tab键） 
+\v 	        垂直制表符
+可以使用 echo 命令的 -E 选项禁止转义，默认也是不转义的；使用 -n 选项可以禁止插入换行符。 
+</PRE>
+<H4>命令替换</H4>
+<PRE class="brush: bash;">命令替换是指Shell可以先执行命令，将输出结果暂时保存，在适当的地方输出。
+
+命令替换的语法：
+
+    `command`
+
+注意是反引号，不是单引号，这个键位于 Esc 键下方。
+
+下面的例子中，将命令执行结果保存在变量中：
+
+    #!/bin/bash
+    DATE=`date`
+    echo "Date is $DATE"
+    USERS=`who | wc -l`
+    echo "Logged in user are $USERS"
+    UP=`date ; uptime`
+    echo "Uptime is $UP"
+
+运行结果：
+
+Date is Thu Jul  2 03:59:57 MST 2009
+Logged in user are 1
+Uptime is Thu Jul  2 03:59:57 MST 2009
+03:59:57 up 20 days, 14:03,  1 user,  load avg: 0.13, 0.07, 0.15
+</PRE>
+<H4>变量替换</H4>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="shell-特殊变量、变量替换_files/20150831-01.png"></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="shell-特殊变量、变量替换_files/20150831-02.png"></DIV></DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

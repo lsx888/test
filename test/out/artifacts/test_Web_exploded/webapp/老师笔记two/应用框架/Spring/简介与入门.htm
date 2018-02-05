@@ -1,0 +1,87 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0074)http://172.13.19.31:6060/note_html/应用框架/Spring/1001010-简介与入门.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>简介与入门</TITLE> <LINK href="简介与入门_files/standalone.css" rel="stylesheet"> 
+<LINK href="简介与入门_files/overlay-apple.css" rel="stylesheet"> <LINK href="简介与入门_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="简介与入门_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="简介与入门_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">简介与入门</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-02-22 16:37:57</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV id="-100">
+<DIV id="content_div_2">
+<H3>Spring的核心技术</H3>
+<UL>
+  <LI>IoC(依赖注入也叫控制反转)：英文全称是Inversion of 
+  Control，即控制反转。它使程序组件或类之间尽量形成一种松耦合的结构，开发者在使用类的实例之前，需要先创建对象的实例。但是IoC将创建实例的任务交给IoC容器，这样开发应用代码时只需要直接使用类的实例，这就是IoC控制反转。</LI>
+  <LI>AOP(面向切面编程)：Spring的AOP是基于Java的代理机制。从JDK1.3开始就支持代理功能，但是性能成为一个很大问题，为了解决JDK的代理问题，出现了CGLIB代理机制。它可以生成字节码，所以它的性能会高于JDK代理，Spring支持这两种代理方式。但是随着JVM性能的不断提高，这两种代理性能的差距会越来越小。</LI></UL></DIV>
+<DIV id="content_div_3">
+<H3>ApplicationContext的应用</H3>
+<P 
+style="text-indent: 0.8cm;">BeanFactory实现了IoC控制，所以它可以称为"IoC"容器。而ApplicationContext扩展了BeanFactory容器并添加了对I18N(国际化)、生命周期事件的发布监听等更加强大的功能，使之成为Spring中强大的企业级IoC容器。在Spring应用中大多采用ApplicationContext容器来开发企业级应用。</P>
+<H4>ApplicationContext有以下3个实现类</H4>
+<UL>
+  <LI>ClassPathXmlApplicationContext：它从当前类路径中检索配置文件并装载它来创建容器的实例。格式为：ApplicationContext 
+  context = new ClassPathXmlApplicationContext(String 
+  configLocation);参数指定了Spring配置文件的名称和位置。</LI>
+  <LI>FIleSystemXmlApplicationContext：它通过参数指定配置文件的位置，可以获取类路径之外的资源。格式如下：ApplicationContext 
+  context = new FileSystemXmlApplicationContext(String configLocation);</LI>
+  <LI>WebApplicationContext：是SpringWeb应用容器，有两种方法可以在Servlet中使用WebApplicationContext。一种是在Servlet的web.xml文件中配置Spring的org.springframework.web.context.ContextLoaderListener。(将在后面介绍)另一种是在web.xml中添加一个Servlet，定义使用Spring的org,springframework.web.context.ContextLoaderServlet类。</LI></UL>
+<H4>ApplicationContext通过以下方法获得容器中的对象</H4>
+<UL>
+  <LI>Object getBean(String beanName)</LI>
+  <LI>T getBean(String beanName,Class&lt;T&gt; clazz)</LI></UL></DIV>
+<DIV id="content_div_5">
+<H3>本教程使用4.2.4.RELEASE+maven管理代码的方式进行讲解</H3></DIV>
+<DIV id="content_div_1">
+<H3>Spring框架注要由7大模块组成</H3>
+<UL>
+  <LI>核心模块：Spring-core模块是Spring的核心容器，它实现了IoC模式，提供了Spring框架的基础功能。模块中包含的BeanFactory类是Spring的核心类，负责对JavaBean的配置与管理。它采用Factory模式实现了IoC容器即依赖注入。</LI>
+  <LI>Context模块：Spring-Context模块基础BeanFactory(或者说Spring核心)类，并且添加了事件处理、国际化、资源装载、透明装载及数据校验等功能。它还提供了框架式的Bean的访问方式和很多企业级的功能，如：JNDI访问、支持EJB、远程调用、集成模板框架、Email和定时任务调度等。</LI>
+  <LI>AOP模块：Spring集成了所有AOP功能。通过事务管理可以使任意Spring管理的对象AOP化。Spring提供了用标准Java语言编写的AOP框架，它的大部分内容都是根据AOP联盟的API开发。它是应用程序抛开EJB的复杂性，但拥有传统EJB的关键功能。</LI>
+  <LI>DAO模块：DAO模块提供了JDBC的抽象层，简化了数据库厂商的异常错误(不再从SQLException继承大批代码)，大幅度减少代码的编写，并且提供了对声明式事务和编程式事务的支持。</LI>
+  <LI>O/R映射模块：Spring 
+  ORM模块提供了对现有ORM框架的支持，各种流行的ORM框架已经做得非常成熟，并且拥有大规模的市场(如：HIbernate)。Spring没有必要开发新的ORM工具，但是它对Hibernate提供了完美的整合功能，同时支持其他的ORM工具。</LI>
+  <LI>Web模块：Spring-Web模块建立在Spring-Context基础之上，它提供了Servlet监听器的Context和Web应用的上下文。它对现有的Web框架如JSF、Tapestry、Struts等提供了集成。</LI>
+  <LI>MVC模块：Spring-Web-MVC模块建立在Spring核心功能之上，这使它能拥有Spring框架的所有特性，能够适应多种视图、模板技术、国际化和验证服务，实现控制逻辑和业务逻辑清晰的分离。</LI></UL></DIV></DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

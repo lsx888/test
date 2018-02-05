@@ -1,0 +1,169 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0100)http://172.13.19.31:6060/note_html/工具/Apache-Maven（项目构建）/1003012-依赖的传递、聚合和继承.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>依赖的传递、聚合和继承</TITLE> <LINK href="依赖的传递、聚合和继承_files/standalone.css" rel="stylesheet"> 
+<LINK href="依赖的传递、聚合和继承_files/overlay-apple.css" rel="stylesheet"> <LINK href="依赖的传递、聚合和继承_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="依赖的传递、聚合和继承_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="依赖的传递、聚合和继承_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">依赖的传递、聚合和继承</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-02-24 14:49:07</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>依赖的传递</H3>
+<P style="text-indent: 0.8cm;">假设 A 依赖 B ， B 依赖 C ，我们称 A 对 B 是第一直接依赖， B 对 C 
+是第二直接依赖， A 对 C 是传递依赖。3者与依赖的范围有如下关系： </P>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="依赖的传递、聚合和继承_files/20151030-01.png"></DIV></DIV>
+<H3>传递依赖的版本确定规则</H3>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="依赖的传递、聚合和继承_files/20151030-02.gif"></DIV></DIV>
+<OL>
+  <LI> 在工程的依赖树上，深度越浅，越被优先选择。如本例中的spring-jms. 
+  由于pom中直接声明了3.0.2版本的spring-jms,所以3.0.2版本的spring-jms在工程的依赖树上处在第一层，而activemq-optional所间接依赖的3.0.3版本的spring-jms则是处在工程依赖树的第二层，则maven会以深度浅者优先，所以最后解析的结果是选择了3.0.2版本的spring-jms。</LI>
+  <LI>若两个依赖包处于依赖树上的同一层，则谁在前，选择谁。如本例中的spring-core.一个是activemq-optional的间接依赖，一个是spring-context的间接依赖，两个依赖都是处在第二层上，但由于是activemq-optional声明在前，所以maven优先选择了activemq-optional所依赖的3.0.3的版本！</LI>
+  <LI><SPAN 
+  style="color: rgb(255, 0, 0);">避免传递依赖引起版本问题的最佳实践。现在很多的开源框架和工具都开始分模块打包发布，比如spring,hibernate都是如此，而这些模块之间又有可能存在相关的依赖关系，为了避免出现版本不一致问题，比如上例中出现的spring-jms使用的是3.0.2，而spring-core却使用了3.0.3这种情况，需要我们对一个工程直接依赖的某一框架的多个模块都要做出声明，而不要依赖其内部的依赖关系来间接引入。总结起来就昌：一般来说，如果工程直接依赖到某一框架的多个模块，最好显示声明有冲突的依赖，避免传递依赖中依赖不同版本的依赖出现错误。</SPAN></LI></OL>
+<H3>聚合</H3>
+<P style="text-indent: 0.8cm;">为了能够使用一条命令就能构建 account-email和 
+account-persist两个模块，我们需要建立一个额外的名为 account-aggregator的模块，然后通过该模块构建整个项目的所有模块。 
+account-aggregator本身也是个 Maven项目，它的 POM如下： </P>
+<PRE class="brush: xml;">&lt;project&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;groupId&gt;com.juvenxu.mvnbook.account&lt;/groupId&gt;
+	&lt;artifactId&gt;account-aggregator&lt;/artifactId&gt;
+	&lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+	&lt;!-- packaging的类型为pom --&gt;
+	&lt;packaging&gt; pom &lt;/packaging&gt;
+	&lt;name&gt;Account Aggregator&lt;/name&gt;
+	&lt;modules&gt;
+		&lt;!-- module的值是一个以当前POM为主目录的相对路径。如：../artifactId --&gt;
+		&lt;module&gt;account-email&lt;/module&gt;
+		&lt;module&gt;account-persist&lt;/module&gt;
+	&lt;/modules&gt;
+&lt;/project&gt;
+</PRE>
+<H3>继承</H3>
+<H4>可声明父POM供子 POM继承，父模块POM如下：</H4>
+<PRE class="brush: xml;">&lt;project&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;groupId&gt;com.juvenxu.mvnbook.account&lt;/groupId&gt;
+	&lt;artifactId&gt; account-parent &lt;/artifactId&gt;
+	&lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+	&lt;packaging&gt;pom&lt;/packaging&gt;
+	&lt;name&gt;Account Parent&lt;/name&gt;
+&lt;/project&gt;
+</PRE>
+<H4>子模块声明继承如下：</H4>
+<PRE class="brush: xml;">&lt;project&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+	&lt;parent&gt;
+		&lt;groupId&gt;com.juvenxu.mvnbook.account&lt;/groupId&gt;
+		&lt;artifactId&gt; account-parent &lt;/artifactId&gt;
+		&lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+		&lt;relativePath&gt;../account-parent/pom.xml&lt;/relativePath&gt;
+	&lt;/parent&gt;
+
+	&lt;artifactId&gt; account-email &lt;/artifactId&gt;
+	&lt;name&gt;Account Email&lt;/name&gt;
+	...
+&lt;/project&gt;
+</PRE>
+<H4>最后，同样还需要把 account-parent加入到聚合模块account-aggregator中。聚合的 POM如下：</H4>
+<PRE class="brush: xml;">&lt;project&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;groupId&gt;com.juvenxu.mvnbook.account&lt;/groupId&gt;
+	&lt;artifactId&gt;account-aggregator&lt;/artifactId&gt;
+	&lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+	&lt;packaging&gt; pom &lt;/packaging&gt;
+	&lt;name&gt;Account Aggregator&lt;/name&gt;
+	&lt;modules&gt;
+		&lt;module&gt;account-email&lt;/module&gt;
+		&lt;module&gt;account-persist&lt;/module&gt;
+		&lt;module&gt; account-parent&lt;/module&gt;
+	&lt;/modules&gt;
+&lt;/project&gt;
+</PRE>
+<H4>注意事项：</H4>
+<UL>
+  <LI>子模块没有声明groupId和version, 这两个属性继承至父模块。但如果子模块有不同于父模块的 groupId、version 
+  ，也可指定；</LI>
+  <LI style="color: red;">使用继承后 parent也必须像自模块一样加入到聚合模块中。也就是在在聚合模块的 
+  pom中加入&lt;module&gt;account-parent&lt;/module&gt;</LI></UL>
+<H3>可继承的POM 元素</H3>
+<UL>
+  <LI>groupId：项目组ID，项目坐标的核心元素；</LI>
+  <LI>version：项目版本，项目坐标的核心元素；</LI>
+  <LI>description：项目的描述信息；</LI>
+  <LI>organization：项目的组织信息；</LI>
+  <LI>inceptionYear：项目的创始年份；</LI>
+  <LI>url：项目的url地址</LI>
+  <LI>develoers：项目的开发者信息；</LI>
+  <LI>contributors：项目的贡献者信息；</LI>
+  <LI>distributionManagerment：项目的部署信息；</LI>
+  <LI>issueManagement：缺陷跟踪系统信息；</LI>
+  <LI>ciManagement：项目的持续继承信息；</LI>
+  <LI>scm：项目的版本控制信息；</LI>
+  <LI>mailingListserv：项目的邮件列表信息；</LI>
+  <LI>properties：自定义的Maven属性；</LI>
+  <LI>dependencies：项目的依赖配置；</LI>
+  <LI>dependencyManagement：醒目的依赖管理配置；</LI>
+  <LI>repositories：项目的仓库配置；</LI>
+  <LI>build：包括项目的源码目录配置、输出目录配置、插件配置、插件管理配置等；</LI>
+  <LI>reporting：包括项目的报告输出目录配置、报告插件配置等。</LI></UL>
+<H3>聚合与继承的关系</H3>
+<H4>区别 ：</H4>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="依赖的传递、聚合和继承_files/20151030-03.jpg"></DIV></DIV>
+<OL>
+  <LI>对于聚合模块来说，它知道有哪些被聚合的模块，但那些被聚合的模块不知道这个聚合模块的存在。</LI>
+  <LI>对于继承关系的父 POM来说，它不知道有哪些子模块继承与它，但那些子模块都必须知道自己的父 POM是什么。</LI></OL>
+<H4>共同点 ：</H4>
+<OL>
+  <LI>聚合 POM与继承关系中的父POM的 packaging都是pom</LI>
+  <LI>聚合模块与继承关系中的父模块除了 POM之外都没有实际的内容。</LI></OL>
+<P style="text-indent: 0.8cm;">在现有的实际项目中一个 POM既是聚合POM，又是父 POM，这么做主要是为了方便</P>
+<H3>Maven项目相互依赖/循环依赖/双向依赖的问题(不常出现)</H3>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

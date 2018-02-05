@@ -1,0 +1,134 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0075)http://172.13.19.31:6060/note_html/web/Javascript/1001130-js执行上下文.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>12-js执行上下文</TITLE> <LINK href="12-js执行上下文_files/standalone.css" rel="stylesheet"> 
+<LINK href="12-js执行上下文_files/overlay-apple.css" rel="stylesheet"> <LINK href="12-js执行上下文_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="12-js执行上下文_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="12-js执行上下文_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">12-js执行上下文</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-04-10 14:28:27</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>什么是执行上下文</H3>
+<P style="text-indent: 0.8cm;">Javascript中代码的运行环境分为以下三种：</P>
+<UL>
+  <LI>全局级别的代码 - 这个是默认的代码运行环境，一旦代码被载入，引擎最先进入的就是这个环境。</LI>
+  <LI>函数级别的代码 - 当执行一个函数时，运行函数体中的代码。</LI>
+  <LI>Eval的代码 - 在Eval函数内运行的代码。</LI></UL>
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="12-js执行上下文_files/20150410-01.png" 
+rel="#20150410-01"> <FONT>执行上下文</FONT> </DIV>
+<DIV class="apple_overlay" id="20150410-01"><IMG alt="图片不存在" src="12-js执行上下文_files/20150410-01.png"> 
+</DIV></DIV>
+<P 
+style="text-indent: 0.8cm;">上图中，一共用4个执行上下文。紫色的代表全局的上下文；绿色代表person函数内的上下文；蓝色以及橙色代表person函数内的另外两个函数的上下文。注意，不管什么情况下，只存在一个全局的上下文，该上下文能被任何其它的上下文所访问到。也就是说，我们可以在person的上下文中访问到全局上下文中的sayHello变量，当然在函数firstName或者lastName中同样可以访问到该变量。</P>
+<H3>执行上下文堆栈</H3>
+<P 
+style="text-indent: 0.8cm;">在浏览器中，javascript引擎的工作方式是单线程的。也就是说，某一时刻只有唯一的一个事件是被激活处理的，其它的事件被放入队列中，等待被处理。</P>
+<P 
+style="text-indent: 0.8cm;">当javascript代码文件被浏览器载入后，默认最先进入的是一个全局的执行上下文。当在全局上下文中调用执行一个函数时，程序流就进入该被调用函数内，此时引擎就会为该函数创建一个新的执行上下文，并且将其压入到执行上下文堆栈的顶部。浏览器总是执行当前在堆栈顶部的上下文，一旦执行完毕，该上下文就会从堆栈顶部被弹出，然后，进入其下的上下文执行代码。这样，堆栈中的上下文就会被依次执行并且弹出堆栈，直到回到全局的上下文。请看下面一个例子：</P>
+<PRE class="brush: js;">(function foo(i) {
+   if (i === 3) {
+       return;
+   }
+   else {
+       foo(++i);
+   }
+}(0));
+</PRE>
+<P 
+style="text-indent: 0.8cm;">上述foo被声明后，通过()运算符强制直接运行了。函数代码就是调用了其自身3次，每次是局部变量i增加1。每次foo函数被自身调用时，就会有一个新的执行上下文被创建。每当一个上下文执行完毕，该上上下文就被弹出堆栈，回到上一个上下文，直到再次回到全局上下文。真个过程抽象如下图:</P>
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="12-js执行上下文_files/20150410-02.gif" 
+rel="#20150410-02"> <FONT>上下文过程</FONT> </DIV>
+<DIV class="apple_overlay" id="20150410-02"><IMG alt="图片不存在" src="12-js执行上下文_files/20150410-02.gif"> 
+</DIV></DIV>
+<P style="text-indent: 0.8cm;">由此可见 ，对于执行上下文这个抽象的概念，可以归纳为以下几点：</P>
+<UL>
+  <LI>单线程</LI>
+  <LI>同步执行</LI>
+  <LI>唯一的一个全局上下文</LI>
+  <LI>函数的执行上下文的个数没有限制</LI>
+  <LI>每次某个函数被调用，就会有个新的执行上下文为其创建，即使是调用的自身函数，也是如此</LI></UL>
+<H3>执行上下文的建立过程</H3>
+<P 
+style="text-indent: 0.8cm;">我们现在已经知道，每当调用一个函数时，一个新的执行上下文就会被创建出来。然而，在javascript引擎内部，这个上下文的创建过程具体分为两个阶段:</P>
+<OL>
+  <LI>建立阶段(发生在当调用一个函数时，但是在执行函数体内的具体代码以前)   
+  <UL>
+    <LI>建立变量，函数，arguments对象，参数</LI>
+    <LI>建立作用域链</LI>
+    <LI>确定this的值</LI></UL></LI>
+  <LI>代码执行阶段:   
+  <UL>
+    <LI>变量赋值，函数引用，执行其它代码</LI></UL></LI></OL>
+<P style="text-indent: 0.8cm;">实际上，可以把执行上下文看做一个对象，其下包含了以上3个属性：</P>
+<PRE class="brush: js;">executionContextObj = {
+   variableObject: { /* 函数中的arguments对象, 参数, 内部的变量以及函数声明 */ },
+   scopeChain: { /* variableObject 以及所有父执行上下文中的variableObject */ },
+   this: {}
+ }
+</PRE>
+<H3>建立阶段以及代码执行阶段的详细分析</H3>
+<P 
+style="text-indent: 0.8cm;">执行上下文对象（上述的executionContextObj）是在函数被调用时，但是在函数体被真正执行以前所创建的。函数被调用时，就是我上述所描述的两个阶段中的第一个阶段 
+- 
+建立阶段。这个时刻，引擎会检查函数中的参数，声明的变量以及内部函数，然后基于这些信息建立执行上下文对象（executionContextObj）。在这个阶段，variableObject对象，作用域链，以及this所指向的对象都会被确定。</P>
+<P style="text-indent: 0.8cm;">上述第一个阶段的具体过程如下：</P>
+<OL>
+  <LI>找到当前上下文中的调用函数的代码</LI>
+  <LI>在执行被调用的函数体中的代码以前，开始创建执行上下文</LI>
+  <LI>进入第一个阶段-建立阶段:			 
+  <UL>
+    <LI>建立variableObject对象:					 
+    <OL>
+      <LI>建立arguments对象，检查当前上下文中的参数，建立该对象下的属性以及属性值</LI>
+      <LI>检查当前上下文中的函数声明：							 
+      <UL>
+        <LI>每找到一个函数声明，就在variableObject下面用函数名建立一个属性，属性值就是指向该函数在内存中的地址的一个引用</LI>
+        <LI>如果上述函数名已经存在于variableObject下，那么对应的属性值会被新的引用所覆盖。</LI></UL></LI>
+      <LI>检查当前上下文中的变量声明：							 
+      <UL>
+        <LI>每找到一个变量的声明，就在variableObject下，用变量名建立一个属性，属性值为undefined。</LI>
+        <LI>如果该变量名已经存在于variableObject属性中，直接跳过(防止指向函数的属性的值被变量属性覆盖为undefined)，原属性值不会被修改。</LI></UL></LI></OL></LI>
+    <LI>初始化作用域链</LI>
+    <LI>确定上下文中this的指向对象</LI></UL></LI>
+  <LI>代码执行阶段:			 
+  <UL>
+    <LI>执行函数体中的代码，一行一行地运行代码，给variableObject中的变量属性赋值。</LI></UL></LI></OL>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 2013 ~ 2015 作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

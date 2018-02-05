@@ -1,0 +1,89 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0073)http://172.13.19.31:6060/note_html/web/Javascript/1001070-Object对象.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>6-Object对象</TITLE> <LINK href="6-Object对象_files/standalone.css" rel="stylesheet"> 
+<LINK href="6-Object对象_files/overlay-apple.css" rel="stylesheet"> <LINK href="6-Object对象_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="6-Object对象_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="6-Object对象_files/my-highlighter.css" rel="stylesheet">     
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+	 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+		
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+	 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+	 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+		
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">6-Object对象</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-03-30 15:27:14</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV id="content_div_1">
+<H3>javascript中的所有对象都由这个对象继承而来，Object 对象具有下列属性：</H3>
+<UL>
+  <LI>constructor：对创建对象的函数的引用（指针）。对于 Object 对象，该指针指向原始的 Object() 函数</LI>
+  <LI>Prototype：对该对象的对象原型的引用。对于所有的对象，它默认返回 Object 对象的一个实例</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_2">
+<H3>Object 对象还具有几个方法：</H3>
+<UL>
+  <LI>hasOwnProperty(property)：判断对象是否有某个特定的属性。必须用字符串指定该属性。（例如，o.hasOwnProperty("name")）</LI>
+  <LI>isPrototypeOf(object)：判断该对象是否为另一个对象的原型</LI>
+  <LI>propertyIsEnumerable：判断给定的属性是否可以用 for...in 语句进行枚举</LI>
+  <LI>toString()：返回对象的原始字符串表示。对于 Object 对象，ECMA-262 没有定义这个值，所以不同的 ECMAScript 
+  实现具有不同的值</LI>
+  <LI>ValueOf()：返回最适合该对象的原始值。对于许多对象，该方法返回的值都与 ToString() 的返回值相同。</LI>
+  <LI style="color: red;">上面列出的每种属性和方法都会被其他对象覆盖。</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_3">
+<H3>定义javascript对象的方式(参见W3CSchool.chm定义类或对象)</H3>
+<H4>构造函数+原型的方式创建对象</H4>
+<PRE class="brush: js;">function Car(sColor,iDoors,iMpg) {
+  this.color = sColor;
+  this.doors = iDoors;
+  this.mpg = iMpg;
+  this.drivers = new Array("Mike","John");
+}
+
+Car.prototype.showColor = function() {
+  alert(this.color);
+};
+
+var oCar1 = new Car("red",4,23);
+var oCar2 = new Car("blue",3,25);
+
+oCar1.drivers.push("Bill");
+
+alert(oCar1.drivers);	//输出 "Mike,John,Bill"
+alert(oCar2.drivers);	//输出 "Mike,John"
+
+</PRE></DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 2013 ~ 2030 作者：zzy</DIV><!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

@@ -1,0 +1,180 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0075)http://172.13.19.31:6060/note_html/web/Javascript/1001020-变量和运算符.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>变量和运算符</TITLE> <LINK href="变量和运算符_files/standalone.css" rel="stylesheet"> 
+<LINK href="变量和运算符_files/overlay-apple.css" rel="stylesheet"> <LINK href="变量和运算符_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="变量和运算符_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="变量和运算符_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">变量和运算符</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-06-30 16:56:26</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>语法规则</H3>
+<UL>
+  <LI>区分大小写：与 Java 一样，变量、函数名、运算符以及其他一切东西都是区分大小写的，如：变量 test 与变量 TEST 是不同的</LI>
+  <LI>变量是弱类型的：与 Java 和 C 不同，javascript中的变量无特定的类型，定义变量时只用 var 
+  运算符，可以将它初始化为任意值。因此，可以随时改变变量所存数据的类型（实际运用中应该避免这样做）。   
+<PRE class="brush: js;">var color = "red";
+var num = 25;
+var visible = true;
+</PRE></LI>
+  <LI>每行结尾的分号可有可无：Java、C都要求每行代码以分号（;）结束才符合语法。javascript则允许开发者自行决定是否以分号结束一行代码。如果没有分号，javascript就把折行代码的结尾看做该语句的结尾（与 
+  Visual Basic 和 VBScript 相似），前提是这样没有破坏代码的语义。（<SPAN style="color: rgb(255, 0, 0);">实际运用中必须打分号</SPAN>） 
+    
+<PRE class="brush: js;">var test1 = "red"
+var test2 = "blue";
+</PRE></LI>
+  <LI>注释与 Java、C语言的注释相同：单行：//注释内容，多行/*注释内容*/</LI></UL>
+<H3>变量声明</H3>
+<PRE class="brush: js;">/*
+javascript中的变量是用 var 运算符（variable 的缩写）加变量名定义的。
+javascript是弱类型的，无需明确的类型声明。
+*/
+var test = "hi";
+
+/*
+所有类型的js变量都使用var声明
+*/
+var test = "hi", age = 25;//该行等价于：var test = "hi"; var age = 25;
+
+/*
+与 Java 不同，javascript中的变量使用前并不一定要初始化(但是使用前必须定义，否则会有变量未定义错误)
+*/
+var test;
+
+/*
+与 Java 不同的还有变量可以存放不同类型的值（实际运用中不能这样做）
+*/
+var test = "hi";
+alert(test);
+test = 55;
+alert(test);
+
+/*
+变量声明不是必须的（实际运用中也不能这样做）
+*/
+test = "hi";
+
+</PRE>
+<H3>变量命名规则</H3>
+<H4>必要规则</H4>
+<UL>
+  <LI>必须是以字母、下划线（_）或美元符号（$）开头（也就是第一个字符）</LI>
+  <LI>余下的字符可以是下划线、美元符号或任何字母或数字字符</LI></UL>
+<H4>约定规则</H4>
+<UL>
+  <LI>驼峰命名：普通变量，第一个字符小写，后面每个单词的首字母大写。如：var testNameGood = "";</LI></UL>
+<H3>javascript运算符</H3>
+<P style="text-indent: 2em;">javascript的运算符和java的一致可参考java的运算符。 </P>
+<DIV id="content_div_2">
+<H3>javascript语句</H3>
+<UL>
+  <LI>with语句(对象操作语句)：如：with(document){var el = 
+  getElementById('id');}，也就是说花括号内可以省略with语句中的对象名来调用该对象的方法。</LI>
+  <LI style="color: red;">for .. in语句：重复执行指定对象的所有属性。如：for(var i in 
+  obj)，变量i为obj中属性的名字，可通过obj[i]获取属性值。该语句也可以遍历数组，遍历数组时i为数组的下标 。</LI>
+  <LI>其他语句：if .. else、for、switch、while、break、continue等和java相似</LI></UL></DIV>
+<HR>
+
+<H3>javascript关键字列表</H3>
+<PRE class="brush: js;">break
+case
+catch
+continue
+default
+delete
+do
+else
+finally
+for
+function
+if
+in
+instanceof
+new
+return
+switch
+this
+throw
+try
+typeof
+var
+void
+while
+with
+</PRE>
+<H3>javascript保留关键字列表</H3>
+<PRE class="brush: js;">abstract
+boolean
+byte
+char
+class
+const
+debugger
+double
+enum
+export
+extends
+final
+float
+goto
+implements
+import
+int
+interface
+long
+native
+package
+private
+protected
+public
+short
+static
+super
+synchronized
+throws
+transient
+volatile
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

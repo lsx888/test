@@ -1,0 +1,400 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0069)http://172.13.19.31:6060/note_html/服务器/CentOS/10201-启动linux.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>启动linux</TITLE> <LINK href="启动linux_files/standalone.css" rel="stylesheet"> 
+<LINK href="启动linux_files/overlay-apple.css" rel="stylesheet"> <LINK href="启动linux_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="启动linux_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="启动linux_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">启动linux</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-08-20 11:45:00</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>系统启动过程</H3>
+<P>Linux的启动其实和windows的启动过程很类似，不过windows我们是无法看到启动信息的，而linux启动时我们会看到许多启动信息，例如某个服务是否启动。</P>
+<P>Linux系统的启动过程大体上可分为五部分：内核的引导；运行init；系统初始化；建立终端 ；用户登录系统。</P>
+<P style="text-align: justify; font-family: Simsun; font-size: medium;"><SPAN 
+style="font-size: 10.5pt;"><B>A&nbsp;</B></SPAN><SPAN style="font-family: 宋体; font-size: 10.5pt;"><B>内核引导</B></SPAN></P>
+<P style="text-align: justify; font-family: Simsun; font-size: medium;"><SPAN 
+style="font-size: 10.5pt;"></SPAN><SPAN style="font-family: 宋体; font-size: 10.5pt;">当计算机打开电源后，首先是</SPAN><SPAN 
+style="font-size: 10.5pt;">BIOS</SPAN><SPAN style="font-family: 宋体; font-size: 10.5pt;">开机自检，按照</SPAN><SPAN 
+style="font-size: 10.5pt;">BIOS</SPAN><SPAN style="font-family: 宋体; font-size: 10.5pt;">中设置的启动设备（通常是硬盘）来启动</SPAN><SPAN 
+style="font-size: 10.5pt;">。</SPAN><SPAN style="font-family: 宋体; font-size: 10.5pt;">紧接着由启动设备上的</SPAN><SPAN 
+style="font-size: 10.5pt;">grub</SPAN><SPAN style="font-family: 宋体; font-size: 10.5pt;">程序开始引导</SPAN><SPAN 
+style="font-size: 10.5pt;">linux</SPAN><SPAN style="font-family: 宋体; font-size: 10.5pt;">，</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">当引导程序成功完成引导任务后，</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">Linux</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">从它们手中接管了</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">CPU</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">的控制权，然后</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">CPU</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">就开始执行</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">Linux</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">的核心映象代码，开始了</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">Linux</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">启动过程</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">。</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">也就是所谓的内核引导开始了，在内核引导过程中其实是很复杂的，我们就当它是一个黑匣子，反正是</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">linux</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">内核做了一些列工作，最后内核调用加载了</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">init</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">程序，至此内核引导的工作就完成了</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">。</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">交给了下一个主角</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">init。</SPAN></P>
+<P style="text-align: justify; font-family: Simsun; font-size: medium;"><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;"><B>B&nbsp;</B></SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;"><B>运行</B></SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;"><B>init</B></SPAN></P>
+<P style="text-align: justify; font-family: Simsun; font-size: medium;"><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">init&nbsp;</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">进程是系统所有进程的起点，你可以把它比拟成系统所有进程的老祖宗，没有这个进程，系统中任何进程都不会启动</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">。init&nbsp;</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">程序首先是需要读取配置文件</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">&nbsp;/etc/inittab。inittab</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">是一个不可执行的文本文件，它有若干行指令所组成</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">。</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">具体内容如下：（你可以在你的</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">linux</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">上执行命令</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">&nbsp;cat 
+/etc/inittab&nbsp;</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">这样获得）</SPAN></P>
+<P style="text-align: justify; font-family: Simsun; font-size: medium;"><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">　　# inittab&nbsp; &nbsp;&nbsp; 
+&nbsp; This file describes how the INIT process should set up<BR>#&nbsp; 
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;the system in a 
+certain run-level.<BR>#<BR># Author:&nbsp; &nbsp;&nbsp; &nbsp; Miquel van 
+Smoorenburg,<BR>#&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; 
+&nbsp;Modified for RHS Linux by Marc Ewing and Donnie Barnes<BR>#<BR># Default 
+runlevel. The runlevels used by RHS are:<BR>#&nbsp; &nbsp;0 - halt (Do NOT set 
+initdefault to this)<BR>#&nbsp; &nbsp;1 - Single user mode<BR>#&nbsp; &nbsp;2 - 
+Multiuser, without NFS (The same as 3, if you do not havenetworking)<BR>#&nbsp; 
+&nbsp;3 - Full multiuser mode<BR>#&nbsp; &nbsp;4 - unused<BR>#&nbsp; &nbsp;5 - 
+X11<BR>#&nbsp; &nbsp;6 - reboot (Do NOT set initdefault to this)<BR>#<BR>
+###</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">表示当前缺省运行级别为</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">5(initdefault)</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">；</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;"><BR>id:5:initdefault:<BR>
+###</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">启动时自动执行</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">/etc/rc.d/rc.sysinit</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">脚本</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">(sysinit)<BR>
+# System initialization.<BR>si::sysinit:/etc/rc.d/rc.sysinit<BR>
+l0:0:wait:/etc/rc.d/rc 0<BR>l1:1:wait:/etc/rc.d/rc 1<BR>l2:2:wait:/etc/rc.d/rc 
+2<BR>l3:3:wait:/etc/rc.d/rc 3<BR>l4:4:wait:/etc/rc.d/rc 4<BR>###</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">当运行级别为</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">5</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">时，以</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">5</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">为参数运行</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">/etc/rc.d/rc</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">脚本，</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">init</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">将等待其返回</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">(wait)<BR>
+l5:5:wait:/etc/rc.d/rc 5<BR>l6:6:wait:/etc/rc.d/rc 6<BR>###</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">在启动过程中允许按</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">CTRL-ALT-DELETE</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">重启系统</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;"><BR># 
+Trap CTRL-ALT-DELETE<BR>ca::ctrlaltdel:/sbin/shutdown -t3 -r now<BR># When our 
+UPS tells us power has failed, assume we have a few minutes<BR># of power 
+left.&nbsp;&nbsp;Schedule a shutdown for 2 minutes from now.<BR># This does, of 
+course, assume you have powerd installed and your<BR># UPS connected and working 
+correctly.<BR>pf::powerfail:/sbin/shutdown -f -h +2 "Power Failure; System 
+Shutting Down"<BR># If power was restored before the shutdown kicked in, cancel 
+it.<BR>pr:12345:powerokwait:/sbin/shutdown -c "Power Restored; Shutdown 
+Cancelled"<BR>###</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">在</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">2、3、4、5</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">级别上以</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">ttyX</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">为参数执行</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">/sbin/mingetty</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">程序，打开</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">ttyX</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">终端用于用户登录，</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;"><BR>###</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">如果进程退出则再次运行</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">mingetty</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">程序</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">(respawn)<BR>
+# Run gettys in standard runlevels<BR>1:2345:respawn:/sbin/mingetty tty1<BR>
+2:2345:respawn:/sbin/mingetty tty2<BR>3:2345:respawn:/sbin/mingetty tty3<BR>
+4:2345:respawn:/sbin/mingetty tty4<BR>5:2345:respawn:/sbin/mingetty tty5<BR>
+6:2345:respawn:/sbin/mingetty tty6<BR>###</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">在</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">5</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">级别上运行</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">xdm</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">程序，提供</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">xdm</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">图形方式登录界面，并在退出时重新执行</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">(respawn)<BR># Run xdm in 
+runlevel 5<BR>x:5:respawn:/etc/X11/prefdm -nodaemon</SPAN></P>
+<P style="text-align: justify; font-family: Simsun; font-size: medium;"><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">以上面的</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">inittab</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">文件为例，来说明一下</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">inittab</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">的格式</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">。</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">其中以</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">#</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">开始的行是注释行，除了注释行之外，每一行都有以下格式：</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">&nbsp;<BR>id:runlevel:action:process</SPAN></P>
+<P style="text-align: justify; font-family: Simsun; font-size: medium;"><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">　　</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">对上面各项的详细解释如下：</SPAN></P>
+<P style="text-align: justify; font-family: Simsun; font-size: medium;"><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;"><B>1. id</B></SPAN></P>
+<P style="text-align: justify; font-family: Simsun; font-size: medium;"><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">　　id</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">是指入口标识符，它是一个字符串，对于</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">getty</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">或</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">mingetty</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">等其他</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">login</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">程序项，要求</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">id</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">与</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">tty</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">的编号相同，否则</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">getty</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">程序将不能正常工作</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">。<BR></SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;"><B>2. 
+Runlevel</B></SPAN></P>
+<P style="text-align: justify; text-indent: 21pt; font-family: Simsun; font-size: medium;"><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">runlevel</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">是</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">init</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">所处于的运行级别的标识，一般使用</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">0</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">－</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">6</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">以及</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">S</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">或</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">s。0、1、6</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">运行级别被系统保留：其中</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">0</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">作为</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">shutdown</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">动作，</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">1</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">作为重启至单用户模式，</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">6</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">为重启；</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">S</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">和</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">s</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">意义相同，表示单用户模式，且无需</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">inittab</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">文件，因此也不在</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">inittab</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">中出现，实际上，进入单用户模式时，</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">init</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">直接在控制台（</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">/dev/console</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">）上运行</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">/sbin/sulogin。</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">在一般的系统实现中，都使用了</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">2、3、4、5</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">几个级别，在</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">CentOS</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">系统中，</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">2</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">表示无</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">NFS</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">支持的多用户模式，</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">3</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">表示完全多用户模式（也是最常用的级别），</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">4</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">保留给用户自定义，</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">5</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">表示</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">XDM</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">图形登录方式</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">。7</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">－</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">9</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">级别也是可以使用的，传统的</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">Unix</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">系统没有定义这几个级别</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">。runlevel</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">可以是并列的多个值，以匹配多个运行级别，对大多数</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">action</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">来说，仅当</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">runlevel</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">与当前运行级别匹配成功才会执行</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">。<BR></SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;"><B>3. 
+action</B></SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;"><BR>
+action</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">是描述其后的</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">process</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">的运行方式的</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">。action</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">可取的值包括：</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">initdefault、sysinit、boot、bootwait</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">等：</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">　initdefault</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">是一个特殊的</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">action</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">值，用于标识缺省的启动级别；当</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">init</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">由核心激活以后，它将读取</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">inittab</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">中的</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">initdefault</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">项，取得其中的</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">runlevel</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">，并作为当前的运行级别</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">。</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">如果没有</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">inittab</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">文件，或者其中没有</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">initdefault</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">项，</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">init</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">将在控制台上请求输入</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">runlevel。　　sysinit、boot、bootwait</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">等</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">action</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">将在系统启动时无条件运行，而忽略其中的</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">runlevel。</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">其余的</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">action</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">（不含</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">initdefault</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">）都与某个</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">runlevel</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">相关</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">。</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">各个</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">action</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">的定义在</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">inittab</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">的</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">man</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">手册中有详细的描述</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">。<BR></SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;"><B>4. 
+process</B></SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;"><BR>
+process</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">为具体的执行程序</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">。</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">程序后面可以带参数</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">。&nbsp;</SPAN></P>
+<P style="text-align: justify; font-family: Simsun; font-size: medium;"><SPAN 
+style="font-size: 10.5pt;">Tips:&nbsp;</SPAN><SPAN style="font-family: 宋体; font-size: 10.5pt;">如果你看不懂这个文件，没有关系，随着你对</SPAN><SPAN 
+style="font-size: 10.5pt;">linux</SPAN><SPAN style="font-family: 宋体; font-size: 10.5pt;">的深入了解，你再回过头看这个文件你就会豁然开朗的</SPAN><SPAN 
+style="font-size: 10.5pt;">。</SPAN><SPAN style="font-family: 宋体; font-size: 10.5pt;">但是你现在必须要明白</SPAN><SPAN 
+style="font-size: 10.5pt;">runlevel</SPAN><SPAN style="font-family: 宋体; font-size: 10.5pt;">的各个级别的含义</SPAN><SPAN 
+style="font-size: 10.5pt;">。</SPAN></P>
+<P style="text-align: justify; font-family: Simsun; font-size: medium;"><SPAN 
+style="font-size: 10.5pt;"><B>C&nbsp;</B></SPAN><SPAN style="font-family: 宋体; font-size: 10.5pt;"><B>系统初始化</B></SPAN></P>
+<P style="text-align: justify; text-indent: 21pt; font-family: Simsun; font-size: medium;"><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">在</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">init</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">的配置文件中有这么一行：</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">&nbsp;si::sysinit:/etc/rc.d/rc.sysinit　</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">它调用执行了</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">/etc/rc.d/rc.sysinit</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">，而</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">rc.sysinit</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">是一个</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">bash 
+shell</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">的脚本，它主要是完成一些系统初始化的工作，</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">rc.sysinit</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">是每一个运行级别都要首先运行的重要脚本</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">。</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">它主要完成的工作有：激活交换分区，检查磁盘，加载硬件模块以及其它一些需要优先执行任务</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">。</SPAN></P>
+<P style="text-align: justify; text-indent: 21pt; font-family: Simsun; font-size: medium;"><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">rc.sysinit</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">约有</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">850</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">多行，但是每个单一的功能还是比较简单，而且带有注释，建议有兴趣的用户可以自行阅读自己机器上的该文件，以了解系统初始化所详细情况</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">。</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">由于此文件较长，所以不在本文中列出来，也不做具体的介绍</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">。</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">当</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">rc.sysinit</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">程序执行完毕后，将返回</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">init</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">继续下一步</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">。</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">通常接下来会执行到</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">/etc/rc.d/rc</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">程序</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">。</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">以运行级别</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">3</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">为例，</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">init</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">将执行配置文件</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">inittab</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">中的以下这行：</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;"><BR>l5:5:wait:/etc/rc.d/rc 
+5<BR></SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">这一行表示以</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">5</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">为参数运行</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">/etc/rc.d/rc</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">，</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">/etc/rc.d/rc</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">是一个</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">Shell</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">脚本，它接受</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">5</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">作为参数，去执行</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">/etc/rc.d/rc5.d/</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">目录下的所有的</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">rc</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">启动脚本，</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">/etc/rc.d/rc5.d/</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">目录中的这些启动脚本实际上都是一些连接文件，而不是真正的</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">rc</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">启动脚本，真正的</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">rc</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">启动脚本实际上都是放在</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">/etc/rc.d/init.d/</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">目录下</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">。</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">而这些</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">rc</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">启动脚本有着类似的用法，它们一般能接受</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">start、stop、restart、status</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">等参数</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">。</SPAN></P>
+<P style="text-align: justify; text-indent: 21pt; font-family: Simsun; font-size: medium;"><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">/etc/rc.d/rc5.d/</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">中的</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">rc</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">启动脚本通常是</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">K</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">或</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">S</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">开头的连接文件，对于以以</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">S</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">开头的启动脚本，将以</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">start</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">参数来运行</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">。</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">而如果发现存在相应的脚本也存在</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">K</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">打头的连接，而且已经处于运行态了</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">(</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">以</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">/var/lock/subsys/</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">下的文件作为标志</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">)</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">，则将首先以</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">stop</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">为参数停止这些已经启动了的守护进程，然后再重新运行</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">。</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">这样做是为了保证是当</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">init</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">改变运行级别时，所有相关的守护进程都将重启</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">。</SPAN></P>
+<P style="text-align: justify; text-indent: 21pt; font-family: Simsun; font-size: medium;"><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">至于在每个运行级中将运行哪些守护进程，用户可以通过</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">chkconfig</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">或</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">setup</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">中的</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">"System Services"</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">来自行设定</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">。</SPAN></P>
+<P style="text-align: justify; font-family: Simsun; font-size: medium;"><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;"><B>D&nbsp;</B></SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;"><B>建立终端</B></SPAN></P>
+<P style="text-align: justify; font-family: Simsun; font-size: medium;"><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">rc</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">执行完毕后，返回</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">init。</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">这时基本系统环境已经设置好了，各种守护进程也已经启动了</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">。init</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">接下来会打开</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">6</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">个终端，以便用户登录系统</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">。</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">在</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">inittab</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">中的以下</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">6</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">行就是定义了</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">6</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">个终端：</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;"><BR>1:2345:respawn:/sbin/mingetty 
+tty1<BR>2:2345:respawn:/sbin/mingetty tty2<BR>3:2345:respawn:/sbin/mingetty 
+tty3<BR>4:2345:respawn:/sbin/mingetty tty4<BR>5:2345:respawn:/sbin/mingetty 
+tty5<BR>6:2345:respawn:/sbin/mingetty tty6<BR><BR></SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">从上面可以看出在</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">2、3、4、5</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">的运行级别中都将以</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">respawn</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">方式运行</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">mingetty</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">程序，</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">mingetty</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">程序能打开终端</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">、</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">设置模式</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">。</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">同时它会显示一个文本登录界面，这个界面就是我们经常看到的登录界面，在这个登录界面中会提示用户输入用户名，而用户输入的用户将作为参数传给</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">login</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">程序来验</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;"><BR></SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">证用户的身份</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">。</SPAN></P>
+<P style="text-align: justify; font-family: Simsun; font-size: medium;"><SPAN 
+style="font-size: 10.5pt;"><B>E&nbsp;</B></SPAN><SPAN style="font-family: 宋体; font-size: 10.5pt;"><B>用户登录系统</B></SPAN></P>
+<P style="text-align: justify; font-family: Simsun; font-size: medium;"><SPAN 
+style="font-size: 10.5pt;"></SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">对于运行级别为</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">5</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">的图形方式用户来说，他们的登录是通过一个图形化的登录界面</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">。</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">登录成功后可以直接进入</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">KDE、Gnome</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">等窗口管理器</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">。</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">而本文主要讲的还是文本方式登录的情况：当我们看到</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">mingetty</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">的登录界面时，我们就可以输入用户名和密码来登录系统了</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">。</SPAN></P>
+<P style="text-align: justify; text-indent: 21pt; font-family: Simsun; font-size: medium;"><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">Linux</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">的账号验证程序是</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">login</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">，</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">login</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">会接收</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">mingetty</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">传来的用户名作为用户名参数</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">。</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">然后</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">login</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">会对用户名进行分析：如果用户名不是</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">root</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">，且存在</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">/etc/nologin</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">文件，</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">login</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">将输出</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">nologin</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">文件的内容，然后退出</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">。</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">这通常用来系统维护时防止非</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">root</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">用户登录</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">。</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">只有</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">/etc/securetty</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">中登记了的终端才允许</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">root</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">用户登录，如果不存在这个文件，则</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">root</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">可以在任何终端上登录</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">。/etc/usertty</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">文件用于对用户作出附加访问限制，如果不存在这个文件，则没有其他限制</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">。</SPAN></P>
+<P style="text-align: justify; text-indent: 21pt; font-family: Simsun; font-size: medium;"><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">在分析完用户名后，</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">login</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">将搜索</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">/etc/passwd</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">以及</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">/etc/shadow</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">来验证密码以及设置账户的其它信息，比如：主目录是什么</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">、</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">使用何种</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">shell。</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">如果没有指定主目录，将默认为根目录；如果没有指定</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">shell</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">，将默认为</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">/bin/bash。</SPAN></P>
+<P style="text-align: justify; text-indent: 21pt; font-family: Simsun; font-size: medium;"><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">login</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">程序成功后，会向对应的终端在输出最近一次登录的信息</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">(</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">在</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">/var/log/lastlog</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">中有记录</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">)</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">，并检查用户是否有新邮件</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">(</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">在</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">/usr/spool/mail/</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">的对应用户名目录下</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">)。</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">然后开始设置各种环境变量：对于</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">bash</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">来说，系统首先寻找</SPAN><SPAN style="font-family: Verdana; font-size: 9.5pt;">/etc/profile</SPAN><SPAN 
+style="font-family: 宋体; font-size: 9.5pt;">脚本文件，并执行它；然后如果用户的主目录中存在</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">.bash_profile</SPAN><SPAN style="font-family: 宋体; font-size: 9.5pt;">文件，就执行它，在这些文件中又可能调用了其它配置文件，所有的配置文件执行后后，各种环境变量也设好了，这时会出现大家熟悉的命令行提示符，到此整个启动过程就结束了</SPAN><SPAN 
+style="font-family: Verdana; font-size: 9.5pt;">。&nbsp;</SPAN></P>
+<H3>正确关机</H3>
+<P 
+style="text-indent: 0.8cm;">其实，在linux领域内大多用在服务器上，很少遇到关机的操作。毕竟服务器上跑一个服务是永无止境的，除非特殊情况下，不得已才会关机。</P>
+<P style="text-indent: 0.8cm;">linux和windows不同，在 Linux 
+底下，由于每个程序（或者说是服务）都是在在背景下执行的，因此，在你看不到的屏幕背后其实可能有相当多人同时在你的主机上面工作，例如浏览网页、传送信件以 FTP 
+传送档案等等的，如果你直接按下电源开关来关机时，则其它人的数据可能就此中断！那可就伤脑筋了！此外，最大的问题是，若不正常关机，则可能造成文件系统的毁损（因为来不及将数据回写到档案中，所以有些服务的档案会有问题！）。</P>
+<P style="text-indent: 0.8cm;">如果你要关机，必须要保证当前系统中没有其他用户在线。可以下达 who 
+这个指令，而如果要看网络的联机状态，可以下达 netstat -a 这个指令，而要看背景执行的程序可以执行 ps -aux 
+这个指令。使用这些指令可以让你稍微了解主机目前的使用状态！（这些命令在以后的章节中会提及，现在只要了解即可！）</P>
+<P style="text-indent: 0.8cm;"><SPAN 
+style="color: rgb(255, 0, 0);">正确的关机流程为：sysnc --&gt; shutdown --&gt; reboot 
+--&gt; halt</SPAN></P>
+<UL>
+  <LI>sync 将数据由内存同步到硬盘中。</LI>
+  <LI>shutdown 关机指令，你可以man shutdown 来看一下帮助文档。例如你可以运行如下命令关机：</LI>
+  <LI>shutdown –h 10 ‘This server will shutdown after 10 mins’ 
+  这个命令告诉大家，计算机将在10分钟后关机，并且会显示在登陆用户的当前屏幕中。</LI>
+  <LI>Shutdown –h now 立马关机</LI>
+  <LI>Shutdown –h 20:25 系统会在今天20:25关机</LI>
+  <LI>Shutdown –h +10 十分钟后关机</LI>
+  <LI>Shutdown –r now 系统立马重启</LI>
+  <LI>Shutdown –r +10 系统十分钟后重启</LI>
+  <LI>reboot 就是重启，等同于 shutdown –r now</LI>
+  <LI>halt 关闭系统，等同于shutdown –h now 和 poweroff</LI>
+  <LI>logout：退出当前用户</LI></UL>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 2013 ~ 2015 作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

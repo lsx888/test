@@ -1,0 +1,262 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0092)http://172.13.19.31:6060/note_html/工具/Apache-Maven（项目构建）/1004010-生命周期与插件.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>生命周期与插件</TITLE> <LINK href="生命周期与插件_files/standalone.css" rel="stylesheet"> 
+<LINK href="生命周期与插件_files/overlay-apple.css" rel="stylesheet"> <LINK href="生命周期与插件_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="生命周期与插件_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="生命周期与插件_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">生命周期与插件</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-10-21 17:10:39</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<P 
+style="text-indent: 0.8cm;">一个完整的项目构建过程通常包括清理、编译、测试、打包、集成测试、验证、部署等步骤，Maven从中抽取了一套完善的、易扩展的生命周期。Maven的生命周期是抽象的，其中的具体任务都交由插件来完成。Maven为大多数构建任务编写并绑定了默认的插件，如针对编译的插件：maven-compiler-plugin。用户也可自行配置或编写插件。 
+</P>
+<H3>三套生命周期</H3>
+<P 
+style="text-indent: 0.8cm;">Maven定义了三套生命周期：clean、default、site，每个生命周期都包含了一些阶段（phase）。三套生命周期相互独立，但各个生命周期中的阶段却是有顺序的，且后面的阶段依赖于前面的阶段。执行某个阶段时，其前面的阶段会依顺序执行，但不会触发另外两套生命周期中的任何阶段。这三套生命周期分别是： 
+</P>
+<OL>
+  <LI>Clean Lifecycle： clean生命周期，在进行真正的构建之前进行一些清理工作。</LI>
+  <LI>Default Lifecycle： default生命周期，构建的核心部分，编译，测试，打包，部署等等。</LI>
+  <LI>Site Lifecycle： site生命周期，生成项目报告，站点，发布站点。</LI></OL>
+<H4>clean生命周期</H4>
+<OL>
+  <LI>pre-clean  执行一些需要在clean之前完成的工作</LI>
+  <LI>clean  移除所有上一次构建生成的文件</LI>
+  <LI>post-clean  执行一些需要在clean之后立刻完成的工作</LI></OL>
+<H4>default生命周期</H4>
+<P style="text-indent: 0.8cm;">default生命周期是最核心的，它包含了构建项目时真正需要执行的所有步骤。 <BR></P>
+<OL>
+  <LI>validate</LI>
+  <LI>initialize</LI>
+  <LI>generate-sources</LI>
+  <LI>process-sources</LI>
+  <LI>generate-resources</LI>
+  <LI>process-resources &nbsp; &nbsp;：复制和处理资源文件到target目录，准备打包；</LI>
+  <LI>compile &nbsp; &nbsp;：编译项目的源代码；</LI>
+  <LI>process-classes</LI>
+  <LI>generate-test-sources</LI>
+  <LI>process-test-sources</LI>
+  <LI>generate-test-resources</LI>
+  <LI>process-test-resources:复制并处理资源文件，至目标测试目录</LI>
+  <LI>test-compile &nbsp; &nbsp;：编译测试源代码；</LI>
+  <LI>process-test-classes</LI>
+  <LI>test &nbsp; &nbsp;：运行测试代码；</LI>
+  <LI>prepare-package</LI>
+  <LI>package &nbsp; &nbsp;：打包成jar或者war或者其他格式的分发包；</LI>
+  <LI>pre-integration-test</LI>
+  <LI>integration-test</LI>
+  <LI>post-integration-test</LI>
+  <LI>verify</LI>
+  <LI>install &nbsp; &nbsp;：将打好的包安装到本地仓库，供其他项目使用；</LI>
+  <LI>deploy &nbsp; &nbsp;：将打好的包安装到远程仓库，供其他项目使用；</LI></OL>
+<H4>site生命周期</H4>
+<OL>
+  <LI>pre-site; 执行一些需要在生成站点文档之前完成的工作</LI>
+  <LI>site; 生成项目的站点文档</LI>
+  <LI>post-site; 执行一些需要在生成站点文档之后完成的工作，并且为部署做准备</LI>
+  <LI>site-deploy; 将生成的站点文档部署到特定的服务器上</LI></OL>
+<P style="text-indent: 0.8cm;">
+这里经常用到的是site阶段和site-deploy阶段，用以生成和发布Maven站点，这可是Maven相当强大的功能，Manager比较喜欢，文档及统计数据自动生成 
+</P>
+<H3>Maven的插件</H3>
+<DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>Maven的核心文件很小，主要的任务都是由插件来完成。定位到：%本地仓库%\org\apache\maven\plugins，可以看到一些下载好的插件：</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="生命周期与插件_files/20151021-01.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>Maven官网上有更详细的官方插件列表：</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="生命周期与插件_files/20151021-02.png"></DIV></DIV>
+<H4>插件的目标（Plugin Goals）</H4>
+<DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>一个插件通常可以完成多个任务，每一个任务就叫做插件的一个目标。如执行mvn 
+install命令时，调用的插件和执行的插件目标如下：</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="生命周期与插件_files/20151021-03.png"></DIV>
+<DIV align="left" style="padding: 5px 0px;">每个插件都有哪些个目标，官方文档有更详细的说明：<A href="http://maven.apache.org/plugins/index.html">Maven 
+Plugins</A></DIV></DIV>
+<H3>将插件绑定到生命周期</H3>
+<DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>Maven的生命周期是抽象的，实际需要插件来完成任务，这一过程是通过将插件的目标（goal）绑定到生命周期的具体阶段（phase）来完成的。如：将maven-compiler-plugin插件的compile目标绑定到default生命周期的compile阶段，完成项目的源代码编译：</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="生命周期与插件_files/20151021-04.png"></DIV></DIV>
+<H4>内置的绑定</H4>
+<P style="text-indent: 0.8cm;">Maven在核心为一些主要的生命周期阶段绑定了很多插件的目标 </P>
+<UL>
+  <LI>clean生命周期阶段与插件目标的绑定关系   
+  <TABLE width="400" height="30" border="1" cellspacing="1" cellpadding="1">
+    <TBODY>
+    <TR>
+      <TH scope="col">生命周期阶段</TH>
+      <TH scope="col">插件目标</TH></TR></TBODY>
+    <TBODY>
+    <TR>
+      <TD style="text-align: center;">pre-clean</TD>
+      <TD style="text-align: center;">&nbsp;</TD></TR>
+    <TR>
+      <TD style="text-align: center;">clean</TD>
+      <TD style="text-align: center;">maven-clean-plugin:clean</TD></TR>
+    <TR>
+      <TD style="text-align: center;">post-clean</TD>
+      <TD style="text-align: center;">&nbsp;</TD></TR></TBODY></TABLE></LI>
+  <LI>  site生命周期阶段与插件目标的绑定关系   
+  <TABLE width="400" border="1" cellspacing="1" cellpadding="1">
+    <TBODY>
+    <TR>
+      <TH scope="col">生命周期阶段</TH>
+      <TH scope="col">插件目标</TH></TR></TBODY>
+    <TBODY>
+    <TR>
+      <TD style="text-align: center;">pre-site</TD>
+      <TD style="text-align: center;">&nbsp;</TD></TR>
+    <TR>
+      <TD style="text-align: center;">site</TD>
+      <TD style="text-align: center;">maven-site-plugin:site</TD></TR>
+    <TR>
+      <TD style="text-align: center;">post-site</TD>
+      <TD style="text-align: center;">&nbsp;</TD></TR>
+    <TR>
+      <TD style="text-align: center;">site-deploy</TD>
+      <TD 
+  style="text-align: center;">maven-site-plugin:deploy</TD></TR></TBODY></TABLE></LI>
+  <LI>  default生命周期与内置插件绑定关系及具体任务(打包类型: jar)   
+  <TABLE width="800" border="1" cellspacing="1" cellpadding="1">
+    <TBODY>
+    <TR>
+      <TH scope="col">生命周期阶段</TH>
+      <TH scope="col">插件目标</TH>
+      <TH scope="col">执行任务</TH></TR></TBODY>
+    <TBODY>
+    <TR>
+      <TD>process-resources</TD>
+      <TD>maven-resources-plugin:resources</TD>
+      <TD>复制主资源文件至主输出目录</TD></TR>
+    <TR>
+      <TD>compile</TD>
+      <TD>maven-compile-plugin:compile</TD>
+      <TD>编译主代码至主输出目录</TD></TR>
+    <TR>
+      <TD>process-test-resources</TD>
+      <TD>maven-resources-plugin:testRresources</TD>
+      <TD>复制测试资源文件至测试输出目录</TD></TR>
+    <TR>
+      <TD>test-compile</TD>
+      <TD>maven-compiler-plugin:testCompile</TD>
+      <TD>编译测试代码至测试输出目录</TD></TR>
+    <TR>
+      <TD>test</TD>
+      <TD>maven-surefire-plugin:test</TD>
+      <TD>执行测试用例</TD></TR>
+    <TR>
+      <TD>package</TD>
+      <TD>maven-jar-plugin:jar</TD>
+      <TD>创建项目jar包</TD></TR>
+    <TR>
+      <TD>install</TD>
+      <TD>maven-install-plugin:install</TD>
+      <TD>将项目输出构件安装到本地仓库</TD></TR>
+    <TR>
+      <TD>deploy</TD>
+      <TD>maven-deploy-plugin:deploy</TD>
+      <TD>将项目输出构件部署到远程仓库</TD></TR></TBODY></TABLE></LI></UL>
+<H4>自定义绑定</H4>
+<P style="text-indent: 0.8cm;">
+用户可以根据需要将任何插件目标绑定到任何生命周期的阶段，如：将maven-source-plugin的jar-no-fork目标绑定到default生命周期的package阶段，这样，以后在执行mvn 
+package命令打包项目时，在package阶段之后会执行源代码打包，生成如：ehcache-core-2.5.0-sources.jar形式的源码包。 
+</P>
+<PRE class="brush: xml;">&lt;build&gt;
+    &lt;plugins&gt;
+        &lt;plugin&gt;
+            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+            &lt;artifactId&gt;maven-source-plugin&lt;/artifactId&gt;
+            &lt;version&gt;2.2.1&lt;/version&gt;
+            &lt;executions&gt;
+                &lt;execution&gt;
+                    &lt;id&gt;attach-source&lt;/id&gt;
+                    &lt;phase&gt;package&lt;/phase&gt;&lt;!-- 要绑定到的生命周期的阶段 --&gt;
+                    &lt;goals&gt;
+                        &lt;goal&gt;jar-no-fork&lt;/goal&gt;&lt;!-- 要绑定的插件的目标 --&gt;
+                    &lt;/goals&gt;
+                &lt;/execution&gt;
+            &lt;/executions&gt;
+        &lt;/plugin&gt;
+    &lt;/plugins&gt;
+    ……
+&lt;/build&gt;
+</PRE>
+<H4>配置插件</H4>
+<P 
+style="text-indent: 0.8cm;">Maven插件高度易扩展，可以方便的进行自定义配置。如：配置maven-compiler-plugin插件编译源代码的JDK版本为1.7： 
+</P>
+<PRE class="brush: xml;">&lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+    &lt;configuration&gt;
+        &lt;source&gt;1.7&lt;/source&gt;
+        &lt;target&gt;1.7&lt;/target&gt;
+    &lt;/configuration&gt;
+&lt;/plugin&gt;
+</PRE>
+<P style="text-indent: 0.8cm;">也可以对插件的各个目标进行更具体的配置。<A href="http://maven.apache.org/guides/mini/guide-configuring-plugins.html">Configuring 
+Plug-ins</A> </P>
+<H4>插件仓库</H4>
+<P style="text-indent: 0.8cm;">
+跟其他构件一样，插件也是根据坐标存储在Maven仓库中。超级POM中Maven配置的默认插件远程仓库如下： </P>
+<PRE class="brush: xml;">&lt;pluginRepositories&gt;
+    &lt;pluginRepository&gt;
+      &lt;id&gt;central&lt;/id&gt;
+      &lt;name&gt;Central Repository&lt;/name&gt;
+      &lt;url&gt;http://repo.maven.apache.org/maven2&lt;/url&gt;
+      &lt;layout&gt;default&lt;/layout&gt;
+      &lt;snapshots&gt;
+        &lt;enabled&gt;false&lt;/enabled&gt;
+      &lt;/snapshots&gt;
+      &lt;releases&gt;
+        &lt;updatePolicy&gt;never&lt;/updatePolicy&gt;
+      &lt;/releases&gt;
+    &lt;/pluginRepository&gt;
+&lt;/pluginRepositories&gt;
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

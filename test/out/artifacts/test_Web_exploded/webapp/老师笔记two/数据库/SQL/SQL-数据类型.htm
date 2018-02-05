@@ -1,0 +1,111 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0070)http://172.13.19.31:6060/note_html/数据库/SQL/102010-SQL-数据类型.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>SQL-数据类型</TITLE> <LINK href="SQL-数据类型_files/standalone.css" rel="stylesheet"> 
+<LINK href="SQL-数据类型_files/overlay-apple.css" rel="stylesheet"> <LINK href="SQL-数据类型_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="SQL-数据类型_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="SQL-数据类型_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">SQL-数据类型</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-05-12 10:20:10</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<P style="text-indent: 0.8cm;">字符数据类型用来存储字符串或字符数据。当你在 Oracle 
+中定义一个字符数据时，通常需要指定字段的长度，它是该字段的最大长度。Oracle 提供以下几种字符数据类型： </P>
+<UL>
+  <LI>CHAR 数据类型   
+  <P style="text-indent: 0.8cm;">CHAR 数据类型是一种有固定长度和最大长度的字符串。 存储在数据类型为 CHAR 
+  字段中的数据将以空格的形式补到最大长度。长度定义在 1——2000 字节之间。当你创建一个 CHAR 
+  型字段，数据库将保证在这个字段中的所有数据都是定义长度，如果某个数据比定义长度短，那么将用空格在数据的右边补到定义长度。如果长度大于定义长度将会触发错误信息。 
+    </P></LI>
+  <LI>VARCHAR 数据类型   
+  <P style="text-indent: 0.8cm;">VARCHAR 数据类型数据是 VARCHAR2 型数据的快照。   </P></LI>
+  <LI>VARCHAR2 数据类型   
+  <P style="text-indent: 0.8cm;">VARCHAR2 数据类型是一种可变长度的、有最大长度的字母数字型数据。VARCHAR2 
+  类型的字段长度可以达到 4000 字节，VARCHAR2 类型的变量长度可以达到 32676 字节。一个空的 VARCHAR2(2000)字段和一个空的 
+  VARCHAR2(2)字段所占用的空间是一样的。   </P></LI>
+  <LI>NCHAR 数据类型和 NVARCHAR2 数据类型   
+  <P 
+  style="text-indent: 0.8cm;">NCHAR数据类型和NVARCHAR2数据类型分别与CHAR和VARCHAR2数据类型是相同的，只不过它们用来存储 
+  NLS（National Language Support）数据。</P></LI>
+  <LI>LONG 数据类型   
+  <P style="text-indent: 0.8cm;">LONG 数据类型是一个遗留下来的而且在将来不会被支持的数据类型。它将被 LOB(Large 
+  Object)数据类型所代替。</P></LI>
+  <LI>比较规则   
+  <P style="text-indent: 0.8cm;">VARCHAR2 和 CHAR 数据类型根据尾部的空格有不同的比较规则。对 CHAR 
+  型数据，尾部的空格将被忽略掉，对于 VARCHAR2 型数据尾部带空格的数据排序比没有空格的要大些。<BR>  比如：<BR>CHAR 
+  型数据：‘YO’=‘YO ’<BR>VARCHAR2 型数据：‘YO’&lt;’YO ’   </P></LI>
+  <LI>NUMBER 数据类型   
+  <P style="text-indent: 0.8cm;">  可用来存储整数、定点数和浮点数。最高精度是 38 个十进制位。如果不指定精度，默认为 38 
+  位。范围在-1*10<SUP>130</SUP> 和 
+9.999…99*10<SUP>125</SUP>之间，如果标识一个数据超出这个范围时就会出错。</P>
+  <P style="text-indent: 0.8cm;">该数据类型的格式为：NUMBER(p,s)：它表示 NUMBER 数据类型存储一个有 p 
+  位精确度的 s 位等级的数据。p 是精度（precision），表示数字的总位数。s 是等级（scale），表示小数点右边数字的位数，取值范围在-84 至 
+  127 之间。可以同时指定 p 和 s，也可以只指定 p 不指定 s，或者是 p 和 s 都不指定。只能用整数指定 p 和 s。</P></LI>
+  <LI>DATE 数据类型   
+  <P style="text-indent: 0.8cm;">DATE 数据类型用来存储日期和时间格式的数据。 
+  这种格式可以转换为其他格式的数据去浏览，而且它有专门的函数和属性用来控制和计算。以下的几种信息都包含在 DATE 
+  数据类型中：Century、Year、Month、Day、Hour、Minute、Second。通过如下语句可以获得系统的当前日期。<BR>SELECT 
+  sysdate FROM dual;<BR>系统显示如下信息：<BR>SYSDATE<BR>  ----------<BR>  05-05 
+  月-16<BR>通过如下语句可以获得按用户要求的格式输出的系统当前日期和时间。<BR>SELECT TO_CHAR(sysdate,’YYYY-MM-DD 
+  HH24:MI:SS’) FROM dual;<BR>系统显示如下信息：<BR>TO_CHAR(SYSDATE,'YY<BR>  
+  -------------------<BR>  2016-05-05 19:34:13<BR>两个日期相减，得到的是天数的小数形式。</P></LI>
+  <LI>TIMESTAMP 数据类型   
+  <P style="text-indent: 0.8cm;">TIMESTAMP 数据类型是 Oracle 在 DATE 数据类型上扩展出来的， 
+  它包括了所有 DATE 数据类型的年月日时分秒的信息，而且包括了小数秒的信息。使用 TIMESTAMP 数据类型可以足够的区分出事件的先后顺序。<BR>  
+  获取系统的当前 TIMESTAMP 时间形式的语句如下。<BR>SELECT systimestamp FROM 
+  dual;<BR>系统显示如下信息：<BR>SYSTIMESTAMP<BR>  
+  -----------------------------------------<BR>  04-11 月-07 07.40.01.875000 下午 
+  +08:00</P></LI>
+  <LI>BLOB   
+  <P style="text-indent: 0.8cm;">代表 Binary LOB（二进制 
+  LOB)，它可以存储较大的二进制对象，如图形、视频剪辑和声音剪辑等。</P></LI>
+  <LI>CLOB   
+  <P style="text-indent: 0.8cm;">代表 Character LOB（字符 
+  LOB），它能够存储大量字符数据。该数据类型可以存储单字节字符数据和多字节字符数据。CLOB 可用于存储非结构化的 XML 文档。</P></LI>
+  <LI>BFILE   
+  <P style="text-indent: 0.8cm;">代表 Binary 
+  File（二进制文件），它能够将二进制文件存储在数据库外部的操作系统文件中。BFILE 列存储一个 BFILE 
+  定位器，它指向位于服务器文件系统上的二进制文件。支持的文件最大为 4GB。</P></LI>
+  <LI>NCLOB   
+  <P style="text-indent: 0.8cm;">用来将大型 NCHAR 数据存储在数据库中。NCLOB 
+  数据类型同时支持固定宽度字符和可变符（Unicode 字符数据）。NCLOB 类型的使用方法与 CLOB 类似。</P></LI></UL>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

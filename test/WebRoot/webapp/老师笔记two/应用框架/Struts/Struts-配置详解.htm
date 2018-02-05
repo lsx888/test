@@ -1,0 +1,290 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0079)http://172.13.19.31:6060/note_html/应用框架/Struts/2001010-Struts-配置详解.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>Struts-配置详解</TITLE> <LINK href="Struts-配置详解_files/standalone.css" rel="stylesheet"> 
+<LINK href="Struts-配置详解_files/overlay-apple.css" rel="stylesheet"> <LINK href="Struts-配置详解_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="Struts-配置详解_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="Struts-配置详解_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">Struts-配置详解</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-08-02 15:52:35</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>struts.properties文件配置</H3>
+<P 
+style="text-indent: 0.8cm;">struts.properties文件放在classPath根路径，服务器启动时struts2会自动加载该配置，覆盖struts2-core-xxxx.jar(xxxx为版本号)中的org\apache\struts2包下的default.properties的默认配置。 
+</P>
+<PRE class="brush: bash;">### 指定加载struts2配置文件管理器，默认为org.apache.struts2.config.DefaultConfiguration
+### 开发者可以自定义配置文件管理器，该类要实现Configuration接口，可以自动加载struts2配置文件。
+# struts.configuration=org.apache.struts2.config.DefaultConfiguration
+
+### 设置默认的locale和字符编码
+# struts.locale=en_US
+struts.i18n.encoding=UTF-8
+
+
+### 指定struts的工厂类
+# struts.objectFactory = spring
+
+### 指定spring框架的装配模式
+### 装配方式有: name, type, auto, and constructor (name 是默认装配模式)
+struts.objectFactory.spring.autoWire = name
+
+### 该属性指定整合spring时，是否对bean进行缓存，值为true or false,默认为true.
+struts.objectFactory.spring.useClassCache = true
+
+### 指定类型检查
+#struts.objectTypeDeterminer = tiger
+#struts.objectTypeDeterminer = notiger
+
+### 该属性指定处理 MIME-type multipart/form-data，文件上传
+# struts.multipart.parser=cos
+# struts.multipart.parser=pell
+struts.multipart.parser=jakarta
+# 指定上传文件时的临时目录，默认使用 javax.servlet.context.tempdir 
+struts.multipart.saveDir=
+struts.multipart.maxSize=2097152
+
+### 加载自定义属性文件 (不要改写struts.properties!)
+# struts.custom.properties=application,org/apache/struts2/extension/custom
+
+### 指定请求url与action映射器，默认为org.apache.struts2.dispatcher.mapper.DefaultActionMapper
+#struts.mapper.class=org.apache.struts2.dispatcher.mapper.DefaultActionMapper
+
+### 指定action的后缀，默认为action
+struts.action.extension=action
+
+### 被 FilterDispatcher使用
+### 如果为 true 则通过jar文件提供静态内容服务. 
+### 如果为 false 则静态内容必须位于 &lt;context_path&gt;/struts
+struts.serve.static=true
+
+### 被 FilterDispatcher使用
+### 指定浏览器是否缓存静态内容，测试阶段设置为false，发布阶段设置为true.
+struts.serve.static.browserCache=true
+
+### 设置是否支持动态方法调用，true为支持，false不支持.
+struts.enable.DynamicMethodInvocation = true
+
+### 设置是否可以在action中使用斜线，默认为false不可以，想使用需设置为true.
+struts.enable.SlashesInActionNames = false
+
+### 是否允许使用表达式语法，默认为true.
+struts.tag.altSyntax=true
+
+
+### 设置当struts.xml文件改动时，是否重新加载.
+### - struts.configuration.xml.reload = true
+### 设置struts是否为开发模式，默认为false,测试阶段一般设为true.
+struts.devMode = false
+
+### 设置是否每次请求，都重新加载资源文件，默认值为false.
+struts.i18n.reload=false
+
+###标准的UI主题
+### 默认的UI主题为xhtml,可以为simple,xhtml或ajax
+struts.ui.theme=xhtml
+###模板目录
+struts.ui.templateDir=template
+#设置模板类型. 可以为 ftl, vm, or jsp
+struts.ui.templateSuffix=ftl
+
+###定位velocity.properties 文件.  默认 velocity.properties
+struts.velocity.configfile = velocity.properties
+
+### 设置velocity的context.
+struts.velocity.contexts =
+
+### 定位toolbox.
+struts.velocity.toolboxlocation=
+
+### 指定web应用的端口.
+struts.url.http.port = 80
+### 指定加密端口
+struts.url.https.port = 443
+### 设置生成url时，是否包含参数.值可以为: none, get or all
+struts.url.includeParams = get
+
+### 设置要加载的国际化资源文件，以逗号分隔.
+# struts.custom.i18n.resources=testmessages,testmessages2
+
+### 对于一些web应用服务器不能处理HttpServletRequest.getParameterMap()
+### 像 WebLogic, Orion, and OC4J等，须设置成true,默认为false.
+struts.dispatcher.parametersWorkaround = false
+
+### 指定freemarker管理器
+#struts.freemarker.manager.classname=org.apache.struts2.views.freemarker.FreemarkerManager
+
+### 设置是否对freemarker的模板设置缓存
+### 效果相当于把template拷贝到 WEB_APP/templates.
+struts.freemarker.templatesCache=false
+
+### 通常不需要修改此属性.
+struts.freemarker.wrapper.altMap=true
+
+### 指定xslt result是否使用样式表缓存.开发阶段设为true,发布阶段设为false.
+struts.xslt.nocache=false
+
+### 设置struts自动加载的文件列表.
+struts.configuration.files=struts-default.xml,struts-plugin.xml,struts.xml
+
+### 设定是否一直在最后一个slash之前的任何位置选定namespace.
+struts.mapper.alwaysSelectFullNamespace=false</PRE>
+<H3>struts.xml文件配置</H3>
+<H4>默认配置</H4>
+<P 
+style="text-indent: 0.8cm;">struts2-core-xxxx.jar(xxxx为版本号)的根路径下有一个配置文件struts-default.xml，其中包括了struts的一些基本默认配置内容。 
+</P>
+<H4>常量</H4>
+<P 
+style="text-indent: 0.8cm;">struts.properties文件中配置的属性叫做常量，常量也可在struts.xml中配置，使用&lt;constant 
+name="" 
+value=""/&gt;标签配置，也就是说struts.properties文件可以不添加，直接将常量配置在struts.xml文件中，constant标签是struts.xml的根元素struts的子标签 
+</P>
+<H4>package包的配置</H4>
+<PRE class="brush: xml;">&lt;!-- 
+package标签是struts.xml的根元素struts的子标签
+    -name 必须
+    	包的名称，一定是struts.xml唯一的
+    
+    -extends 可选
+
+    	1.当一个包通过配置extends属性继承了另一个包的时候，该包将会继承父包中所有的配置，
+    包括action、result、interceptor等。
+    
+    	2.由于包信息的获取是按照配置文件的先后顺序进行的，所以父包必须在子包之前被定义。
+    	
+    	3.通常我们配置struts.xml的时候，都继承一个名为"struts-default"的包.
+
+	-namespace 可选
+
+    	1.该属性可以指定包对应的命名空间。所以一个Web应用中可以出现同名的Action并存的情况，
+    为了避免命名冲突，只要使同名Action位于不同的namespace下就可以了。
+    
+    	2.如果没有为某个包指定命名空间，该包使用默认的命名空间，默认的命名空间总是""。
+    	
+    	3.当设置了命名空间为“/”，即指定了包的命名空间为根命名空间时，此时所有根路径下的
+  Action请求都会去这个包中查找对应的资源信息。
+  
+   		4.根命名空间和普通命名空间中的Action的查找是一样的，即如果有请求“/stu_info.action“
+   （或者是”/C/stu_info.action“），则先查找根命名空间下的Action（或者是/C命名空间下的Action），
+   如果不存在对应的Action，则查找默认命名空间里的Action。此规则对于多级别的命名空间也是如此，
+   即如果请求查找/A/A_Login/login.action时，Struts2框架先到/A/A_Login的命名空间里查找名为
+ login的action，如果找不到，则到默认的命名空间里查询，而不会到它的上一级“/A“里面查找。
+    
+    abstact 可选
+    	值为true时，其中不能定义action
+    
+     --&gt;
+    &lt;package name="myPackage" extends="struts-default" namespace="/"&gt;
+    	&lt;!-- 包中可以包含action标签等 --&gt;
+    &lt;/package&gt;
+</PRE>
+<H4>action的配置</H4>
+<PRE class="brush: xml;">&lt;!-- 
+action是package的子标签，配置处理对应url的action
+
+	-name
+		action的名称，包内唯一，它和的namespace构成url访问路径，
+	url = /上下文/namespace/name.action[!method]，在没有定义method属性时，
+	通过!指定url访问的action的哪个方法，该方式可以通过常量设置禁用
+	
+	-class
+		action的类的完整路径，如果没有指定class则默认值为：com.opensymphony.xwork2.ActionSupport，
+	该默认类使用默认的处理方法，直接返回success值。
+	
+	-method
+		指定当前name的url使用该action类的哪个方法执行，如果不指定，默认使用execute方法
+	    		
+	 -converter
+	 	指定action使用的类型转换器   	
+ --&gt;
+&lt;action name="HelloWorld" class="com.yyoo.action.HelloWorldAction" &gt;
+	&lt;!-- action可以包含多个result标签 --&gt;
+    &lt;result name="success"&gt;/webpage/helloworld/hello_success.html&lt;/result&gt;
+&lt;/action&gt;
+</PRE>
+<H4>result的配置</H4>
+<PRE class="brush: xml;">&lt;!-- 
+result标签是action标签的子标签，它定义了action处理后的返回页面等
+ -name 
+ 	返回的状态名称：success、error等，同action的返回值。默认为success
+ 	
+ -type
+ 	返回的类型，默认dispatcher，可通过struts-default.xml文件查看type的配置
+ 	dispatcher 		将请求转发（forward）到指定的JSP页面
+	redirect　　 	将请求重定向到指定的视图资源
+	chain 			处理Action链
+	freemarker 		指定Freemarker模板作为视图
+	httpheader 		控制特殊的HTTP行为
+	redirectAction 	直接跳转到其它Action
+	stream 			向游览器返回一个InputStream（一般用于文件下载）                    
+	velocity 		指定使用velocity模板作为视图
+	xslt 			用于XM/XSLT整合
+	plainText       显示某个页面的原始代码
+		 --&gt;
+&lt;result name="success"&gt;/webpage/helloworld/hello_success.html&lt;/result&gt;
+&lt;!-- 如果返回类型为error则返回如下页面 --&gt;
+&lt;result name="error"&gt;/webpage/pub/error.html&lt;/result&gt;
+</PRE>
+<H4>include的配置</H4>
+<PRE class="brush: xml;">&lt;!-- 
+	include标签是根元素struts的子标签，表示导入其他struts的xml配置文件
+	
+	-file
+		该标签只有一个属性file，表示导入的xml文件的路径，一般xml文件都在一个文件夹，
+	用相对路径即可完成导入。注意导入主配置文件后的执行顺序。
+--&gt;
+&lt;include file="struts-test.xml"&gt;&lt;/include&gt;
+</PRE>
+<H4>global-results的配置</H4>
+<PRE class="brush: xml;">&lt;!-- 
+	result标签中的name属性和action中的result标签一样，对应action中的返回值
+	以下配置表示当action中返回"myRs"时，使用当前配置的结果，而此结果无需在action的配置中再次配置
+	此配置需配置在action的配置之前
+--&gt;
+&lt;global-results&gt;
+	&lt;result name="myRs"&gt;/webpage/myRs.html&lt;/result&gt;
+&lt;/global-results&gt;
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

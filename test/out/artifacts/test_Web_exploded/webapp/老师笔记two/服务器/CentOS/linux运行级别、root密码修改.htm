@@ -1,0 +1,125 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0087)http://172.13.19.31:6060/note_html/服务器/CentOS/10301-linux运行级别、root密码修改.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>linux运行级别、root密码修改</TITLE> <LINK href="linux运行级别、root密码修改_files/standalone.css" 
+rel="stylesheet"> <LINK href="linux运行级别、root密码修改_files/overlay-apple.css" rel="stylesheet"> 
+<LINK href="linux运行级别、root密码修改_files/article_edit.css" rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="linux运行级别、root密码修改_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="linux运行级别、root密码修改_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">linux运行级别、root密码修改</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-11-20 11:19:10</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>CentOS&nbsp;7 运行级别的切换</H3>
+<P style="text-align: justify; color: rgb(51, 51, 51); line-height: 22.39px; font-family: tahoma, 宋体; font-size: 14px; background-color: rgb(250, 250, 252);">由命令行级别切换到窗口级别的命令未变：init 
+5或startx</P>
+<P style="text-align: justify; color: rgb(51, 51, 51); line-height: 22.39px; font-family: tahoma, 宋体; font-size: 14px; background-color: rgb(250, 250, 252);">由窗口级别切换到命令行级别的命令未变：init 
+3</P>
+<P style="text-align: justify; color: rgb(51, 51, 51); line-height: 22.39px; font-family: tahoma, 宋体; font-size: 14px; background-color: rgb(250, 250, 252);">新版本的运行级别都定义在 
+/lib/systemd/system下:</P>
+<P style="text-align: justify; color: rgb(51, 51, 51); line-height: 22.39px; font-family: tahoma, 宋体; font-size: 14px; background-color: rgb(250, 250, 252);">[root@localhost 
+~]# ls -ltr /lib/systemd/system/runlevel*.target<BR>lrwxrwxrwx. 1 root 
+root&nbsp; 16 9月&nbsp; 10 20:58 /lib/systemd/system/default.target -&gt; 
+graphical.target<BR>lrwxrwxrwx. 1 root root&nbsp; 13 9月&nbsp; 10 20:58 
+/lib/systemd/system/runlevel1.target -&gt; rescue.target<BR>lrwxrwxrwx. 1 root 
+root&nbsp; 15 9月&nbsp; 10 20:58 /lib/systemd/system/runlevel0.target -&gt; 
+poweroff.target<BR>lrwxrwxrwx. 1 root root&nbsp; 17 9月&nbsp; 10 20:58 
+/lib/systemd/system/runlevel4.target -&gt; multi-user.target<BR>lrwxrwxrwx. 1 
+root root&nbsp; 17 9月&nbsp; 10 20:58 /lib/systemd/system/runlevel3.target -&gt; 
+multi-user.target<BR>lrwxrwxrwx. 1 root root&nbsp; 17 9月&nbsp; 10 20:58 
+/lib/systemd/system/runlevel2.target -&gt; multi-user.target<BR>lrwxrwxrwx. 1 
+root root&nbsp; 16 9月&nbsp; 10 20:58 /lib/systemd/system/runlevel5.target -&gt; 
+graphical.target<BR>lrwxrwxrwx. 1 root root&nbsp; 13 9月&nbsp; 10 20:58 
+/lib/systemd/system/runlevel6.target -&gt; reboot.target</P>
+<P style="text-align: justify; color: rgb(51, 51, 51); line-height: 22.39px; font-family: tahoma, 宋体; font-size: 14px; background-color: rgb(250, 250, 252);">可以针对不同需要设置不同的运行级别:</P>
+<P style="text-align: justify; color: rgb(51, 51, 51); line-height: 22.39px; font-family: tahoma, 宋体; font-size: 14px; background-color: rgb(250, 250, 252);">如设置命令行级别(init 
+3)方法:<BR>[root@localhost ~]# ln -svf /lib/systemd/system/runlevel3.target 
+/etc/systemd/system/default.target<BR>或<BR>[root@localhost ~]# ln -svf 
+/lib/systemd/system/multi-user.target 
+/etc/systemd/system/default.target<BR>或&nbsp;<BR>[root@localhost ~]#systemctl 
+set-default multi-user.target</P>
+<P style="text-align: justify; color: rgb(51, 51, 51); line-height: 22.39px; font-family: tahoma, 宋体; font-size: 14px; background-color: rgb(250, 250, 252);">设置窗口级别(init 
+5)方法:<BR>[root@localhost ~]# ln -svf /lib/systemd/system/runlevel5.target 
+/etc/systemd/system/default.target<BR>或<BR>[root@localhost ~]# ln -svf 
+/lib/systemd/system/graphical.target 
+/etc/systemd/system/default.target<BR>或&nbsp;<BR>[root@localhost ~]#systemctl 
+set-default graphical.target</P>
+<H3>运行级别原理概述</H3>
+<H4>Linux下的7个运行级别</H4>
+<UL>
+  <LI>0:系统停机状态，系统默认运行级别不能设置为0，否则不能正常启动，机器关闭。  </LI>
+  <LI>1:单用户工作状态，root权限，用于系统维护，禁止远程登陆，就像Windows下的安全模式登录。</LI>
+  <LI>2:多用户状态，没有NFS支持。</LI>
+  <LI>3:完整的多用户模式，有NFS，登陆后进入控制台命令行模式。</LI>
+  <LI>4:系统未使用，保留一般不用，在一些特殊情况下可以用它来做一些事情。例如在笔记本电脑的电池用尽时，可以切换到这个模式来做一些设置。</LI>
+  <LI>5:X11控制台，登陆后进入图形GUI模式，XWindow系统。</LI>
+  <LI>6:系统正常关闭并重启，默认运行级别不能设为6，否则不能正常启动。运行init6机器就会重启。标准的Linux运行级别为3或5</LI></UL>
+<H4>运行级别原理</H4>
+<OL>
+  <LI>在目录/etc/rc.d/init.d下有许多服务器脚本程序，一般称为服务(service)</LI>
+  <LI>在/etc/rc.d下有7个名为rcN.d的目录，对应系统的7个运行级别。（N代码运行级别数字【0~6】）</LI>
+  <LI>rcN.d目录下都是一些符号链接文件，这些链接文件都指向init.d目录下的service脚本文件，命名规则为K+nn+服务名或S+nn+服务名，其中nn为两位数字。</LI>
+  <LI>系统会根据指定的运行级别进入对应的rcN.d目录，并按照文件名顺序检索目录下的链接文件：对于以K(Kill)开头的文件，系统将终止对应的服；对于以S(Start)开头的文件，系统将启动对应的服务</LI>
+  <LI>查看运行级别用：runlevel</LI>
+  <LI>进入其它运行级别用：initN，如果init3则进入终端模式，init5则又登录图形GUI模式</LI>
+  <LI>另外init0为关机，init6为重启系统标准的Linux运行级别为3或5，如果是3的话，系统就在多用户状态；如果是5的话，则是运行着XWindow系统。不同的运行级别有不同的用处，也应该根据自己的不同情形来设置。例如，如果丢失了root口令，那么可以让机器启动进入单用户状态来设置。在启动后的lilo提示符下输入： 
+  init=/bin/shrw 
+  这样就可以使机器进入运行级别1，并把root文件系统挂为读写。它会路过所有系统认证，让你使用passwd程序来改变root口令，然后启动到一个新的运行级。 
+  </LI>
+  <LI></LI></OL>
+<H3>单用户模式修改root密码（忘记root密码是很有用）</H3>
+<P 
+style="text-indent: 0.8cm;">基本原理恢复root密码的操作方法较之前版本的centos更为简单，但其基本思想不变，即进入单用户模式在命令行下修改root密码。</P>
+<P style="text-indent: 0.8cm;">1.开机进入启动界面后，要按照屏幕的下方的操作提示迅速按下“e”键如图：。</P>
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="linux运行级别、root密码修改_files/20150420-01.png" 
+rel="#20150420-01"> <FONT></FONT> </DIV>
+<DIV class="apple_overlay" id="20150420-01"><IMG alt="图片不存在" src="linux运行级别、root密码修改_files/20150420-01.png"> 
+</DIV></DIV>
+<P 
+style="text-indent: 0.8cm;">2.按下“e”键后即来到启动文件界面，这时按键盘上面的方向键“下”，一直到文件底部，在"LANG=zh_cn.UTF-8"同行后面加上“init=/bin/sh”，千万要注意一定要加在这个位置，其他网站上面的教程另起一行加上此命令，我试验过是无法进入单用户命令行的。
+ 然后按照屏幕下方的提示按下“ctrl+x”即进入单用户模式。</P>
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="linux运行级别、root密码修改_files/20150420-02.png" 
+rel="#20150420-02"> <FONT></FONT> </DIV>
+<DIV class="apple_overlay" id="20150420-02"><IMG alt="图片不存在" src="linux运行级别、root密码修改_files/20150420-02.png"> 
+</DIV></DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

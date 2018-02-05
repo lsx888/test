@@ -1,0 +1,139 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0086)http://172.13.19.31:6060/note_html/工具/JMeter测试工具/1005010-分布式部署和参数化.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>分布式部署和参数化</TITLE> <LINK href="分布式部署和参数化_files/standalone.css" rel="stylesheet"> 
+<LINK href="分布式部署和参数化_files/overlay-apple.css" rel="stylesheet"> <LINK href="分布式部署和参数化_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="分布式部署和参数化_files/shCoreEclipse.css" 
+rel="stylesheet">	 <LINK href="分布式部署和参数化_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">分布式部署和参数化</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-09-23 16:07:30</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>分布式部署</H3>
+<P style="text-indent: 0.8cm;">Jmeter 是java 
+应用，对于CPU和内存的消耗比较大，因此，当需要模拟数以千计的并发用户时，使用单台机器模拟所有的并发用户就有些力不从心，甚至会引起JAVA内存溢出错误。为了让jmeter工具提供更大的负载能力，jmeter短小精悍一有了使用多台机器同时产生负载的机制。 
+</P>
+<P style="text-indent: 0.8cm;">
+那么，是如何实现多台负载机同时运行的呢？当然不会多个人坐在多台负载机面前，一喊开始，大家同时启动jmeter。这种方式很笨，也很难达到真正的同步。其实，我们通过单个jmeter 
+客户端就可以控制多个远程的jmeter服务器，使它们同步的对服务器进行压力测试。 </P>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" src="分布式部署和参数化_files/20150923-07.jpg"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>通过远程运行jmeter，测试人员可以跨越多台低端计算机复制测试，这样就可以模拟一个比较大的服务器压力，一个jmeter客户端实例，理论上可以控制任意多的远程jmeter实例，并通过他们收集测试数据。这样一样，就有了如下特性：</FONT></DIV></DIV>
+<UL>
+  <LI>保存测试采样数据到本地机器</LI>
+  <LI>通过单台机器管理多个jmeter执行引擎。</LI>
+  <LI>没有必要将测试计划复制到每一台机器，jmeter GUI客户端会将它发往每一台jmeter服务器。</LI>
+  <LI>每一台jmeter远程服务器都执行相同的测试计划，jmeter不会在执行期间做负载均衡，每一台服务器都会完整地运行测试计划。</LI></UL>
+<P style="text-indent: 0.8cm;">在1.4G Hz～3GHz 的CPU 、1GB 内存的 JMeter 客户端上，可以处理线程 
+100～300。但是Web Service 例外。XML处理是 CPU 运算密集的，会迅速消耗掉所有的CPU 
+。一般来说，以XML技术为核心的应用系统，其性能将是普通Web 应用的 10%～25% 
+。另外，如果所有负载由一台机器产生，网卡和交换机端口都可能产生瓶颈，所以一个JMeter 客户端线程数不应超过 100 。采用JMeter 
+远程模式并不会比独立运行相同数目的非GUI 测试更耗费资源。但是，如果使用大量的JMeter 远程服务器，可能会导致客户端过载，或者网络连接发生拥塞。 </P>
+<H4>使用多台机器产生负载的操作步骤</H4>
+<OL>
+  <LI>在所有期望运行jmeter作为 负载生成器的机器上安装jmeter， 并确定其中一台机器作为 controller ，其他的的机器作为agent 
+  </LI>
+  <LI>运行所有 agent 机器上的jmeter-server 文件（假定使用两台机器192.168.9.99 和192.168.9.130 
+  作为agent）。如果使用本机也作为agent，要开本机的 jmeter-sever.bat</LI>
+  <LI>在controller机器的jmeter的bin目录下，找到jmeter.properties 文件，编辑该文件：   
+<PRE class="brush: java;">查找：
+remote_hosts=127.0.0.1
+修改为：
+remote_hosts=192.168.9.99:1099,192.168.9.130:1099 
+</PRE></LI>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>启动controller 
+  机子上的jmeter应用jmeter.bat，选择菜单“运行”---&gt;“远程启动”，来分别启动agent 
+  ，也可以直接选择“远程全部启动”来将所有的agent启动。</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="分布式部署和参数化_files/20150923-08.jpg"></DIV></DIV></LI></OL>
+<H4>常见问题</H4>
+<UL>
+  <LI>在Controller端上控制某台机器Run，提示"Bad call to remote 
+  host"：解决方法，检查被控制机器上的jmeter-server有没有启动，或者JMeter.properties中remote_hosts的配置错误。</LI>
+  <LI>Agent机器启动Jmeter_server.bat时，后台提示："could not find 
+  ApacheJmeter_core.jar"：解决方法，确定在Agent机器安装jdk，并设置环境变量</LI>
+  <LI>各个agent机器的jdk的版本最好要一致</LI>
+  <LI>各个agent机器的防火墙最好要关闭</LI>
+  <LI>各个agent机器都需要部署测试代码需要的jar包</LI></UL>
+<H3>参数化</H3>
+<P style="text-indent: 0.8cm;">JMeter有两种参数化的方式：函数助手，CSV Data Set Config。 </P>
+<H4>函数助手方式</H4>
+<DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>1.建立参数文件t.bat</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="分布式部署和参数化_files/20150923-09.jpg"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>2.点击菜单栏“选项”----&gt;函数助手对话框，看下图:  
+CSV文件列号是从0开始的，第一列0、第二列1、第三列2、依次类推</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="分布式部署和参数化_files/20150923-10.jpg"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>3.复制生成的参数化函数，打开登陆请求页面，在右则的参数化中找到我们要参数化的字段，这里对用户名和密码做参数化，第一列是用户名，列号为0；第二列是密码，列号为1；修改函数中对应的参数化字段列号就可以了</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="分布式部署和参数化_files/20150923-11.jpg"></DIV></DIV>
+<H3>借助jmeter中的配置元件（CSV Data Set Config）—— 推荐使用CSV控件方法</H3>
+<DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>1.选中线程组，点击右键，添加－配置元件－CSV Data 
+Set Config</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="分布式部署和参数化_files/20150923-12.jpg"></DIV></DIV>
+<PRE class="brush: java;">说明：
+Filename --- 参数项文件
+File Encoding --- 文件的编码，设置为UTF-8
+Vaiable Names --- 文件中各列所表示的参数项；各参数项之间利用逗号分隔；参数项的名称应该与HTTP Request中的参数项一致。
+Delimiter --- 如文件中使用的是逗号分隔，则填写逗号；如使用的是TAB，则填写\t；(如果此文本文件为CSV格式的，默认用英文逗号分隔)
+Recycle on EOF? --- True=当读取文件到结尾时，再重头读取文件
+False=当读取文件到结尾时，停止读取文件
+Stop thread on EOF? --- 当Recycle on EOF为False时，当读取文件到结尾时，停止进程，当Recycle on EOF为True时，此项无意义
+
+
+备注说明：这里我用通俗的语言大概讲一下Recycle on EOF与Stop thread on EOF结果的关联
+Recycle on EOF ：到了文件尾处，是否循环读取参数，选项：true和false
+Stop thread on EOF：到了文件尾处，是否停止线程，选项：true和false
+当Recycle on EOF 选择true时，Stop thread on EOF选择true和false无任何意义，通俗的讲，在前面控制了不停的循环读取，后面再来让stop或run没有任何意义
+当Recycle on EOF 选择flase时，Stop thread on EOF选择true，线程4个，参数3个，那么只会请求3次
+当Recycle on EOF 选择flase时，Stop thread on EOF选择flase，线程4个，参数3个，那么会请求4次，但第4次没有参数可取，不让循环，所以第4次请求错误
+</PRE>
+<DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>2.使用刚才定义好的变量</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="分布式部署和参数化_files/20150923-13.jpg"></DIV></DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

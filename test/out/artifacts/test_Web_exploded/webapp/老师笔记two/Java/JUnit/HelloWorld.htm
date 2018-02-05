@@ -1,0 +1,168 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0069)http://172.13.19.31:6060/note_html/Java/JUnit/1002010-HelloWorld.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>HelloWorld</TITLE> <LINK href="HelloWorld_files/standalone.css" rel="stylesheet"> 
+<LINK href="HelloWorld_files/overlay-apple.css" rel="stylesheet"> <LINK href="HelloWorld_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="HelloWorld_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="HelloWorld_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">HelloWorld</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-01-09 14:09:39</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>HelloWorld</H3>
+<H4>被测试的代码</H4>
+<PRE class="brush: java;">import com.forlink.fkcore.exception.AppException;
+
+/**
+ * 
+ * 计算器（只写了除法）
+ *
+ */
+public class Calculator {
+
+	/**
+	 * 除法运算
+	 * @param Dividend 被除数
+	 * @param Divisor 除数
+	 * @return
+	 */
+	public double div(double Dividend,double Divisor)throws AppException {
+		
+		if(Divisor == 0){//抛出除数为0的异常
+			throw new AppException("除数为0");
+		}
+		
+		return Dividend/Divisor;
+		
+	}
+	
+}
+</PRE>
+<H4>测试类</H4>
+<PRE class="brush: java;">import static org.junit.Assert.*;//静态导入断言
+
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import com.forlink.fkcore.exception.AppException;
+
+public class TestSupplyChain {
+
+	private Calculator calculator;
+
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		
+	}
+
+
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+	}
+
+
+	@Before
+	public void setUp() throws Exception {
+		calculator = new Calculator();
+	}
+
+
+	@After
+	public void tearDown() throws Exception {
+	}
+
+	@Test(timeout=5000)//最好都加上timeout，避免死循环，对于估计执行时间较长的代码，时间可以给长点
+	public void test() throws Exception {
+		double rs = 0;
+		rs = calculator.div(4, 20);
+		assertEquals(rs, 0.2,0);//最后一位是double和float浮点型的误差范围，在此范围内视为相等
+		rs = calculator.div(20, 4);
+		assertEquals(rs, 5,0);
+		
+		assertEquals(new Double(20),new Double(20));//对象比较
+	}
+	
+	@Test(expected = AppException.class,timeout = 5000)//测试被调用方法应抛出的异常
+	public void testZero() throws Exception{
+			calculator.div(0, 0);
+	}
+	
+	@Ignore("暂时忽略不测")
+	@Test(timeout = 5000)
+	public void testIgnore(){
+		
+	}
+	
+}
+</PRE>
+<H4>测试类在eclipse中的创建步骤</H4>
+<OL>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>新建测试用例</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="HelloWorld_files/20160109-01.png"></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>选择要测试的类和用例的一些方法</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="HelloWorld_files/20160109-02.png"></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>执行测试用例(右键run as -&gt; JUnit 
+  Test)</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="HelloWorld_files/20160109-03.png"></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>查看执行结果(正确)</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="HelloWorld_files/20160109-04.png"></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>查看执行结果</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="HelloWorld_files/20160109-05.png"></DIV></DIV></LI></OL>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

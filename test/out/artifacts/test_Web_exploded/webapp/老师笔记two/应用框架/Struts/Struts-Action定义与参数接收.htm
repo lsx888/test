@@ -1,0 +1,164 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0091)http://172.13.19.31:6060/note_html/应用框架/Struts/1002020-Struts-Action定义与参数接收.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>Struts-Action定义与参数接收</TITLE> <LINK href="Struts-Action定义与参数接收_files/standalone.css" 
+rel="stylesheet"> <LINK href="Struts-Action定义与参数接收_files/overlay-apple.css" rel="stylesheet"> 
+<LINK href="Struts-Action定义与参数接收_files/article_edit.css" rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="Struts-Action定义与参数接收_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="Struts-Action定义与参数接收_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">Struts-Action定义与参数接收</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-08-04 09:47:33</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>action的定义</H3>
+<OL>
+  <LI>继承com.opensymphony.xwork2.ActionSupport类如Hello World示例</LI>
+  <LI>直接定义action类，不用继承com.opensymphony.xwork2.ActionSupport类。在struts-default.xml文件中配置了&lt;default-class-ref 
+  class 
+  ="com.opensymphony.xwork2.ActionSupport"/&gt;所以如果不直接继承ActionSupport，默认也是可以的</LI></OL>
+<H3>action的执行方法</H3>
+<OL>
+  <LI>public String execute() throws 
+  Exception：此方法是com.opensymphony.xwork2.Action接口的方法，当struts.xml的action标签没有配置method属性时，默认执行该方法</LI>
+  <LI>参照execute方法自定义的方法，如public String test() throws 
+  Exception：要让action执行该方法处理请求，需配置struts.xml的action标签的method属性的值为test方法名称</LI></OL>
+<H3>action获取参数</H3>
+<OL>
+  <LI>直接定义对应属性获取，注意：必须实现其get、set方法，因为字段的装载是通过set方法执行的   
+<PRE class="brush: java;">public class ParamAction {
+	
+	private String name;
+	
+	private int age;
+	
+	//-- 必须实现get、set方法
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	
+	public String execute()throws Exception{
+		return "success";
+	}
+	
+
+}
+</PRE></LI>
+  <LI>域模型DomainModel(例：装载成User对象，该对象有name、age两个属性)   
+  <OL>
+    <LI>在html代码中input标签的name属性值要为(user.name和user.age)</LI>
+    <LI>定义User对象，属性为name和age注意和input标签要对应一致</LI>
+    <LI>在Action中定义引用名称为user的User对象实例，并创建其get、set方法</LI></OL></LI>
+  <LI>驱动模型ModelDriven(例：装载成User对象，该对象有name、age两个属性)   
+  <OL>
+    <LI>html代码和以前的没有区别</LI>
+    <LI>Action要实现ModelDriven接口，该接口为泛型接口</LI>
+    <LI>定义User对象，属性为name和age注意和input标签要对应一致</LI>
+    <LI>在Action中定义引用名称为user的User对象实例，注意这里必须实例化User对象</LI>
+    <LI>重写 T getModel()方法为 User getModel(){ return this.user; }</LI>
+    <LI>执行原理，struts2的默认拦截器栈中有一个拦截器ModelDrivenInterceptor，它拦截所有实现了ModelDriven接口的action，通过该拦截器实现了对象属性的装载。</LI>
+    <LI><SPAN 
+    style="color: rgb(255, 0, 0);">使用此方法并用OGNL表达式显示页面数据时，需要注意值栈的数据更新问题。</SPAN>   
+      
+<PRE class="brush: xml;">&lt;!-- 
+通过配置拦截器属性解决：struts2的解决方案就是：先把旧的model对象从ValueStack中移除，然后再把新的model对象压入ValueStack！ 
+--&gt;
+&lt;interceptor-ref name="modelDriven"&gt;  
+    &lt;param name="refreshModelBeforeResult"&gt;true&lt;/param&gt;  
+&lt;/interceptor-ref&gt; 
+</PRE></LI></OL></LI></OL>
+<H3>action中使用servlet API</H3>
+<P style="text-indent: 0.8cm;">
+com.opensymphony.xwork2.ActionContext和org.apache.struts2.ServletActionContext的一些静态方法可以获得servlet相关的一些对象。如：request、response、session等等 
+</P>
+<UL>
+  <LI>ActionContext.getContext().getContextMap()，该Map对象中存放了request、response、session等Servlet对象 
+    
+<PRE class="brush: java;">Map&lt;String, Object&gt; map = ServletActionContext.getContext().getContextMap();
+Set&lt;Entry&lt;String, Object&gt;&gt; set = map.entrySet();
+for(Entry&lt;String, Object&gt; en : set){
+	System.out.println(en.getKey() /*+ " " +en.getValue()*/);
+}
+
+/*执行结果为：
+
+com.opensymphony.xwork2.ActionContext.locale
+request
+struts.actionMapping
+com.opensymphony.xwork2.ActionContext.actionInvocation
+session
+xwork.NullHandler.createNullObjects
+com.opensymphony.xwork2.util.ValueStack.ValueStack
+com.opensymphony.xwork2.dispatcher.HttpServletRequest
+com.opensymphony.xwork2.dispatcher.HttpServletResponse
+com.opensymphony.xwork2.ActionContext.container
+com.opensymphony.xwork2.ActionContext.parameters
+com.opensymphony.xwork2.dispatcher.ServletContext
+com.opensymphony.xwork2.ActionContext.application
+com.opensymphony.xwork2.ActionContext.session
+application
+xwork.MethodAccessor.denyMethodExecution
+com.opensymphony.xwork2.ActionContext.conversionErrors
+action
+report.conversion.errors
+com.opensymphony.xwork2.ActionContext.name
+attr
+parameters
+*/
+
+</PRE></LI>
+  <LI>ActionContext.getContext().getParameters()也可以获得一个Map对象，该Map对象中存放了用户提交的参数的Map对象</LI>
+  <LI>ServletActionContext.getRequest()方法获取HttpServletRequest对象，同样方式可以获取response等对象</LI></UL>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

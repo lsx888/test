@@ -1,0 +1,180 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0081)http://172.13.19.31:6060/note_html/应用框架/Struts/1001010-Struts-简介与入门.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>Struts-简介与入门</TITLE> <LINK href="Struts-简介与入门_files/standalone.css" rel="stylesheet"> 
+<LINK href="Struts-简介与入门_files/overlay-apple.css" rel="stylesheet"> <LINK href="Struts-简介与入门_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="Struts-简介与入门_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="Struts-简介与入门_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">Struts-简介与入门</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-07-31 16:16:16</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV id="content_div_1">
+<H3>MVC(Model-View-Controller，模型-视图-控制器)</H3>
+<OL>
+  <LI>Struts1.x、Struts2.x</LI>
+  <LI>JSF</LI>
+  <LI>Spring MVC等</LI></OL></DIV>
+<DIV id="content_div_2">
+<H3>Struts1.x的MVC架构</H3>
+<UL>
+  <LI>控制器：使用ActionServlet充当控制层</LI>
+  <LI>模型：主要由Struts中的ActionForm及业务JavaBean实现。</LI>
+  <LI>视图：JSP结合Struts标签库</LI></UL></DIV>
+<DIV id="content_div_3">
+<H3>Struts2.x简介</H3>
+<P 
+style="text-indent: 0.8cm;">Struts2是apache软件基金会的顶级框架项目。Struts2是Struts1和WebWork的结合，所以Struts2并不是Struts1的升级版本，前两者都是非常优秀的MVC框架</P>
+<H4 style="color: red;">Struts官网：<A href="http://struts.apache.org/" target="_blank">http://struts.apache.org/</A></H4></DIV>
+<H4>struts-2.5.2-all.zip压缩包包包含的内容（先到官网下载最新的struts的压缩包不一定是此版本）</H4>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="Struts-简介与入门_files/20160731-01.png"></DIV></DIV>
+<DIV id="content_div_4">
+<H3>开发Struts2.x项目需要添加的库文件</H3>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="Struts-简介与入门_files/20160731-02.png"></DIV></DIV></DIV>
+<DIV id="content_div_5">
+<H3>第一个Struts2程序</H3>
+<OL>
+  <LI>将需要支持Struts2的类型库，加入web项目。一般是拷贝到lib目录下</LI>
+  <LI>在web.xml中配置过滤器。Struts2.1中使用org.apache.struts2.dispatcher.FilterDispatcher现在已经不推荐使用。现在使用的是org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter。当前版本2.5.2已经将路径修改为org.apache.struts2.dispatcher.filter.StrutsPrepareAndExecuteFilter 
+    
+<PRE class="brush: xml;">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" 
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0"&gt;
+  &lt;display-name&gt;struts_edu&lt;/display-name&gt;
+  &lt;welcome-file-list&gt;
+    &lt;welcome-file&gt;index.html&lt;/welcome-file&gt;
+  &lt;/welcome-file-list&gt;
+  
+  &lt;filter&gt;
+  	&lt;filter-name&gt;struts2&lt;/filter-name&gt;
+  	&lt;filter-class&gt;org.apache.struts2.dispatcher.filter.StrutsPrepareAndExecuteFilter&lt;/filter-class&gt;
+  &lt;/filter&gt;
+  &lt;filter-mapping&gt;
+        &lt;filter-name&gt;struts2&lt;/filter-name&gt;
+        &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+    &lt;/filter-mapping&gt;
+  
+&lt;/web-app&gt;
+</PRE></LI>
+  <LI>定义Action对象继承自com.opensymphony.xwork2.ActionSupport，对应struts.xml中的配置。为了对应还应该有目标页面文件(xxx.jsp或xxx.html) 
+    
+<PRE class="brush: java;">package com.yyoo.action;
+
+import com.opensymphony.xwork2.ActionSupport;
+
+
+public class HelloWorld extends ActionSupport {
+
+	private static final long serialVersionUID = 1L;
+
+	
+	@Override
+	public String execute() throws Exception {
+		
+		return SUCCESS;
+	}
+	
+}
+</PRE></LI>
+  <LI>结果页面编写(示例是在WebContent根路径下新建了一个hello_success.html文件)   
+<PRE class="brush: xml;">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
+&lt;title&gt;Hello World&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Hello World 成功&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</PRE></LI>
+  <LI>在Web项目源码文件夹(src)目录下，创建名为struts.xml的配置文件(可以在解压后的文件夹中的apps示例包中拷贝一个struts.xml文件，删除多余的部分即可重用) 
+    
+<PRE class="brush: xml;">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+&lt;!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd"&gt;
+
+&lt;struts&gt;
+    
+    &lt;package name="helloworld" extends="struts-default"&gt;
+    	&lt;action name="HelloWorld" class="com.yyoo.action.HelloWorld"&gt;
+    		&lt;result name="success"&gt;/hello_success.html&lt;/result&gt;
+    	&lt;/action&gt;
+    &lt;/package&gt;
+    
+&lt;/struts&gt;
+</PRE></LI>
+  <LI>通过配置好的url访问页面（示例url为：http://IP:端口/上下文/HelloWorld），其中HelloWorld是struts.xml中action的配置属性name的值 
+    
+  <DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="Struts-简介与入门_files/20160731-03.png"></DIV></DIV></LI></OL></DIV>
+<DIV id="content_div_6">
+<H3>操作图</H3>
+<DIV class="fileImgDiv" id="1353658566140">
+<DIV id="apple"><IMG class="fileImg" id="1353658566140_img" alt="图片不存在" src="" 
+rel="#1353658566140_rel"> <FONT>过滤器配置</FONT> </DIV>
+<DIV class="apple_overlay" id="1353658566140_rel"><IMG alt="图片不存在" src=""> 
+</DIV></DIV>
+<DIV class="fileImgDiv" id="1353659252875">
+<DIV id="apple"><IMG class="fileImg" id="1353659252875_img" alt="图片不存在" src="" 
+rel="#1353659252875_rel"> <FONT>struts.xml配置</FONT> </DIV>
+<DIV class="apple_overlay" id="1353659252875_rel"><IMG alt="图片不存在" src=""> 
+</DIV></DIV>
+<DIV class="fileImgDiv" id="1353659285296">
+<DIV id="apple"><IMG class="fileImg" id="1353659285296_img" alt="图片不存在" src="" 
+rel="#1353659285296_rel"> <FONT>Action代码图</FONT> </DIV>
+<DIV class="apple_overlay" id="1353659285296_rel"><IMG alt="图片不存在" src=""> 
+</DIV></DIV>
+<DIV class="fileImgDiv" id="1353674937406">
+<DIV id="apple"><IMG class="fileImg" id="1353674937406_img" alt="图片不存在" src="" 
+rel="#1353674937406_rel"> <FONT>Struts2原理图</FONT> </DIV>
+<DIV class="apple_overlay" id="1353674937406_rel"><IMG alt="图片不存在" src=""> 
+</DIV></DIV></DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

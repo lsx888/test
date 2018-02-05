@@ -1,0 +1,290 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0075)http://172.13.19.31:6060/note_html/Java/JavaSE/1013010-JavaSE-反射机制.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>JavaSE-反射机制</TITLE> <LINK href="JavaSE-反射机制_files/standalone.css" rel="stylesheet"> 
+<LINK href="JavaSE-反射机制_files/overlay-apple.css" rel="stylesheet"> <LINK href="JavaSE-反射机制_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="JavaSE-反射机制_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="JavaSE-反射机制_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">JavaSE-反射机制</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-09-17 22:01:43</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>在Java运行时环境中，对于任意一个类，能否知道这个类有哪些属性和方法？对于任意一个对象，能否调用它的任
+	意一个方法？答案是肯定的。这种动态获取类的信息以及动态调用对象的方法的功能来自于Java 语言的反射(Reflection)机制。	 <BR><FONT 
+style="color: red;">Reflection 
+是Java被视为动态(或准动态)语言的一个关键性质。这个机制允许程序在运行时透过Reflection 
+	APIs取得任何一个已知名称的class的内部信息，包括其modifiers(诸如public, static 等等)、
+	 superclass(例如Object)、实现之interfaces(例如Serializable)，也包括fields和methods的所有信息，并可于运行时改
+	变fields内容或调用methods</FONT>
+	 这种“看透”class的行为称为introspection(内省、内观、反省)。Reflection和introspection是常被并提的两个术语
+	 </H3>
+<H3>Java 反射机制主要提供了以下功能</H3>
+<UL>
+  <LI>在运行时判断任意一个对象所属的类。</LI>
+  <LI>在运行时构造任意一个类的对象。</LI>
+  <LI>在运行时判断任意一个类所具有的成员变量和方法。</LI>
+  <LI>在运行时调用任意一个对象的方法。</LI></UL>
+<H3>在JDK中，主要由以下类来实现Java反射机制，这些类都位于java.lang.reflect包中</H3>
+<PRE class="brush: java;">import java.lang.reflect.Method;
+
+public class ReflectTest1 {
+
+	public static void main(String[] args) throws Exception {
+		// Class&lt;?&gt; classType = Class.forName(args[0]);
+		Class&lt;?&gt; classType = Class.forName("java.lang.Object");
+		Method[] methods = classType.getDeclaredMethods();
+		for (Method m : methods) {
+			System.out.println(m);
+		}
+
+		// InvokeTest invokeTest = new InvokeTest();
+		// System.out.println(invokeTest.add(1,2));
+		// System.out.println(invokeTest.echo("lisi"));
+
+		Class&lt;InvokeTest&gt; classType1 = InvokeTest.class;
+		System.out.println("----可以直接获取该类的实例------");
+		InvokeTest invokeTest = classType1.newInstance();
+		System.out.println(invokeTest.add(1, 2));
+		System.out.println(invokeTest.echo("lisi"));
+
+		System.out.println("----可以直接获取该类中你所要调用的方法------");
+		Method addMethod = classType1.getMethod("add", new Class[] { int.class,
+				int.class });
+		// invoke方法返回的是Object对象(转换的时候必须为Integer必须为原生类型的包装类)
+		System.out.println(addMethod.invoke(invokeTest, new Object[] { 1, 2 }));
+		Method echoMethod = classType1.getMethod("echo",
+				new Class[] { String.class });
+		System.out.println(echoMethod.invoke(invokeTest,
+				new Object[] { "方法反射" }));
+
+	}
+
+}
+
+class InvokeTest {
+	public int add(int a, int b) {
+		return a + b;
+	}
+
+	public String echo(String name) {
+		return "hello " + name;
+	}
+}
+</PRE>
+<UL>
+  <LI>Class类：代表一个类。(它比较特殊在java.lang包下)		 <FONT 
+  style="color: red;">Java中，无论生成某个类的多少个对象，这些对象都会对应于同一个 Class对象。</FONT>		 </LI>
+  <LI>Field 类：代表类的成员变量(成员变量也称为类的属性)。</LI>
+  <LI>Method类：代表类的方法。</LI>
+  <LI>Constructor 类：代表类的构造方法。</LI>
+  <LI>Array类：提供了动态创建数组，以及访问数组的元素的静态方法(注意和java.util.Array的区别)</LI></UL>
+<H3><FONT style="color: red;">获取某个类或某个对象所对应的 Class对象的常用的 3种方式：</FONT></H3>
+<UL>
+  <LI>使用Class类的静态方法 forName：Class.forName("java.lang.String"); </LI>
+  <LI>使用类的.class语法：String.class; </LI>
+  <LI>使用对象的getClass()方法：String s = "aa"; Class&lt;?&gt; clazz = s.getClass(); 
+  </LI></UL>
+<H3><FONT style="color: red;">若想通过类的不带参数的构造方法来生成对象，我们有两种方式：</FONT></H3>
+<PRE class="brush: java;">import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+public class ReflectTest2 {
+
+	public static void main(String[] args) throws Exception {
+		Customer c = new Customer("张三",26);
+		c.setId(1L);
+		Customer c1 = (Customer)copy(c);
+		
+		System.out.println("id = " + c1.getId() + ",name = " + c1.getName() + ",age = " + c1.getAge());
+	}
+
+	// 用反射实现对象拷贝
+	public static Object copy(Object o) throws Exception {
+		Class&lt;?&gt; classType = o.getClass();// 获取运行时的类
+		
+		//getConstructor只能获得public的构造方法getDeclaredConstructor才能获得全部的构造方法
+		Constructor&lt;?&gt; constructor = classType.getConstructor(new Class[]{});
+		Object objCopy = constructor.newInstance(new Object[]{});
+		
+		//上面两行代码相当于
+//		classType.newInstance();
+		
+		//获取成员变量
+		Field[] fields = classType.getDeclaredFields();
+		for(Field field : fields){
+			String name = field.getName();
+			//获取属性的名的第一个字符取出并转换为大写
+			String fieldFirst = name.substring(0, 1).toUpperCase();
+			String getMethodName = "get" + fieldFirst + name.substring(1);
+			String setMethodName = "set" + fieldFirst + name.substring(1); 
+			Method getMethod = classType.getMethod(getMethodName, new Class[]{});
+			Method setMethod = classType.getMethod(setMethodName,new Class[]{field.getType()});
+			
+			Object getValue = getMethod.invoke(o, new Object[]{});
+			setMethod.invoke(objCopy, new Object[]{getValue});
+			
+		}
+		
+		
+
+		return objCopy;
+	}
+
+}
+
+class Customer {
+	private Long id;
+	private String name;
+	private int age;
+
+	public Customer() {
+
+	}
+
+	public Customer(String name, int age) {
+		this.name = name;
+		this.age = age;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+}
+</PRE>
+<UL>
+  <LI>第一种方式：先获得Class对象，然后通过该 Class对象的newInstance()方法直接生成即可： 
+  			 <BR>Class&lt;?&gt; classType = String.class;   			 <BR>Object obj = 
+  classType.newInstance(); 		 </LI>
+  <LI>第二种方式：先获得Class对象，然后通过该对象获得对应的 Constructor 对象，再通过该 
+  Constructor对象的newInstance()方法生成 			 <BR>Class&lt;?&gt; classType = 
+  Customer.class;   			 <BR>Constructor cons = classType.getConstructor(new 
+  Class[]{});   			 <BR>Object obj = cons.newInstance(new Object[]{}); 		 </LI>
+  <LI>若想通过类的带参数的构造方法生成对象，只能使用第二种方式：</LI>
+  <LI><FONT style="color: red;">Integer.TYPE 返回的是 int，而Integer.class返回的是 Integer 
+  类所对应的Class对象。			 Integer.TYPE == int.class 为true	</FONT>		 </LI></UL>
+<H3>java.lang.reflect.Array</H3>
+<PRE class="brush: java;">import java.lang.reflect.Array;
+
+public class ReflectArrayTest {
+
+	public static void main(String[] args) throws Exception {
+		Class&lt;?&gt; classType = Class.forName("java.lang.String");
+		// 生成一个长度为10的String类型的数组
+		Object a = Array.newInstance(classType, 10);
+		Array.set(a, 5, "第五个元素");
+		System.out.println(Array.get(a, 5));
+
+		System.out.println("------定义三维数组------");
+		int[] num = new int[] { 5, 10, 15 };
+		// 第二个参数是可变参数，当前这样传是创建三维数组
+		Object array = Array.newInstance(int.class, num);
+		Object array1 = Array.get(array, 3);// 获取第一维的第三个数组结果是个二维数组
+		Object array2 = Array.get(array1, 5);// 获取第二维第五个元素结果是个一维数组
+		Array.set(array2, 10, 108);// 将获得的一维数组的第10个元素设值成108
+
+		int[][][] rs = (int[][][]) array;
+
+		System.out.println(rs[3][5][10]);
+
+	}
+
+}
+
+</PRE>
+<H3>访问类的private修饰的属性或方法</H3>
+<PRE class="brush: java;">
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+//访问类的private修饰的属性或方法
+public class ReflectPrivateTest {
+	public static void main(String[] args)throws Exception {
+		Private p = new Private();
+		Class&lt;?&gt; pClass = p.getClass();
+		Method privateMethod = pClass.getDeclaredMethod("sayHello", new Class[]{String.class});
+		privateMethod.setAccessible(true);//此处设值打开java的访问检查,这样才可用调用其他类的private方法
+		String rs = (String)privateMethod.invoke(p, new Object[]{"reflect private"});
+		System.out.println(rs);
+		
+		Field field = pClass.getDeclaredField("name");
+		field.setAccessible(true);
+		field.set(p, "lisi");//修改对象p的该字段的值为"lisi"
+		System.out.println(p.getName());
+		
+	}
+}
+
+class Private{
+	
+	private String sayHello(String name){
+		return "Hello " + name;
+	}
+	
+	private String name = "zhangsan";
+	
+	public String getName(){
+		return this.name;
+	}
+	
+}
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

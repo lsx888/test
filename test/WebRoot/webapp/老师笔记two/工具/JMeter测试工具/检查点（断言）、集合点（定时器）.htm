@@ -1,0 +1,113 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0100)http://172.13.19.31:6060/note_html/工具/JMeter测试工具/1006010-检查点（断言）、集合点（定时器）.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>检查点（断言）、集合点（定时器）</TITLE> <LINK href="检查点（断言）、集合点（定时器）_files/standalone.css" 
+rel="stylesheet"> <LINK href="检查点（断言）、集合点（定时器）_files/overlay-apple.css" rel="stylesheet"> 
+<LINK href="检查点（断言）、集合点（定时器）_files/article_edit.css" rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="检查点（断言）、集合点（定时器）_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="检查点（断言）、集合点（定时器）_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">检查点（断言）、集合点（定时器）</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-09-24 15:19:05</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>检查点 - 断言</H3>
+<P style="text-indent: 0.8cm;">Meter里面的检查点通过添加断言来完成 </P>
+<OL>
+  <LI>
+  <DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>添加响应断言，右键点击我们的“登录”页面----&gt;添加----&gt;断言----&gt;响应断言</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" src="检查点（断言）、集合点（定时器）_files/20150924-01.jpg"></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>设置响应断言</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" src="检查点（断言）、集合点（定时器）_files/20150924-02.jpg"></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>断言中可以添加多个断言一起判断，断言中也可以使用参数化方法，进行动态判断。</FONT></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>添加断言结果，右键点击我们的“登录”页面----&gt;添加----&gt;监听器----&gt;断言结果</FONT></DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>再添加一个“查看结果树” 
+  右键点击我们的“登录”页面----&gt;添加----&gt;监听器----&gt;查看结果树</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" src="检查点（断言）、集合点（定时器）_files/20150924-03.jpg"></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>在线程组中设置3个用户，点击运行运行。</FONT></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>查看断言结果</FONT></DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>a.成功如下图</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" src="检查点（断言）、集合点（定时器）_files/20150924-04.jpg"></DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>b.失败如下图</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" src="检查点（断言）、集合点（定时器）_files/20150924-05.jpg"></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>注意：一般成功只会显示一行数据，否则会多显示一行。</FONT></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>注意：Sampler设置有多个断言，都会经过Assertions的判断，只要有一个不符合条件的都会标示为False。</FONT></DIV></DIV></LI></OL>
+<H4>其他类型的断言</H4>
+<UL>
+  <LI>Duration to Assert：允许的响应时间的最大值，即断言的持续时间。</LI>
+  <LI>Size to Assert ：对于返回结果文件大小的标准定义</LI></UL>
+<H3>集合点 - 定时器</H3>
+<P style="text-indent: 0.8cm;">JMeter里面的集合点通过添加定时器来完成。注意：集合点的位置一定要在Sample之前. 
+</P>
+<P 
+style="text-indent: 0.8cm;">集合点：简单来理解一下，虽然我们的“性能测试”理解为“多用户并发测试”，但真正的并发是不存在的，为了更真实的实现并发这感念，我们可以在需要压力的地方设置集合点，拿那个用户和密码的地方，每到输入用户名和密码登录的地方，所有的虚拟用户都相互之间等一等，然后，一起访问。 
+</P>
+<OL>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>接着之前创建的脚本，右键点击 
+  线程组----&gt;定时器----&gt;Synchronizing Timer</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" src="检查点（断言）、集合点（定时器）_files/20150924-06.jpg"></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>这样子就添加了一个“集合点”，下面来设置一下集合点，设置集合数</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" src="检查点（断言）、集合点（定时器）_files/20150924-07.jpg"></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>添加完之后的列表如下</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" src="检查点（断言）、集合点（定时器）_files/20150924-08.jpg"></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>图中集合点的位置不对，应该在登录的前面才对</FONT></DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>简单方法：按住Alt,直接移动Synchronizing 
+  Timer至登录的前面即可</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" src="检查点（断言）、集合点（定时器）_files/20150924-09.jpg"></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>集合点已添加完成</FONT></DIV></DIV></LI></OL>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

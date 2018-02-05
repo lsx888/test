@@ -1,0 +1,312 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0107)http://172.13.19.31:6060/note_html/Java/JavaEE/1003010-Servlet-HttpServletRequest与HttpServletResponse.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>Servlet-HttpServletRequest与HttpServletResponse</TITLE> <LINK href="Servlet-HttpServletRequest与HttpServletResponse_files/standalone.css" 
+rel="stylesheet"> <LINK href="Servlet-HttpServletRequest与HttpServletResponse_files/overlay-apple.css" 
+rel="stylesheet"> <LINK href="Servlet-HttpServletRequest与HttpServletResponse_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="Servlet-HttpServletRequest与HttpServletResponse_files/shCoreEclipse.css" 
+rel="stylesheet">	 <LINK href="Servlet-HttpServletRequest与HttpServletResponse_files/my-highlighter.css" 
+rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">Servlet-HttpServletRequest与HttpServletResponse</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-07-13 16:20:16</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>HttpServletRequest：每次请求都有一个</H3>
+<UL>
+  <LI>
+  <H4>获取请求参数</H4>
+  <UL>
+    <LI>getParameter(String name)：获取前端参数名称为name的参数，返回值是String类型</LI>
+    <LI>getParameterNames()：获取前端传送的所以参数的参数名称，返回值是枚举类型</LI>
+    <LI>getParameterValues(String 
+    name)：获取参数名称为name的参数，返回值是String[]类型。一般获取前端的checkbox参数，也就是一个参数名对应多个值的情况。</LI>
+    <LI>getParameterMap()：返回值是Map&lt;String, String[]&gt;类型</LI></UL></LI>
+  <LI>
+  <H4>设置request对象属性</H4>
+  <UL>
+    <LI>getAttribute(String name)：获取属性值，返回Object</LI>
+    <LI>getAttributeNames()：获取所有属性的名称</LI>
+    <LI>setAttribute(String name,Object value)：设置属性</LI></UL></LI>
+  <LI>
+  <H4>设置HTTP头信息</H4>
+  <UL>
+    <LI>getHeader(String name)：获取对应的头信息</LI>
+    <LI>getHeaders(String name)：获取名称对应的所有的信息</LI>
+    <LI>getHeaderNames()：获取所有头信息名称</LI></UL></LI>
+  <LI>
+  <H4>获取路径</H4>
+  <UL>
+    <LI>getContextPath()：获取上下文路径</LI>
+    <LI>getServletPath()：获取servlet的上下文路径</LI>
+    <LI>getPathInfo()：获取路径信息</LI>
+    <LI>getPathTranslated()：方法计算出请求pathInfo中的绝对路径</LI>
+    <LI>getRealPath(String arg)：方法返回本地文件系统的绝对路径。</LI>
+    <LI>以上的两个方法，servlet引擎不能辨认文件的路径是否有效，当web应用调用一个不确定远程文件系统，或数据库路径中的文件时，会返回null。</LI></UL></LI>
+  <LI>
+  <H4>请求转发（url重定向）：必须在代码执行结束时才执行，否则该代码之后的代码将不会执行。</H4>
+  <UL>
+    <LI>request.getRequestDispatcher(String url)：获取请求转发对象     
+<PRE class="brush: java;">RequestDispatcher rd = request.getRequestDispatcher("URL地址-相对的或绝对的都可");
+rd.forward(request, response);
+</PRE></LI></UL></LI>
+  <LI>
+  <H4>获取会话对象session</H4>
+  <UL>
+    <LI>request.getSession()：获取session对象</LI>
+    <LI>request.getSession(Boolean 
+    b)：获取session对象，b=true，当当前session不存在，则创建，等同于request.getSession()。如果b=false，当前session不存在返回null。</LI>
+    <LI>request.getRequestedSessionId()：获取当前存在的session会话的唯一id</LI>
+    <LI>request.getCookies()：获取当前客户端请求发送的所有Cookie的数组</LI></UL></LI>
+  <LI>
+  <H4>设置请求参数的编码格式</H4>
+  <UL>
+    <LI>有许多web浏览器不发送带有“content-type”头信息的字符编码限定符，<SPAN style="color: rgb(255, 0, 0);">而由读取http请求的代码来决定字符的编码方式。这个时候就需要request.setCharacterEncoding(String 
+    encoding);</SPAN></LI>
+    <LI>默认情况下，<SPAN 
+    style="color: rgb(255, 0, 0);">如果客户端请求未定义编码限定符，容器（如tomcat）会用“ISO-8859-1”去创建request 
+    reader和解析POST的数据；为了向开发者指明客户端没有发送字符编码信息的情况，容器对getCharacterEncoding方法返回null。</SPAN> 
+        </LI>
+    <LI>必须在从request中分析任何post数据或者读取任何输入之前调用这个方法。<SPAN style="color: rgb(255, 0, 0);">一旦数据已被读取，则调用这个方法将不会影响编码方式</SPAN></LI>
+    <LI><SPAN style="color: rgb(255, 0, 0);">注意：</SPAN><SPAN style="color: rgb(255, 0, 0);"><STRONG>自 
+       
+    从Tomcat5.x开始，GET和POST方法提交的信息，tomcat采用了不同的方式来处理编码，对于POST请求，Tomcat会仍然使用request.setCharacterEncoding方法所设置的编码来处理，如果未设置，则使用默认的iso-8859-1编码。而GET请求则 
+       
+    不同，Tomcat对于GET请求并不会考虑使用request.setCharacterEncoding方法设置的编码，而会永远使用iso-8859-1编码</STRONG></SPAN> 
+        </LI></UL></LI></UL>
+<H3>解决get方法的中文乱码问题</H3>
+<H4>1.通过如下代码解决</H4>
+<PRE class="brush: java;">    String paramValue = request.getParameter("paramName");  
+    paramValue = new String(paramValue.getBytes("ISO-8859-1"), charset);  
+
+</PRE>
+<H4>1.修改tomcat的配置解决：修改server.xml的如下配置，如下列子是把编码改为了UTF-8</H4>
+<PRE class="brush: xml;">&lt;Connector port="8080" protocol="HTTP/1.1"   
+           connectionTimeout="20000"   
+           redirectPort="8443"   
+           URIEncoding="UTF-8"  
+ /&gt; 
+</PRE>
+<H4>使用过滤器+request包装类的方式来处理</H4>
+<PRE class="brush: java;">package com.yyoo.core.app;
+
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.yyoo.core.global.GscInfo;
+
+
+public class UTF8Convertor implements Filter {
+
+	private static final Log logger = LogFactory.getLog(UTF8Convertor.class);
+
+	public void destroy() {
+		if (logger.isDebugEnabled())
+			logger.debug("UTF8Convertor destroy.");
+	}
+
+	public void doFilter(ServletRequest req, ServletResponse resp,
+			FilterChain chain) throws IOException, ServletException {
+		
+		HttpServletRequest request = (HttpServletRequest) req;
+		HttpServletResponse response = (HttpServletResponse) resp;
+
+		request.setCharacterEncoding("UTF8");
+		response.setCharacterEncoding("UTF8");
+
+		if (request.getQueryString() != null) {
+			if (logger.isDebugEnabled())
+				logger.debug("Intercept QueryString: "
+						+ request.getQueryString());
+			final Map&lt;String, String[]&gt; parameterMap = new HashMap&lt;String, String[]&gt;();
+			Enumeration&lt;?&gt; names = request.getParameterNames();
+			while (names.hasMoreElements()) {
+				String paramName = (String) names.nextElement();
+				String[] paramValue = request.getParameterValues(paramName);
+				for (int i = 0; i &lt; paramValue.length; i++) {
+					if (paramValue[i] != null &amp;&amp; paramValue[i].length() != 0) {
+						paramValue[i] = new String(paramValue[i].getBytes("ISO-8859-1"), "UTF8");
+					}
+				}
+				parameterMap.put(paramName, paramValue);
+			}
+			chain.doFilter(new HttpServletRequestWrapper(request) {
+
+				public String getParameter(String name) {
+					if (parameterMap.get(name) == null)
+						return null;
+					return (String) parameterMap.get(name)[0];
+				}
+
+				public Map&lt;String, String[]&gt; getParameterMap() {
+					return parameterMap;
+				}
+
+				public Enumeration&lt;String&gt; getParameterNames() {
+					return Collections.enumeration(parameterMap.keySet());
+				}
+
+				public String[] getParameterValues(String name) {
+					return parameterMap.get(name);
+				}
+
+			}, response);
+		} else {
+			chain.doFilter(request, response);
+		}
+	}
+
+	public void init(FilterConfig arg0) throws ServletException {
+		
+		if (logger.isDebugEnabled()){
+			logger.debug("UTF8Convertor init.");			
+		}
+	}
+
+}
+</PRE>
+<H3>HttpServletResponse：每次请求都有一个</H3>
+<UL>
+  <LI>response.getWriter()：获取输出流</LI>
+  <LI>response.setCharacterEncoding(String encoding)：设置输出编码格式</LI>
+  <LI>response.setContentLength(int len)：设置指定数量的信息被写入到response</LI>
+  <LI>response.setContentType(String 
+  arg)：设置输出的文件头等。如：response.setContentType("text/html;charset=UTF-8");表示输出的文件是html编码格式为UTF-8</LI>
+  <LI>response.setHeader(String arg0,String arg1)</LI>
+  <LI>response.sendRedirect(String 
+url)：输出重定向，必须在代码执行结束时才执行，否则该代码之后的代码讲不会执行。</LI>
+  <LI>response.setHeader("refresh", 
+  "5;URL=request.html")：5秒后重定向到request.html</LI></UL>
+<H3>servlet页面跳转</H3>
+<OL>
+  <LI><FONT color="red">服务器端跳转：注意要写在方法的最后</FONT>   <BR>RequestDispatcher 
+  dispatcher = request.getRequestDispatcher("jsp/gridJSP.jsp");   <BR>  
+  dispatcher.forward(request, response);   </LI>
+  <LI><FONT color="red">客户端跳转：</FONT>response.sendRedirect("URL")</LI>
+  <LI><FONT color="red">客户端跳转：</FONT>   response.setHeader("refresh", 
+  "5;URL=request.jsp");   </LI></OL>
+<H3>代码示例</H3>
+<PRE class="brush: java;">	
+//-- 获取相关路径的方法
+System.out.println("getPathInfo："+request.getPathInfo());
+System.out.println("getPathTranslated:"+request.getPathTranslated());
+System.out.println("getContextPath:"+request.getContextPath());
+System.out.println("getRealPath:"+request.getRealPath("/"));
+System.out.println("getServletPath:"+request.getServletPath());
+
+//-- 获取相关ip或端口的方法
+System.out.println("getLocalAddr："+request.getLocalAddr());
+System.out.println("getServerName："+request.getServerName());//--获取本地域名
+System.out.println("getLocalPort："+request.getLocalPort());
+System.out.println("getLocalName："+request.getLocalName());
+System.out.println("getRemoteAddr："+request.getRemoteAddr());
+System.out.println("getRemoteHost："+request.getRemoteHost());
+//--获取的是host文件中从前往后第一个与本机IP一致的域名，效率较getRemoteAddr低
+System.out.println("getRemotePort："+request.getRemotePort());
+System.out.println("getRemoteUser："+request.getRemoteUser());
+
+
+//-- 获取http头信息
+System.out.println("=======================================");
+System.out.println("getHeader(\"Host\")："+request.getHeader("Host"));
+Enumeration&lt;String&gt; enums = request.getHeaderNames();
+while(enums.hasMoreElements()){
+	String headerName = enums.nextElement();
+	System.out.println(headerName+"："+request.getHeader(headerName));
+}
+System.out.println("getContentLength:"+request.getContentLength());
+System.out.println("getContentType:"+request.getContentType());
+System.out.println("getMethod:"+request.getMethod());
+System.out.println("getProtocol:"+request.getProtocol());
+
+
+//--获取或设置request级别的属性值
+System.out.println("=======================================");
+System.out.println(request.getAttribute("name"));//-- 还没有设置该属性的值，返回null
+request.setAttribute("name", "对象");//-- 设置属性名称为name的属性值为"对象"字符串
+System.out.println(request.getAttribute("name"));//-- 已经设置了属性的值，返回"对象"
+
+request.setAttribute("name", "对象2");//-- 再次设置属性name的值为"对象2"，该值会覆盖之前的设置
+
+Enumeration&lt;String&gt; enum2 = request.getAttributeNames();
+//-- 目前该request对象只设置了一个name属性，所以枚举类中只有一个值
+while(enum2.hasMoreElements()){
+	String str = enum2.nextElement();
+	System.out.println(str+"："+request.getAttribute(str));
+}
+
+
+
+//---获取或设置request请求编码格式
+System.out.println("getCharacterEncoding:"+request.getCharacterEncoding());
+request.setCharacterEncoding("UTF-8");
+System.out.println("getCharacterEncoding:"+request.getCharacterEncoding());
+
+
+//-- 获取会话相关的信息
+System.out.println(request.getSession());//-- 返回当前会话对象，如果会话已关闭或不存在，会新建一个对象返回
+System.out.println(request.getSession(false));//-- 返回当前会话，但是如果传的参数为false，那么会话不存在的时候返回null
+System.out.println(request.getRequestedSessionId());//-- 返回当前会话的唯一id值，是全局（整个应用内）唯一的。
+Cookie[] cookies = request.getCookies();
+for(Cookie c : cookies){
+	System.out.println("Cookie名称-"+c.getName()+"：("+c.getDomain()+" " + c.getComment() 
+	+ " "+ c.getPath() +" " +c.getValue() +" "+c.getMaxAge()+")");//-- 获取cookie数组
+}
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

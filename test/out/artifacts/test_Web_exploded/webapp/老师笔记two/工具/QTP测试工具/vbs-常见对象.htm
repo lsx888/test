@@ -1,0 +1,228 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0077)http://172.13.19.31:6060/note_html/工具/QTP测试工具/1006010-vbs-常见对象.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>vbs-常见对象</TITLE> <LINK href="vbs-常见对象_files/standalone.css" rel="stylesheet"> 
+<LINK href="vbs-常见对象_files/overlay-apple.css" rel="stylesheet"> <LINK href="vbs-常见对象_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="vbs-常见对象_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="vbs-常见对象_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">vbs-常见对象</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-10-08 15:52:01</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>RegExp对象</H3>
+<H4>示例</H4>
+<PRE class="brush: vb;">Function RegExpTest(patrn, strng)
+    Dim regEx, match, matches            '建立变量。
+    Set regEx = New RegExp               '建立正则表达式。
+    regEx.Pattern = patrn                '设置模式。
+    regEx.IgnoreCase = True              '设置是否区分字符大小写。
+    regEx.Global = True                  '设置全局可用性。
+    Set matches = regEx.Execute(strng)   '执行搜索。
+    For Each match in matches            '遍历匹配集合。
+        retStr = retStr &amp; "Match found at position "
+        retStr = retStr &amp; match.FirstIndex &amp; ". Match Value is '"
+        retStr = retStr &amp; match.Value &amp; "'." &amp; vbCRLF
+    Next
+    RegExpTest = retStr
+End Function
+ 
+MsgBox(RegExpTest("is.", "IS1 is2 IS3 is4"))
+</PRE>
+<H4>属性和方法</H4>
+<TABLE>
+  <TBODY>
+  <TR>
+    <TD rowspan="3">属 性</TD>
+    <TD>Global 属性</TD>
+    <TD>Global 属性负责设置或返回一个 Boolean 值，指明模式是匹配整个字符串中所有与之相符的地方还是只匹配第一次出现的地方</TD></TR>
+  <TR>
+    <TD>IgnoreCase 属性</TD>
+    <TD>IgnoreCase 属性负责设置或返回一个 Boolean 值， 指明模式匹配是否大小写敏感</TD></TR>
+  <TR>
+    <TD>Pattern 属性</TD>
+    <TD>Pattern 属性设置或返回用于搜索的正则表达式</TD></TR>
+  <TR>
+    <TD rowspan="3">方 法</TD>
+    <TD>Execute 方法</TD>
+    <TD>这个方法将正则表达式应用到字符串上并返回 Matches 集合。object.Execute( string 
+    )，string需要搜索的字符串</TD></TR>
+  <TR>
+    <TD>Replace 方法</TD>
+    <TD>这个方法用于替换在正则表达式搜索中找到的文本.object.Replace(string1, 
+      string2)。string1这是发生替换的文本字符串，string2这是用于替换的文本字符串</TD></TR>
+  <TR>
+    <TD>Test 方法</TD>
+    <TD>Test 
+      方法对字符串执行正则表达式搜索，并返回一个布尔值说明匹配是否成功。object.Test(string)，string正则表达式搜索的执行对象</TD></TR></TBODY></TABLE>
+<H4>Matches对象</H4>
+<P style="text-indent: 0.8cm;">Matches 是一个简单的集合，只有两个属性： </P>
+<UL>
+  <LI>Count 返回集合中的元素数量。colMatches.count</LI>
+  <LI>Item 根据指定的键返回元素。colMatches.Item(0) </LI></UL>
+<H4>Match对象</H4>
+<P style="text-indent: 0.8cm;">Match 对象是 Matches 集合中的成员。创建 Match 对象的唯一方法就是使用 
+RegExp 对象的 Execute 方法。当一个正则表达式被执行时会产生 0 个或多个 Match 对象。每个 Match对象提供以下内容： </P>
+<UL>
+  <LI>正则表达式所找到的字符串 Match.Value</LI>
+  <LI>字符串的长度 Match.Length</LI>
+  <LI>指向找到该匹配的位置的索引. Match.FirstIndex</LI></UL>
+<H3>Dictionary对象</H3>
+<P 
+style="text-indent: 0.8cm;">Dictionary是存储数据键和项目对的对象，其主要属性有Count、Item、Key，主要方法有Add、Exists、Items、Keys、Remove、RemoveAll。下面是该对象的一个综合示例： 
+</P>
+<PRE class="brush: vb;">'定义并创建Dictionary对象，使用CreateObject创建并返回自动化对象的引用
+Dim d
+Set d = CreateObject("Scripting.Dictionary")
+ 
+'向Dictionary对象中添加键值对
+d.Add "a", "Known"    'Add方法第一个参数是Key值，第二个是Item值
+d.Add "b", "Christina"
+d.Add "c", "test"
+d.Add "d", "fuck"
+Call ShowDictionary(d)
+ 
+'遍历Dictionary对象，更改Item值
+For i = 0 To d.Count - 1     'Count返回Dictionary对象中的项目数
+    If d.Exists("c") Then    'Exists判断Dictionary对象中是否存在指定关键字
+        d.Item("c") = "Test" 'Item返回Dictionary对象中指定Key的Item值
+    End If
+Next
+d.Remove("d")  'Remove从Dictionary对象中删除一个关键字，项目对。
+Call ShowDictionary(d)
+ 
+'输出Dictionary对象所有键值
+Sub ShowDictionary(dic)
+    Dim str, a
+    a = dic.Items  'Items返回一个包含所有Item值的数组
+    For i = 0 To dic.Count - 1
+        str = str &amp; a(i) &amp; vbCrlf
+    Next
+    MsgBox(str)
+End Sub
+</PRE>
+<H3>Err对象</H3>
+<P 
+style="text-indent: 0.8cm;">Err对象是一个具有全局范围的内部对象，不必在代码中创建它的实例，含有关于运行时错误的信息。主要属性有Description、HelpContext、HelpFile、Number、Source，主要方法有Clear、Raise，其属性及方法的详细说明详见参考文档。下面的示例说明了Err对象的用法： 
+</P>
+<PRE class="brush: vb;">'示例1：
+On Error Resume Next
+Err.Raise 6  '产生溢出错误
+MsgBox("Error #" &amp; CStr(Err.Number) &amp; " " &amp; Err.Description)
+Err.Clear
+ 
+'示例2：
+'定义数据库连接
+Dim conn
+Set conn = CreateObject("ADODB.Connection")
+conn.BeginTrans  '开始事务
+ 
+...
+ 
+'提交数据库事务错误处理
+On Error Resume Next
+If conn.Errors.Count &gt; 0 Then
+    conn.RollbackTrans  '回滚事务
+Else
+    conn.CommitTrans    '提交事务
+End If
+Err.Clear
+</PRE>
+<H3>FileSystemObject对象</H3>
+<P style="text-indent: 0.8cm;">FileSystemObject对象可以操作驱动器、文件夹及文件，其对象模型包含下面的对象和集合。 
+</P>
+<TABLE>
+  <TBODY>
+  <TR>
+    <TH width="20%">对象/集合</TH>
+    <TH width="80%">描述</TH></TR>
+  <TR>
+    <TD>FileSystemObject</TD>
+    <TD>主对象。包含用来创建、删除和获得有关信息，以及通常用来操作驱动器、文件夹和文件的方法和属性。和该对象相关联的许多方法，与其他 FSO 
+      对象中的方法完全相似；它们是为了方便才被提供的。</TD></TR>
+  <TR>
+    <TD>Drive</TD>
+    <TD>对象。包含用来收集信息的方法和属性，这些信息是关于连接在系统上的驱动器的，如驱动器的共享名和它有多少可用空间。请注意，"drive" 
+      并非必须是硬盘，也可以是 CD-ROM 驱动器，RAM 
+磁盘等等。并非必须把驱动器实物地连接到系统上；它也可以通过网络在逻辑上被连接起来。</TD></TR>
+  <TR>
+    <TD>Drives</TD>
+    <TD>集合。提供驱动器的列表，这些驱动器实物地或在逻辑上与系统相连接。<STRONG>Drives</STRONG> 
+      集合包括所有驱动器，与类型无关。要可移动的媒体驱动器在该集合中显现，不必把媒体插入到驱动器中。</TD></TR>
+  <TR>
+    <TD>File</TD>
+    <TD>对象。包含用来创建、删除或移动文件的方法和属性。也用来向系统询问文件名、路径和多种其他属性。</TD></TR>
+  <TR>
+    <TD>Files</TD>
+    <TD>集合。提供包含在文件夹内的所有文件的列表。</TD></TR>
+  <TR>
+    <TD>Folder</TD>
+    <TD>对象。包含用来创建、删除或移动文件夹的方法和属性。也用来向系统询问文件夹名、路径和多种其他属性。</TD></TR>
+  <TR>
+    <TD>Folders</TD>
+    <TD>集合。提供在 <STRONG>Folder</STRONG> 内的所有文件夹的列表。</TD></TR>
+  <TR>
+    <TD>TextStream</TD>
+    <TD>对象。用来读写文本文件。</TD></TR></TBODY></TABLE>
+<P style="text-indent: 0.8cm;">
+FileSystemObject对象所有属性、方法及对象和集合的详细说明，您可以查阅参考文档，因为内容比较多，我们就看一个简单的示例，直观地来了解一下该对象的使用，该示例是将一个文件复制到指定文件夹下。 
+</P>
+<PRE class="brush: vb;">'定义并创建对象
+Dim fso, filePath, folderPath
+Set fso = CreateObject("Scripting.FileSystemObject")
+filePath = "C:\\Test.txt"
+folderPath = "D:\\Test"
+Call MoveFile(filePath, folderPath)
+ 
+'将文件移动到指定文件夹
+Sub MoveFile(sourceFile, targetFolder)
+    Dim file, fileName
+    '获取文件对象
+    Set file = fso.GetFile(sourceFile)
+    '判断目标文件夹是否存在
+    If Not fso.FolderExists(targetFolder) Then
+        fso.CreateFolder(targetFolder)
+    End If
+    '将文件移动到目标位置
+    file.Move(targetFolder &amp; "\\" &amp; file.Name)
+End Sub
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

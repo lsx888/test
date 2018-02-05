@@ -1,0 +1,114 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0070)http://172.13.19.31:6060/note_html/数据库/SQL/106010-SQL-分页查询.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>SQL-分页查询</TITLE> <LINK href="SQL-分页查询_files/standalone.css" rel="stylesheet"> 
+<LINK href="SQL-分页查询_files/overlay-apple.css" rel="stylesheet"> <LINK href="SQL-分页查询_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="SQL-分页查询_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="SQL-分页查询_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">SQL-分页查询</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-06-15 11:22:03</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>分页（orcale数据库的分页）</H3>
+<H4>伪列</H4>
+<UL>
+  <LI>伪列就像Oracle 中的一个表列，但实际上它并未存储在表中。</LI>
+  <LI>伪列可以从表中查询，但是不能插入、更新或删除它们的值</LI></UL>
+<H4>rowid</H4>
+<UL>
+  <LI>数据库中的每一行都有一个行地址，ROWID 伪列返回该行地址。可以使用RowID 值来定位表中的一行。通常情况下，ROWID 
+  值可以唯一地标识数据库中的一行。</LI>
+  <LI>ROWID 伪列有以下重要的用途：   
+  <UL>
+    <LI>能以最快的方式访问表中的一行（索引中应用）。</LI>
+    <LI>能显示表的行是如何存储的。</LI>
+    <LI>可以作为表中行的唯一标识。</LI></UL></LI></UL>
+<H4>rownum</H4>
+<UL>
+  <LI>对于一个查询返回的每一行，伪列ROWNUM 返回一个数值代表行的次序。返回的第一行的ROWNUM 值为1，第二行的ROWNUM 
+  值为2，依次类推</LI>
+  <LI>通过使用ROWNUM 伪列，可以限制查询返回的行数。</LI>
+  <LI>ROWNUM 的值是Oracle 读取数据的顺序值，与记录的内容无关，不排序。</LI>
+  <LI><SPAN 
+  style="color: rgb(255, 0, 0);">在查询条件中，如果查询条件中ROWNUM大于某一正整数，则不返还任何结果。</SPAN></LI></UL>
+<H4>rowid与rownum的区别</H4>
+<UL>
+  <LI>ROWID是插入记录时生成，ROWNUM是查询数据时生成。</LI>
+  <LI>ROWID标识的是行的物理地址。ROWNUM标识的是查询结果中的行的次序。</LI></UL>
+<PRE class="brush: sql;">-- 数据库分页
+-- rownum 作为查询结果(意义不大)
+select p.*,rownum from emp p order by ename;
+
+--- rownum作为查询条件
+-- 查询前5条数据
+select * from emp where rownum &lt;= 5;
+
+--- 查询第6条到第10条
+select * from emp where rownum &gt;= 5 and rownum &lt;= 10;
+-- 没有结果
+
+-- 解决办法
+--1.效率最低
+select * from (
+       select p.*,rownum rno from (
+              select * from emp
+       ) p
+)A where A.rno between 6 and 10;
+
+
+--2.灵活性高，但效率有待提升
+select * from (
+       select p.*,rownum rno from (
+              select * from emp
+       ) p where rownum &lt;= 10
+)A where A.rno &gt; 5;
+
+
+--3.灵活性不如第二个写法
+select * from (
+       select p.*,rownum rno from emp p where rownum &lt;= 10
+)A where A.rno &gt; 5;
+
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

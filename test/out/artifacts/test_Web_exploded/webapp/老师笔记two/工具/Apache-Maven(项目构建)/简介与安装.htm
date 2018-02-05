@@ -1,0 +1,121 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0088)http://172.13.19.31:6060/note_html/工具/Apache-Maven（项目构建）/1001010-简介与安装.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>简介与安装</TITLE> <LINK href="简介与安装_files/standalone.css" rel="stylesheet"> 
+<LINK href="简介与安装_files/overlay-apple.css" rel="stylesheet"> <LINK href="简介与安装_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="简介与安装_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="简介与安装_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">简介与安装</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-02-24 12:38:30</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>简介</H3>
+<P 
+style="text-indent: 0.8cm;">Maven直译过来的意思是内行、专家，可见Maven从开始就被极高的期待。Maven是一个采用纯Java编写的开 
+源项目管理工具。Maven采用了一种被称之为project object model 
+(POM)概念来管理项目，所有的项目配置信息都被定义在一个叫做POM.xml的文件中，通过该文件，Maven可以管理项目的整个声明周期，包括编 
+译，构建，测试，发布，报告等等。目前Apache下绝大多数项目都已经采用Maven进行管理。而Maven本身还支持多种插件，可以方便更灵活的控制项目。 </P>
+<P style="text-indent: 0.8cm;">一个更正式的 Apache Maven 的定义： Maven 
+是一个项目管理工具，它包含了一个项目对象模型 (Project Object Model)， 一组标准集合， 
+一个项目生命周期(ProjectLifecycle)，一个依赖管理系统(Dependency Management 
+System)，和用来运行定义在生命周期阶段(phase)中插件(plugin)目标(goal)的逻辑。 当你使用 Maven 
+的时候，你用一个明确定义的项目对象模型来描述你的项目，然后 Maven 可以应用横切的逻辑，这些逻辑来自一组共享的（或者自定义的）插件。 </P>
+<H3>约定优于配置（Convention Over Configuration ）</H3>
+<P style="text-indent: 0.8cm;">Maven 通过给项目提供明智的默认行为来融合这个概念。 在没有自定义的情况下，源代码假定是在  
+${basedir}/src/main/java ，资源文件假定是在${basedir}/src/main/resources 。测试代码假定是在  
+${basedir}/src/test 。项目假定会产生一个 JAR 文件。Maven 
+假定你想要把编译好的字节码放到${basedir}/target/classes 并且在  ${basedir}/target 创建一个可分发的 JAR文件。 
+虽然这看起来无关紧要， 但是想想大部分基于 Ant 的构建必须为每个子项目定义这些目录。 Maven 对约定优于配置的应用不仅仅是简单的目录位置，Maven 
+的核心插件使用了一组通用的约定，以用来编译源代码，打包可分发的构件，生成 web 站点，还有许多其他的过程。 </P>
+<H3>Ant 和 Maven 的区别</H3>
+<H4>Apache Ant</H4>
+<UL>
+  <LI>Ant 没有正式的约定如一个一般项目的目录结构， 你必须 明确的 告诉 
+  Ant哪里去找源代码，哪里放置输出。随着时间的推移，非正式的约定出现了，但是它们还没有在产品中模式化。</LI>
+  <LI>Ant 是程序化的，你必须明确的告诉 Ant 做什么，什么时候做。你必须告诉它去编译，然后复制，然后压缩。</LI>
+  <LI>Ant 没有生命周期，你必须定义目标和目标之间的依赖。你必须手工为每个目标附上一个任务序列。</LI></UL>
+<H4>Apache Maven</H4>
+<UL>
+  <LI>Maven 拥有约定，因为你遵循了约定，它已经知道你的源代码在哪里。它把字节码放到  target/classes ，然后在  target 
+  生成一个 JAR文件。</LI>
+  <LI>Maven 是声明式的。你需要做的只是创建一个 pom.xml 文件然后将源代码放到默认的目录。Maven 会帮你处理其它的事情。</LI>
+  <LI>Maven 有一个生命周期，当你运行 mvn install 的时候被调用。这条命令告诉 Maven 
+  执行一系列的有序的步骤，直到到达你指定的生命周期。遍历生命周期旅途中的一个影响就是，Maven 运行了许多默认的插件目标，这些目标完成了像编译和创建一个 
+  JAR 文件这样的工作。</LI></UL>
+<H3>Maven安装</H3>
+<H4>下载Maven</H4>
+<P style="text-indent: 0.8cm;"><A href="http://maven.apache.org/download.html" 
+target="_black">http://maven.apache.org/download.html</A>&nbsp;&nbsp;官方下载地址，该地址一般是下载最新的版本，截止目前，官方最新版本为maven3.3.3 
+</P>
+<P style="text-indent: 0.8cm;"><A href="http://archive.apache.org/dist/" target="_black">http://archive.apache.org/dist/</A>&nbsp;&nbsp;官方下载地址，该地址不仅可以下载maven及maven的所有历史版本，还可以下载apache下所有的项目。 
+</P>
+<H4>环境需求</H4>
+<DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>官方下载地址中，最新版本的maven</FONT><FONT>3.3.9需要jdk1.7及以上，如下图：</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="简介与安装_files/20151010-01.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>maven3的各个版本对应的jdk版本要求，如下图：</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="简介与安装_files/20151010-02.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>上图没有显示完全，总结一下就是，maven从3.0版本开始，就需要jdk5.0版本（1.5版本）及以上。由于环境的限制，本教程使用maven</FONT><FONT>3.3.9</FONT></DIV></DIV>
+<H4>安装</H4>
+<OL>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>从<A href="http://archive.apache.org/dist/maven/maven-3/3.2.5/binaries/" 
+  target="_black">http://archive.apache.org/dist/maven/maven-3/3.2.5/binaries/</A></FONT><FONT><A 
+  href="http://archive.apache.org/dist/maven/maven-3/3.2.5/binaries/" target="_black">3.3.9/binaries/</A>&nbsp;&nbsp;上下载apache-maven-3.3.9-bin.zip，解压到D:/maven下，打开maven目录，目录结构如下图：</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" src="简介与安装_files/20151010-03.png"></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>如果是linux下安装，则可以下载apache-maven-</FONT><FONT>3.3.9-bin.tar.gz文件</FONT></DIV></DIV></LI>
+  <LI>  
+  配置环境变量M2_HOME=D:/maven，和PATH=%M2_HOME%/bin(此为windows的环境变量配置，linux下为：M2_HOME=~/maven，PATH=${M2_HOME}/bin:${PATH}) 
+    </LI>
+  <LI>打开cmd命令行，执行mvn -v或mvn -version出现Apache Maven 3.3.9等结果，则安装成功</LI></OL>
+<H3>Maven的官方文档</H3>
+<DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>maven的官方文档的地址：<A href="http://maven.apache.org/guides/index.html" 
+target="_black">http://maven.apache.org/guides/index.html</A></FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="简介与安装_files/20151024-01.png"></DIV></DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

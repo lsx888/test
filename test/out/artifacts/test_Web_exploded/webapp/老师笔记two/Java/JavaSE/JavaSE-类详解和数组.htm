@@ -1,0 +1,223 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0079)http://172.13.19.31:6060/note_html/Java/JavaSE/1008020-JavaSE-类详解和数组.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>JavaSE-类详解和数组</TITLE> <LINK href="JavaSE-类详解和数组_files/standalone.css" 
+rel="stylesheet"> <LINK href="JavaSE-类详解和数组_files/overlay-apple.css" rel="stylesheet"> 
+<LINK href="JavaSE-类详解和数组_files/article_edit.css" rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="JavaSE-类详解和数组_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="JavaSE-类详解和数组_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">JavaSE-类详解和数组</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-05-27 14:02:42</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>关于 Object 类的 equals方法的特点 </H3>
+<UL>
+  <LI>a)  自反性：x.equals(x)应该返回 true </LI>
+  <LI>b)  对称性：x.equals(y)为 true，那么y.equals(x)也为true。 </LI>
+  <LI>c)  传递性：x.equals(y)为  true 并且y.equals(z)为true，那么 x.equals(z)也应该为 
+true。</LI>
+  <LI>d)  一致性：x.equals(y)的第一次调用为 true，那么 x.equals(y)的第二次、第三次、第 n   
+  次调用也应该为true，前提条件是在比较之间没有修改 x 也没有修改 y。   </LI>
+  <LI>e)  对于非空引用 x，x.equals(null)返回false。 </LI></UL>
+<H3>关于 Object 类的 hashCode()方法的特点：</H3>
+<UL>
+  <LI>a)  在 Java 应用的一次执行过程当中，对于同一个对象的 hashCode 方法的多次调用，  
+  他们应该返回同样的值（前提是该对象的信息没有发生变化） 。   </LI>
+  <LI>b)  对于两个对象来说，如果使用equals方法比较返回true，那么这两个对象的hashCode   值一定是相同的。   </LI>
+  <LI>c)  对于两个对象来说，如果使用equals方法比较返回false，那么这两个对象的hashCode   值不要求一定不同（可以相同，可以不同） 
+  ，但是如果不同则可以提高应用的性能。   </LI>
+  <LI>d)  对于Object类来说，不同的Object对象的hashCode值是不同的（Object类的hashCode   值表示的是对象的地址） 。 
+    </LI></UL>
+<H3 style="color: red;">当使用HashSet时，hashCode()方法就会得到调用，判断已经存储在集合中的对象的 hash 
+code值是否与增加的对象的 hash code值一致；如果不一致，直接加进去；如 果一致，再进行 equals方法的比较，equals方法如果返回 
+true，表示对象已经加进 去了，就不会再增加新的对象，否则加进去。 </H3>
+<H3 style="color: red;">如果我们重写 equals方法，那么也要重写 hashCode 方法，反之亦然。</H3>
+<H3>native关键字</H3>
+<P 
+style="text-indent: 0.8cm;">native关键字说明其修饰的方法是一个原生态方法，方法对应的实现不是在当前文件，而是在用其他语言（如C和C++）实现的文件中。Java语言本身不能对操作系统底层进行访问和操作，但是可以通过JNI接口调用其他语言来实现对底层的访问。 
+</P>
+<H3>数组(Array)：</H3>
+<UL>
+  <LI>相同的类型数据的集合就叫做数组。定义语法：type[] 变量名/数组名 = new type[数组成的] type为数组类型</LI>
+  <LI>数组中索引是从0开始的，对数组而言最大的索引为数据的长度 - 1。数组是顺序存放的</LI>
+  <LI>java中每个数据都有一个public、final、int的length属性</LI>
+  <LI><FONT style="color: red;">数组长度一旦确定，就不能更改</FONT></LI>
+  <LI>int[] a = new int[4];中a是一个引用，它指向了生成数组对象的首地址，数组中每个元素都是int类型，其中仅存放数据值本身</LI>
+  <LI>Person[] a = new 
+  Person[4];中a是一个引用，它指向了生成数组对象的首地址，数组中每个元素都是Person类型，其中仅存放数据对象的引用</LI>
+  <LI>二维数组。二维数组是一种平面的二维结构，本质上是数组的数组。二维数组的定义方式：type[][] a = new 
+  type[2][3];2行3列</LI>
+  <LI>三维数组。type[][][] a = new type[2][3][4]; </LI></UL>
+<H4>数组的定义</H4>
+<PRE class="brush: java;">public class ArrayTest{
+	public static void main(String[] args){
+		//定义了一个int类型长度为4的数组a(建议使用第①种定义方式)
+		//①
+		int[] a = new int[4];
+		//②
+		int b[] = new int[4];
+		//③
+		int[] c = {1,12,88};
+		//④
+		int[] d = new int[]{232,343,6};		
+//		int[] d = new int[3]{232,343,6};//此处是错误的，编译错误
+		
+		int[] e = new int[4];
+		System.out.println(e[0]);//结果为0，初始内容为int类型0
+		boolean[] f = new boolean[4];
+		System.out.println(f[0]);//结果为0，初始内容为int类型false
+		
+		System.out.println("===============");
+		Person[] g = new Person[3];
+		System.out.println(g[0]);
+		System.out.println(g[1]);
+		g[0] = new Person(26);
+		System.out.println(g[0]);
+		System.out.println(g[1]);
+		
+		System.out.println("========二维数组=======");
+		int[][] h = new int[2][3];
+		h[0][0] = 11;
+		h[0][1] = 12;
+		h[0][2] = 13;
+		h[1][0] = 21;
+		h[1][1] = 22;
+		h[1][2] = 23;
+		System.out.println(h[0][0]);
+		
+		int[][] i = new int[2][];//定义一个2行的二维数组
+		i[0] = new int[1];//第一行1列
+		i[1] = new int[2];//第二行2列
+		
+//		int[][] i = new int[][3];//此处是错误的，编译错误
+		
+		int[][] j = new int[][]{{1,2},{3,4},{5,6}};
+		
+	}
+}
+
+class Person{
+	int age;
+	
+	public Person(int age){
+		this.age = age;
+	}
+	
+//	public String toString(){
+//		return ""+this.age;
+//	}
+	
+}
+</PRE>
+<H4>示例</H4>
+<PRE class="brush: java;">public class ArrayTest1 {
+	
+	public static void main(String[] args) {
+		//可以编译通过的，这里仅仅是数组的声明，并没有生成对象
+		TestI[] i = new TestI[2];
+		
+		i[0] = new TestImpl();
+		i[1] = new TestImpl();
+		
+		//下面的方式等同与上面的方式
+		TestI[] k = new TestI[]{new TestImpl(),new TestImpl()};
+		
+	}
+
+}
+
+interface TestI{
+	
+}
+
+class TestImpl implements TestI{
+	
+}
+</PRE>
+<H4>相等判断</H4>
+<PRE class="brush: java;">import java.util.Arrays;
+
+public class ArrayTest2 {
+	
+	/**
+	 * 判断两个整型数组的内容是否相等
+	 * 
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	public static boolean isEquals(int[] a,int[] b){
+		//有一个为空，则不相等，都为空没有意义也返回false
+		if(a == null || b == null){
+			return false;
+		}else if(a.length != b.length){
+			return false;
+		}else{
+			int len = a.length;
+			for(int i = 0; i &lt; len;i ++){
+				if(a[i] != b[i]){
+					return false;
+				}
+			}
+			return true;
+		}
+	}
+	
+	public static void main(String[] args) {
+		System.out.println("-----相等的数组------");
+		int[] a = new int[]{1,2,3};
+		int[] b = new int[]{1,2,3};
+		System.out.println(isEquals(a,b));
+		
+		System.out.println("-----不相等的数组------");
+		int[] c = new int[]{1,2};
+		System.out.println(isEquals(a,c));
+		
+		System.out.println("-----java.util.Arrays方法判断------");
+		System.out.println(Arrays.equals(a, b));
+		System.out.println(Arrays.equals(a, c));
+	}
+
+}
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

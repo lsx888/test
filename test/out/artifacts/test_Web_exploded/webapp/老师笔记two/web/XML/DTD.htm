@@ -1,0 +1,184 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0059)http://172.13.19.31:6060/note_html/web/XML/1001030-DTD.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>DTD</TITLE> <LINK href="DTD_files/standalone.css" rel="stylesheet"> <LINK 
+href="DTD_files/overlay-apple.css" rel="stylesheet"> <LINK href="DTD_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="DTD_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="DTD_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">DTD</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-05-19 21:48:56</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV id="content_div_1">
+<H3>什么是DTD</H3>
+<UL>
+  <LI>DTD是Document Type Definition，文档类型定义</LI>
+  <LI>DTD用了描述XML文档的结构</LI></UL></DIV>
+<DIV id="content_div_2">
+<H3>DTD有包含如下结构：</H3>
+<UL>
+  <LI>元素(ELEMENT)的定义规则</LI>
+  <LI>元素之间的关系规则</LI>
+  <LI>属性(ATTLIST)的定义规则</LI>
+  <LI>可使用的实体(ENTITY)或符号(NOTATION)规则</LI></UL></DIV>
+<DIV id="content_div_3">
+<H3>为什么要使用DTD</H3>
+<UL>
+  <LI>有了DTD，每个XML文件可以携带一个自身格式的描述。</LI>
+  <LI>有了DTD，不同组织的人可以使用一个通用DTD用来交换数据</LI>
+  <LI>应用程序可以使用一个标准DTD校验从外部世界接收来的XML数据是否有效</LI>
+  <LI>可以使用DTD校验自己的XML数据</LI></UL></DIV>
+<DIV id="content_div_4">
+<H3>DTD文档的声明以及引用</H3>
+<OL>
+  <LI>内部DTD文档：&amp;tl;!DOCTYPE 根元素[定义内容]&gt;</LI>
+  <LI>外部DTD文档：&amp;tl;!DOCTYPE 根元素 SYSTEM 
+  "DTD文件路径"&gt;，可以是远程路径(注意SYSTEM必须大写)</LI>
+  <LI>内外部DTD文档结合：&amp;tl;!DOCTYPE 根元素 SYSTEM "DTD文件路径" [定义内容]&gt;</LI></OL></DIV>
+<DIV id="content_div_5">
+<H3>DTD元素与属性定义详细</H3>
+<DIV>
+<H3>元素声明语法</H3>
+<UL>
+  <LI>&lt;!ELEMENT 元素名称 类别&gt;</LI>
+  <LI>&lt;!ELEMENT 元素名称 (元素内容)&gt;</LI></UL></DIV>
+<HR>
+
+<DIV>
+<H3>元素类别</H3>
+<UL>
+  <LI>EMPTY：空元素，声明示例：&lt;!ELEMENT hr EMPTY&gt;。表示该元素不能有任何的子元素或文本，但可以有属性</LI>
+  <LI>ANY：带有任何内容的元素，声明示例：&lt;!ELEMENT note ANY&gt;。表示该元素可以包含任何在DTD中定义的元素内容</LI>
+  <LI>#PCDATA：只有#PCDATA的元素，声明示例：&lt;!ELEMENT a 
+  (#PCDATA)&gt;。表示该元素可以包含任何字符数据，但不能包含子元素</LI>
+  <LI>带有子元素（序列）的元素(纯元素类型)：只有包含子元素，声明示例：&lt;!ELEMENT book 
+  (author,title,page)&gt;。表示该元素只包含子元素，不能包含字符数据</LI>
+  <LI>混合型：可以有#PCDATA，又可以有子元素的元素，声明示例：&lt;!ELEMENT book 
+  (#PCDATA|author|title)&gt;。</LI></UL></DIV>
+<HR>
+
+<DIV>
+<H3>属性声明语法</H3>
+<UL>
+  <LI>&lt;!ATTLIST 元素名称 属性名称 属性类型 默认值&gt;</LI>
+  <LI>属性声明是不会单独出现的，它必须依赖于元素</LI></UL></DIV>
+<HR>
+
+<DIV>
+<H3>#PCDATA、CDATA、CDATA节的区别</H3>
+<UL style="color: red;">
+  <LI>CDATA节：用于把整段文本解释为纯字符数据而不是标记</LI>
+  <LI>CDATA：表示元素属性的类型，注意，没有#号</LI>
+  <LI>#PCDATA：表示元素的类型，注意，有#号</LI></UL></DIV>
+<HR>
+
+<DIV>
+<H3>NMTOKEN和NMTOKENS</H3>
+<UL style="color: red;">
+  <LI>NMTOKEN：是CDATA的一个子集，表示属性值必须是英文字母、数字、句号、破折号、下划线或冒号，属性值不能含有空格。</LI>
+  <LI>NMTOKENS：与NMTOKEN类似，包含多个由空格分隔的字符</LI></UL></DIV>
+<HR>
+
+<DIV>
+<H3>实体</H3>
+<UL style="color: red;">
+  <LI>NMTOKEN：是CDATA的一个子集，表示属性值必须是英文字母、数字、句号、破折号、下划线或冒号，属性值不能含有空格。</LI>
+  <LI>NMTOKENS：与NMTOKEN类似，包含多个由空格分隔的字符</LI></UL></DIV>
+<HR>
+
+<DIV>
+<H3>更多说明，查看W3CSchool</H3></DIV>
+<HR>
+
+<DIV>
+<H3>参考图片</H3>
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="DTD_files/dtd_test_1.png" 
+rel="#dtd_test_1_rel"> <FONT>修饰符号</FONT> </DIV>
+<DIV class="apple_overlay" id="dtd_test_1_rel"><IMG alt="图片不存在" src="DTD_files/dtd_test_1.png"> 
+</DIV></DIV>
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="DTD_files/dtd_test_2.png" 
+rel="#dtd_test_2_rel"> <FONT>属性类型</FONT> </DIV>
+<DIV class="apple_overlay" id="dtd_test_2_rel"><IMG alt="图片不存在" src="DTD_files/dtd_test_2.png"> 
+</DIV></DIV>
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="DTD_files/dtd_test_3.jpg" 
+rel="#dtd_test_3_rel"> <FONT>默认值参数</FONT> </DIV>
+<DIV class="apple_overlay" id="dtd_test_3_rel"><IMG alt="图片不存在" src="DTD_files/dtd_test_3.jpg"> 
+</DIV></DIV>
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="DTD_files/dtd_test_4.png" 
+rel="#dtd_test_4_rel"> <FONT>实体类型</FONT> </DIV>
+<DIV class="apple_overlay" id="dtd_test_4_rel"><IMG alt="图片不存在" src="DTD_files/dtd_test_4.png"> 
+</DIV></DIV></DIV></DIV>
+<H3>参考代码</H3>
+<PRE class="brush: xml;">&lt;!-- dtd_test.dtd文件 --&gt;
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!--
+DTD文件的元素、属性详解
+--&gt;
+
+&lt;!-- 定义元素用ELEMENT，注意必须大写 ，元素与其子元素的定义顺序可以不定--&gt;
+&lt;!-- 根元素books中可以有0到多个book元素，如果没有后面的*号，那么该根元素必须且只能有一个book元素 --&gt;
+&lt;!ELEMENT books (book*)&gt;
+&lt;!-- ELEMENT 元素名  小括号表示其子元素的集合，每个子元素之间用逗号隔开表示每个子元素都必须存在，而且顺序也不可改变 --&gt;
+&lt;!ELEMENT book (author,title,page)&gt;
+&lt;!ELEMENT author (#PCDATA)&gt;
+&lt;!ELEMENT title (#PCDATA)&gt;
+&lt;!ELEMENT page (#PCDATA)&gt;
+</PRE>
+<PRE class="brush: xml;">&lt;!-- dtd_test.xml文件 --&gt;
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE books SYSTEM "dtd_test.dtd"&gt;
+
+&lt;books&gt;
+	&lt;book&gt;
+		&lt;author&gt;&lt;/author&gt;
+		&lt;title&gt;&lt;/title&gt;
+		&lt;page&gt;&lt;/page&gt;
+	&lt;/book&gt;
+&lt;/books&gt;
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

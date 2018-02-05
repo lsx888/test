@@ -1,0 +1,227 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0082)http://172.13.19.31:6060/note_html/服务器/CentOS/10703-增加虚拟内存和磁盘配额.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>增加虚拟内存和磁盘配额</TITLE> <LINK href="增加虚拟内存和磁盘配额_files/standalone.css" rel="stylesheet"> 
+<LINK href="增加虚拟内存和磁盘配额_files/overlay-apple.css" rel="stylesheet"> <LINK href="增加虚拟内存和磁盘配额_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="增加虚拟内存和磁盘配额_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="增加虚拟内存和磁盘配额_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">增加虚拟内存和磁盘配额</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-08-24 16:12:40</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>增加虚拟内存</H3>
+<P 
+style="text-indent: 0.8cm;">从装系统时就接触过这个swap了，前面也说过它类似与windows的虚拟内存，分区的时候一般大小为内存的2倍，如果你的内存超过4G，那么你分8G似乎是没有必要了。分4G足够日常交换了。然而，还会有虚拟内存不够用的情况发生。如果真遇到了，莫非还要重新分一下磁盘？当然不能！那我们就增加一个虚拟的磁盘出来。</P>
+<DIV>
+<DIV align="left"><FONT>基本的思路就是：1.建立swapfile   2.格式化为swap格式  
+3.启用该虚拟磁盘</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="增加虚拟内存和磁盘配额_files/20150824-12.png"></DIV>
+<DIV align="left"><FONT>利用dd 
+来创建一个419M的文件/tmp/newdisk出来，其中if代表从哪个文件读，/dev/zero是linux下特有的一个0生成器，of表示输出到哪个文件，bs即块大小，count则定义有多少个块</FONT></DIV></DIV>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="增加虚拟内存和磁盘配额_files/20150824-13.png"></DIV>
+<DIV align="left"><FONT>mkswap 
+这个命令是专门格式化swap格式的分区的，这个命令用的时候一定要看清楚了，否则把其他分区给格式化错了就只有哭了</FONT></DIV></DIV>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="增加虚拟内存和磁盘配额_files/20150824-14.png"></DIV>
+<DIV align="left"><FONT>free 是用来查看系统内存以及虚拟内存使用情况的，-m选项是以M的形式查看。可以看到当前系统的。而swapon 
+是启用我们新建的swap文件，启用后再用free查看发现多了400M</FONT></DIV></DIV>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="增加虚拟内存和磁盘配额_files/20150824-15.png"></DIV>
+<DIV align="left"><FONT>我们还可以用swapoff 关闭启用的swap文件</FONT></DIV></DIV>
+<H3>磁盘配额</H3>
+<P style="text-indent: 0.8cm;">
+磁盘配合其实就是给每个用户分配一定的磁盘额度，只允许他使用这个额度范围内的磁盘空间。在linux系统中，是多用户多任务的环境，所以会有很多人共用一个磁盘的情况。针对每个用户去限定一定量的磁盘空间是有必要的。 
+</P>
+<PRE class="brush: bash;">在linux中，用来管理磁盘配额的东西就是quota了。如果你的linux上没有quota，则需要你安装这个软件包 quota-3.13-5.el5.RPM （其实版本是多少无所谓了，
+关键是这个软件包）。quota在实际应用中是针对整个分区进行限制的。如果你的/dev/hda3 是挂载在/home 目录下的，那么/home 所有目录都会受到限制。
+
+quota 这个模块主要分为quota quotacheck quotaoff quotaon quotastats edquota setquota warnquota repquota这几个命令，下面就分别介绍这些命令。
+
+quota 用来显示某个组或者某个使用者的限额。
+
+语法：quota [-guvs] [user,group]
+
+-g ：显示某个组的限额
+
+-u ：显示某个用户的限额
+
+-v ：显示的意思
+
+-s ：选择inod或硬盘空间来显示
+
+ 
+
+quotacheck 用来扫描某一个磁盘的quota空间。
+
+语法：quotacheck [-auvg] /path
+
+-a ：扫描所有已经mount的具有quota支持的磁盘
+
+-u ：扫描某个使用者的文件以及目录
+
+-g ：扫描某个组的文件以及目录
+
+-v ：显示扫描过程
+
+-m ：强制进行扫描
+
+ 
+
+edquota 用来编辑某个用户或者组的quota值。
+
+语法：edquota [-u user] [-g group] [-t]
+
+edquota -p user -u user
+
+-u ：编辑某个用户的quota
+
+-g ：编辑某个组的quota
+
+-t ：编辑宽限时间
+
+-p ：拷贝某个用户或组的quta到另一个用户或组
+
+当运行edquota -u user 时，系统会打开一个文件，你会看到这个文件中有7列，它们分别代表的含义是：
+
+Filesystem ：磁盘分区，如/dev/hda3
+
+blocks ：当前用户在当前的Filesystem中所占用的磁盘容量，单位是Kb。该值请不要修改。
+
+soft/hard ：当前用户在该Filesystem内的quota值，soft指的是最低限额，可以超过这个值，但必须要在宽限时间内将磁盘容量降低到这个值以下。hard指的是最高限额，
+即不能超过这个值。当用户的磁盘使用量高于soft值时，系统会警告用户，提示其要在宽限时间内把使用空间降低到soft值之下。
+
+inodes ：目前使用掉的inode的状态，不用修改。
+
+quotaon 启动quta，在编辑好quota后，需要启动才能是quta生效
+
+语法：quotaon [-a] [-uvg directory]
+
+-a ：全部设定的quota启动
+
+-u ：启动某个用户的quota
+
+-g ：启动某个组的quota
+
+-s ：显示相关信息
+
+ 
+
+quotaoff 关闭quota
+
+该命令常用只有一种情况 quotaoff -a 关闭全部的quota
+</PRE>
+<H4>磁盘配额实例</H4>
+<OL>
+  <LI>首先先确认一下，你的/home目录是不是单独的挂载在一个分区下，用df 查看即可。如果不是则需要单独挂载。否则这一步即可省略。   
+  <OL>
+    <LI>
+    <DIV>
+    <DIV align="left"><IMG alt="图片不存在" 
+    src="增加虚拟内存和磁盘配额_files/20150824-16.png"></DIV>
+    <DIV 
+    align="left"><FONT>/home并没有单独占用一个分区。所以需要把/home目录挂载在一个单独的分区下，因为quota是针对分区来限额的</FONT></DIV></DIV></LI>
+    <LI>
+    <DIV>
+    <DIV align="left"><IMG alt="图片不存在" 
+    src="增加虚拟内存和磁盘配额_files/20150824-17.png"></DIV>
+    <DIV align="left"><FONT>用fdisk -l 查看目前/dev/hdb 
+    磁盘有5个可用分区，这里我们把/dev/hdb1挂载在/home 目录下</FONT></DIV></DIV></LI>
+    <LI>
+    <DIV>
+    <DIV align="left"><IMG alt="图片不存在" 
+    src="增加虚拟内存和磁盘配额_files/20150824-18.png"></DIV>
+    <DIV align="left"><FONT>/home目录已经是一个单独的分区了</FONT></DIV></DIV></LI></OL></LI>
+  <LI>建立测试用户   
+  <DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="增加虚拟内存和磁盘配额_files/20150824-19.png"></DIV>
+  <DIV 
+  align="left"><FONT>首先建立一个test用户，则同时建立了一个test组。可以在/etc/passwd中有以test为开头的行，其中uid和gid都为500 
+  ，然后又建立一个test1账号，使其加入test组，查看/etc/passwd文件发现test和test1用户的gid都为500。</FONT></DIV></DIV></LI>
+  <LI>打开磁盘的quota功能   
+  <DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="增加虚拟内存和磁盘配额_files/20150824-20.png"></DIV>
+  <DIV 
+  align="left"><FONT>默认linux并没有对任何分区做quota的支持，所以需要我们手动打开磁盘的quota功能，你是否记得，在前面内容中分析/etc/fstab文件的第四列时讲过这个quota选项（usrquota, 
+  grpquota）。没错，要想打开这个磁盘的quota支持就是需要修改这个第四列的。用vim编辑/etc/fstab 
+  加入一行。直接修改第四列，加上usrquota,grpguota（中间没有空格）。接下来需要重新挂载/home。</FONT></DIV>
+  <DIV align="left"><FONT>可以使用umount /home 和 mount -a或者mount -o remount 
+  -a重新挂载/home</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="增加虚拟内存和磁盘配额_files/20150824-21.png"></DIV>
+  <DIV 
+  align="left"><FONT>如何查看是否启用了quota呢？只要查看/etc/mtab文件中/home所在那行是否有usrguota,grpquota即可</FONT></DIV></DIV></LI>
+  <LI>扫描磁盘的使用者使用状况，并产生重要的aquota.group与aquota.user   
+  <DIV>
+  <DIV 
+  align="left"><FONT>这一步就需要用到quotacheck了，aquota.group与aqouta.user分别是组以及用户磁盘配额需要的配置文件。如果没有这两个文件，则磁盘配额是不会生效的</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="增加虚拟内存和磁盘配额_files/20150824-22.png"></DIV>
+  <DIV align="left"><FONT>当首次使用quotacheck命令时，会提示“cannot stat old user quota file 
+  ……”其实这是在提示你在/home目录下没有aquota.user以及aquota.group两个文件。没有关系，因为以前并没有配置过磁盘配额，当然没有这两个文件了。当执行完quotacheck命令后，会在/home目录下生成这两个文件的</FONT></DIV></DIV></LI>
+  <LI>启动quota配额   
+  <DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="增加虚拟内存和磁盘配额_files/20150824-23.png"></DIV></DIV></LI>
+  <LI>编辑用户磁盘配额   
+  <DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="增加虚拟内存和磁盘配额_files/20150824-24.png"></DIV></DIV></LI>
+  <LI>编辑组磁盘配额   
+  <DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="增加虚拟内存和磁盘配额_files/20150824-25.png"></DIV>
+  <DIV 
+  align="left"><FONT>设定组test的soft配额值为40M，hard值为50M。下面查看组test的配额。</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="增加虚拟内存和磁盘配额_files/20150824-26.png"></DIV></DIV></LI>
+  <LI>设定开机启动   
+  <DIV>
+  <DIV align="left"><FONT>前面已经讲到启动磁盘配额的命令是quotaon -aug ，所以要想开机启动，只需将这条命令加入到 
+  /etc/rc.d/rc.local文件即可</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="增加虚拟内存和磁盘配额_files/20150824-27.png"></DIV></DIV></LI></OL>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 2013 ~ 2015 作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

@@ -1,0 +1,110 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0076)http://172.13.19.31:6060/note_html/服务器/CentOS/11004-shell-HelloWorld.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>shell-HelloWorld</TITLE> <LINK href="shell-HelloWorld_files/standalone.css" 
+rel="stylesheet"> <LINK href="shell-HelloWorld_files/overlay-apple.css" rel="stylesheet"> 
+<LINK href="shell-HelloWorld_files/article_edit.css" rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="shell-HelloWorld_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="shell-HelloWorld_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">shell-HelloWorld</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-08-28 16:11:20</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>Shell版的HelloWorld</H3>
+<H4>编写HelloWorld程序</H4>
+<PRE class="brush: bash;">在/home目录下mkdir bash_test，cd 到bash_test文件夹下
+使用vi 建立HelloWorld.sh文件，并按如下信息编辑内容：
+
+#!/bin/bash
+
+#first shell
+
+echo "HelloWrold!"
+</PRE>
+<H4>执行HelloWorld.sh</H4>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="shell-HelloWorld_files/20150828-01.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>图中有3中方式执行shell</FONT></DIV></DIV>
+<OL>
+  <LI>使用sh命令执行</LI>
+  <LI>使用bash命令执行，此执行方式和sh是一样的，bash即表示Bourne Again Shell</LI>
+  <LI>./HelloWorld.sh执行，此方式执行有一个前提需要修改HelloWorld.sh文件可执行，即chomd +x 
+  HelloWorld.sh。</LI></OL>
+<H4>代码解析</H4>
+<OL>
+  <LI>第一行，“#!/bin/bash”，#表示该行是注释，叹号“！”告诉shell运行叹号之后的命令并用文件的其余部分作为输入，也就是运行/bin/bash并让/bin/bash去执行shell程序的内容。“/bin/bash”表示当前系统中$SHELL表示的使用的shell的路径，不要写错了，否则./HelloWorld.sh执行时，会报错。</LI>
+  <LI>第二行，“#first shell”，#是shell中的注释，当前行就是注释行，执行的时候不会编译执行</LI>
+  <LI>第三行，echo "HelloWrold!"，echo就是打印输出，输出内容为“HelloWorld!”</LI></OL>
+<H3>变量的引用</H3>
+<PRE class="brush: bash;">要取用一个变量的值，只需在变量名前面加一个$ ( 注意: 给变量赋值的时候，不能在"="两边留空格 )。例如：
+#!/bin/sh
+# 对变量赋值：
+a="hello world"  #等号两边均不能有空格存在
+# 打印变量a的值：
+echo "A is:" $a
+注：上边的#号为注释
+
+挑个自己喜欢的编辑器，输入上述内容，并保存为文件first，然后执行 chmod +x first 使其可执行，最后输入 ./first 执行该脚本。其输出结果如下：
+    A is: hello world
+
+有时候变量名可能会和其它文字混淆，比如：
+    num=2
+    echo "this is the $numnd"
+
+上述脚本并不会输出"this is the 2nd"而是"this is the "；这是由于shell会去搜索变量numnd的值，而实际上这个变量此时并没有值。这时，我们可以用花括号来告诉shell要打印的是num变量：
+    num=2
+    echo "this is the ${num}nd"
+
+其输出结果为：this is the 2nd
+ 
+注意：shell的默认赋值是字符串赋值。比如：
+   var=1
+   var=$var+1
+   echo $var
+打印出来的不是2而是1＋1。为了达到我们想要的效果有以下几种表达方式：
+   let "var+=1"
+   var=$[$var+1]    
+   var=`expr $var + 1`#注意加号两边的空格，否则还是按照字符串的方式赋值。
+注意：前两种方式在bash下有效，在sh下会出错。
+
+let表示数学运算，expr用于整数值运算，每一项用空格隔开，$[]将中括号内的表达式作为数学运算先计算结果再输出。
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

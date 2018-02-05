@@ -1,0 +1,159 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0071)http://172.13.19.31:6060/note_html/web/Javascript/1001023-类型转换.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>类型转换</TITLE> <LINK href="类型转换_files/standalone.css" rel="stylesheet"> 
+<LINK href="类型转换_files/overlay-apple.css" rel="stylesheet"> <LINK href="类型转换_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="类型转换_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="类型转换_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">类型转换</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-04-11 21:51:17</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>转换成字符串</H3>
+<P style="text-indent: 0.8cm;">3 种主要的原始类型 Boolean 值、数字和字符串都有 toString() 
+方法，可以把它们的值转换成字符串 </P>
+<PRE class="brush: js;">//Boolean 类型的 toString() 方法只是输出 "true" 或 "false"，结果由变量的值决定：
+
+var bFound = false;
+alert(bFound.toString());	//输出 "false"
+
+//Number 类型的 toString() 方法比较特殊，它有两种模式，即默认模式和基模式。采用默认模式，toString() 
+//方法只是用相应的字符串输出数字值（无论是整数、浮点数还是科学计数法），如下所示：
+
+var iNum1 = 10;
+var iNum2 = 10.0;
+alert(iNum1.toString());	//输出 "10"
+alert(iNum2.toString());	//输出 "10"
+/*
+注释：在默认模式中，无论最初采用什么表示法声明数字，Number 类型的 toString() 方法返回的都是数字的十进制表示。
+因此，以八进制或十六进制字面量形式声明的数字输出的都是十进制形式的。采用 Number 类型的 toString() 方法的基模式，
+可以用不同的基输出数字，例如二进制的基是 2，八进制的基是 8，十六进制的基是 16。
+*/
+
+//基只是要转换成的基数的另一种加法而已，它是 toString() 方法的参数：
+
+var iNum = 10;
+alert(iNum1.toString(2));	//输出 "1010"
+alert(iNum1.toString(8));	//输出 "12"
+alert(iNum1.toString(16));	//输出 "A"
+
+//在前面的示例中，以 3 种不同的形式输出了数字 10，即二进制形式、八进制形式和十六进制形式。
+
+//注释：对数字调用 toString(10) 与调用 toString() 相同，它们返回的都是该数字的十进制形式。
+
+</PRE>
+<H3>转换成数字</H3>
+<H4>parseInt(string num,number mode)</H4>
+<UL>
+  <LI>第一个参数是要被转换的字符串，第二个参数是用什么方式转换，2：二进制；8：八进制；10：十进制；16：十六进制；默认是十进制</LI>
+  <LI>方法首先查看位置 0 处的字符，判断它是否是个有效数字；如果不是，该方法将返回 
+  NaN，不再继续执行其他操作。但如果该字符是有效数字，该方法将查看位置 1 处的字符，进行同样的测试。这一过程将持续到发现非有效数字的字符为止，此时 
+  parseInt() 将把该字符之前的字符串转换成数字。</LI>
+  <LI>如果num是浮点数，用该方法转换后结果为整型，并且小数点后面的数字包括小数点均不被保留；如：10.7转换后值为10</LI></UL>
+<H4>parseFloat(string num)</H4>
+<UL>
+  <LI>字符串必须以十进制形式表示浮点数，而不是用八进制或十六进制。该方法会忽略前导 0，所以八进制数 0102 将被解析为 102。对于十六进制数 
+  0xA，该方法将返回 NaN，因为在浮点数中，x 不是有效字符</LI>
+  <LI>parseFloat() 方法与 parseInt() 方法的处理方式相似，从位置 0 
+  开始查看每个字符，直到找到第一个非有效的字符为止，然后把该字符之前的字符串转换成整数。</LI>
+  <LI>如果有两个小数点，第二个小数点将被看作无效的。如：12.33.44转换结果为12.33</LI></UL>
+<H3>强制类型转换</H3>
+<P style="text-indent: 0.8cm;">javascript中可用的 3 种强制类型转换如下： </P>
+<UL>
+  <LI>Boolean(value) - 把给定的值转换成 Boolean 型； </LI>
+  <LI>Number(value) - 把给定的值转换成数字（可以是整数或浮点数）； </LI>
+  <LI>String(value) - 把给定的值转换成字符串；</LI></UL>
+<H4>Boolean() 函数</H4>
+<PRE class="brush: js;">//当要转换的值是至少有一个字符的字符串、非 0 数字或对象时，Boolean() 函数将返回 true。如果该值是空字符串、数字 0、undefined 或 null，它将返回 false。
+
+//可以用下面的代码测试 Boolean 型的强制类型转换：
+
+var b1 = Boolean("");		//false - 空字符串
+var b2 = Boolean("hello");	//true - 非空字符串
+var b1 = Boolean(50);		//true - 非零数字
+var b1 = Boolean(null);		//false - null
+var b1 = Boolean(0);		//false - 零
+var b1 = Boolean(new object());	//true - 对象
+
+</PRE>
+<H4>Number() 函数</H4>
+<TABLE class="dataintable">
+  <TBODY>
+  <TR>
+    <TH style="width: 60%;">用法</TH>
+    <TH>结果</TH></TR>
+  <TR>
+    <TD>Number(false)</TD>
+    <TD>0</TD></TR>
+  <TR>
+    <TD>Number(true)</TD>
+    <TD>1</TD></TR>
+  <TR>
+    <TD>Number(undefined)</TD>
+    <TD>NaN</TD></TR>
+  <TR>
+    <TD>Number(null)</TD>
+    <TD>0</TD></TR>
+  <TR>
+    <TD>Number("1.2")</TD>
+    <TD>1.2</TD></TR>
+  <TR>
+    <TD>Number("12")</TD>
+    <TD>12</TD></TR>
+  <TR>
+    <TD>Number("1.2.3")</TD>
+    <TD>NaN</TD></TR>
+  <TR>
+    <TD>Number(new object())</TD>
+    <TD>NaN</TD></TR>
+  <TR>
+    <TD>Number(50)</TD>
+    <TD>50</TD></TR></TBODY></TABLE>
+<H4>String() 函数</H4>
+<PRE class="brush: js;">//强制转换成字符串和调用 toString() 方法的唯一不同之处在于，对 null 和 undefined 值强制类型转换可以生成字符串而不引发错误：
+
+var s1 = String(null);	//"null"
+var oNull = null;
+var s2 = oNull.toString();	//会引发错误
+
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

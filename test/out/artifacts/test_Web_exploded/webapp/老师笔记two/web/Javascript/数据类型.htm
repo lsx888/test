@@ -1,0 +1,286 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0071)http://172.13.19.31:6060/note_html/web/Javascript/1001022-数据类型.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>数据类型</TITLE> <LINK href="数据类型_files/standalone.css" rel="stylesheet"> 
+<LINK href="数据类型_files/overlay-apple.css" rel="stylesheet"> <LINK href="数据类型_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="数据类型_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="数据类型_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">数据类型</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-06-27 12:53:52</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>数据类型</H3>
+<UL>
+  <LI>原生数据类型：存储在栈（stack）中的简单数据段，也就是说，它们的值直接存储在变量访问的位置。js有5个原生数据类型（java有8个）由于原始类型占据的空间是固定的，所以可将他们存储在较小的内存区域 
+  - 栈中。这样存储便于迅速查寻变量的值。   
+  <UL>
+    <LI>Undefined</LI>
+    <LI>Null</LI>
+    <LI>Boolean</LI>
+    <LI>Number</LI>
+    <LI>String</LI></UL></LI>
+  <LI>引用数据类型：存储在堆（heap）中的对象，也就是说，存储在变量处的值是一个指针（point），指向存储对象的内存处。   
+  <DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>如果一个值是引用类型的，那么它的存储空间将从堆中分配。由于引用值的大小会改变，所以不能把它放在栈中，否则会降低变量查寻的速度。相反，放在变量的栈空间中的值是该对象存储在堆中的地址。地址的大小是固定的，所以把它存储在栈中对变量性能无任何负面影响。如下图所示：</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="数据类型_files/20160408-02.gif"></DIV></DIV></LI></UL>
+<H3>原生数据类型详解</H3>
+<H4>Undefined</H4>
+<PRE class="brush: js;">//Undefined 类型只有一个值，即 undefined。当声明的变量未初始化时，该变量的默认值是 undefined。
+
+var oTemp;
+
+//前面一行代码声明变量 oTemp，没有初始值。该变量将被赋予值 undefined，即 undefined 类型的字面量。
+//可以用下面的代码段测试该变量的值是否等于 undefined：
+
+var oTemp;
+alert(oTemp == undefined);
+
+//这段代码将显示 "true"，说明这两个值确实相等。还可以用 typeof 运算符显示该变量的值是 undefined：
+
+var oTemp;
+alert(typeof oTemp); //输出 "undefined"
+
+//提示：值 undefined 并不同于未定义的值。但是，typeof 运算符并不真正区分这两种值。考虑下面的代码：
+
+var oTemp;
+
+alert(typeof oTemp);  //输出 "undefined"
+alert(typeof oTemp2);  //输出 "undefined"
+
+//前面的代码对两个变量输出的都是 "undefined"，即使只有变量 oTemp2 从未被声明过。如果对 oTemp2 
+//使用除 typeof 之外的其他运算符的话，会引起错误，因为其他运算符只能用于已声明的变量上。
+
+//例如，下面的代码将引发错误：
+
+var oTemp;
+alert(oTemp2 == undefined);
+
+//当函数无明确返回值时，返回的也是值 "undefined"，如下所示：
+
+function testFunc() {
+}
+
+alert(testFunc() == undefined);  //输出 "true"
+
+</PRE>
+<H4>Null</H4>
+<PRE class="brush: js;">//另一种只有一个值的类型是 Null，它只有一个专用值 null，即它的字面量。值 undefined 实际上是从值 null 派生来的，
+//因此 javascript把它们定义为相等的。
+
+alert(null == undefined);  //输出 "true"
+
+//尽管这两个值相等，但它们的含义不同。undefined 是声明了变量但未对其初始化时赋予该变量的值，null 则用于表示尚未存在的对象。
+//如果函数或方法要返回的是对象，那么找不到该对象时，返回的通常是 null。
+</PRE>
+<H4>Boolean</H4>
+<PRE class="brush: js;">//Boolean 类型是 javascript中最常用的类型之一。它有两个值 true 和 false （即两个 Boolean 字面量）。
+
+//即使 false 不等于 0，0 也可以在必要时被转换成 false，这样在 Boolean 语句中使用两者都是安全的。
+
+var bFound = true;
+var bLost = false;
+
+</PRE>
+<H4>Number</H4>
+<H5>八进制数和十六进制数</H5>
+<PRE class="brush: js;">//八进制数和十六进制数
+
+//整数也可以被表示为八进制（以 8 为底）或十六进制（以 16 为底）的字面量。八进制字面量的首数字必须是 0，其后的数字可以是
+//任何八进制数字（0-7），如下面的代码所示：
+
+var iNum = 070;  //070 等于十进制的 56
+
+//要创建十六进制的字面量，首位数字必须为 0，后面接字母 x，然后是任意的十六进制数字（0 到 9 和 A 到 F）。
+//这些字母可以是大写的，也可以是小写的。例如：
+
+var iNum = 0x1f;  //0x1f 等于十进制的 31
+var iNum = 0xAB;  //0xAB 等于十进制的 171
+
+//提示：尽管所有整数都可以表示为八进制或十六进制的字面量，但所有数学运算返回的都是十进制结果。(实际应用中不常用)
+</PRE>
+<H5>浮点数</H5>
+<PRE class="brush: js;">//要定义浮点值，必须包括小数点和小数点后的一位数字（例如，用 1.0 而不是 1）。这被看作浮点数字面量。例如：
+
+var fNum = 5.0;
+
+//对于浮点字面量的有趣之处在于，用它进行计算前，真正存储的是字符串。
+//科学计数法
+
+//对于非常大或非常小的数，可以用科学计数法表示浮点数，可以把一个数表示为数字（包括十进制数字）加 e（或 E），后面加乘以 10 的倍数。例如：
+
+var fNum = 5.618e7
+
+//该符号表示的是数 56180000。把科学计数法转化成计算式就可以得到该值：5.618 x 107。
+
+//也可以用科学计数法表示非常小的数，例如 0.00000000000000008 可以表示为 8-e17（这里，10 被升到 -17 次冥，意味着需要被 10 除 17 次）。
+//javascript默认把具有 6 个或 6 个以上前导 0 的浮点数转换成科学计数法。
+
+//提示：也可用 64 位 IEEE 754 形式存储浮点值，这意味着十进制值最多可以有 17 个十进制位。17 位之后的值将被裁去，从而造成一些小的数学误差。
+</PRE>
+<H5>特殊的 Number 值</H5>
+<PRE class="brush: js;">/*
+几个特殊值也被定义为 Number 类型。前两个是 Number.MAX_VALUE 和 Number.MIN_VALUE，它们定义了 Number 值集合的外边界。所有 
+javascript数都必须在这两个值之间。不过计算生成的数值结果可以不落在这两个值之间。
+
+当计算生成的数大于 Number.MAX_VALUE 时，它将被赋予值 Number.POSITIVE_INFINITY，意味着不再有数字值。同样，生成的数值小于 
+Number.MIN_VALUE 的计算也会被赋予值 Number.NEGATIVE_INFINITY，也意味着不再有数字值。如果计算返回的是无穷大值，那么生成的结果不能再用于其他计算。
+
+事实上，有专门的值表示无穷大，（如你猜到的）即 Infinity。Number.POSITIVE_INFINITY 的值为 Infinity。Number.NEGATIVE_INFINITY 的值为 -Infinity。
+
+由于无穷大数可以是正数也可以是负数，所以可用一个方法判断一个数是否是有穷的（而不是单独测试每个无穷数）。可以对任何数调用 isFinite() 
+方法，以确保该数不是无穷大。例如：
+*/
+
+var iResult = iNum * some_really_large_number;
+
+if (isFinite(iResult)) {
+    alert("finite");
+}
+
+else {
+    alert("infinite");
+}
+
+//最后一个特殊值是 NaN，表示非数（Not a Number）。NaN 是个奇怪的特殊值。一般说来，这种情况发生在类型（String、Boolean 等）转换失败时。例如，
+//要把单词 blue 转换成数值就会失败，因为没有与之等价的数值。与无穷大一样，NaN 也//不能用于算术计算。NaN 的另一个奇特之处在于，它与自身不相等，
+//这意味着下面的代码将返回 false：
+
+console.log(Infinity == Infinity);//true
+console.log(Infinity == NaN);//false
+console.log(NaN == NaN);//false
+
+//出于这个原因，不推荐使用 NaN 值本身。函数 isNaN() 会做得相当好：
+
+alert(isNaN("blue"));  //输出 "true"
+alert(isNaN("666"));  //输出 "false"
+
+//可以直接定义变量值为无穷大或NaN
+
+</PRE>
+<H4>String</H4>
+<PRE class="brush: js;">//字符串字面量是由双引号（"）或单引号（'）声明的。而 Java 则是用双引号声明字符串，用单引号声明字符。
+//但是由于 javascript没有字符类型，所以可使用这两种表示法中的任何一种。例如，下面的两行代码都有效：
+
+var sColor1 = "red";
+var sColor2 = 'red';
+
+</PRE>
+<H5>特殊字符串表示方式</H5>
+<TABLE class="dataintable">
+  <TBODY>
+  <TR>
+    <TH>字面量</TH>
+    <TH>含义</TH></TR>
+  <TR>
+    <TD>\n</TD>
+    <TD>换行</TD></TR>
+  <TR>
+    <TD>\t</TD>
+    <TD>制表符</TD></TR>
+  <TR>
+    <TD>\b</TD>
+    <TD>空格</TD></TR>
+  <TR>
+    <TD>\r</TD>
+    <TD>回车</TD></TR>
+  <TR>
+    <TD>\f</TD>
+    <TD>换页符</TD></TR>
+  <TR>
+    <TD>\\</TD>
+    <TD>反斜杠</TD></TR>
+  <TR>
+    <TD>\'</TD>
+    <TD>单引号</TD></TR>
+  <TR>
+    <TD>\"</TD>
+    <TD>双引号</TD></TR>
+  <TR>
+    <TD>\0<I>nnn</I></TD>
+    <TD>八进制代码 <I>nnn</I> 表示的字符（<I>n</I> 是 0 到 7 中的一个八进制数字）</TD></TR>
+  <TR>
+    <TD>\x<I>nn</I></TD>
+    <TD>十六进制代码 <I>nn</I> 表示的字符（<I>n</I> 是 0 到 F 中的一个十六进制数字）</TD></TR>
+  <TR>
+    <TD>\u<I>nnnn</I></TD>
+    <TD>十六进制代码 <I>nnnn</I> 表示的 Unicode 字符（<I>n</I> 是 0 到 F 
+  中的一个十六进制数字）</TD></TR></TBODY></TABLE>
+<H3>typeof运算符</H3>
+<PRE class="brush: js;">//typeof 运算符有一个参数，即要检查的变量或值。例如：
+
+var sTemp = "test string";
+alert (typeof sTemp);    //输出 "string"
+alert (typeof 86);    //输出 "number"
+
+/*
+对变量或值调用 typeof 运算符将返回下列值之一：
+
+undefined - 如果变量是 Undefined 类型的 
+boolean - 如果变量是 Boolean 类型的 
+number - 如果变量是 Number 类型的 
+string - 如果变量是 String 类型的 
+object - 如果变量是一种引用类型或 Null 类型的 
+注释：您也许会问，为什么 typeof 运算符对于 null 值会返回 "Object"。这实际上是 JavaScript 最初实现中的一个错误，然后被 ECMAScript 沿用了。
+现在，null 被认为是对象的占位符，从而解释了这一矛盾，但从技术上来说，它仍然是原始值。
+*/
+</PRE>
+<H3>instanceof运算符</H3>
+<PRE class="brush: js;">//-- 在使用 typeof 运算符时采用引用类型存储值会出现一个问题，无论引用的是什么类型的对象，它都返回 "object"。
+//-- ECMAScript 引入了另一个 Java 运算符 instanceof 来解决这个问题。
+
+//-- instanceof 运算符与 typeof 运算符相似，用于识别正在处理的对象的类型。与 typeof 方法不同的是，
+//-- instanceof 方法要求开发者明确地确认对象为某特定类型。
+//-- 例如：
+
+var oStringObject = new String("hello world");
+alert(oStringObject instanceof String);	//输出 "true"
+
+/*
+这段代码问的是“变量 oStringObject 是否为 String 对象的实例？”oStringObject 的确是 String 对象的实例，因此结果是 "true"。
+尽管不像 typeof 方法那样灵活，但是在 typeof 方法返回 "object" 的情况下，instanceof 方法还是很有用的。
+*/
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

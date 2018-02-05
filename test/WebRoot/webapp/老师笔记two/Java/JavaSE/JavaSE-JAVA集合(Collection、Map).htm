@@ -1,0 +1,600 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0092)http://172.13.19.31:6060/note_html/Java/JavaSE/1009010-JavaSE-JAVA集合(Collection、Map).html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>JavaSE-JAVA集合(Collection、Map)</TITLE> <LINK href="JavaSE-JAVA集合(Collection、Map)_files/standalone.css" 
+rel="stylesheet"> <LINK href="JavaSE-JAVA集合(Collection、Map)_files/overlay-apple.css" 
+rel="stylesheet"> <LINK href="JavaSE-JAVA集合(Collection、Map)_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="JavaSE-JAVA集合(Collection、Map)_files/shCoreEclipse.css" 
+rel="stylesheet">	 <LINK href="JavaSE-JAVA集合(Collection、Map)_files/my-highlighter.css" 
+rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">JavaSE-JAVA集合(Collection、Map)</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-06-02 11:48:19</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>IDE(Integrated Development Environment)，集成开发环境</H3>
+<UL>
+  <LI>NetBeans  <A href="http://netbeans.org/" 
+  target="_blank">http://netbeans.org/</A></LI>
+  <LI>JBuilder</LI>
+  <LI>Intellij IDEA</LI>
+  <LI>Eclipse(日蚀、月蚀)  <A href="http://eclipse.org/" 
+  target="_blank">http://eclipse.org/</A></LI></UL>
+<H3>集合的层次关系：</H3>
+<UL>
+  <LI>interface Collection：表示一组对象(和数组差不多)JDK 不提供此接口的任何直接实现(所有集合都用Iterator对象迭代遍历) 
+    
+  <UL>
+    <LI>interface Set:     <FONT style="color: blue;">不包含满足 e1.equals(e2) 的元素对 
+    e1 和 e2，并且最多包含一个 null 元素。    
+    它是没有顺序的。遍历方式：foreach或Iterator，Set接口没有get(index)方法，无法通过下标遍历</FONT>     
+    <UL>
+      <LI><FONT style="color: red;">HashSet</FONT>:实现了Set接口。      底层是使用 HashMap 
+      实现的。当使用 add 方法将对象添加到 Set 当中时，      实际上是将该对象作为底层所维护的 
+      Map对象的key，而value则都是同一个Object       对象(该对象我们用不上)       </LI>
+      <LI><FONT style="color: red;">interface SortedSet</FONT>:带排序的集合(继承了Set接口)  
+           <FONT 
+      style="color: red;">TreeSet实现了继承自SortedSet的NavigableSet接口</FONT>       
+      <UL>
+        <LI>TreeSet是有序的</LI>
+        <LI><FONT style="color: red;">加入TreeSet的对象(自定义)必须实现Comparable接口        
+        或者在TreeSet定义的时候传入一个实现了Comparator接口的类的实例</FONT>         
+    </LI></UL></LI></UL></LI>
+    <LI>interface List:有序的 集合(也称为序列)以下是两个实现类。<FONT 
+    style="color: blue;">遍历方式：foreach或Iterator、for循环</FONT>     
+    <UL>
+      <LI><FONT style="color: red;">ArrayList：</FONT>底层是数组</LI>
+      <LI><FONT 
+  style="color: red;">LinkedList：</FONT>底层是Entry对象</LI></UL></LI></UL></LI>
+  <LI>interface Map:集合映射： Map的keySet()方法会返回key 的集合，因为 Map的键是不能重复的，  因此 
+  keySet()方法的返回类型是 Set；而 Map 的值是可以重复的，因此 values()方法的返回类型是   
+  Collection，可以容纳重复的元素。<FONT 
+  style="color: blue;">遍历方式：map.keySet()、map.values()、map.entrySet()</FONT>   
+  <UL>
+    <LI><FONT style="color: red;">HashMap:</FONT>key是Set集合,values是Collection集合。  
+       HashMap与HashTable相似，只是HashTable是同步的     
+    <UL>
+      <LI>底层维护一个数组，我们向 HashMap中所放置的对象实际上是存储在该数组当中</LI>
+      <LI>      当向 HashMap 中 put 一对键值时，它会根据 key 的 hashCode 值计算出一个位置，      
+      该位置就是此对象准备往数组中存放的位置       </LI>
+      <LI>      如果该位置没有对象存在，就将此对象直接放进数组当中；如果该位置已经有对象      
+      存在了，则顺着此存在的对象的链开始寻找（Entry 类有一个 Entry类型的 next成员      
+      变量，指向了该对象的下一个对象），如果此链上有对象的话，再去使用 equals 方      法进行比较，如果对此链上的某个对象的equals 
+      方法比较为 false，则将该对象放到      数组当中，然后将数组中该位置以前存在的那个对象链接到此对象的后面。       
+    </LI></UL></LI>
+    <LI><FONT style="color: red;">TreeMap:NavigableMap extends SortedMap; 
+    TreeMap implements NavigableMap</FONT>     按key值顺序     </LI></UL></LI></UL>
+<H3>集合类图</H3>
+<DIV>
+<DIV align="center" style="padding: 5px 0px;"><FONT>集合类图</FONT></DIV>
+<DIV align="center"><IMG alt="图片不存在" src="JavaSE-JAVA集合(Collection、Map)_files/20160601-01.gif"></DIV></DIV>
+<H3>集合相关规则</H3>
+<TABLE style="width: 515px;" border="0" cellspacing="0" cellpadding="0">
+  <COLGROUP>
+  <COL width="93">
+  <COL width="102">
+  <COL width="154">
+  <COL width="166"></COLGROUP>
+  <TBODY>
+  <TR>
+    <TD width="93" height="18" class="xl67">　</TD>
+    <TD width="102" class="xl67">　</TD>
+    <TD width="154" class="xl67">是否有序</TD>
+    <TD width="166" class="xl67">是否允许元素重复</TD></TR>
+  <TR>
+    <TD height="18" class="xl65" colspan="2">Collection</TD>
+    <TD class="xl67">否</TD>
+    <TD class="xl67">是</TD></TR>
+  <TR>
+    <TD height="18" class="xl65" colspan="2">List</TD>
+    <TD class="xl67">是</TD>
+    <TD class="xl67">是</TD></TR>
+  <TR>
+    <TD height="18" class="xl67">Set</TD>
+    <TD class="xl67">AbstractSet</TD>
+    <TD class="xl67" rowspan="2">否</TD>
+    <TD class="xl67" rowspan="3">否</TD></TR>
+  <TR>
+    <TD height="18" class="xl67">　</TD>
+    <TD class="xl67">HashSet</TD></TR>
+  <TR>
+    <TD height="18" class="xl67">　</TD>
+    <TD class="xl67">TreeSet</TD>
+    <TD class="xl67">是（用二叉排序树）</TD></TR>
+  <TR>
+    <TD height="18" class="xl67">Map</TD>
+    <TD class="xl67">AbstractMap</TD>
+    <TD class="xl67" rowspan="2">否</TD>
+    <TD width="166" class="xl68" 
+      rowspan="3">使用key-value来映射和存储数据，key必须唯一，value可以重复</TD></TR>
+  <TR>
+    <TD height="18" class="xl67">　</TD>
+    <TD class="xl67">HashMap</TD></TR>
+  <TR>
+    <TD height="18" class="xl67">　</TD>
+    <TD class="xl67">TreeMap</TD>
+    <TD class="xl67">是（用二叉排序树）</TD></TR></TBODY></TABLE>
+<H3>ArrayList:</H3>
+<UL>
+  <LI>集合中存放的依然是对象的引用而不是对象本身。 </LI>
+  <LI>ArrayList 底层采用数组实现，当使用不带参数的构造方法生成 ArrayList 对象  时，实际上会在底层生成一个长度为 10 
+  的Object 类型数组   </LI>
+  <LI>  如果增加的元素个数超过了 10 个，那么 ArrayList 底层会新生成一个数组，长  度为原数组的 1.5 
+  倍+1，然后将原数组的内容复制到新数组当中，并且后续增加的内容都会放到新数组当中。  当新数组无法容纳增加的元素时，重复该过程。   </LI>
+  <LI>  对于 ArrayList 元素的删除操作，需要将被删除元素的后续元素向前移动，代价比较高。   </LI></UL>
+<H3>关于ArrayList 与 LinkedList 的比较分析 </H3>
+<UL>
+  <LI>a) ArrayList 底层采用数组实现，LinkedList 底层采用双向链表实现。</LI>
+  <LI>b) 当执行插入或者删除操作时，采用LinkedList比较好。 </LI>
+  <LI>c) 当执行搜索操作时，采用ArrayList 比较好。 </LI>
+  <LI>  当向 ArrayList 添加一个对象时，实际上就是将该对象放置到了 ArrayList 底层所维护  的数组当中；当向 LinkedList 
+  中添加一个对象时，实际上 LinkedList 内部会生成一个   Entry 对象，该 Entry对象的结构为：   Entry {  Entry 
+  previous;  Object element;  Entry next;  }   其中的 Object 类型的元素 element 就是我们向 
+  LinkedList 中所添加的元素，然后 Entry   又构造好了向前与向后的引用 previous、next，最后将生成的这个 
+  Entry对象加入到了链  表当中。换句话说，<FONT style="color: red;">LinkedList中所维护的是一个个的 Entry对象。 
+  </FONT>   </LI></UL>
+<H3>ArrayList与Vector的区别</H3>
+<UL>
+  <LI>推出时间：ArrayList是JDK1.2之后推出的，Vector是JDK1.0时推出的</LI>
+  <LI>性能：ArrayList采用异步处理方式，性能高。Vector采用同步处理方式，性能低。</LI>
+  <LI>线程安全：ArrayList属于非线程安全操作类。Vector属于线程安全操作类。</LI>
+  <LI>输出：ArrayList只能使用Iterator、foreach输出，Vector可以使用Iterator、foreach、Enumeration输出。</LI></UL>
+<H3>HashMap和HashTable的区别</H3>
+<UL>
+  <LI>推出时间：HashMap是JDK1.2之后推出的，HashTable是JDK1.0时推出的</LI>
+  <LI>性能：HashMap采用异步处理方式，性能高。HashTable采用同步处理方式，性能低。</LI>
+  <LI>线程安全：HashMap属于非线程安全操作类。HashTable属于线程安全操作类。</LI>
+  <LI>空值：HashMap允许将key设置为null，HashTable不允许将key设置为null，否则将出现NullPointerException异常</LI></UL>
+<H3>LinkedList</H3>
+<H4>示例</H4>
+<PRE class="brush: java;">import java.util.LinkedList;
+
+public class LinkedListTest {
+	public static void main(String[] args) {
+		LinkedList&lt;Object&gt; list = new LinkedList&lt;Object&gt;();
+
+		list.addLast("最后一个位置");// list.get(1)
+		list.addFirst("第一个位置");
+		list.add(1, "第二个位置");
+		list.add(1, "第二个位置2");
+
+		System.out.println(list);
+
+		System.out.println("------单向链表-------");
+		Node n3 = new Node("第3个", null);
+		Node n2 = new Node("第2个", n3);
+		Node n1 = new Node("第1个", n2);
+		System.out.println(n1.next.next.value);
+
+		System.out.println("-----在n1、n2中间添加n4--------");
+		Node n4 = new Node("第4个", n2);
+		n1.next = n4;
+		System.out.println(n1.next.value);
+		System.out.println(n1.next.next.value);
+
+		System.out.println("-----删除n4--------");
+		n1.next = n2;
+		n4.next = null;
+		System.out.println(n1.next.next.value);
+
+		System.out.println("-----循环链表--------");
+		Node2 nn1 = new Node2("第一个");
+		Node2 nn2 = new Node2("第二个");
+		Node2 nn3 = new Node2("第三个");
+		nn1.previous = nn3;
+		nn1.next = nn2;
+		nn2.previous = nn1;
+		nn2.next = nn3;
+		nn3.next = nn1;
+		nn3.previous = nn2;
+		System.out.println(nn1.next.value);// 第二个
+
+		System.out.println("-----循环链表nn1、nn2之间插入nn4--------");
+		Node2 nn4 = new Node2("插入的第4个");
+		nn1.next = nn4;
+		nn2.previous = nn4;
+		nn4.previous = nn1;
+		nn4.next = nn2;
+		System.out.println(nn1.next.value);
+
+		System.out.println("-----将循环链表nn1、nn2之间的nn4删除--------");
+		nn1.next = nn2;
+		nn2.previous = nn1;
+		nn4.previous = null;
+		nn4.next = null;
+		System.out.println(nn1.next.value);
+
+	}
+}
+
+class Node {
+
+	String value;
+
+	Node next;
+
+	public Node(String value, Node next) {
+		this.value = value;
+		this.next = next;
+	}
+
+}
+
+class Node2 {
+	Node2 previous;
+
+	String value;
+
+	Node2 next;
+
+	public Node2(String value) {
+		this.value = value;
+	}
+
+}
+</PRE>
+<H3 style="color: red;">HashSet：HashSet是无序的.并且有且仅有一个null值. 
+当使用HashSet时，hashCode()方法就会得到调用，判断已经存储在集合中的对象的 hash code值是否与增加的对象的 hash code值一致；
+ 如果不一致，直接加进去；如果一致，再进行 equals方法的比较，equals方法如果返回 true，表示对象已经加进去了，
+ 就不会再增加新的对象，否则加进去。 </H3>
+<H4>示例</H4>
+<PRE class="brush: java;">import java.util.HashSet;
+
+public class HashSetTest {
+	public static void main(String[] args) {
+		HashSet&lt;Object&gt; h1 = new HashSet&lt;Object&gt;();
+		// add方法返回是否将元素加入set
+		System.out.println(h1.add("a"));
+		System.out.println(h1.add("b"));
+		System.out.println(h1.add("c"));
+		System.out.println(h1.add("d"));
+		System.out.println(h1.add("e"));
+		System.out.println(h1.add("a"));
+		System.out.println(h1);
+
+		System.out.println("------equals方法返回值false-------");
+		HashSet&lt;Object&gt; h2 = new HashSet&lt;Object&gt;();
+		h2.add(new People("张三"));
+		h2.add(new People("李四"));
+		h2.add(new People("张三"));
+		System.out.println(h2);
+
+		System.out.println("------equals方法返回true--------");
+		HashSet&lt;Object&gt; h3 = new HashSet&lt;Object&gt;();
+		People p1 = new People("张三");
+		h3.add(p1);
+		h3.add(p1);
+		System.out.println(h3);
+
+		System.out.println("------equals方法返回值true--------");
+		HashSet&lt;Object&gt; h4 = new HashSet&lt;Object&gt;();
+		String s1 = new String("a");
+		String s2 = new String("a");
+		h4.add(s1);
+		h4.add(s2);
+		System.out.println(h4);
+
+		System.out.println("------hashCode或者equals方法返回值false-------");
+		HashSet&lt;Object&gt; h5 = new HashSet&lt;Object&gt;();
+		h5.add(new People2("张三"));
+		h5.add(new People2("李四"));
+		h5.add(new People2("张三"));
+		System.out.println(h5);
+
+	}
+}
+
+class People {
+	String name;
+
+	public People(String name) {
+		this.name = name;
+	}
+
+	public String toString() {
+		return this.name;
+	}
+
+}
+
+class People2 {
+	String name;
+
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		People2 other = (People2) obj;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
+	}
+
+	public People2(String name) {
+		this.name = name;
+	}
+
+	public String toString() {
+		return this.name;
+	}
+}
+</PRE>
+<H3 
+style="color: red;">TreeSet:有序的。其判断是否重复，是按比较规则判断的，如果比较返回0(相等)那么认为是重复，和HashSet有区别。</H3>
+<H4>示例</H4>
+<PRE class="brush: java;">import java.util.Comparator;
+import java.util.TreeSet;
+
+public class TreeSetTest {
+	public static void main(String[] args) {
+
+		System.out.println("-----TreeSet----------");
+		TreeSet&lt;String&gt; t1 = new TreeSet&lt;String&gt;();
+		t1.add("A");
+		t1.add("C");
+		t1.add("B");
+		t1.add("F");
+		t1.add("E");
+		t1.add("D");
+		t1.add("D");// 不允许重复
+		System.out.println(t1);
+
+		System.out.println("-------自定义比较规则MyComparator实现Comparator接口------");
+		TreeSet&lt;String&gt; t3 = new TreeSet&lt;String&gt;(new MyComparator());
+		t3.add("A");
+		t3.add("C");
+		t3.add("B");
+		t3.add("F");
+		t3.add("E");
+		t3.add("D");
+		t3.add("D");
+		System.out.println(t3);
+
+		System.out.println("-------TreeSet中放自定义对象、对象实现Comparable接口------");
+		TreeSet&lt;Student&gt; t2 = new TreeSet&lt;Student&gt;();
+		Student s1 = new Student(70);
+		Student s2 = new Student(80);
+		Student s3 = new Student(90);
+		Student s4 = new Student(70);
+		t2.add(s1);
+		t2.add(s2);
+		t2.add(s3);
+		t2.add(s4);// 它是否加入TreeSet不是由compare方法确定的，是由hashCode、和equals方法确定
+		System.out.println(t2);
+
+	}
+}
+
+class Student implements Comparable&lt;Student&gt; {
+	int score;
+
+	public Student(int score) {
+		this.score = score;
+	}
+
+	public String toString() {
+		return String.valueOf(this.score);
+	}
+
+	@Override
+	public int compareTo(Student o) {
+		if (this.score &gt; o.score) {
+			return 1;
+		} else if (this.score &lt; o.score) {
+			return -1;
+		} else {
+			return 0;
+		}
+	}
+
+}
+
+/**
+ * 
+ * &lt;i&gt;MyComparator&lt;/i&gt;
+ * &lt;p&gt;
+ * Specification: 自定义比较规则
+ * &lt;/p&gt;
+ * 
+ */
+class MyComparator implements Comparator&lt;String&gt; {
+
+	@Override
+	public int compare(String o1, String o2) {
+
+		if (o1.compareTo(o2) &lt; 0) {
+			return 1;
+		} else if (o1.compareTo(o2) &gt; 0) {
+			return -1;
+		}
+
+		return 0;
+	}
+
+}
+</PRE>
+<H3>Collections:对Collection的操作类，里面全是静态类</H3>
+<H4>示例</H4>
+<PRE class="brush: java;">import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+
+public class CollectionsTest {
+	public static void main(String[] args) {
+		List&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();
+		list.add(20);
+		list.add(50);
+		list.add(-100);
+		list.add(-30);
+		list.add(0);
+
+		Comparator&lt;Integer&gt; r = Collections.reverseOrder();//与自然顺序相反
+		Collections.sort(list, r);//按自定规则排序
+		Iterator&lt;Integer&gt; listIt = list.iterator();
+		while(listIt.hasNext()){
+			System.out.println(listIt.next());
+		}
+		
+		System.out.println("----------最大最小值--------");
+		System.out.println("自然最大："+Collections.max(list));
+		System.out.println("自然最小："+Collections.min(list));
+		System.out.println("自定义最大："+Collections.max(list,r));
+		System.out.println("自定义最小："+Collections.min(list,r));
+		
+		System.out.println("----------随机乱序--------");
+		Collections.shuffle(list);
+		System.out.println(list);
+
+	}
+}
+</PRE>
+<H3>HashMap：无序存放的，是新的操作类，key不允许重复</H3>
+<H4>示例</H4>
+<PRE class="brush: java;">import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
+public class HashMapTest {
+	public static void main(String[] args) {
+		HashMap&lt;String, String&gt; h1 = new HashMap&lt;String, String&gt;();
+		h1.put("a", "值1");
+		h1.put("b", "值2");
+		h1.put("c", "值3");
+		h1.put("d", "值4");
+		System.out.println(h1);
+		System.out.println("获取key为a的值：" + h1.get("a"));
+		System.out.println("获取key为a的值：" + h1.get("e"));// 返回null
+
+		System.out.println("------重复加入key会把前一个对应key的值取代--------");
+		h1.put("a", "替换值");
+		System.out.println(h1);
+
+		System.out.println("------不知道key有哪些遍历key和value第一种方式-----");
+		Set&lt;String&gt; keys = h1.keySet();
+		Iterator&lt;String&gt; keysIt = keys.iterator();
+		while (keysIt.hasNext()) {
+			System.out.println(h1.get(keysIt.next()));
+		}
+
+		System.out.println("------不知道key有哪些遍历值第二种方式-----");
+		Collection&lt;String&gt; collection = h1.values();
+		Iterator&lt;String&gt; valueIt = collection.iterator();
+		while (valueIt.hasNext()) {
+			System.out.println(valueIt.next());
+		}
+
+		System.out.println("------不知道key有哪些遍历key和value第三种方式-----");
+		Set&lt;Map.Entry&lt;String, String&gt;&gt; entrySet = h1.entrySet();
+		Iterator&lt;Map.Entry&lt;String, String&gt;&gt; entryIter = entrySet.iterator();
+		while (entryIter.hasNext()) {
+			Map.Entry&lt;String, String&gt; entry = entryIter.next();
+			System.out.println(entry.getKey() + " = " + entry.getValue());
+		}
+
+		System.out.println("----计算数组中字符串出现次数----");
+		String[] s = { "hello", "word", "hello", "welcome", "hello", "word" };
+		HashMap&lt;String, Integer&gt; h2 = new HashMap&lt;String, Integer&gt;();
+		int len = s.length;
+		for (int i = 0; i &lt; len; i++) {
+			if (h2.get(s[i]) != null) {
+				h2.put(s[i], h2.get(s[i]) + 1);
+			} else {
+				h2.put(s[i], 1);
+			}
+		}
+		System.out.println(h2);
+
+	}
+}
+</PRE>
+<H3>Properties：属性类</H3>
+<H4>示例</H4>
+<PRE class="brush: java;">package com.java.collection;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
+
+public class PropertiesDemo {
+
+	public static void main(String[] args) throws IOException {
+		Properties p = new Properties();
+
+		InputStream in = PropertiesDemo.class
+				.getResourceAsStream("/msg.properties");
+		//注意区别
+//		InputStream in = PropertiesDemo.class.getClassLoader()
+//				.getResourceAsStream("msg.properties");
+		
+		p.load(in);
+		
+		System.out.println(p.get("key"));
+		System.out.println(p.getProperty("key"));
+		
+	}
+
+}
+</PRE>
+<H3>Hashtable：无序存放的，是旧的操作类，key不允许重复</H3>
+<H3>TreeMap：可以排序的Map集合，按集合中的key排序，key不允许重复</H3>
+<H3>WeakHashMap：弱引用的Map集合，当集合中的某些内容不再使用时清除掉无用的数据，使用gc进行回收</H3>
+<H3>IdentityHashMap：key可以重复的Map集合。</H3>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

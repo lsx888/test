@@ -1,0 +1,97 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0079)http://172.13.19.31:6060/note_html/Java/JavaSE/1003010-JavaSE-流程控制语句.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>JavaSE-流程控制语句</TITLE> <LINK href="JavaSE-流程控制语句_files/standalone.css" 
+rel="stylesheet"> <LINK href="JavaSE-流程控制语句_files/overlay-apple.css" rel="stylesheet"> 
+<LINK href="JavaSE-流程控制语句_files/article_edit.css" rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="JavaSE-流程控制语句_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="JavaSE-流程控制语句_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">JavaSE-流程控制语句</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-09-17 11:43:35</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>逻辑控制语句：</H3>
+<UL>
+  <LI>if："()"中为逻辑表达式，如果为真则执行"{}"中的程序			 
+  <UL>
+    <LI>if(){}</LI>
+    <LI>if(){}else{}</LI>
+    <LI>if(){}else if(){}else{}</LI></UL></LI>
+  <LI>			switch语句：switch(变量) //只能为 5种类型：byte, short, int, enum			 
+  <UL>
+    <LI>					{ 					   	case  常量1: 					     //待执行的代码 					      break; 
+    						case  常量2: 					     //待执行的代码 					      break; 						case  常量3: 					 
+        //待执行的代码 					      break; 					  	 default： 					      //待执行的代码 					 } 
+     				 </LI>
+    <LI>虽然 case语句中的 break是可选的，但在绝大多数情况下，如果没有 break，程序的逻
+    					辑就会发生错误，因此，通常情况下都需要加上 break				 </LI></UL></LI></UL>
+<H3>循环控制语句：</H3>
+<UL>
+  <LI>while 循环：			 
+  <UL>
+    <LI>while(布尔表达式){ 					   //待执行的代码 					 } 				 </LI></UL></LI>
+  <LI>do..while 循环：			 
+  <UL>
+    <LI>do{  //待执行的代码   }while(布尔表达式);					 <FONT 
+    style="color: red;">注意末尾的分号</FONT>				 </LI></UL></LI>
+  <LI>for循环（使用最多的一种循环）：			 
+  <UL>
+    <LI>for(变量初始化;  条件判断;  步进){ 					   //待执行的代码 					 } 					 <FONT style="color: red;">注意for括弧中的分号</FONT>
+    				 </LI></UL></LI></UL>
+<H3><FONT style="color: red;">循环控制语句说明：</FONT></H3>
+<UL>
+  <LI><FONT style="color: red;">while与 do…while之间的区别：如果布尔表达式的第一次判断就为 false，那么 
+  while循			环一次也不执行；do…while 循环则会执行一次。如果布尔表达式第一次判断为 true，			那么while循环与 
+  do…while循环等价。 </FONT>		 </LI>
+  <LI>for循环的执行过程：			 
+  <UL>
+    <LI>1).  执行变量初始化。 </LI>
+    <LI>2).  执行条件判断。如果条件判断结果为假，那么退出 for 循环，开始执行循环后面的					代码；如果条件判断为真，执行 
+    for循环里面的代码。				 </LI>
+    <LI>3).  执行步进。(i++、i--、i+7...) </LI>
+    <LI>4).  重复步骤2。 </LI></UL></LI></UL>
+<H3>循环中的控制：</H3>
+<UL>
+  <LI>break语句：经常用在循环语句中，用于<FONT 
+style="color: red;">跳出整个循环</FONT>，执行循环后面的代码。</LI>
+  <LI>continue语句：经常用在循环语句中，用于<FONT 
+  style="color: red;">跳出当前的这个循环(或者是跳出本次循环)，</FONT>			开始下一次循环的执行。 		 </LI>
+  <LI>break与continue可以搭配标签使用，在实际开发中，根本没有人会将 break与 continue搭配标签来使用。 </LI>
+  <LI>跳出多重循环，使用标号：aa: for(..){ for(..){ break aa; }  }</LI></UL>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

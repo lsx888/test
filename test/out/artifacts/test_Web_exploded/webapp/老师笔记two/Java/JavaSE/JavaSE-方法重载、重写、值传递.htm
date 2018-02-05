@@ -1,0 +1,123 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0089)http://172.13.19.31:6060/note_html/Java/JavaSE/1006020-JavaSE-方法重载、重写、值传递.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>JavaSE-方法重载、重写、值传递</TITLE> <LINK href="JavaSE-方法重载、重写、值传递_files/standalone.css" 
+rel="stylesheet"> <LINK href="JavaSE-方法重载、重写、值传递_files/overlay-apple.css" rel="stylesheet"> 
+<LINK href="JavaSE-方法重载、重写、值传递_files/article_edit.css" rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="JavaSE-方法重载、重写、值传递_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="JavaSE-方法重载、重写、值传递_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">JavaSE-方法重载、重写、值传递</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-06-13 17:25:08</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>方法重载(overload)：两个或多个方法，名称相同但是方法参数不同，就叫这两个或多个方法重载。</H3>
+<UL>
+  <LI>1).方法名相同</LI>
+  <LI>2).参数个数不同 method(int a); method(int a,int b);</LI>
+  <LI>3).参数类型不同 method(int a);method(double a);</LI>
+  <LI>4).参数个数和类型都相同，但按顺序的参数类型不相同 method(int a,boolean b);method(boolean b,int 
+  a);</LI>
+  <LI><FONT style="color: red;">5).方法的返回值对方法的重载没有关系</FONT></LI>
+  <LI><FONT style="color: red;">6).构造方法重载只需看参数就行了</FONT></LI>
+  <LI><FONT style="color: red;">7).普通方法和构造方法重载都可以互相调用</FONT></LI>
+  <LI><FONT 
+  style="color: red;">8).如果在一个构造方法中可以用this(目标参数)调用目标构造方法,但是this()必须要放在该方法的第一行</FONT></LI>
+  <LI><FONT style="color: red;">访问修饰符与重载没有关系。<BR></FONT></LI></UL>
+<H3>方法重写(override又叫做覆写)：</H3>
+<UL>
+  <LI>  子类和父类方法返回类型、方法名称、参数、参数类型都是一样的，  只有方法体不一样。这样我们说子类和父类的方法构成重写   </LI>
+  <LI>访问修饰符与重写也没有关系。<BR></LI></UL>
+<H3><FONT style="color: red;">方法重载和方法重写之间的关系：</FONT></H3>
+<UL>
+  <LI>  重载发生在一个类的内部的两个或多个方法。<FONT style="color: red;">(子类可以继承父类的方法构成重载)</FONT>   
+  </LI>
+  <LI>重写发生在父类与子类之间。<FONT 
+  style="color: red;">(在子类重写的方法中可以使用super.方法名称调用父类被重写的方法，这里可以不用放在第一行。和构造方法不一样)</FONT> 
+    </LI></UL>
+<H3>方法的值传递</H3>
+<PRE class="brush: java;">public static void main(String[] args) {
+		
+		Person p = new Person("张三丰",12);
+		
+		System.out.println(p);
+		fn(p);
+		System.out.println(p);
+		
+		System.out.println("--------------------------");
+		
+		String name = "张三丰";
+		
+		System.out.println(name);
+		name = fn(name);
+		System.out.println(name);
+		
+		System.out.println("--------------------------");
+		
+		int x = 10;
+		System.out.println(x);
+		fn(x);
+		System.out.println(x);
+		
+		//-- 引用类型，传的是引用的值（内存地址）
+		//-- 原生数据类型，传的是变量的值
+		//-- String类型比较特殊，String一旦定义不可以修改
+		
+		// 区分 参数变量 和 我们实际定义的变量不是一个变量
+		
+	}
+	
+	
+	public static void fn(Person p){
+		p.setAge(100);
+	}
+	
+	public static String fn(String str){
+		str = "张无忌";
+		return str;
+	}
+	
+	public static void fn(int x){
+		x = 100;
+	}
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

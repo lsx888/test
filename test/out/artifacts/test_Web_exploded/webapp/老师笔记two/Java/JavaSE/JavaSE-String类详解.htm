@@ -1,0 +1,220 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0079)http://172.13.19.31:6060/note_html/Java/JavaSE/1008021-JavaSE-String类详解.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>JavaSE-String类详解</TITLE> <LINK href="JavaSE-String类详解_files/standalone.css" 
+rel="stylesheet"> <LINK href="JavaSE-String类详解_files/overlay-apple.css" rel="stylesheet"> 
+<LINK href="JavaSE-String类详解_files/article_edit.css" rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="JavaSE-String类详解_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="JavaSE-String类详解_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">JavaSE-String类详解</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-06-24 09:42:18</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>String类：String类是final的(不能继承)</H3>
+<PRE class="brush: java;">//最好用String的equals方法(这里最多是面试的时候会出现)
+public class ObjectTest {
+	public static void main(String[] args) {  
+        /** 
+         * 情景一：字符串池 
+         * JAVA虚拟机(JVM)中存在着一个字符串池，其中保存着很多String对象; 
+         * 并且可以被共享使用，因此它提高了效率。 
+         * 由于String类是final的，它的值一经创建就不可改变。 
+         * 字符串池由String类维护，我们可以调用intern()方法来访问字符串池。  
+         */  
+        String s1 = "abc";     
+        //↑ 在字符串池创建了一个对象  
+        String s2 = "abc";     
+        //↑ 字符串pool已经存在对象“abc”(共享),所以创建0个对象，累计创建一个对象  
+        System.out.println("s1 == s2 : "+(s1==s2));    
+        //↑ true 指向同一个对象，  
+        System.out.println("s1.equals(s2) : " + (s1.equals(s2)));    
+        //↑ true  值相等  
+        //↑------------------------------------------------------over  
+        /** 
+         * 情景二：关于new String("") 
+         *  
+         */  
+        String s3 = new String("abc");  
+        //↑ 创建了两个对象，一个存放在字符串池中，一个存在与堆区中；  
+        //↑ 还有一个对象引用s3存放在栈中  
+        
+        String s4 = new String("abc");  
+        //↑ 字符串池中已经存在“abc”对象，所以只在堆中创建了一个对象 
+        
+        System.out.println("s3 == s4 : "+(s3==s4));  
+        //↑false   s3和s4栈区的地址不同，指向堆区的不同地址；  
+        
+        System.out.println("s3.equals(s4) : "+(s3.equals(s4)));  
+        //↑true  s3和s4的值相同  
+        
+        System.out.println("s1 == s3 : "+(s1==s3));  
+        //↑false 存放的地区多不同，一个栈区，一个堆区  
+        
+        System.out.println("s1.equals(s3) : "+(s1.equals(s3)));  
+        //↑true  值相同  
+        //↑------------------------------------------------------over  
+        /** 
+         * 情景三：  
+         * 由于常量的值在编译的时候就被确定(优化)了。 
+         * 在这里，"ab"和"cd"都是常量，因此变量str1的值在编译时就可以确定。 
+         * 这行代码编译后的效果等同于： String str1 = "abcd"; 
+         */  
+        String str1 = "ab" + "cd";  //1个对象  
+        String str11 = "abcd";   
+        System.out.println("str1 = str11 : "+ (str1 == str11));  
+        //↑------------------------------------------------------over  
+        /** 
+         * 情景四：  
+         * 局部变量str2,str3存储的是存储两个拘留字符串对象(intern字符串对象)的地址。 
+         *  
+         * 第三行代码原理(str2+str3)： 
+         * 运行期JVM首先会在堆中创建一个StringBuilder类， 
+         * 同时用str2指向的拘留字符串对象完成初始化， 
+         * 然后调用append方法完成对str3所指向的拘留字符串的合并， 
+         * 接着调用StringBuilder的toString()方法在堆中创建一个String对象， 
+         * 最后将刚生成的String对象的堆地址存放在局部变量str3中。 
+         *  
+         * 而str5存储的是字符串池中"abcd"所对应的拘留字符串对象的地址。 
+         * str4与str5地址当然不一样了。 
+         *  
+         * 内存中实际上有五个字符串对象： 
+         *       三个拘留字符串对象、一个String对象和一个StringBuilder对象。 
+         */  
+        String str2 = "ab";  //1个对象  
+        String str3 = "cd";  //1个对象                                         
+        String str4 = str2+str3;                                        
+        String str5 = "abcd";    
+        System.out.println("str4 = str5 : " + (str4==str5)); // false  
+        //↑------------------------------------------------------over  
+        /** 
+         * 情景五： 
+         *  JAVA编译器对string + 基本类型/常量 是当成常量表达式直接求值来优化的。 
+         *  运行期的两个string相加，会产生新的对象的，存储在堆(heap)中 
+         */  
+        String str6 = "b";  
+        String str7 = "a" + str6;  
+        String str67 = "ab";  
+        System.out.println("str7 = str67 : "+ (str7 == str67));  
+        //↑str6为变量，在运行期才会被解析。  
+        final String str8 = "b";  
+        String str9 = "a" + str8;  
+        String str89 = "ab";  
+        System.out.println("str9 = str89 : "+ (str9 == str89));  
+        //↑str8为常量变量，编译期会被优化  
+        //↑------------------------------------------------------over  
+
+		String a = "abcd";
+		String b = new String("ab");
+		String c = new String("cd");
+		
+		String d = b.intern() + c.intern();
+		
+		System.out.println(a == d);//flase 等价于str4
+
+    }
+}
+</PRE>
+<UL>
+  <LI>String类的比较：使用equals方法进行判断。（使用该方法判断注意空指针异常）</LI>
+  <LI>Stirng str = new String("aaa");首先在String 
+  Pool中查找有没有"aaa"，这个字符串对象，如果有则不再在String Pool中去创建"aaa"   
+  对象了，直接在堆中(heap)创建一个"aaa"字符串对象，然后将堆中这个"aaa"对象的地址返回回来，赋给str引用，导致str指向了堆中创建  
+  的"aaa"对象。如果没有，则首先在String Pool中创建一个"aaa"对象，然后再在堆中创建一个"aaa"对象，然后将堆中的"aaa"返回回来，  
+  赋给str引用，导致str指向了堆中创建的"aaa"对象。   </LI>
+  <LI>intern方法：   
+  <UL>
+    <LI>当调用 intern 方法时，如果池已经包含一个等于此 String 对象的字符串(用 equals(Object) 
+    方法确定)，则返回池中的字符串。否则，将此 String 对象添加到池中，并返回此 String 对象的引用。</LI>
+    <LI>它遵循以下规则：对于任意两个字符串 s 和 t，当且仅当 s.equals(t) 为 true 时，s.intern() == 
+    t.intern() 才为 true。</LI>
+    <LI>所有字面值字符串和字符串赋值常量表达式都使用 intern 方法进行操作。</LI></UL></LI>
+  <LI>字符串串联符号"+"以及将其他对象转换为字符串的特殊支持   
+  <UL>
+    <LI>字符串变量串联是通过 StringBuilder（或 StringBuffer）类及其 append 方法实现的。</LI>
+    <LI>字符串转换是通过 toString 方法实现的，该方法由 Object 类定义，并可被 Java 中的所有类继承。</LI>
+    <LI>StringBuilder（或StringBuffer）的toString方法最后new了一个新的String对象。</LI>
+    <LI><SPAN style="color: rgb(255, 0, 0);">如果是"abc" + 
+    "def"这种"+"号两边都是字符串常量的操作，不用使用这种方式。</SPAN><BR></LI></UL></LI></UL>
+<H3>字符串的其他方法请查看API文档</H3>
+<PRE class="brush: java;">public static void main(String[] args) {
+
+	Person1 p1 = new Person1("张三",20);
+	Person1 p2 = new Person1("李四",21);
+		
+	System.out.println(p1 + (p2 + ""));// 任何类型的变量 + 任何的字符串  结果 = 字符串（注意括号）；此方式和String.valueOf(p1) + String.valueOf(p2)等价
+	
+	String str = "kfjadslkfjalsfjlds";//字符串下标还是以0开始到length() - 1
+	
+	System.out.println(str.charAt(9));//-- j 返回下标为9的字符
+	System.out.println(str.length());//-- 18 返回字符串的长度
+	
+	
+	String a = "avr44";
+	String b = "c";
+	String c = "aw";
+	
+	System.out.println(c.compareTo(a));
+	//-- 1. 首先依次判断两个字符串第i个字符，如果第一个字符不等，那么就返回这两个字符的差 如题：'c' - 'a' == 2
+	//-- 2. 如果前i个字符都相等，则返回两个字符串的长度之差.
+	//-- 3. c.compareTo(a)如果返回值小于0，表示 c &lt; a；反之如果返回值大于0，则c &gt; a；如果返回值为0，则两个字符串相等
+	
+	
+	System.out.println(b.concat(c));//-- 1. 连接两个字符串，原来的字符串不会改变。返回新创建的字符串对象
+	System.out.println(b);
+	System.out.println(c);
+	
+	
+	System.out.println(a.contains("44"));//-- a字符串中是否包含"44"这个字符串
+	
+}
+</PRE>
+<H3>StringBuffer和String</H3>
+<H4 
+style="color: red; text-indent: 0.8cm;">String一旦定义不可更改，每次字符串加的操作会产生多个String对象，但最终只引用一个，造成效率，内存空间的浪费。StringBuffer底层通过char[]数组来实现，只在toString方法中new了一个String对象，所以它append方法做字符串加的操作的效率比String直接加操作要高。</H4>
+<H3>StringBuffer和StringBuilder的区别</H3>
+<UL>
+  <LI>他俩都是做字符串连接类，实现原理都是一致的</LI>
+  <LI>都是继承自java.lang.AbstractStringBuilder</LI>
+  <LI>最大的区别就是StringBuffer是线程安全的，StringBuilder不是(StringBuffer很多方法用了synchronized关键字)</LI>
+  <LI>既然StringBuffer使用了synchronized关键字，所以就执行效率来说，StringBuilder高一些</LI></UL>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

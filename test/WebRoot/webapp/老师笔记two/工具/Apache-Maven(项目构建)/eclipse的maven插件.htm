@@ -1,0 +1,117 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0096)http://172.13.19.31:6060/note_html/工具/Apache-Maven（项目构建）/1010010-eclipse的maven插件.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>eclipse的maven插件</TITLE> <LINK href="eclipse的maven插件_files/standalone.css" 
+rel="stylesheet"> <LINK href="eclipse的maven插件_files/overlay-apple.css" rel="stylesheet"> 
+<LINK href="eclipse的maven插件_files/article_edit.css" rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="eclipse的maven插件_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="eclipse的maven插件_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">eclipse的maven插件</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-02-22 17:49:58</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>准备工作</H3>
+<P style="text-indent: 0.8cm;">
+目前最新版本的eclipse已经自带maven插件，如果使用的旧版本的eclipse可以自己下载maven插件，下载和安装这里不做讲解。 </P>
+<P style="text-indent: 0.8cm;">请确保已经在本地安装了maven。关于maven的安装，请看第一节的内容。 </P>
+<H3>插件配置</H3>
+<OL>
+  <LI>
+  <DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>检查eclipse的maven插件是否安装成功，如图：</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="eclipse的maven插件_files/20160203-07.jpg"></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>若没有安装maven插件，我们需要先安装maven插件。</FONT></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>配置maven安装目录，依次打开Window –&gt; 
+  Perferences –&gt; Maven ，展开Maven的配置界面，如下图：</FONT></DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>然后点击Installations –&gt; add 
+  选择maven安装目录，这里我的Maven安装目录为D:\maven\apache-maven-3.2.3，选择你的Maven安装目录，并点击确定, 
+  之后可以点击Apply,点击OK，即可完成 </FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="eclipse的maven插件_files/20160203-08.jpg"></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>然后， 我们在Maven的配置界面，设置User 
+  Settings Global Settings选择maven 
+  安装目录下conf文件夹下的settings.xml，这里我的Maven安装目录为D:\maven\apache-maven-3.2.3\conf\settings.xml，选择你的Maven安装目录，检查Local 
+  Repository 项，如果为D:/maven/repository则配置成功，否则重新配置上一步。 </FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="eclipse的maven插件_files/20160203-09.jpg"></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>到此eclipse就配置好了</FONT></DIV></DIV></LI></OL>
+<H3>使用插件创建项目</H3>
+<OL>
+  <LI>
+  <DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>我们在Eclipse菜单栏中点击File-&gt;New-&gt;Other-&gt;Maven,在弹出的对话框中会看到，如下图所示：</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="eclipse的maven插件_files/20160203-10.jpg"></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>选择Maven Project，请选中Create a 
+  simple project(skip archetype selection),之后点击Next</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="eclipse的maven插件_files/20160203-11.jpg"></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>填写Group id和Artifact id， 
+  Version默认，Packaging默认为jar,Name，Description选填，其他的不填</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="eclipse的maven插件_files/20160203-12.jpg"></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>之后点击Finish即可</FONT></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>前三步就可以创建一个简单的maven项目，如果我们想创建一个Maven的web项目，把第三步的Packaging的类型改为war，之后点击Finish即可</FONT></DIV></DIV></LI></OL>
+<H3>使用插件执行mvn命令</H3>
+<DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>在pom文件上右键，run as 
+会出现某些mvn命令，但是如果我们要执行一些其他命令呢，使用run as -&gt;maven build...如下图：</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="eclipse的maven插件_files/20160222-07.png"></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>在Goals中填写对应的执行阶段即可，如：clean 
+test或clean install，填好后点击run执行即可</FONT></DIV></DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

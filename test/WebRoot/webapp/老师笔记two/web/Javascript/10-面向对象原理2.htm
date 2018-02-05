@@ -1,0 +1,122 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0077)http://172.13.19.31:6060/note_html/web/Javascript/1001110--面向对象原理2.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>10-面向对象原理2</TITLE> <LINK href="10-面向对象原理2_files/standalone.css" rel="stylesheet"> 
+<LINK href="10-面向对象原理2_files/overlay-apple.css" rel="stylesheet"> <LINK href="10-面向对象原理2_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="10-面向对象原理2_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="10-面向对象原理2_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">10-面向对象原理2</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-04-07 19:25:54</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>属性访问原则</H3>
+<P style="text-indent: 0.8cm;">使用obj.propName访问一个对象的属性时，按照下面的步骤进行处理：</P>
+<OL>
+  <LI>如果obj存在propName属性，返回属性的值，否则</LI>
+  <LI>如果obj.__proto__为null，返回undefined，否则</LI>
+  <LI>返回obj.__proto__.propName</LI></OL>
+<P style="text-indent: 0.8cm;">调用对象的方法跟访问属性搜索过程一样，因为方法的函数对象就是对象的一个属性值。
+ 上面步骤中隐含了一个递归过程，步骤3中obj.__proto__是另外一个对象，同样将采用1, 2, 3这样的步骤来搜索propName属性。</P>
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="10-面向对象原理2_files/20150403-01.jpg" 
+rel="#20150403-01"> <FONT>示例图</FONT></DIV>
+<DIV class="apple_overlay" id="20150403-01"><IMG alt="图片不存在" src="10-面向对象原理2_files/20150403-01.jpg"> 
+</DIV></DIV>
+<P 
+style="text-indent: 0.8cm;">这就是基于Prototype的继承和共享。其中object1的方法fn2来自object2，概念上即object2重写了object3的方法fn2。 
+JavaScript对象应当都通过prototype链关联起来，最顶层是Object，即对象都派生自Object类型。</P>
+<H3>new操作符</H3>
+<P style="text-indent: 0.8cm;">我们执行如下代码var obj = new Base();其实就干了3件事：</P>
+<OL>
+  <LI>var obj &nbsp;= {};//创建一个空对象</LI>
+  <LI>obj.__proto__ = Base.prototype;//将_proto_指向Base的原型</LI>
+  <LI>Base.call(obj);//执行构造函数。</LI></OL>
+<H3>new操作构造函数的注意事项</H3>
+<OL>
+  <LI>new操作符用来生成一个新的对象, 它后面必须跟上一个函数(否则, 会抛出TypeError异常), 这个<SPAN style="font-size: 9pt;">函数就是我们常说的构造函数</SPAN></LI>
+  <LI>如果构造函数的返回值是一个原始类型(非引用对象, 如字符串), 那么返回值为new创建的"空对象", 如:   
+<PRE class="brush: js;">   var obj = new function() { return "code";};
+       alert(obj); // [object object]
+</PRE></LI>
+  <LI>如果构造函数的返回值是一个引用对象(数组, 对象, 函数等), 那么返回值会覆盖new创建的"空对象", 如:   
+<PRE class="brush: js;">   var obj = new function() { return new String("code"); };
+       alert(obj); // "code"
+</PRE></LI></OL>
+<H3>再看混合方式的继承</H3>
+<PRE class="brush: js;">function ClassA(sColor) {
+   //1.一般属性使用构造方法定义
+    this.color = sColor;
+}
+
+//2.函数属性使用原型方式定义
+ClassA.prototype.sayColor = function () {
+    alert(this.color);
+};
+
+function ClassB(sColor, sName) {
+    ClassA.call(this, sColor);//3.使用对象冒充，将一般属性继承
+    this.name = sName;
+}
+
+ClassB.prototype = new ClassA();//4.使用原型链将函数属性继承下来
+
+ClassB.prototype.sayName = function () {
+    alert(this.name);
+};
+
+//下面的例子测试了上面的代码：
+var objA = new ClassA("blue");
+var objB = new ClassB("red", "John");
+objA.sayColor();	//输出 "blue"
+objB.sayColor();	//输出 "red"
+objB.sayName();	//输出 "John"
+</PRE>
+<P style="text-indent: 0.8cm;">var objB = new ClassB("red","John");的执行过程：</P>
+<OL>
+  <LI>var objB = {};</LI>
+  <LI>objB.__proto__ = ClassB.prototype;//将_proto_指向ClassB的原型。<SPAN style="color: rgb(255, 0, 0);">函数的继承（原型的继承） 
+      </SPAN>
+  <OL>       
+    <LI>ClassB.prototype == new ClassA();//这个是上面代码定义的。 </LI>
+    <LI>new ClassA().__proto__ == ClassA.prototype;</LI></OL></LI>
+  <LI>Base.call(obj);//执行构造函数。<SPAN style="color: rgb(255, 0, 0);">属性的继承     
+  </SPAN>
+  <OL>       
+    <LI>执行ClassB这个函数的时候，代码中有通过this执行了ClassA。这样就把ClassA中的属性赋值给了this</LI>
+    <LI>执行ClassB函数，把ClassB中的属性赋值给了this。</LI></OL></LI></OL>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 2013 ~ 2015 作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

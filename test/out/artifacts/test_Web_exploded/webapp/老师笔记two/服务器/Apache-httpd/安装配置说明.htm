@@ -1,0 +1,627 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0080)http://172.13.19.31:6060/note_html/服务器/Apache-httpd/1001011-安装配置说明.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>安装配置说明</TITLE> <LINK href="安装配置说明_files/standalone.css" rel="stylesheet"> 
+<LINK href="安装配置说明_files/overlay-apple.css" rel="stylesheet"> <LINK href="安装配置说明_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="安装配置说明_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="安装配置说明_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">安装配置说明</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-11-13 15:53:35</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>配置帮助表</H3>
+<TABLE width="600" border="1">
+  <TBODY>
+  <TR>
+    <TD>-h, --help</TD>
+    <TD>显示帮助信息</TD>
+    <TD>display this help and exit</TD></TR>
+  <TR>
+    <TD>--help=short</TD>
+    <TD>用short参数将只显示正在运行的当前脚本的选项，而不能列出适用于Apache配置脚本所运行的外部配置脚本的选项</TD>
+    <TD>display options specific to this package</TD></TR>
+  <TR>
+    <TD>--help=recursive</TD>
+    <TD>使用recursive参数将显示所有程序包的简短描述</TD>
+    <TD>display the short help of all the included packages</TD></TR>
+  <TR>
+    <TD>-V, --version</TD>
+    <TD>显示版本</TD>
+    <TD>display version information and exit</TD></TR>
+  <TR>
+    <TD>-q, --quiet, --silent</TD>
+    <TD>不显示checking……信息</TD>
+    <TD>do not print`checking...' messages</TD></TR>
+  <TR>
+    <TD>--cache-file=FILE</TD>
+    <TD><BR>在指定文件中存储测试结果</TD>
+    <TD>cache test results in FILE [disabled]</TD></TR>
+  <TR>
+    <TD><BR>      -C, --config-cache</TD>
+    <TD>在文件config.cache中存储测试结果</TD>
+    <TD>alias for `--cache file=config.cache'</TD></TR>
+  <TR>
+    <TD>-n, --no-create</TD>
+    <TD>configure脚本运行结束后不输出结果文件，常用于正式编译前的测试。</TD>
+    <TD>do not create output files</TD></TR>
+  <TR>
+    <TD>--srcdir=DIR</TD>
+    <TD>源文件库所在目录</TD>
+    <TD>find the sources in DIR [configure dir or `..']</TD></TR></TBODY></TABLE>
+<H3>安装目录</H3>
+<TABLE width="600" border="1">
+  <TBODY>
+  <TR>
+    <TD>--prefix=PREFIX</TD>
+    <TD>体系无关文件的顶级安装目录PREFIX ，也就Apache的安装目录</TD>
+    <TD>install architecture-independent files in PREFIX<BR>      
+      [/usr/local/apache2]</TD></TR>
+  <TR>
+    <TD>--exec-prefix=EPREFIX</TD>
+    <TD>体系相关文件的顶级安装目录EPREFIX ，把体系相关的文件安装到不同的位置可以方便地在不同主机之间共享体系相关的文件</TD>
+    <TD>install architecture-dependent files in EPREFIX<BR>      
+  [PREFIX]</TD></TR></TBODY></TABLE>
+<P style="text-indent: 0.8cm;">默认情况下，make install 
+将会把所有文件分别安装到/usr/local/apache2/bin , /usr/local/apache2/lib 目录下。可以用 --prefix 
+指定一个不同于/usr/local/apache2的安装前缀，比如：--prefix=$HOME </P>
+<H3>详细安装目录设置：默认安装目录参考config.layout</H3>
+<P 
+style="text-indent: 0.8cm;">预定义的安装路径布局。选项使用config.layout文件中的配置。只使用"--enable-layout", 
+而不指定LAYOUT, 相当于"--enable-layout=Apache" </P>
+<TABLE width="600" border="1">
+  <TBODY>
+  <TR>
+    <TD>--bindir=DIR</TD>
+    <TD>用户可执行目录DIR。用于存放对网站管理员很有帮助的htpasswd, dbmmanage之类的支持程序</TD>
+    <TD>user executables [EPREFIX/bin]</TD></TR>
+  <TR>
+    <TD>--sbindir=DIR</TD>
+    <TD>系统管理员可执行目录DIR ，用于存放运行HTTP服务器所必须的httpd, apachectl, suexec之类的服务程序</TD>
+    <TD>system admin executables [EPREFIX/sbin]</TD></TR>
+  <TR>
+    <TD>--libexecdir=DIR</TD>
+    <TD>程序可执行目录DIR ，也就是动态加载模块目录</TD>
+    <TD>program executables [EPREFIX/libexec]</TD></TR>
+  <TR>
+    <TD>--sysconfdir=DIR</TD>
+    <TD>只读的单一机器数据目录DIR ，用于存放httpd.conf和mime.types之类的服务器配置文件</TD>
+    <TD>read-only single-machine data [PREFIX/etc]</TD></TR>
+  <TR>
+    <TD>--sharedstatedir=DIR</TD>
+    <TD>可改写的体系无关数据目录DIR</TD>
+    <TD>modifiable architecture-independent data [PREFIX/com]</TD></TR>
+  <TR>
+    <TD>--localstatedir=DIR</TD>
+    <TD>可改写的单一机器数据目录DIR</TD>
+    <TD>modifiable single-machine data [PREFIX/var]</TD></TR>
+  <TR>
+    <TD>--libdir=DIR </TD>
+    <TD>对象代码库目录DIR</TD>
+    <TD>object code libraries [EPREFIX/lib]</TD></TR>
+  <TR>
+    <TD>--includedir=DIR</TD>
+    <TD>Apache的C头文件目录DIR</TD>
+    <TD>C header files [PREFIX/include]</TD></TR>
+  <TR>
+    <TD>--oldincludedir=DIR</TD>
+    <TD>非gcc的C头文件目录DIR</TD>
+    <TD>C header files for non-gcc [/usr/include]</TD></TR>
+  <TR>
+    <TD>--datarootdir=DIR</TD>
+    <TD>Web服务器只读的体系无关数据根目录</TD>
+    <TD>read-only arch.-independent data root [PREFIX/share]</TD></TR>
+  <TR>
+    <TD>--datadir=DIR</TD>
+    <TD>Web服务器只读的体系无关数据目录DIR</TD>
+    <TD>read-only architecture-independent data [DATAROOTDIR]</TD></TR>
+  <TR>
+    <TD>--infodir=DIR</TD>
+    <TD>信息文档目录DIR</TD>
+    <TD>info documentation [DATAROOTDIR/info]</TD></TR>
+  <TR>
+    <TD>--localedir=DIR</TD>
+    <TD>地区相关数据DIR</TD>
+    <TD>locale-dependent data [DATAROOTDIR/locale]</TD></TR>
+  <TR>
+    <TD>--mandir=DIR</TD>
+    <TD>手册文档目录DIR</TD>
+    <TD>man documentation [DATAROOTDIR/man]</TD></TR>
+  <TR>
+    <TD>--docdir=DIR</TD>
+    <TD>手册目录</TD>
+    <TD>documentation root [DATAROOTDIR/doc/PACKAGE]</TD></TR>
+  <TR>
+    <TD>--htmldir=DIR</TD>
+    <TD>HTML格式帮助文档目录</TD>
+    <TD>html documentation [DOCDIR]</TD></TR>
+  <TR>
+    <TD>--dvidir=DIR</TD>
+    <TD>dvi格式帮助文档目录</TD>
+    <TD>dvi documentation [DOCDIR]</TD></TR>
+  <TR>
+    <TD>--pdfdir=DIR</TD>
+    <TD>pdf格式帮助文档目录</TD>
+    <TD>pdf documentation [DOCDIR]</TD></TR>
+  <TR>
+    <TD>--psdir=DIR</TD>
+    <TD>ps格式帮助文档目录</TD>
+    <TD>ps documentation [DOCDIR]</TD></TR></TBODY></TABLE>
+<H3>交叉编译选项：这些选项用于交叉编译在其他平台上运行的Apache HTTP服务器。在同一平台上编译和运行Apache 
+HTTP服务器通常不需要使用这些选项，脚本会自动检测并设置</H3>
+<TABLE width="600" border="1">
+  <TBODY>
+  <TR>
+    <TD>--build=BUILD</TD>
+    <TD>指定编译工具所在系统的系统类型BUILD</TD>
+    <TD>configure for building on BUILD [guessed]</TD></TR>
+  <TR>
+    <TD>--host=HOST</TD>
+    <TD>指定Apache HTTP服务器将要进行交叉编译时运行的目标系统类型HOST</TD>
+    <TD>cross-compile to build programs to run on HOST [BUILD]</TD></TR>
+  <TR>
+    <TD>--target=TARGET</TD>
+    <TD>指定交叉编译所产生的目标代码类型</TD>
+    <TD>configure for building compilers for TARGET [HOST]</TD></TR></TBODY></TABLE>
+<H3>特征选项</H3>
+<TABLE width="600" border="1">
+  <TBODY>
+  <TR>
+    <TD>--disable-option-checking</TD>
+    <TD>忽略无法识别的enable或with选项</TD>
+    <TD>ignore unrecognized --enable/--with options</TD></TR>
+  <TR>
+    <TD>--disable-FEATURE</TD>
+    <TD>不使用任何软件特性</TD>
+    <TD>do not include FEATURE (same as --enable-FEATURE=no)</TD></TR>
+  <TR>
+    <TD>--enable-FEATURE[=ARG] </TD>
+    <TD>使用软件特性</TD>
+    <TD>include FEATURE [ARG=yes]</TD></TR>
+  <TR>
+    <TD>--enable-layout=LAYOUT</TD>
+    <TD>预定义的安装路径布局。选项使用config.layout文件中的配置。只使用"--enable-layout", 而不指定LAYOUT, 
+      相当于"--enable-layout=Apache"</TD>
+    <TD>&nbsp;</TD></TR>
+  <TR>
+    <TD>--enable-v4-mapped</TD>
+    <TD>使用相同的套接字同时处理IPv4和IPv6的连接，也就是启用地址映射。在FreeBSD、NetBSD、OpenBSD以外的平台上是默认值。</TD>
+    <TD>Allow IPv6 sockets to handle IPv4 connections</TD></TR>
+  <TR>
+    <TD>--enable-exception-hook</TD>
+    <TD>允许在子进程崩溃以后启用一个钩子来运行异常处理程序。</TD>
+    <TD>Enable fatal exception hook</TD></TR>
+  <TR>
+    <TD>--enable-maintainer-mode</TD>
+    <TD>使用所有警告和调试符号编译源代码，请勿用于正式服务器，它会影响性能。</TD>
+    <TD>Turn on debugging and compile time warnings</TD></TR>
+  <TR>
+    <TD><BR><BR><BR>      --enable-pie <BR></TD>
+    <TD>编译http作为一个独立的可执行文件。</TD>
+    <TD>Build httpd as a Position Independent Executable</TD></TR>
+  <TR>
+    <TD>--enable-modules=MODULE-LIST</TD>
+    <TD>启用的模块，用空格分别列出，或使用all，most列出所有或常用的模块。</TD>
+    <TD>Space-separated list of modules to enable | "all" |<BR>      
+  "most"</TD></TR>
+  <TR>
+    <TD>--enable-mods-shared=MODULE-LIST</TD>
+    <TD>启用的共享DSO模块，用空格分别列出，或使用all，most列出所有或常用的共享DOS模块。(注1)</TD>
+    <TD>Space-separated list of shared modules to enable |<BR>      "all" | 
+      "most"</TD></TR>
+  <TR>
+    <TD>--disable-authn-file</TD>
+    <TD>禁用基于文件的验证控制</TD>
+    <TD>file-based authentication control</TD></TR>
+  <TR>
+    <TD>--enable-authn-dbm</TD>
+    <TD>启用基于DBM的验证机制</TD>
+    <TD>DBM-based authentication control</TD></TR>
+  <TR>
+    <TD><BR>      --enable-authn-anon<BR><BR></TD>
+    <TD>启用匿名的验证机制</TD>
+    <TD>anonymous user authentication control</TD></TR>
+  <TR>
+    <TD>--enable-authn-dbd</TD>
+    <TD>启用基于SQL的验证机制</TD>
+    <TD>SQL-based authentication control</TD></TR>
+  <TR>
+    <TD>--disable-authn-default</TD>
+    <TD>禁止默认的验证机制方式backstopper</TD>
+    <TD>authentication backstopper</TD></TR>
+  <TR>
+    <TD>--enable-authn-alias</TD>
+    <TD>启用别名验证</TD>
+    <TD>auth provider alias</TD></TR>
+  <TR>
+    <TD>--disable-authz-host</TD>
+    <TD>禁用基于主机的授权机制</TD>
+    <TD><BR>host-based authorization control</TD></TR>
+  <TR>
+    <TD>--disable-authz-groupfile</TD>
+    <TD>禁用组授权机制</TD>
+    <TD>'require group' authorization control</TD></TR>
+  <TR>
+    <TD>--disable-authz-user</TD>
+    <TD>禁用用户授权机制</TD>
+    <TD>'require user' authorization control</TD></TR>
+  <TR>
+    <TD>--enable-authz-dbm</TD>
+    <TD>基于DBM数据库的授权机制</TD>
+    <TD>DBM-based authorization control</TD></TR>
+  <TR>
+    <TD>--enable-authz-owner</TD>
+    <TD>基于文件所有者的授权机制</TD>
+    <TD>'require file-owner' authorization control</TD></TR>
+  <TR>
+    <TD>--enable-authnz-ldap</TD>
+    <TD>启用基于LDAP的的授权方式</TD>
+    <TD>LDAP based authentication</TD></TR>
+  <TR>
+    <TD>--disable-authz-default</TD>
+    <TD>禁用默认的backstopper授权方式</TD>
+    <TD>authorization control backstopper</TD></TR>
+  <TR>
+    <TD>--disable-auth-basic</TD>
+    <TD>禁用基本验证</TD>
+    <TD>basic authentication</TD></TR>
+  <TR>
+    <TD>--enable-auth-digest</TD>
+    <TD>启用RFC2617摘要式身份验证</TD>
+    <TD>RFC2617 Digest authentication</TD></TR>
+  <TR>
+    <TD>--enable-isapi</TD>
+    <TD>启用ISAPI扩展支持（注2）</TD>
+    <TD>isapi extension support</TD></TR>
+  <TR>
+    <TD>--enable-file-cache</TD>
+    <TD>启用文件缓存</TD>
+    <TD>File cache</TD></TR>
+  <TR>
+    <TD>--enable-cache</TD>
+    <TD>启用动态文件缓存</TD>
+    <TD>dynamic file caching</TD></TR>
+  <TR>
+    <TD>--enable-disk-cache</TD>
+    <TD><BR>启用磁盘缓存模块</TD>
+    <TD>disk caching module</TD></TR>
+  <TR>
+    <TD>--enable-mem-cache</TD>
+    <TD>启用内存缓存模块</TD>
+    <TD>memory caching module</TD></TR>
+  <TR>
+    <TD>--enable-dbd</TD>
+    <TD>启用apache的DBD框架</TD>
+    <TD>Apache DBD Framework</TD></TR>
+  <TR>
+    <TD>--enable-bucketeer</TD>
+    <TD>水桶操作过滤器</TD>
+    <TD>buckets manipulation filter</TD></TR>
+  <TR>
+    <TD>--enable-dumpio</TD>
+    <TD>I/O转储过滤器</TD>
+    <TD>I/O dump filter</TD></TR>
+  <TR>
+    <TD>--enable-echo</TD>
+    <TD>启用回显服务</TD>
+    <TD>ECHO server</TD></TR>
+  <TR>
+    <TD>--enable-example</TD>
+    <TD>实例和演示模块</TD>
+    <TD>example and demo module</TD></TR>
+  <TR>
+    <TD>--enable-case-filter</TD>
+    <TD>启用大写转换过滤器</TD>
+    <TD>example uppercase conversion filter</TD></TR>
+  <TR>
+    <TD>--enable-case-filter-in</TD>
+    <TD>启用大写转换输入过滤器</TD>
+    <TD>example uppercase conversion input filter</TD></TR>
+  <TR>
+    <TD>--enable-ext-filter</TD>
+    <TD>扩展过滤模块</TD>
+    <TD>external filter module</TD></TR>
+  <TR>
+    <TD>--disable-include</TD>
+    <TD>禁用服务器端嵌入(SSI)</TD>
+    <TD>Server Side Includes</TD></TR>
+  <TR>
+    <TD>--disable-filter</TD>
+    <TD>禁用智能过滤</TD>
+    <TD>Smart Filtering</TD></TR>
+  <TR>
+    <TD>--enable-substitute</TD>
+    <TD>答复的内容重写式过滤</TD>
+    <TD>response content rewrite-like filtering</TD></TR>
+  <TR>
+    <TD>--disable-charset-lite</TD>
+    <TD>禁用字符集转换</TD>
+    <TD>character set translation</TD></TR>
+  <TR>
+    <TD>--enable-charset-lite</TD>
+    <TD>启用字符集转换</TD>
+    <TD>character set translation</TD></TR>
+  <TR>
+    <TD>--enable-deflate</TD>
+    <TD>压缩转换编码支持</TD>
+    <TD>Deflate transfer encoding support</TD></TR>
+  <TR>
+    <TD>--enable-ldap</TD>
+    <TD>启用LDAP的高速缓存和连接池服务</TD>
+    <TD>LDAP caching and connection pooling services</TD></TR>
+  <TR>
+    <TD>--disable-log-config</TD>
+    <TD>禁用日志配置</TD>
+    <TD>logging configuration</TD></TR>
+  <TR>
+    <TD>--enable-log-forensic</TD>
+    <TD>启用forensic日志记录</TD>
+    <TD>forensic logging</TD></TR>
+  <TR>
+    <TD>--enable-logio</TD>
+    <TD>输入和输出记录</TD>
+    <TD>input and output logging</TD></TR>
+  <TR>
+    <TD>--disable-env</TD>
+    <TD>禁用环境变量，清除设置环境变量</TD>
+    <TD>clearing/setting of ENV vars</TD></TR>
+  <TR>
+    <TD>--enable-mime-magic</TD>
+    <TD>自动确定MIME类型</TD>
+    <TD>automagically determining MIME type</TD></TR>
+  <TR>
+    <TD>--enable-cern-meta </TD>
+    <TD>启用CERN类型元文件</TD>
+    <TD>CERN-type meta files</TD></TR>
+  <TR>
+    <TD>--enable-expires</TD>
+    <TD>头部有效期控制</TD>
+    <TD>Expires header control</TD></TR>
+  <TR>
+    <TD>--enable-headers</TD>
+    <TD>HTTP头控制HTTP</TD>
+    <TD>header control</TD></TR>
+  <TR>
+    <TD>--enable-ident</TD>
+    <TD>RFC 1413身份检查</TD>
+    <TD>RFC 1413 identity check</TD></TR>
+  <TR>
+    <TD>--enable-usertrack</TD>
+    <TD>用户session跟踪</TD>
+    <TD>user-session tracking</TD></TR>
+  <TR>
+    <TD>--enable-unique-id</TD>
+    <TD>启用每个请求唯一的ID</TD>
+    <TD>per-request unique ids</TD></TR>
+  <TR>
+    <TD>--disable-setenvif</TD>
+    <TD>基于头部的环境变量</TD>
+    <TD>basing ENV vars on headers</TD></TR>
+  <TR>
+    <TD>--disable-version</TD>
+    <TD>通过配置文件中决定http版本</TD>
+    <TD>determining httpd version in config files</TD></TR>
+  <TR>
+    <TD>--enable-proxy apache</TD>
+    <TD>代理模块</TD>
+    <TD>Apache proxy module</TD></TR>
+  <TR>
+    <TD>--enable-proxy-connect apache</TD>
+    <TD>代理连接模块</TD>
+    <TD>Apache proxy CONNECT module</TD></TR>
+  <TR>
+    <TD>--enable-proxy-ftp </TD>
+    <TD>apache代理ftp模块</TD>
+    <TD>Apache proxy FTP module</TD></TR>
+  <TR>
+    <TD>--enable-proxy-http</TD>
+    <TD>apache代理http模块</TD>
+    <TD>Apache proxy HTTP module</TD></TR>
+  <TR>
+    <TD>--enable-proxy-ajp</TD>
+    <TD>apache代理ajp模块</TD>
+    <TD>Apache proxy AJP module</TD></TR>
+  <TR>
+    <TD>--enable-proxy-balancer</TD>
+    <TD>apache代理balancer模块</TD>
+    <TD>Apache proxy BALANCER module</TD></TR>
+  <TR>
+    <TD>--enable-ssl</TD>
+    <TD>启用ssl支持</TD>
+    <TD>SSL/TLS support (mod_ssl)</TD></TR>
+  <TR>
+    <TD>--enable-distcache</TD>
+    <TD>在mod_ssl模块中启用Distcache。磁盘缓存(Distcache)用于分布式的会话缓存。主要用在 SSL/TLS 服务器。它可以被 
+      Apache 使用。大多数的台式机应该关闭它。</TD>
+    <TD>Select distcache support in mod_ssl</TD></TR>
+  <TR>
+    <TD>--enable-optional-hook-export</TD>
+    <TD>启用可选钩子输出者示例</TD>
+    <TD>example optional hook exporter</TD></TR>
+  <TR>
+    <TD>--enable-optional-hook-import</TD>
+    <TD>启用可选钩子输入者示例</TD>
+    <TD>example optional hook importer</TD></TR>
+  <TR>
+    <TD>--enable-optional-fn-import</TD>
+    <TD>启用可选函数输入者示例</TD>
+    <TD>example optional function importer</TD></TR>
+  <TR>
+    <TD>--enable-optional-fn-export</TD>
+    <TD>启用可选函数输出者示例</TD>
+    <TD>example optional function exporter</TD></TR>
+  <TR>
+    <TD>--enable-static-support</TD>
+    <TD>为所支持的二进制文件建立一个静态链接的版本</TD>
+    <TD>Build a statically linked version of the support binaries</TD></TR>
+  <TR>
+    <TD>--enable-static-htpasswd</TD>
+    <TD>建立静态版本的htpasswd</TD>
+    <TD>Build a statically linked version of htpasswd</TD></TR>
+  <TR>
+    <TD>--enable-static-htdigest</TD>
+    <TD>建立htdigest的静态版本</TD>
+    <TD>Build a statically linked version of htdigest</TD></TR>
+  <TR>
+    <TD>--enable-static-rotatelogs</TD>
+    <TD>建立rotatelogs的静态版本</TD>
+    <TD>Build a statically linked version of rotatelogs</TD></TR>
+  <TR>
+    <TD>--enable-static-logresolve</TD>
+    <TD>建立logresolve的静态版本</TD>
+    <TD>Build a statically linked version of logresolve</TD></TR>
+  <TR>
+    <TD>--enable-static-htdbm</TD>
+    <TD>建立htdbm的静态版本</TD>
+    <TD>Build a statically linked version of htdbm</TD></TR>
+  <TR>
+    <TD>--enable-static-ab</TD>
+    <TD>建立ab的静态版本</TD>
+    <TD>Build a statically linked version of ab</TD></TR>
+  <TR>
+    <TD>--enable-static-checkgid</TD>
+    <TD>建立checkgid的静态版本</TD>
+    <TD>Build a statically linked version of checkgid</TD></TR>
+  <TR>
+    <TD>--enable-static-htcacheclean</TD>
+    <TD>建立htcacheclean的静态版本</TD>
+    <TD>Build a statically linked version of htcacheclean</TD></TR>
+  <TR>
+    <TD>--enable-static-httxt2dbm</TD>
+    <TD>建立httxt2dbm的静态版本</TD>
+    <TD>Build a statically linked version of httxt2dbm</TD></TR>
+  <TR>
+    <TD>--enable-http</TD>
+    <TD>启用http协议处理</TD>
+    <TD>HTTP protocol handling</TD></TR>
+  <TR>
+    <TD>--disable-mime</TD>
+    <TD>禁用映射文件扩展名到mime类型</TD>
+    <TD>mapping of file-extension to MIME</TD></TR>
+  <TR>
+    <TD>--enable-dav</TD>
+    <TD>启用webdav协议处理</TD>
+    <TD>WebDAV protocol handling</TD></TR>
+  <TR>
+    <TD>--disable-status</TD>
+    <TD>禁用进程或线程的监控</TD>
+    <TD>process/thread monitoring</TD></TR>
+  <TR>
+    <TD>--disable-autoindex</TD>
+    <TD>禁用目录列表</TD>
+    <TD>directory listing</TD></TR>
+  <TR>
+    <TD>--disable-asis</TD>
+    <TD>禁用as-is文件类型</TD>
+    <TD>as-is filetypes</TD></TR>
+  <TR>
+    <TD>--enable-info</TD>
+    <TD>启用服务器信息</TD>
+    <TD>server information</TD></TR>
+  <TR>
+    <TD>--enable-suexec</TD>
+    <TD>启用suexec，为产生的进程设置uid和gid</TD>
+    <TD>set uid and gid for spawned processes</TD></TR>
+  <TR>
+    <TD>--disable-cgid</TD>
+    <TD>禁用CGID</TD>
+    <TD>CGI scripts</TD></TR>
+  <TR>
+    <TD>--enable-cgi</TD>
+    <TD>启用CGI</TD>
+    <TD>CGI scripts</TD></TR>
+  <TR>
+    <TD>--disable-cgi </TD>
+    <TD>禁用CGI</TD>
+    <TD>CGI scripts</TD></TR>
+  <TR>
+    <TD>--enable-cgid</TD>
+    <TD>启用CGID</TD>
+    <TD>CGI scripts</TD></TR>
+  <TR>
+    <TD>--enable-dav-fs</TD>
+    <TD>启用DAV文件系统提供者</TD>
+    <TD>DAV provider for the filesystem</TD></TR>
+  <TR>
+    <TD>--enable-dav-lock</TD>
+    <TD>启用DAV提供者的一般锁定</TD>
+    <TD>DAV provider for generic locking</TD></TR>
+  <TR>
+    <TD>--enable-vhost-alias</TD>
+    <TD>启用大规模的虚拟主机模块</TD>
+    <TD>mass virtual hosting module</TD></TR>
+  <TR>
+    <TD>--disable-negotiation</TD>
+    <TD>禁用内容协商</TD>
+    <TD>content negotiation</TD></TR>
+  <TR>
+    <TD>--disable-dir</TD>
+    <TD>禁用目录请求处理</TD>
+    <TD>directory request handling</TD></TR>
+  <TR>
+    <TD>--enable-imagemap</TD>
+    <TD><BR>启用服务器端图片映射图</TD>
+    <TD>server-side imagemaps</TD></TR>
+  <TR>
+    <TD>--disable-actions</TD>
+    <TD>禁用请求上的行为触发器</TD>
+    <TD>Action triggering on requests</TD></TR>
+  <TR>
+    <TD>--enable-speling</TD>
+    <TD>启用常见的URL拼写错误纠正</TD>
+    <TD>correct common URL misspellings</TD></TR>
+  <TR>
+    <TD>--disable-userdir</TD>
+    <TD><BR>禁用特定用户目录的请求的映射</TD>
+    <TD>mapping of requests to user-specific directories</TD></TR>
+  <TR>
+    <TD>--disable-alias</TD>
+    <TD>禁用不同文件系统部分的请求的映射</TD>
+    <TD>mapping of requests to different filesystem parts</TD></TR>
+  <TR>
+    <TD>--enable-rewrite</TD>
+    <TD>基本的URL操纵规则，即启用URL重写规则</TD>
+    <TD>rule based URL manipulation</TD></TR>
+  <TR>
+    <TD>--enable-so</TD>
+    <TD>启用DSO性能</TD>
+    <TD>DSO capability</TD></TR></TBODY></TABLE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

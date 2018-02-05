@@ -1,0 +1,181 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0092)http://172.13.19.31:6060/note_html/工具/Apache-Maven（项目构建）/1009010-Maven使用Nexus.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>Maven使用Nexus</TITLE> <LINK href="Maven使用Nexus_files/standalone.css" rel="stylesheet"> 
+<LINK href="Maven使用Nexus_files/overlay-apple.css" rel="stylesheet"> <LINK href="Maven使用Nexus_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="Maven使用Nexus_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="Maven使用Nexus_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">Maven使用Nexus</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-02-23 17:56:15</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>配置Maven使用Nexus</H3>
+<P 
+style="text-indent: 0.8cm;">默认情况下，Maven依赖于中央仓库，这是为了能让Maven开箱即用，但仅仅这么做明显是错误的，这会造成大量的时间及带宽的浪费。既然文章的前面已经介绍了如何安装和配置Nexus，现在我们就要配置Maven来使用本地的Nexus，以节省时间和带宽资源。配置使用私服的方法有多种，下面先介绍其中一种： 
+</P>
+<P style="text-indent: 0.8cm;">
+我们可以将Repository配置到POM中，但一般来说这不是很好的做法，原因很简单，你需要为所有的Maven项目重复该配置。因此，这里我将Repository的配置放到$user_home/.m2/settings.xml中： 
+</P>
+<PRE class="brush: xml;">    &lt;settings&gt;  
+    ...  
+    &lt;profiles&gt;  
+      &lt;profile&gt;  
+	&lt;id&gt;dev-nexus-server&lt;/id&gt;  
+	&lt;!-- 配置仓库 --&gt;
+	&lt;repositories&gt;  
+		&lt;repository&gt;  
+			&lt;id&gt;local-nexus&lt;/id&gt;  
+			&lt;url&gt;http://127.0.0.1:8081/nexus/content/groups/public/&lt;/url&gt;  
+			&lt;releases&gt;  
+				&lt;enabled&gt;true&lt;/enabled&gt;  
+			&lt;/releases&gt;  
+			&lt;snapshots&gt;  
+				&lt;enabled&gt;true&lt;/enabled&gt;  
+			&lt;/snapshots&gt;  
+		&lt;/repository&gt;  
+	&lt;/repositories&gt;  
+	&lt;!-- 插件仓库 --&gt;
+	&lt;pluginRepositories&gt;
+		&lt;pluginRepository&gt;
+			&lt;id&gt;nexus&lt;/id&gt;
+			&lt;url&gt;http://127.0.0.1:8081/nexus/content/groups/public&lt;/url&gt;
+			&lt;releases&gt;
+				&lt;enabled&gt;true&lt;/enabled&gt;
+			&lt;/releases&gt;
+			&lt;snapshots&gt;
+				&lt;enabled&gt;false&lt;/enabled&gt;&lt;!-- 插件不使用快照版本 --&gt;
+		   &lt;/snapshots&gt;
+		&lt;/pluginRepository&gt;
+	&lt;/pluginRepositories&gt;
+&lt;/profile&gt;  
+    &lt;/profiles&gt;  
+    &lt;activeProfiles&gt;  
+      &lt;activeProfile&gt;dev&lt;/activeProfile&gt;  
+    &lt;/activeProfiles&gt;  
+    ...  
+    &lt;/settings&gt;
+</PRE>
+<P 
+style="text-indent: 0.8cm;">由于我们不能直接在settings.xml中插入&lt;repositories&gt;元素，这里我们编写了一个profile，并添加了一个profile并使用&lt;activeProfile&gt;元素自动将这个profile激活。这里的local-nexus仓库指向了刚才我们配置的Nexus中“Public 
+Repositories”仓库组，也就是说，所有该仓库组包含的仓库都能供我们使用。此外，我们通过&lt;releases&gt;和&lt;snapshots&gt;元素激活了Maven对于仓库所有类型构件下载的支持，当然你也可以调节该配置，比如说禁止Maven从Nexus下载snapshot构件。使用该配置，Maven就会从你的Nexus服务器下载构件了，速度和从Central下载可不是一个数量级的。 
+</P>
+<H3>部署构件至Nexus</H3>
+<P style="text-indent: 0.8cm;">Nexus提供了两种方式来部署构件，你可以从UI直接上传，也可以配置Maven部署构件。 </P>
+<H4>通过Nexus UI部署：如添加ojdbc.jar这样的第三方包</H4>
+<OL>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>按下图所示进入上传页面</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="Maven使用Nexus_files/20160203-01.png"></DIV></DIV></LI>
+  <LI>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>填写相关信息</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="Maven使用Nexus_files/20160203-02.png"></DIV></LI>
+  <LI>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>添加到artifacts并上传</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="Maven使用Nexus_files/20160203-03.png"></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="Maven使用Nexus_files/20160203-04.png"></DIV></LI>
+  <LI>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>添加后即可在索引中查看了</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="Maven使用Nexus_files/20160203-05.png"></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>添加到其他仓库一样的操作</FONT></DIV></LI>
+  <LI>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>发现错了可以删除相应构件</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="Maven使用Nexus_files/20160203-06.png"></DIV></LI></OL>
+<H4>通过Maven部署</H4>
+<P style="text-indent: 0.8cm;">
+更常见的用例是：团队在开发一个项目的各个模块，为了让自己开发的模块能够快速让其他人使用，你会想要将snapshot版本的构件部署到Maven仓库中，其他人只需要在POM添加一个对于你开发模块的依赖，就能随时拿到最新的snapshot。以下的pom.xml配置和settings.xml能让你通过Maven自动化部署构件： 
+</P>
+<H4>pom.xml修改</H4>
+<PRE class="brush: xml;">&lt;project&gt;
+...
+&lt;distributionManagement&gt;
+&lt;!-- release版本仓库 --&gt;
+  &lt;repository&gt;
+  &lt;!-- id应该唯一 --&gt;
+    &lt;id&gt;nexus-releases&lt;/id&gt;
+      &lt;name&gt;Nexus Release Repository&lt;/name&gt;
+      &lt;url&gt;http://127.0.0.1:8080/nexus/content/repositories/releases/&lt;/url&gt;
+  &lt;/repository&gt;
+  &lt;!-- 快照版本仓库 --&gt;
+  &lt;snapshotRepository&gt;
+    &lt;id&gt;nexus-snapshots&lt;/id&gt;
+    &lt;name&gt;Nexus Snapshot Repository&lt;/name&gt;
+    &lt;url&gt;http://127.0.0.1:8080/nexus/content/repositories/snapshots/&lt;/url&gt;
+  &lt;/snapshotRepository&gt;
+&lt;/distributionManagement&gt;
+...
+&lt;/project&gt;
+</PRE>
+<H4>settings.xml</H4>
+<PRE class="brush: xml;">&lt;settings&gt;  
+...  
+&lt;servers&gt;  
+  &lt;server&gt;  
+  &lt;!-- 对应pox.xml中的定义 --&gt;
+    &lt;id&gt;nexus-releases&lt;/id&gt;  
+    &lt;!-- nexus对应的账号 --&gt;
+    &lt;username&gt;admin&lt;/username&gt;  
+    &lt;!-- nexus对应的密码 --&gt;
+    &lt;password&gt;admin123&lt;/password&gt;  
+  &lt;/server&gt;  
+  &lt;server&gt;  
+    &lt;id&gt;nexus-snapshots&lt;/id&gt;  
+    &lt;username&gt;admin&lt;/username&gt;  
+    &lt;password&gt;admin123&lt;/password&gt;  
+  &lt;/server&gt;    
+&lt;/servers&gt;  
+...  
+&lt;/settings&gt;
+</PRE>
+<P style="text-indent: 0.8cm;">这里我们配置所有的snapshot版本构件部署到Nexus的Snapshots仓库中， 
+所有的release构件部署到Nexus的Releases仓库中。由于部署需要登陆，因为我们在settings.xml中配置对应Repository 
+id的用户名和密码。然后，在项目目录中执行<SPAN style="color: rgb(255, 0, 0);">mvn deploy 
+</SPAN>，你会看到maven将项目构件部署到Nexus中，浏览Nexus对应的仓库，就可以看到刚才部署的构件。当其他人构建其项目时，Maven就会从Nexus寻找依赖并下载。 
+</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

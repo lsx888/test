@@ -1,0 +1,153 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0078)http://172.13.19.31:6060/note_html/工具/Subversion-SVN/1001010-简介与安装.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>简介与安装</TITLE> <LINK href="简介与安装_files/standalone.css" rel="stylesheet"> 
+<LINK href="简介与安装_files/overlay-apple.css" rel="stylesheet"> <LINK href="简介与安装_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="简介与安装_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="简介与安装_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">简介与安装</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-01-27 11:36:09</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>简介</H3>
+<P 
+style="text-indent: 0.8cm;">Subversion是一个版本控制系统，相对于的RCS、CVS，采用了分支管理系统，它的设计目标就是取代CVS。互联网上免费的版本控制服务多基于Subversion。中文参考文档<A 
+href="http://www.subversion.org.cn/svnbook" 
+target="_blank">http://www.subversion.org.cn/svnbook</A></P>
+<H3>功能</H3>
+<PRE class="brush: bash;">·包含绝大部分CVS的功能
+CVS是最基本的版本控制系统。Subversion包含了CVS的大部分功能，并且针对有些功能还稍加改进
+·目录的版本化
+subversion将目录名以版本号的形式体现
+·基于版本的复制，删除和重命名
+无论复制，删除还是重命名，都会被打上版本号，尽管这 听上去有些奇怪
+·自由的版本化元数据操作
+subversion允许任何元数据附加在文件或目录中 。这些属性是 键/值对，并且被版本化。subversion也提供对修订版附加任何键/值属性的方法，这些属性不会被版本化因为他们会自动将元数据附加到版本空间中，但他们可以随时被更改
+·混合追踪
+subversion 1.5开始 加入了混合追踪功能
+·文件锁
+支持文件锁定，当多个用户试图编辑同一个文件时会收到警告。
+·apache网络服务的支持，基于WebDAV/DeltaV协议
+使用基于HTTP的WebDAV/DeltaV协议进行网络通信，而apache网络服务器提供网络存储的站点服务
+·可执行的标签
+当一个文件是可执行的时候subversion会提示，并且当这个可执行的文件被放在版本控制中时，subversion会防止该程序检查其他目录
+恢复到一个较早的版本
+恢复到一个较早的版本
+·独立进程模式
+subversion可以运行在独立模式下
+·一个只读的存储镜像
+subversion提供一个工具，svnsync， 用于同步主服务器上的 文件到一个子存储服务器上，并且标为只读的属性
+</PRE>
+<H3>客户端或服务器</H3>
+<PRE class="brush: bash;">客户端：
+Subversion的客户端有两类，一类是websvn等基于web的，一种是以TortoiseSVN为代表的客户端软件。前者需要web服务器的支持，后者需要用户在本地安装客户端，两种都有免费开源软件供使用。
+
+服务器：
+Subversion支持linux和windows，更多是安装在linux下。
+
+svn服务器有2种运行方式：独立服务器和借助apache。2种方式各有利弊。
+svn存储版本数据也有2种方式：BDB和FSFS。因为BDB方式在服务器中断时，有可能锁住数据，所以还是FSFS方式更安全一点。
+
+</PRE>
+<H3>部分依赖软件介绍</H3>
+<H4>SQLite：官网：<A href="http://www.sqlite.org/" 
+target="_blank">http://www.sqlite.org/</A></H4>
+<P style="text-indent: 0.8cm;">
+SQLite，是一款轻型的数据库，是遵守ACID的关系型数据库管理系统，它包含在一个相对小的C库中。它是D.RichardHipp建立的公有领域项目。它的设计目标是嵌入式的，而且目前已经在很多嵌入式产品中使用了它，它占用资源非常的低，在嵌入式设备中，可能只需要几百K的内存就够了。它能够支持Windows/Linux/Unix等等主流的操作系统，同时能够跟很多程序语言相结合，比如 
+Tcl、C#、PHP、Java等，还有ODBC接口，同样比起Mysql、PostgreSQL这两款开源的世界著名数据库管理系统来讲，它的处理速度比他们都快。SQLite第一个Alpha版本诞生于2000年5月。 
+至2015年已经有15个年头，SQLite也迎来了一个版本 SQLite 3已经发布。 </P>
+<H3>安装</H3>
+<P style="text-indent: 0.8cm;">
+这里的安装是subversion的服务器端的安装，由于网上到处都是windows版安装的教程和linux用yum安装的教程，这些都比较简单，这里我们讲解linux编译安装。 
+</P>
+<H4>1.环境检查</H4>
+<P style="text-indent: 0.8cm;">
+先检查当前linux环境的subversion依赖软件的安装情况，如是系统自带，请根据自身需要重新安装（由于版本的依赖可能系统自带的不能使用）。具体检查办法可以参考 
+服务器-Apache-httpd-1001010-简介与安装 中环境检查方式。 </P>
+<H4>2.依赖软件安装</H4>
+<PRE class="brush: bash;">#--关于其他的依赖软件：apr、apr-util、zlib的安装，请参考服务器-Apache-httpd-1001010-简介与安装
+
+#--安装SQLite，安装前请到官网下载sqlite-amalgamation
+#1.在subversion的安装目录中新建sqlite-amalgamation目录
+$mkdir ${HOME}/soft/subversion-1.9.3/sqlite-amalgamation
+#2.进入该目录
+$cd sqlite-amalgamation
+#3.将sqlite-amalgamation-201601191754.zip放在该目录下解压
+$unzip sqlite-amalgamation-201601191754.zip
+
+
+#------------------------如未安装SQLite将报如下错误----------------------------
+# An appropriate version of sqlite could not be found.  We recommmend
+# 3.7.15.1, but require at least 3.7.12.
+# Please either install a newer sqlite on this system
+#
+#or
+#
+#get the sqlite 3.7.15.1 amalgamation from:
+#    http://www.sqlite.org/sqlite-amalgamation-3071501.zip
+#unpack the archive using unzip and rename the resulting
+#directory to:
+#/home/test/soft/subversion-1.9.3/sqlite-amalgamation
+#
+#configure: error: Subversion requires SQLite
+#---------------------该错误提示还说明了SQLite的安装方式----------------------------
+</PRE>
+<H4>3.configure</H4>
+<PRE class="brush: bash;">#先使用./configure --help查看配置选项
+./configure \
+--prefix=${HOME}/support/subversion \
+--with-apr=${HOME}/support/apr \
+--with-apr-util=${HOME}/support/apr-util/ \
+--with-zlib=${HOME}/support/zlib
+</PRE>
+<H4>4.make &amp;&amp; make install</H4>
+<H4>5.配置PATH</H4>
+<PRE class="brush: bash;">#修改用户环境变量即可
+$vi .bash_profile 
+# 在export PATH命令前一行添加：PATH=$PATH:$HOME/support/subversion/bin
+# 保存后执行以下命令，使修改生效
+$source .bash_profile
+</PRE>
+<H4>6.检查安装完毕</H4>
+<PRE class="brush: bash;">$svnserve --version
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

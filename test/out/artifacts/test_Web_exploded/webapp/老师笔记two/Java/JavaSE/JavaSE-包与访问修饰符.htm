@@ -1,0 +1,89 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0081)http://172.13.19.31:6060/note_html/Java/JavaSE/1007020-JavaSE-包与访问修饰符.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>JavaSE-包与访问修饰符</TITLE> <LINK href="JavaSE-包与访问修饰符_files/standalone.css" 
+rel="stylesheet"> <LINK href="JavaSE-包与访问修饰符_files/overlay-apple.css" rel="stylesheet"> 
+<LINK href="JavaSE-包与访问修饰符_files/article_edit.css" rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="JavaSE-包与访问修饰符_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="JavaSE-包与访问修饰符_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">JavaSE-包与访问修饰符</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-05-26 15:41:48</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>包(package)</H3>
+<UL>
+  <LI>用于将完成不同功能的类分门别类，放在不同的目录(包)下。</LI>
+  <LI>包的命名规则：每个字母都用小写，将公司域名反转作为包名  www.xxx.com(com.xxx 包名)。</LI>
+  <LI>如果在定义类的时候没有使用package，那么java就认为我们所定义的类的位置在默认包里面(default package)。</LI>
+  <LI>自动生成包，javac -d . PackageTest.java。</LI>
+  <LI>aa.bb.cc和aa.bb.cc.dd我们称后者是前者的子包。</LI></UL>
+<H3>导入(import)：将package分离的类导入回来</H3>
+<UL>
+  <LI>用于将完成不同功能的类分门别类，放在不同的目录(包)下。</LI>
+  <LI>import aa.*; import aa.bb.*; import aa.bb.Test.java。</LI>
+  <LI>如果引用的类和当前类在同一包中，那么就没有必要import</LI>
+  <LI>在当前类中引用其他包中的类，必须要使用import<BR></LI></UL>
+<H3>关于package、import、class的顺序问题</H3>
+<UL>
+  <LI>首先需要定义包(package)，可选</LI>
+  <LI>然后使用(import)进行导入，可选</LI>
+  <LI>最后是class、interface定义类</LI></UL>
+<H3>访问修饰符：</H3>
+<UL>
+  <LI>public(公共的)：   
+  <UL>
+    <LI>被public修饰的属性和方法可以被所有类访问。</LI></UL></LI>
+  <LI>protected(受保护的)：   
+  <UL>
+    <LI>被protected修饰的属性和方法可以在类内部、相同包、以及该类的子类内部(直接使用)所访问。</LI></UL></LI>
+  <LI>private(私有的)：   
+  <UL>
+    <LI>被private修饰的属性和方法只能在该类内部使用。</LI></UL></LI>
+  <LI>default(没有加任何访问修饰符，默认)：   
+  <UL>
+    <LI>修饰的属性和方法在类类部、以及相同包下面的类可以使用。</LI></UL></LI></UL>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="JavaSE-包与访问修饰符_files/20160524-01.jpg"></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>访问修饰符</FONT></DIV></DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

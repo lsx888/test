@@ -1,0 +1,198 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0077)http://172.13.19.31:6060/note_html/服务器/CentOS/100201-目录文件相关命令.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>102-目录文件相关命令</TITLE> <LINK href="102-目录文件相关命令_files/standalone.css" rel="stylesheet"> 
+<LINK href="102-目录文件相关命令_files/overlay-apple.css" rel="stylesheet"> <LINK href="102-目录文件相关命令_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="102-目录文件相关命令_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="102-目录文件相关命令_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">102-目录文件相关命令</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-05-21 14:24:19</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>pwd：查看当前所在目录</H3>
+<PRE class="brush: bash;">#pwd
+/root
+</PRE>
+<H3>cd：进入某个目录</H3>
+<PRE class="brush: bash;">#cd /etc
+#pwd
+/etc
+进入/etc目录
+
+./ 指的是当前目录
+
+../ 指的是当前目录的上一级目录。
+</PRE>
+<H3>mkdir：创建目录</H3>
+<PRE class="brush: bash;">1．命令功能：
+通过 mkdir 命令可以实现在指定位置创建以 DirName(指定的文件名)命名的文件夹或目录。要创建文件夹或目录的用户必须对所创建的文件夹的父文件夹具有写权限。
+并且，所创建的文件夹(目录)不能与其父目录(即父文件夹)中的文件名重名，即同一个目录下不能有同名的(区分大小写)。
+
+2．命令参数：
+  -m, --mode=模式，设定权限&lt;模式&gt; (类似 chmod)，而不是 rwxrwxrwx 减 umask
+  -p, --parents  可以是一个路径名称。此时若路径中的某些目录尚不存在,加上此选项后,系统将自动建立好那些尚不存在的目录,即一次可以建立多个目录; 
+  -v, --verbose  每次创建新目录都显示信息
+      --help   显示此帮助信息并退出
+      --version  输出版本信息并退出
+
+3．命令实例：
+
+1)创建一个空目录
+[root@localhost soft]# cd test
+[root@localhost test]# mkdir test1
+[root@localhost test]# ll
+总计 4drwxr-xr-x 2 root root 4096 10-25 17:42 test1
+[root@localhost test]#
+
+
+2)递归创建多个目录 
+[root@localhost test]# mkdir -p test2/test22
+[root@localhost test]# ll
+总计 8drwxr-xr-x 2 root root 4096 10-25 17:42 test1
+drwxr-xr-x 3 root root 4096 10-25 17:44 test2
+[root@localhost test]# cd test2/
+[root@localhost test2]# ll
+总计 4drwxr-xr-x 2 root root 4096 10-25 17:44 test22
+[root@localhost test2]#
+
+
+3)创建权限为777的目录 
+[root@localhost test]# mkdir -m 777 test3
+[root@localhost test]# ll
+总计 12drwxr-xr-x 2 root root 4096 10-25 17:42 test1
+drwxr-xr-x 3 root root 4096 10-25 17:44 test2
+drwxrwxrwx 2 root root 4096 10-25 17:46 test3
+[root@localhost test]#
+
+
+4)创建新目录都显示信息
+[root@localhost test]# mkdir -v test4
+mkdir: 已创建目录 “test4”
+[root@localhost test]# mkdir -vp test5/test5-1
+mkdir: 已创建目录 “test5”
+mkdir: 已创建目录 “test5/test5-1”
+[root@localhost test]#
+
+</PRE>
+<H3>rmdir和rm命令：删除文件夹和删除文件或文件夹</H3>
+<PRE class="brush: bash;">1.名称：rmdir
+2.适用对象：具有当前目录操作权限的所有使用者
+3.命令格式：rmdir [-p -v] [dirName]
+4.作用：删除空目录
+5.参数详解：
+-p 当子目录被删除后如果父目录也变成空目录的话，就连带父目录一起删除。
+-v 上次讲过，这里不再叙述，具体参见
+6.使用范例：
+[snms@snms test]$ ls
+[snms@snms test]$ mkdir -p dir1/dir2 dir1/dir3
+[snms@snms test]$ ls dir1/
+dir2  dir3
+[snms@snms test]$ rmdir dir1   #不能删除非空目录
+rmdir: failed to remove “dir1”: 目录非空
+[snms@snms test]$ rmdir dir1/dir3
+[snms@snms test]$ ls
+dir1
+[snms@snms test]$ rmdir -p dir1/dir2
+[snms@snms test]$ ls
+[snms@snms test]$ 
+
+</PRE>
+<PRE class="brush: bash;">1.名称：rm
+2.适用对象：所有使用者
+3.命令格式：rm [-f-i-r-v] [dirName/dir]
+4.作用：删除文件或目录
+5.参数详解：
+-f 即使文件属性为只读(即写保护)，亦直接删除
+-i 删除前逐一询问确认
+-r 删除目录及其下所有文件
+6.使用范例：
+[snms@snms test]$ ll
+总计 12
+-rwxrwxr-x 1 snms snms    5 04-04 08:48 aa
+-r--r--r-- 1 snms snms    5 04-04 08:49 cc
+drwxrwxr-x 2 snms snms 4096 04-04 08:48 dir1
+[snms@snms test]$ ll dir1
+总计 4
+-rwxrwxr-x 1 snms snms 5 04-04 08:47 bb
+[snms@snms test]$ rm -i aa
+rm：是否删除 普通文件 “aa”? y
+[snms@snms test]$ rm cc
+rm：是否删除有写保护的 普通文件 “cc”? n
+[snms@snms test]$ rm -f cc
+[snms@snms test]$ ls
+dir1
+[snms@snms test]$ rm -r dir1
+[snms@snms test]$ ls
+[snms@snms test]$ 
+
+</PRE>
+<H3>cp：复制文件或文件夹的命令</H3>
+<PRE class="brush: bash;">cp (复制档案或目录) 
+[root@linux ~]# cp [-adfilprsu] 来源档(source) 目的档(destination) 
+[root@linux ~]# cp [options] source1 source2 source3 …. directory 
+参数： 
+-a ：相当于 -pdr 的意思； 
+-d ：若来源文件为连结文件的属性(link file)，则复制连结文件属性而非档案本身； 
+-f ：为强制 (force) 的意思，若有重复或其它疑问时，不会询问使用者，而强制复制； 
+-i ：若目的檔(destination)已经存在时，在覆盖时会先询问是否真的动作！ 
+-l ：进行硬式连结 (hard link) 的连结档建立，而非复制档案本身； 
+-p ：连同档案的属性一起复制过去，而非使用预设属性； 
+-r ：递归持续复制，用于目录的复制行为； 
+-s ：复制成为符号连结文件 (symbolic link)，亦即『快捷方式』档案； 
+-u ：若 destination 比 source 旧才更新 destination ！ 
+最后需要注意的，如果来源档有两个以上，则最后一个目的文件一定要是“目录”才行！
+</PRE>
+<H3>mv：文件移动</H3>
+<PRE class="brush: bash;">mv命令是move的缩写，可以用来移动文件或者将文件改名（move (rename) files），是Linux系统下常用的命令，经常用来备份文件或者目录。
+1．命令格式：
+    mv [选项] 源文件或目录 目标文件或目录
+2．命令功能：
+视mv命令中第二个参数类型的不同（是目标文件还是目标目录），mv命令将文件重命名或将其移至一个新的目录中。当第二个参数类型是文件时，mv命令完成文件重命名，
+此时，源文件只能有一个（也可以是源目录名），它将所给的源文件或目录重命名为给定的目标文件名。当第二个参数是已存在的目录名称时，源文件或目录参数可以有多个，
+mv命令将各参数指定的源文件均移至目标目录中。在跨文件系统移动文件时，mv先拷贝，再将原有文件删除，而链至该文件的链接也将丢失。
+3．命令参数：
+-b ：若需覆盖文件，则覆盖前先行备份。 
+-f ：force 强制的意思，如果目标文件已经存在，不会询问而直接覆盖；
+-i ：若目标文件 (destination) 已经存在时，就会询问是否覆盖！
+-u ：若目标文件已经存在，且 source 比较新，才会更新(update)
+	   -t  ： --target-directory=DIRECTORY move all SOURCE arguments into DIRECTORY，即指定mv的目标目录，该选项适用于移动多个源文件到一个目录的情况，
+此时目标目录在前，源文件在后。
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 2013 ~ 2015 作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

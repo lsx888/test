@@ -1,0 +1,551 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0081)http://172.13.19.31:6060/note_html/工具/QTP测试工具/1002010-vbs-常量与运算符.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>vbs-常量与运算符</TITLE> <LINK href="vbs-常量与运算符_files/standalone.css" rel="stylesheet"> 
+<LINK href="vbs-常量与运算符_files/overlay-apple.css" rel="stylesheet"> <LINK href="vbs-常量与运算符_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="vbs-常量与运算符_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="vbs-常量与运算符_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">vbs-常量与运算符</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-09-29 17:17:08</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>常量</H3>
+<P style="text-indent: 0.8cm;">
+常数在VBScript中是表示不变的值，用于代替数字或字符串。其内部定义了许多常数，都是以vb开头，例如在Hello 
+World程序中涉及到的MsgBox常数“vbOKOnly”。 除了MsgBox常数外，还有颜色常数、比较常数、日期和时间常数等等 </P>
+<PRE class="brush: vb;">内部自带常数，我们可以直接使用。当自带常数不能满足我们的需求时，我们也可以自定义常数，在VBScript中是使用Const语句来定义常数，该语句的签名如下：
+	
+[Public | Private] Const constname = expression
+
+主要参数：
+
+    constname：为常数名称，为了区分常数与变量，最好有一套自己的命名规则，这里推荐字母全大写，单词间用下划线分割；
+    expression：文字或其他常数，或包括除 Is 外的所有算术运算符和逻辑运算符的任意组合。
+
+常数默认是Public级别，您也可以指定为Private级别，在同一行中声明多个常数需要用逗号分割，常数声明中不能使用变量、自定义函数及内部函数。
+下面是常数的一些示例代码：
+	
+Const PI = 3.14   '常数默认为公有。
+Private Const STEP_APPLY = "Apply"   '定义私有常数。
+Const STEP_APPLY = "Apply", PI  = 3.14   '在一行上定义多个常数。
+</PRE>
+<H4>颜色常数</H4>
+<TABLE>
+  <TBODY>
+  <TR>
+    <TH>常数</TH>
+    <TH>值</TH>
+    <TH>描述</TH></TR>
+  <TR>
+    <TD>vbBlack</TD>
+    <TD>&amp;h00</TD>
+    <TD>黑色</TD></TR>
+  <TR>
+    <TD>vbRed</TD>
+    <TD>&amp;hFF</TD>
+    <TD>红色</TD></TR>
+  <TR>
+    <TD>vbGreen</TD>
+    <TD>&amp;hFF00</TD>
+    <TD>绿色</TD></TR>
+  <TR>
+    <TD>vbYellow</TD>
+    <TD>&amp;hFFFF</TD>
+    <TD>黄色</TD></TR>
+  <TR>
+    <TD>vbBlue</TD>
+    <TD>&amp;hFF0000</TD>
+    <TD>蓝色</TD></TR>
+  <TR>
+    <TD>vbMagenta</TD>
+    <TD>&amp;hFF00FF</TD>
+    <TD>紫色</TD></TR>
+  <TR>
+    <TD>vbCyan</TD>
+    <TD>&amp;hFFFF00</TD>
+    <TD>青色</TD></TR>
+  <TR>
+    <TD>vbWhite</TD>
+    <TD>&amp;hFFFFFF</TD>
+    <TD>白色</TD></TR></TBODY></TABLE>
+<H4>比较常数</H4>
+<TABLE>
+  <TBODY>
+  <TR>
+    <TH>常数</TH>
+    <TH>值</TH>
+    <TH>描述</TH></TR>
+  <TR>
+    <TD>vbBinaryCompare</TD>
+    <TD>0</TD>
+    <TD>执行二进制比较。</TD></TR>
+  <TR>
+    <TD>vbTextCompare</TD>
+    <TD>1</TD>
+    <TD>执行文本比较。</TD></TR></TBODY></TABLE>
+<H4>日期和时间常数</H4>
+<TABLE>
+  <TBODY>
+  <TR>
+    <TH>常数</TH>
+    <TH>值</TH>
+    <TH>描述</TH></TR>
+  <TR>
+    <TD>vbSunday</TD>
+    <TD>1</TD>
+    <TD>星期日</TD></TR>
+  <TR>
+    <TD>vbMonday</TD>
+    <TD>2</TD>
+    <TD>星期一</TD></TR>
+  <TR>
+    <TD>vbTuesday</TD>
+    <TD>3</TD>
+    <TD>星期二</TD></TR>
+  <TR>
+    <TD>vbWednesday</TD>
+    <TD>4</TD>
+    <TD>星期三</TD></TR>
+  <TR>
+    <TD>vbThursday</TD>
+    <TD>5</TD>
+    <TD>星期四</TD></TR>
+  <TR>
+    <TD>vbFriday</TD>
+    <TD>6</TD>
+    <TD>星期五</TD></TR>
+  <TR>
+    <TD>vbSaturday</TD>
+    <TD>7</TD>
+    <TD>星期六</TD></TR>
+  <TR>
+    <TD>vbUseSystemDayOfWeek</TD>
+    <TD>0</TD>
+    <TD>由系统设置定义每周的第一天是星期几。</TD></TR>
+  <TR>
+    <TD>vbFirstJan1</TD>
+    <TD>1</TD>
+    <TD>使用包含 1 月 1 日的星期（默认）。</TD></TR>
+  <TR>
+    <TD>vbFirstFourDays</TD>
+    <TD>2</TD>
+    <TD>使用第一个至少包含新的年中四天的星期。</TD></TR>
+  <TR>
+    <TD>vbFirstFullWeek</TD>
+    <TD>3</TD>
+    <TD>使用某年的第一个整周。</TD></TR></TBODY></TABLE>
+<H4>日期格式常数</H4>
+<TABLE>
+  <TBODY>
+  <TR>
+    <TH>常数</TH>
+    <TH>值</TH>
+    <TH>描述</TH></TR>
+  <TR>
+    <TD>vbGeneralDate</TD>
+    <TD>0</TD>
+    <TD>显示日期和/或时间。对于实数，显示日期和时间。如果没有小数部分，仅显示日期。如果没有整数部分，则仅显示时间。由系统设置决定日期和时间的显示。</TD></TR>
+  <TR>
+    <TD>vbLongDate</TD>
+    <TD>1</TD>
+    <TD>按计算机中区域设置指定的长日期格式显示日期。</TD></TR>
+  <TR>
+    <TD>vbShortDate</TD>
+    <TD>2</TD>
+    <TD>按计算机中区域设置指定的短日期格式显示日期。</TD></TR>
+  <TR>
+    <TD>vbLongTime</TD>
+    <TD>3</TD>
+    <TD>按计算机中区域设置指定的长时间格式显示时间。</TD></TR>
+  <TR>
+    <TD>vbShortTime</TD>
+    <TD>4</TD>
+    <TD>按计算机中区域设置指定的短时间格式显示时间。</TD></TR></TBODY></TABLE>
+<H4>其他常数</H4>
+<TABLE>
+  <TBODY>
+  <TR>
+    <TH>常数</TH>
+    <TH>值</TH>
+    <TH>描述</TH></TR>
+  <TR>
+    <TD>vbObjectError</TD>
+    <TD>-2147221504</TD>
+    <TD>自定义错误号应大于该值，例如，Err.Raise Number = vbObjectError + 1000 
+</TD></TR></TBODY></TABLE>
+<H4>MsgBox 常数</H4>
+<P><BR>下列常数与 <B>MsgBox</B> 
+函数一起使用，标识在消息框中出现的按钮、图标，并指定默认按钮。另外，还可以指定消息框的样式。因为这些常数在VBScript中被建立，您在使用之前不必定义它们。您可在代码中任意处使用它们以表示说明值。</P>
+<DIV class="tablediv">
+<TABLE>
+  <TBODY>
+  <TR>
+    <TH>常数</TH>
+    <TH>值</TH>
+    <TH>描述</TH></TR>
+  <TR>
+    <TD>vbOKOnly</TD>
+    <TD>&nbsp;&nbsp;&nbsp;0</TD>
+    <TD>只显示“确定”按钮。</TD></TR>
+  <TR>
+    <TD>vbOKCancel</TD>
+    <TD>&nbsp;&nbsp;&nbsp;1</TD>
+    <TD>显示“确定”和“取消”按钮。</TD></TR>
+  <TR>
+    <TD>vbAbortRetryIgnore</TD>
+    <TD>&nbsp;&nbsp;&nbsp;2</TD>
+    <TD>显示“终止”、“重试”和“忽略”按钮。</TD></TR>
+  <TR>
+    <TD>vbYesNoCancel</TD>
+    <TD>&nbsp;&nbsp;&nbsp;3</TD>
+    <TD>显示“是”、“否”和“取消”按钮。</TD></TR>
+  <TR>
+    <TD>vbYesNo</TD>
+    <TD>&nbsp;&nbsp;&nbsp;4</TD>
+    <TD>显示“是”和“否”按钮。</TD></TR>
+  <TR>
+    <TD>vbRetryCancel</TD>
+    <TD>&nbsp;&nbsp;&nbsp;5</TD>
+    <TD>显示“重试”和“取消”按钮。</TD></TR>
+  <TR>
+    <TD>vbCritical</TD>
+    <TD> 16</TD>
+    <TD>显示“临界消息”图标。</TD></TR>
+  <TR>
+    <TD>vbQuestion</TD>
+    <TD> 32</TD>
+    <TD>显示“警告询问”图标。</TD></TR>
+  <TR>
+    <TD>vbExclamation</TD>
+    <TD> 48</TD>
+    <TD>显示“警告消息”图标。</TD></TR>
+  <TR>
+    <TD>vbInformation</TD>
+    <TD> 64</TD>
+    <TD>显示“提示消息”图标。</TD></TR>
+  <TR>
+    <TD>vbDefaultButton1</TD>
+    <TD>&nbsp;&nbsp;&nbsp;0</TD>
+    <TD>第一个按钮是默认按钮。</TD></TR>
+  <TR>
+    <TD>vbDefaultButton2</TD>
+    <TD>&nbsp;256</TD>
+    <TD>第二个按钮是默认按钮。</TD></TR>
+  <TR>
+    <TD>vbDefaultButton3</TD>
+    <TD>&nbsp;512</TD>
+    <TD>第三个按钮是默认按钮。</TD></TR>
+  <TR>
+    <TD>vbDefaultButton4</TD>
+    <TD>&nbsp;768</TD>
+    <TD>第四个按钮是默认按钮。</TD></TR>
+  <TR>
+    <TD>vbApplicationModal</TD>
+    <TD>&nbsp;&nbsp;&nbsp;0</TD>
+    <TD>应用程序模式。用户必须响应消息框，才能继续在当前应用程序中工作。</TD></TR>
+  <TR>
+    <TD>vbSystemModal</TD>
+    <TD>4096</TD>
+    <TD>系统模式。在 Win16 系统中， 所有应用程序都将中止直到用户响应消息框。在 Win32 系统中， 
+      此常数提供一个应用程序模式信息框并总是保留在您可能正在运行的所有其它程序的顶部。</TD></TR></TBODY></TABLE></DIV>
+<P>下列常数与 <B>MsgBox</B> 
+函数一起使用，标识用户选定的按钮。仅当类型库中包含以下常数定义，且在您的工程文件中已经显式引用该类型库后，才允许使用这些常数。对于 
+VBScript，必须在代码中显式声明这些常数。</P>
+<DIV class="tablediv">
+<TABLE>
+  <TBODY>
+  <TR>
+    <TH>常数</TH>
+    <TH>值</TH>
+    <TH>描述</TH></TR>
+  <TR>
+    <TD>vbOK</TD>
+    <TD>1</TD>
+    <TD>“确定”按钮被单击。</TD></TR>
+  <TR>
+    <TD>vbCancel</TD>
+    <TD>2</TD>
+    <TD>“取消”按钮被单击。</TD></TR>
+  <TR>
+    <TD>vbAbort</TD>
+    <TD>3</TD>
+    <TD>“终止”按钮被单击。</TD></TR>
+  <TR>
+    <TD>vbRetry</TD>
+    <TD>4</TD>
+    <TD>“重试”按钮被单击。</TD></TR>
+  <TR>
+    <TD>vbIgnore</TD>
+    <TD>5</TD>
+    <TD>“忽略”按钮被单击。</TD></TR>
+  <TR>
+    <TD>vbYes</TD>
+    <TD>6</TD>
+    <TD>“是”按钮被单击。</TD></TR>
+  <TR>
+    <TD>vbNo</TD>
+    <TD>7</TD>
+    <TD>“否”按钮被单击。</TD></TR></TBODY></TABLE></DIV>
+<H4>字符串常数</H4>
+<TABLE>
+  <TBODY>
+  <TR>
+    <TH>常数</TH>
+    <TH>值</TH>
+    <TH>描述</TH></TR>
+  <TR>
+    <TD>vbCr</TD>
+    <TD>Chr(13)</TD>
+    <TD>回车符。</TD></TR>
+  <TR>
+    <TD>vbCrLf</TD>
+    <TD>Chr(13) &amp; Chr(10)</TD>
+    <TD>回车符与换行符。</TD></TR>
+  <TR>
+    <TD>vbFormFeed</TD>
+    <TD>Chr(12)</TD>
+    <TD>换页符；在 Microsoft Windows 中不适用。</TD></TR>
+  <TR>
+    <TD>vbLf</TD>
+    <TD>Chr(10)</TD>
+    <TD>换行符。</TD></TR>
+  <TR>
+    <TD>vbNewLine</TD>
+    <TD>Chr(13) &amp; Chr(10) 或 Chr(10)</TD>
+    <TD>平台指定的新行字符；适用于任何平台。</TD></TR>
+  <TR>
+    <TD>vbNullChar</TD>
+    <TD>Chr(0)</TD>
+    <TD>值为 0 的字符。</TD></TR>
+  <TR>
+    <TD>vbNullString</TD>
+    <TD>值为 0 的字符串</TD>
+    <TD>与零长度字符串 ("") 不同；用于调用外部过程。</TD></TR>
+  <TR>
+    <TD>vbTab</TD>
+    <TD>Chr(9)</TD>
+    <TD>水平附签。</TD></TR>
+  <TR>
+    <TD>vbVerticalTab</TD>
+    <TD>Chr(11)</TD>
+    <TD>垂直附签；在 Microsoft Windows 中不适用。</TD></TR></TBODY></TABLE>
+<H4>三态常数</H4>
+<TABLE>
+  <TBODY>
+  <TR>
+    <TH>常数</TH>
+    <TH>值</TH>
+    <TH>描述</TH></TR>
+  <TR>
+    <TD>vbUseDefault</TD>
+    <TD>-2</TD>
+    <TD>使用来自计算机最初设置中的默认值。</TD></TR>
+  <TR>
+    <TD>vbTrue</TD>
+    <TD>-1</TD>
+    <TD>True</TD></TR>
+  <TR>
+    <TD>vbFalse</TD>
+    <TD>0</TD>
+    <TD>False</TD></TR></TBODY></TABLE>
+<H4>VarType 常数：仅当类型库包含以下常数定义，且在您的工程文件中已经显式引用该类型库后，才允许使用这些常数。对于 
+VBScript，必须在代码中显式声明这些常数。</H4>
+<TABLE>
+  <TBODY>
+  <TR>
+    <TH>常数</TH>
+    <TH>值</TH>
+    <TH>描述</TH></TR>
+  <TR>
+    <TD>vbEmpty</TD>
+    <TD>&nbsp;&nbsp;&nbsp;0</TD>
+    <TD>未初始化（默认）</TD></TR>
+  <TR>
+    <TD>vbNull</TD>
+    <TD>&nbsp;&nbsp;&nbsp;1</TD>
+    <TD>不包含任何有效数据</TD></TR>
+  <TR>
+    <TD>vbInteger</TD>
+    <TD>&nbsp;&nbsp;&nbsp;2</TD>
+    <TD>整型子类型</TD></TR>
+  <TR>
+    <TD>vbLong</TD>
+    <TD>&nbsp;&nbsp;&nbsp;3</TD>
+    <TD>长整型子类型</TD></TR>
+  <TR>
+    <TD>vbSingle</TD>
+    <TD>&nbsp;&nbsp;&nbsp;4</TD>
+    <TD>单精度子类型</TD></TR>
+  <TR>
+    <TD>vbDouble</TD>
+    <TD>&nbsp;&nbsp;&nbsp;5</TD>
+    <TD>双精度子类型</TD></TR>
+  <TR>
+    <TD>vbCurrency</TD>
+    <TD>&nbsp;&nbsp;&nbsp;6</TD>
+    <TD>货币子类型</TD></TR>
+  <TR>
+    <TD>vbDate</TD>
+    <TD>&nbsp;&nbsp;&nbsp;7</TD>
+    <TD>日期子类型</TD></TR>
+  <TR>
+    <TD>vbString</TD>
+    <TD>&nbsp;&nbsp;&nbsp;8</TD>
+    <TD>字符串子类型</TD></TR>
+  <TR>
+    <TD>vbObject</TD>
+    <TD>&nbsp;&nbsp;&nbsp;9</TD>
+    <TD>对象</TD></TR>
+  <TR>
+    <TD>vbError</TD>
+    <TD> 10</TD>
+    <TD>错误子类型</TD></TR>
+  <TR>
+    <TD>vbBoolean</TD>
+    <TD> 11</TD>
+    <TD>Boolean 子类型</TD></TR>
+  <TR>
+    <TD>vbVariant</TD>
+    <TD> 12</TD>
+    <TD>Variant （仅用于变量数组）</TD></TR>
+  <TR>
+    <TD>vbDataObject</TD>
+    <TD> 13</TD>
+    <TD>数据访问对象</TD></TR>
+  <TR>
+    <TD>vbDecimal</TD>
+    <TD> 14</TD>
+    <TD>十进制子类型</TD></TR>
+  <TR>
+    <TD>vbByte</TD>
+    <TD> 17</TD>
+    <TD>字节子类型</TD></TR>
+  <TR>
+    <TD>vbArray</TD>
+    <TD>8192</TD>
+    <TD>数组</TD></TR></TBODY></TABLE>
+<H3>运算符</H3>
+<H4>算术运算符</H4>
+<TABLE>
+  <TBODY>
+  <TR>
+    <TH>描述</TH>
+    <TH>符号</TH></TR>
+  <TR>
+    <TD>求幂</TD>
+    <TD>^</TD></TR>
+  <TR>
+    <TD>负号</TD>
+    <TD>-</TD></TR>
+  <TR>
+    <TD>乘</TD>
+    <TD>*</TD></TR>
+  <TR>
+    <TD>除</TD>
+    <TD>/</TD></TR>
+  <TR>
+    <TD>整除</TD>
+    <TD>\</TD></TR>
+  <TR>
+    <TD>求余</TD>
+    <TD>Mod</TD></TR>
+  <TR>
+    <TD>加</TD>
+    <TD>+</TD></TR>
+  <TR>
+    <TD>减</TD>
+    <TD>-</TD></TR>
+  <TR>
+    <TD>字符串连接</TD>
+    <TD>&amp;</TD></TR></TBODY></TABLE>
+<H4>逻辑运算符</H4>
+<TABLE>
+  <TBODY>
+  <TR>
+    <TH>描述</TH>
+    <TH>符号</TH></TR>
+  <TR>
+    <TD>逻辑非</TD>
+    <TD>Not</TD></TR>
+  <TR>
+    <TD>逻辑与</TD>
+    <TD>And</TD></TR>
+  <TR>
+    <TD>逻辑或</TD>
+    <TD>Or</TD></TR>
+  <TR>
+    <TD>逻辑异或</TD>
+    <TD>Xor</TD></TR>
+  <TR>
+    <TD>逻辑等价</TD>
+    <TD>Eqv</TD></TR>
+  <TR>
+    <TD>逻辑隐含</TD>
+    <TD>Imp</TD></TR></TBODY></TABLE>
+<H4>比较运算符</H4>
+<TABLE>
+  <TBODY>
+  <TR>
+    <TH>描述</TH>
+    <TH>符号</TH></TR>
+  <TR>
+    <TD>等于</TD>
+    <TD>=</TD></TR>
+  <TR>
+    <TD>不等于</TD>
+    <TD>&lt;&gt;</TD></TR>
+  <TR>
+    <TD>小于</TD>
+    <TD>&lt;</TD></TR>
+  <TR>
+    <TD>大于</TD>
+    <TD>&gt;</TD></TR>
+  <TR>
+    <TD>小于等于</TD>
+    <TD>&lt;=</TD></TR>
+  <TR>
+    <TD>大于等于</TD>
+    <TD>&gt;=</TD></TR>
+  <TR>
+    <TD>对象引用比较</TD>
+    <TD>Is</TD></TR></TBODY></TABLE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

@@ -1,0 +1,388 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0079)http://172.13.19.31:6060/note_html/web/Javascript/1001024-js常见方法和对象.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>js常见方法和对象</TITLE> <LINK href="js常见方法和对象_files/standalone.css" rel="stylesheet"> 
+<LINK href="js常见方法和对象_files/overlay-apple.css" rel="stylesheet"> <LINK href="js常见方法和对象_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="js常见方法和对象_files/shCoreEclipse.css" 
+rel="stylesheet">	 <LINK href="js常见方法和对象_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">js常见方法和对象</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-06-30 16:56:08</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>javascript方法定义</H3>
+<UL>
+  <LI>直接声明（声明式函数）：function 方法名(参数列表){//方法体}; //参数不用声明类型，因为变量的声明都是var</LI>
+  <LI>赋值给变量（赋值式函数）：var fn = function(参数列表){//方法体};</LI>
+  <LI>两种定义方式有些许的差别，请参考js运行顺序。</LI></UL>
+<H3>示例程序</H3>
+<PRE class="brush: js;">	//--js中函数的定义：
+	//-- 1. 声明式函数：function 函数名(参数列表){//方法体};
+	//-- 1.1 如果不写函数名，就匿名函数 function(){}
+	//-- 2. 赋值式函数：var 函数名 = function(参数列表){//--方法体};
+	
+	function fn(a,b,c,d){
+		
+		console.log(a+" " + b + " " + c + " " + d);
+		
+	};
+	
+	//-- 函数定义后，需要调用才会执行
+	fn(null,undefined,"aaa");
+	
+	//-- 函数调用的时候，参数按顺序传递，如果后面的参数当前不用，那么可以不传。如果某个参数没有传值，那么该参数的值为undefined
+	
+	//--这两种定义方式是由区别的，我们将在js执行顺序时讲解(类似于java的加载顺序)
+	//-- 1. 第一步：函数的声明和变量的声明   2. 从上往下执行代码 
+	fn1();
+	
+	//-- js中也可以异常处理
+	try{
+		fn2();//-- js是顺序执行的，一旦报错，就会停止往下执行
+	}catch(e){
+		console.log(e);
+	}
+	
+	function fn1(){
+		console.log("声明式函数");
+	};
+	
+	var fn2 = function(){
+		console.log("赋值式函数");
+	};
+	
+	
+	//-- 方法可以嵌套（java里面方法是不能嵌套的）闭包
+	function f1(){
+		
+		function f2(){
+			
+		}	
+		
+		return function(){
+			console.log("f1函数中的函数");
+		};
+		
+	};
+	
+	//-- f2：不可能在此调用
+	//-- f1中的匿名函数，在此可以调用
+	f1()();
+	
+	
+	//-- 函数还可以覆盖，后定义的函数会覆盖先定义的函数
+	/* 此写法，会导致60行,f1()();执行第二个括号的时候报错。
+	function f1(){
+		console.log("覆盖f1");
+	} 
+	*/
+	
+	var f1 = function(){
+		console.log("覆盖f1");
+	}
+	
+	f1();
+	
+	//=======================================================
+	//-- 变量的作用域（正常情况）
+
+	var a = 0;
+	function ff(){
+		var a = 10;
+		console.log(a);
+	}
+	
+	ff();
+	console.log(a);
+	
+	//-- 变量的作用域：1. 在方法中用var声明的变量是局部变量
+	//				  2. 在方法中没有用var声明的变量是全局变量
+	//				  3. 在方法外部的局部变量，可以直接在方法中使用，如果方法中嵌套了方法，嵌套方法中同样可以使用。
+	//				  4. 反过来，在方法中的局部变量，在方法外部，无法引用。(除非使用闭包)
+	
+	var name="global";  
+	if(true){  
+	    var name="local";  
+	    console.log(name)  
+	}  
+	console.log(name);
+	//-- 都输出是“local",如果有块级作用域，明显if语句将创建局部变量name,并不会修改全局name,可是没有这样，所以Js没有块级作用域。
+	
+	//-- 使用闭包访问方法中的局部变量
+	function c(){
+		var k = 10;//-- 可以当作java的成员变量
+		return function(){ //--- 可以当作成员方法
+			k--;
+			console.log(k);
+		}
+	};
+	
+	var d = c();
+	
+	d();
+	d();
+	
+	//-- 闭包将k这个变量，保留了下来，因为d这个函数还在引用它，它就不会被内存回收。所以在实际工作中，应尽量减少使用闭包。
+	
+	//-- js的内存回收：当某个对象没有被任何引用的时候，或者a只引用b，b又只引用a的时候，就会被回收。
+</PRE>
+<DIV id="content_div_1">
+<H3>javascript函数</H3>
+<UL>
+  <LI>在javascript中，函数(function)就是对象(javascript中没有类的概念)。</LI>
+  <LI>在javascript中没有函数重载的概念。</LI>
+  <LI 
+  style="color: red;">javascript中每个function都是Function对象，Function对象接收的所以参数都是字符串类型，而且最后一个参数为该函数的方法体，前面的参数为该函数的参数名。如：var 
+  fn = new Function("sName", "sMessage", "alert(\"Hello \" sName 
+  sMessage);");</LI>
+  <LI 
+  style="color: red;">javascript中每个function都有一个隐含的对象argments，表示给函数实际传递的参数的数组。通过argments[0]获取第一个参数，以此类推；argments对象还可以用于模拟函数重载。</LI>
+  <LI>javascript函数中，如果没有返回值，那么该函数返回Undefined</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_1">
+<H3>全局变量与局部变量</H3>
+<UL>
+  <LI>定义在方法体外的var声明的变量为全局变量。</LI>
+  <LI>定义在方法体内的var声明的变量为局部变量，定义在方法体内的没有用var声明的变量为全局变量（<SPAN style="color: rgb(255, 0, 0);">此定义方式不建议使用</SPAN>）</LI></UL></DIV>
+<H3>变量的作用域</H3>
+<UL>
+  <LI>只有方法作用域</LI>
+  <LI>没有块级作用域</LI></UL>
+<HR>
+
+<DIV id="content_div_3">
+<H3>javascript内置对象</H3>
+<UL>
+  <LI>日期对象Date：见W3CSchool.chm   
+<PRE class="brush: js;">	Date.EN = 'en-US';
+	Date.ZH = 'zh-CN';
+	
+	/**
+	 * Date 类扩展方法，格式化日期
+	 * 
+	 * @param format
+	 *            格式化字符串，如：yyyy-MM-dd
+	 * @param local
+	 *            本地化变量用于国际化，使用标准的语言格式， 如果中文：zh-CN或者zh 英文：en-US 或 en
+	 *            还可以是使用Date.EN或Date.ZH来表示
+	 * 
+	 * 
+	 * 格式化字符串格式：
+	 * (注意区分大小写) yyyy：4位数年份 MM ：两位数月份 dd : 两位数日期 HH ：两位数小时 mm ：两位数分钟 ss
+	 * ：两位数秒 SSS ：三位数毫秒 E : 星期（默认使用中文格式）
+	 * 
+	 */
+	Date.prototype.format = function(format,local){
+		
+		if(format == undefined || format == null){
+			format = "yyyy-MM-dd";
+		}
+		
+		if(local == undefined || local == null){
+			local = Date.ZH;
+		}
+		
+		// --this是当前日期
+		var year = this.getFullYear();
+		var month = this.getMonth() + 1;
+		var date = this.getDate();
+		var HH = this.getHours();
+		var mm = this.getMinutes();
+		var ss = this.getSeconds();
+		var SSS = this.getMilliseconds();
+		
+		var day = this.getDay();
+		var weeks = {
+			'zh-CN' : ["星期天","星期一","星期二","星期三","星期四","星期五","星期六"],
+			'zh'	: ["星期天","星期一","星期二","星期三","星期四","星期五","星期六"],
+			'en'	: ["sun","mon","tue","wen","thu","fri","sat"],
+			'en-US'	: ["sun","mon","tue","wen","thu","fri","sat"]
+		};
+		
+		var E = weeks[local][day];
+		
+		return format.replace(/yyyy/g,year).replace(/MM/g,month).replace(/dd/g,date)
+		.replace(/HH/g,HH).replace(/mm/g,mm).replace(/ss/g,ss).replace(/SSS/g,SSS)
+		.replace(/E/g,E);
+		
+	};
+</PRE></LI>
+  <LI>数组对象Array：见W3CSchool.chm或参考第二章2-js数组对象</LI>
+  <LI>字符串对象String：见W3CSchool.chm.注：replace方法中可以使用正则匹配。没有replaceAll方法。   
+<PRE class="brush: js;">	var str = "abc";
+	var str2 = "abc";
+	var str1 = new String("abc");
+	var str4 = new String("abc");
+	
+	//js没有equals方法，都是直接用 ==比较
+	console.log(str == str2);// true
+	console.log(str == str1);// true
+	console.log(str1 == str4);// false
+	
+	console.log(str === str2);// true
+	console.log(str === str1);// false
+	console.log(str1 === str4);// false
+
+	//-- js中还是建议，直接使用字符串常量的方式定义字符串
+	console.log(str.length);//-- js中字符串是length属性，java中String对象只有length()方法
+	
+	//--方法 charCodeAt() 与 charAt() 方法执行的操作相似，
+	//只不过前者返回的是位于指定位置的字符的编码，而后者返回的是字符子串
+	console.log(str.charAt(1));
+	console.log(str.charCodeAt(1));
+	
+	//-- concat连接两个字符串
+	var str5 = str.concat(str1);
+	console.log(str);
+	console.log(str1);
+	console.log(str5);
+	//-- 还可以直接用 "+"号连接
+	console.log(str + str1);
+	//-- 以上两种方式效率都不高，因为String一旦定义不可更改
+	//-- 如果遇到多个字符串相连接，使用Array和其join方法来实现一个js版本的StringBuffer/StringBullider
+	var arr = [str,str1];
+	console.log(arr.join(""));
+	
+	//-- 字符串截取
+	var str6 = "您好，今年是二零一六年";
+	console.log(str6.length);// 11 -- 汉字所占字节数是按编码格式不一样，但是只占一个字符
+	console.log(str6.substr(3,11));//-- 不会报错，从位置3开始，截取11个字符,最终只截取到最后
+	console.log(str6.substring(3));//-- 
+	
+	//-- split() ，参数为正则表达式或者具体的字符串，该方法将字符串按参数才分为字符串数组
+	// 参数代表的字符将不会保留
+	console.log(str6.split("，").join("-&gt;"));
+	
+	//-- 拆分、替换、比较都可以使用正则表达式s
+</PRE></LI>
+  <LI>RegExp正则表达式对象：见W3CSchool.chm的对象参考手册</LI>
+  <LI>Function对象：见W3CSchool.chm的对象参考手册。全局函数等</LI>
+  <LI>Math、Number、Boolean对象<BR></LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_5">
+<H3>javascript定时器(见W3CSchool.chm)</H3>
+<UL>
+  <LI>setTimeout：格式[定时器对象名=]setTimeout("表达式",毫秒数)，用于指定在一段时间后执行表达式或方法.</LI>
+  <LI>setInterval：格式[定时器对象名=]setInterval("表达式",毫秒数);重复执行，直到窗口、框架被关闭或执行clearInterval(定时器对象名)方法。</LI></UL>
+<DIV><BUTTON onclick="startTime();" type="button">当前时间</BUTTON>&nbsp;当前时间：<SPAN 
+id="txt"></SPAN></DIV>
+<PRE class="brush: js;">function startTime(){
+	var today=new Date();
+	var h=today.getHours();
+	var m=today.getMinutes();
+	var s=today.getSeconds();
+	// add a zero in front of numbers&lt;10
+	m=checkTime(m);
+	s=checkTime(s);
+	document.getElementById('txt').innerHTML=h+":"+m+":"+s;
+	t=setTimeout('startTime()',500);
+}
+
+function checkTime(i){
+	if (i&lt;10){
+		i="0" + i;
+	}
+	return i;
+}
+</PRE>
+<DIV>5秒后执行操作，如关闭页面等：<SPAN id="count">5</SPAN></DIV>
+<PRE class="brush: js;">var tt = null;
+tt = setInterval("count();", 1000);//注意：一定要些在方法外，作为全局变量
+function count(){
+	var t = document.getElementById("count").innerHTML;
+	t = parseInt(t);	
+	if(t != 0){
+		document.getElementById("count").innerHTML = --t;
+	}else{
+		clearInterval(tt);
+		alert("5秒到时，执行任务");
+	}
+};
+</PRE>
+<SCRIPT type="text/javascript">
+
+function startTime(){
+	var today=new Date();
+	var h=today.getHours();
+	var m=today.getMinutes();
+	var s=today.getSeconds();
+	// add a zero in front of numbers<10
+	m=checkTime(m);
+	s=checkTime(s);
+	document.getElementById('txt').innerHTML=h+":"+m+":"+s;
+	t=setTimeout('startTime()',500);
+}
+
+function checkTime(i){
+	if (i<10){
+		i="0" + i;
+	}
+	return i;
+}
+/****************************************/
+var tt = null;
+tt = setInterval("count();", 1000);//注意：一定要些在方法外，作为全局变量
+function count(){
+	var t = document.getElementById("count").innerHTML;
+	t = parseInt(t);	
+	if(t != 0){
+		document.getElementById("count").innerHTML = --t;
+	}else{
+		clearInterval(tt);
+		alert("5秒到时，执行任务");
+	}
+};
+ 
+</SCRIPT>
+ </DIV>
+<HR>
+
+<DIV id="content_div_6">
+<H3>a标签的href属性用#号，和javascript:void(0)的区别</H3>
+<UL>
+  <LI>"＃"包含了一个位置信息，默认的锚点是＃top也就是网页的上端。javascript:void(0)表示什么都不做仅仅表示一个死链接.这就是为什么有的时候页面很长浏览链接明明是＃可是跳动到了页首而Javascript:void(0)则不是如此</LI>
+  <LI>要执行某些处理，但是不整体刷新页面的情况下，可以使用javascript:void(0),如Ajax异步处理的时候</LI>
+  <LI>如果要对页面进行整体刷新是就不要使用javascript:void(0)。</LI></UL></DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

@@ -1,0 +1,567 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0080)http://172.13.19.31:6060/note_html/web/Javascript/1001040-event事件处理机制.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>event事件处理机制</TITLE> <LINK href="event事件处理机制_files/standalone.css" rel="stylesheet"> 
+<LINK href="event事件处理机制_files/overlay-apple.css" rel="stylesheet"> <LINK href="event事件处理机制_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="event事件处理机制_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="event事件处理机制_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">event事件处理机制</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-06-29 11:04:37</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>Event 对象</H3>
+<P>Event 对象代表事件的状态，比如事件在其中发生的元素、键盘按键的状态、鼠标的位置、鼠标按钮的状态。</P>
+<P>事件通常与函数结合使用，函数不会在事件发生前被执行！</P>
+<P class="note"><SPAN>IE:</SPAN> Internet Explorer, <SPAN>F:</SPAN> Firefox, 
+<SPAN>O:</SPAN> Opera, <SPAN>W3C:</SPAN> W3C 标准.</P>
+<DIV>
+<H3>事件句柄　(Event Handlers)</H3>
+<P>HTML 4.0 的新特性之一是能够使 HTML 事件触发浏览器中的行为，比如当用户点击某个 HTML 元素时启动一段 
+JavaScript。下面是一个属性列表，可将之插入 HTML 标签以定义事件的行为。</P>
+<TABLE align="center" style="width: 100%; text-align: center;" border="1">
+  <TBODY>
+  <TR>
+    <TH style="width: 20%;">属性</TH>
+    <TH>此事件发生在何时...</TH>
+    <TH style="width: 7%;">IE</TH>
+    <TH style="width: 7%;">F</TH>
+    <TH style="width: 7%;">O</TH>
+    <TH style="width: 7%;">W3C</TH></TR>
+  <TR>
+    <TD>onabort</TD>
+    <TD>图像的加载被中断。</TD>
+    <TD>4</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>onblur</TD>
+    <TD>元素失去焦点。</TD>
+    <TD>3</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>onchange</TD>
+    <TD>域的内容被改变。</TD>
+    <TD>3</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>onclick</TD>
+    <TD>当用户点击某个对象时调用的事件句柄。</TD>
+    <TD>3</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>ondblclick</TD>
+    <TD>当用户双击某个对象时调用的事件句柄。</TD>
+    <TD>4</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>onerror</TD>
+    <TD>在加载文档或图像时发生错误。</TD>
+    <TD>4</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>onfocus</TD>
+    <TD>元素获得焦点。</TD>
+    <TD>3</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>onkeydown</TD>
+    <TD>某个键盘按键被按下。</TD>
+    <TD>3</TD>
+    <TD>1</TD>
+    <TD>No</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>onkeypress</TD>
+    <TD>某个键盘按键被按下并松开。</TD>
+    <TD>3</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>onkeyup</TD>
+    <TD>某个键盘按键被松开。</TD>
+    <TD>3</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>onload</TD>
+    <TD>一张页面或一幅图像完成加载。</TD>
+    <TD>3</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>onmousedown</TD>
+    <TD>鼠标按钮被按下。</TD>
+    <TD>4</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>onmousemove</TD>
+    <TD>鼠标被移动。</TD>
+    <TD>3</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>onmouseout</TD>
+    <TD>鼠标从某元素移开。</TD>
+    <TD>4</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>onmouseover</TD>
+    <TD>鼠标移到某元素之上。</TD>
+    <TD>3</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>onmouseup</TD>
+    <TD>鼠标按键被松开。</TD>
+    <TD>4</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>onreset</TD>
+    <TD>重置按钮被点击。</TD>
+    <TD>4</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>onresize</TD>
+    <TD>窗口或框架被重新调整大小。</TD>
+    <TD>4</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>onselect</TD>
+    <TD>文本被选中。</TD>
+    <TD>3</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>onsubmit</TD>
+    <TD>确认按钮被点击。</TD>
+    <TD>3</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>onunload</TD>
+    <TD>用户退出页面。</TD>
+    <TD>3</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR></TBODY></TABLE></DIV>
+<DIV>
+<H3>鼠标 / 键盘属性</H3>
+<TABLE align="center" style="width: 100%; text-align: center;" border="1">
+  <TBODY>
+  <TR>
+    <TH style="width: 20%;">属性</TH>
+    <TH>描述</TH>
+    <TH style="width: 7%;">IE</TH>
+    <TH style="width: 7%;">F</TH>
+    <TH style="width: 7%;">O</TH>
+    <TH style="width: 7%;">W3C</TH></TR>
+  <TR>
+    <TD>altKey</TD>
+    <TD>返回当事件被触发时，"ALT" 是否被按下。</TD>
+    <TD>6</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>button</TD>
+    <TD>返回当事件被触发时，哪个鼠标按钮被点击。</TD>
+    <TD>6</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>clientX</TD>
+    <TD>返回当事件被触发时，鼠标指针的水平坐标。</TD>
+    <TD>6</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>clientY</TD>
+    <TD>返回当事件被触发时，鼠标指针的垂直坐标。</TD>
+    <TD>6</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>ctrlKey</TD>
+    <TD>返回当事件被触发时，"CTRL" 键是否被按下。</TD>
+    <TD>6</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>metaKey</TD>
+    <TD>返回当事件被触发时，"meta" 键是否被按下。</TD>
+    <TD>No</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>relatedTarget</TD>
+    <TD>返回与事件的目标节点相关的节点。</TD>
+    <TD>No</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>screenX</TD>
+    <TD>返回当某个事件被触发时，鼠标指针的水平坐标。</TD>
+    <TD>6</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>screenY</TD>
+    <TD>返回当某个事件被触发时，鼠标指针的垂直坐标。</TD>
+    <TD>6</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>shiftKey</TD>
+    <TD>返回当事件被触发时，"SHIFT" 键是否被按下。</TD>
+    <TD>6</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR></TBODY></TABLE></DIV>
+<DIV>
+<H3>IE 属性</H3>
+<P>除了上面的鼠标/事件属性，IE 浏览器还支持下面的属性：</P>
+<TABLE align="center" style="width: 100%; text-align: center;" border="1">
+  <TBODY>
+  <TR>
+    <TH style="width: 20%;">属性</TH>
+    <TH>描述</TH></TR>
+  <TR>
+    <TD>cancelBubble</TD>
+    <TD>如果事件句柄想阻止事件传播到包容对象，必须把该属性设为 true。</TD></TR>
+  <TR>
+    <TD>fromElement</TD>
+    <TD>对于 mouseover 和 mouseout 事件，fromElement 引用移出鼠标的元素。</TD></TR>
+  <TR>
+    <TD>keyCode</TD>
+    <TD>对于 keypress 事件，该属性声明了被敲击的键生成的 Unicode 字符码。对于 keydown 和 keyup 
+      事件，它指定了被敲击的键的虚拟键盘码。虚拟键盘码可能和使用的键盘的布局相关。</TD></TR>
+  <TR>
+    <TD>offsetX,offsetY</TD>
+    <TD>发生事件的地点在事件源元素的坐标系统中的 x 坐标和 y 坐标。</TD></TR>
+  <TR>
+    <TD>returnValue</TD>
+    <TD>如果设置了该属性，它的值比事件句柄的返回值优先级高。把这个属性设置为 fasle，可以取消发生事件的源元素的默认动作。</TD></TR>
+  <TR>
+    <TD>srcElement</TD>
+    <TD>对于生成事件的 Window 对象、Document 对象或 Element 对象的引用。</TD></TR>
+  <TR>
+    <TD>toElement</TD>
+    <TD>对于 mouseover 和 mouseout 事件，该属性引用移入鼠标的元素。</TD></TR>
+  <TR>
+    <TD>x,y</TD>
+    <TD>事件发生的位置的 x 坐标和 y 坐标，它们相对于用CSS动态定位的最内层包容元素。</TD></TR></TBODY></TABLE></DIV>
+<DIV>
+<H3>标准 Event 属性</H3>
+<P>下面列出了 2 级 DOM 事件标准定义的属性。</P>
+<TABLE align="center" style="width: 100%; text-align: center;" border="1">
+  <TBODY>
+  <TR>
+    <TH style="width: 20%;">属性</TH>
+    <TH>描述</TH>
+    <TH style="width: 7%;">IE</TH>
+    <TH style="width: 7%;">F</TH>
+    <TH style="width: 7%;">O</TH>
+    <TH style="width: 7%;">W3C</TH></TR>
+  <TR>
+    <TD>bubbles</TD>
+    <TD>返回布尔值，指示事件是否是起泡事件类型。</TD>
+    <TD>No</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>cancelable</TD>
+    <TD>返回布尔值，指示事件是否可拥可取消的默认动作。</TD>
+    <TD>No</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>currentTarget</TD>
+    <TD>返回其事件监听器触发该事件的元素。</TD>
+    <TD>No</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>eventPhase</TD>
+    <TD>返回事件传播的当前阶段。</TD>
+    <TD>&nbsp;</TD>
+    <TD>&nbsp;</TD>
+    <TD>&nbsp;</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>target</TD>
+    <TD>返回触发此事件的元素（事件的目标节点）。</TD>
+    <TD>No</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>timeStamp</TD>
+    <TD>返回事件生成的日期和时间。</TD>
+    <TD>No</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>type</TD>
+    <TD>返回当前 Event 对象表示的事件的名称。</TD>
+    <TD>6</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR></TBODY></TABLE></DIV>
+<DIV>
+<H3>标准 Event 方法</H3>
+<P>下面列出了 2 级 DOM 事件标准定义的方法。IE 的事件模型不支持这些方法：</P>
+<TABLE align="center" style="width: 100%; text-align: center;" border="1">
+  <TBODY>
+  <TR>
+    <TH style="width: 20%;">方法</TH>
+    <TH>描述</TH>
+    <TH style="width: 7%;">IE</TH>
+    <TH style="width: 7%;">F</TH>
+    <TH style="width: 7%;">O</TH>
+    <TH style="width: 7%;">W3C</TH></TR>
+  <TR>
+    <TD>initEvent()</TD>
+    <TD>初始化新创建的 Event 对象的属性。</TD>
+    <TD>No</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>preventDefault()</TD>
+    <TD>通知浏览器不要执行与事件关联的默认动作。</TD>
+    <TD>No</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR>
+  <TR>
+    <TD>stopPropagation()</TD>
+    <TD>不再派发事件。</TD>
+    <TD>No</TD>
+    <TD>1</TD>
+    <TD>9</TD>
+    <TD>Yes</TD></TR></TBODY></TABLE></DIV>
+<H3>为键盘添加敲击事件</H3>
+<PRE class="brush: js;">var eventHandler = function(e){
+	if(navigator.appName == "Microsoft Internet Explorer"){
+		var oEvent = window.event;
+ 　　    　　	var keycode = oEvent.keyCode;  
+ 　　    　　	var realkey = String.fromCharCode(oEvent.keyCode);  
+ 　　    
+ 　　    	if(keycode == 13 &amp;&amp; oEvent.ctrlKey){
+ 　　    		alert("您按下了ctrl+enter键");
+ 　　    	}else{
+ 　　    		 alert("按键码: " + keycode + " 字符: " + realkey);
+ 　　    	}
+ 　　    
+　　    }else{//非ie
+　　   　　   	var keycode = e.which;  
+　　 　 　   	var realkey = String.fromCharCode(e.which); 
+　　 　 　   	
+　　 　 　   	if(keycode == 13 &amp;&amp; e.ctrlKey){
+　　 　 　　    	alert("您按下了ctrl+enter键");
+　　 　 　　   }else{
+　　 　 　　  	  alert("按键码: " + keycode + " 字符: " + realkey);
+　　 　 　　   }
+　　 　 　   	
+　    }
+　  
+};
+
+document.onkeydown = eventHandler;
+</PRE>
+<DIV style="color: blue; font-size: 1.5em;">敲击键盘试试..</DIV>
+<DIV 
+style="margin-top: 20px;">keydown/keyup和keypress的区别，有一条比较通用的规则，keydown事件对于功能按键来说是最有用的，而keypress事件对于可打印按键来说是最有用的 
+<FONT 
+color="red">键盘记录主要是针对于可打印字符和部分功能按键，所以keypress是首选，然而正如第一部分提到的，IE中keypress不支持功能按键，所以应该用keydown/keyup事件来进行补充</FONT> 
+</DIV>
+<DIV style="margin-top: 8px;">
+<PRE class="brush: js;">	/**按键事件的按键码和字符码
+
+	在IE中，只有一个keyCode属性，并且它的解释取决于事件类型。对于keydown来说，keyCode存储的是按键码，对于 keypress事件来说，keyCode存储
+的是一个字符码。而IE中没有which和charCode属性，所以which和charCode属性始终为undefined。
+
+	FireFox中keyCode始终为0，时间keydown/keyup时，charCode=0，which为按键码。事件keypress时，which和charCode二者的值相同，
+存储了字符码。
+
+	在Opera中，keyCode和which二者的值始终相同，在keydown/keyup事件中，它们存储按键码，在keypress时间中，它们存储字符码，
+而charCode没有定义，始终是undefined。
+*/
+
+//添加全局监听
+if (document.addEventListener) {//如果是Firefox    
+	document.addEventListener("keypress", fireFoxHandler, true);
+} else {
+	document.attachEvent("onkeypress", ieHandler);
+}
+
+function fireFoxHandler(evt) {//firefox
+	if (evt.keyCode == 13) {
+		//操作
+	}
+};
+
+function ieHandler(evt) {
+	if (evt.keyCode == 13) {
+		//操作
+	}
+}
+</PRE></DIV>
+<SCRIPT type="text/javascript">
+
+var eventHandler = function(e){
+	if(navigator.appName == "Microsoft Internet Explorer"){
+		var oEvent = window.event;
+ 　　    　　	var keycode = oEvent.keyCode;  
+ 　　    　　	var realkey = String.fromCharCode(oEvent.keyCode);  
+ 　　    
+ 　　    	if(keycode == 13 && oEvent.ctrlKey){
+ 　　    		alert("您按下了ctrl+enter键");
+ 　　    	}else{
+ 　　    		 alert("按键码: " + keycode + " 字符: " + realkey);
+ 　　    	}
+ 　　    
+　　    }else{//非ie
+　　   　　   	var keycode = e.which;  
+　　 　 　   	var realkey = String.fromCharCode(e.which); 
+　　 　 　   	
+　　 　 　   	if(keycode == 13 && e.ctrlKey){
+　　 　 　　    	alert("您按下了ctrl+enter键");
+　　 　 　　   }else{
+　　 　 　　  	  alert("按键码: " + keycode + " 字符: " + realkey);
+　　 　 　　   }
+　　 　 　   	
+　    }
+　  
+};
+
+document.onkeydown = eventHandler;
+ 
+</SCRIPT>
+ 
+<DIV></DIV>
+<H3>为元素添加事件</H3>
+<H4>HTML代码</H4>
+<PRE class="brush: xml;">&lt;body onload="init();"&gt;
+
+	&lt;!-- 每个html元素都有事件属性 --&gt;
+	&lt;div id="div" 
+	style="background-color: red;width: 10%;height: 200px;"
+	onmouseover="mo(event);" onmouseleave="mv(event);"&gt;大连开发经费了多少&lt;/div&gt;
+	
+	&lt;!-- html每个元素都可以添加事件，有两种方式可以为其添加事件
+		1. 使用元素的事件属性
+		2. 使用js的DOM对象添加
+	 --&gt;
+&lt;/body&gt;
+</PRE>
+<H4>js代码</H4>
+<PRE class="brush: js;">	function init(){
+		//-- 用js添加事件的时候注意：添加事件的时候，要保证元素已加载。如果先添加事件，后加载html元素，那么事件将没有作用
+		document.getElementById("div").onmousedown=function(e){
+			var div = e.target;
+			var r = (Math.random()*255).toFixed(0);
+			var g = (Math.random()*255).toFixed(0);
+			var b = (Math.random()*255).toFixed(0);
+			div.setAttribute('style','background-color: rgb('+r+','+g+','+b+');width: 10%;height: 200px;');
+			div.innerHTML = "鼠标点击";
+		};
+		//== document.getElementById("div") 获取了div的DOM对象
+	}
+	
+	function mo(e){//e.target表示触发当前事件的html元素的DOM对象
+		var div = e.target;
+		div.setAttribute('style','background-color: green;width: 10%;height: 200px;');
+		div.innerHTML = "鼠标移上去";
+	};
+	
+	function mv(e){//e.target表示触发当前事件的html元素的DOM对象
+		var div = e.target;
+		div.setAttribute('style','background-color: red;width: 10%;height: 200px;');
+		div.innerHTML = "鼠标移开";
+	};
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

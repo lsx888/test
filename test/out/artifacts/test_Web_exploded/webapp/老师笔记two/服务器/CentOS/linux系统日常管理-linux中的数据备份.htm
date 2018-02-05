@@ -1,0 +1,175 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0095)http://172.13.19.31:6060/note_html/服务器/CentOS/11104-linux系统日常管理-linux中的数据备份.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>linux系统日常管理-linux中的数据备份</TITLE> <LINK href="linux系统日常管理-linux中的数据备份_files/standalone.css" 
+rel="stylesheet"> <LINK href="linux系统日常管理-linux中的数据备份_files/overlay-apple.css" 
+rel="stylesheet"> <LINK href="linux系统日常管理-linux中的数据备份_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="linux系统日常管理-linux中的数据备份_files/shCoreEclipse.css" 
+rel="stylesheet">	 <LINK href="linux系统日常管理-linux中的数据备份_files/my-highlighter.css" 
+rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">linux系统日常管理-linux中的数据备份</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-09-16 17:19:26</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<P 
+style="text-indent: 0.8cm;">数据备份，不用说太多吧，毫无疑问很重要。在你以后的系统维护工作中，一定要把数据备份当回事，认真对待。在linux上作为数据备份的工具很多，这里讲解rsync 
+从字面上的意思你可以理解为remote sync 
+（远程同步）这样可以让你理解的更深刻一些。Rsync不仅可以远程同步数据（类似于scp），当然还可以本地同步数据（类似于cp），但不同于cp或scp的一点是，rsync不像cp/scp一样会覆盖以前的数据（如果数据已经存在），它会先判断已经存在的数据和新数据有什么不同，只有不同时才会把不同的部分覆盖掉。如果你的linux上下面看例子吧。（如果没有rsync命令请使用yum 
+install -y rsync安装） </P>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-linux中的数据备份_files/20150916-26.png"></DIV></DIV>
+<H4>rsync的命令格式</H4>
+<PRE class="brush: bash;">rsync [OPTION]... SRC DEST
+
+rsync [OPTION]... SRC [USER@]HOST:DEST
+
+rsync [OPTION]... [USER@]HOST:SRC DEST
+
+rsync [OPTION]... [USER@]HOST::SRC DEST
+
+rsync [OPTION]... SRC [USER@]HOST::DEST
+
+在一开始举的两个例子，第一个例子即为第一种格式，第二个例子即为第二种格式，但不同的是，并没有加user@host 如果不加默认指的是root 。第三种格式是从远程目录同步数据到本地。
+第四种以及第五种格式使用了两个冒号，这种方式和前面的方式的不同在于验证方式不同，稍后详细介绍。
+</PRE>
+<H4>rsync常用选项</H4>
+<PRE class="brush: bash;">-a（重要） ：归档模式，表示以递归方式传输文件，并保持所有属性，等同于-rlptgoD ，-a选项后面可以跟一个 --no-OPTION 这个表示关闭-rlptgoD中的某一个例如 -a --no-l 等同于-rptgoD
+
+-r ：对子目录以递归模式处理，主要是针对目录来说的，如果单独传一个文件不需要加-r，但是传输的是目录必须加-r选项
+
+-v ：打印一些信息出来，比如速率，文件数量等
+
+-l ：保留软链结
+
+-L （重要）：向对待常规文件一样处理软链结，如果是SRC中有软连接文件，则加上该选项后将会把软连接指向的目标文件拷贝到DST
+
+-p ：保持文件权限
+
+-o ：保持文件属主信息
+
+-g ：保持文件属组信息
+
+-D ：保持设备文件信息
+
+-t ：保持文件时间信息
+
+--delete（重要） ：删除那些DST中SRC没有的文件
+
+--exclude=PATTERN （重要）：指定排除不需要传输的文件，等号后面跟文件名，可以是万用字符模式（如*.txt）
+
+-u （重要）：加上这个选项后将会把DST中比SRC还新的文件排除掉，不会覆盖
+</PRE>
+<H4>rsync示例</H4>
+<DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>1） 建立目录以及文件</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-linux中的数据备份_files/20150916-27.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>建立这些文件的目的就是为做试验做一些准备工作</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-linux中的数据备份_files/20150916-28.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>加上-v选项来获得更多的信息，上例中因为没有使用-r选项导致只能拷贝目录但不能拷贝目录下面的内容（英文翻译过来就是“忽略了目录test1/.”，其中test1/.指的就是test1目录内部的所有文件），所以虽然创建了test2目录，但是test2目录为空。下面再看看那个-l选项的作用。</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-linux中的数据备份_files/20150916-29.png"></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-linux中的数据备份_files/20150916-30.png"></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>4） 使用-u选项</FONT></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>首先查看一下test1/1 和 
+test2/1的访问时间（肯定是一样的），然后使用touch修改一下test2/1的访问时间（此时test2/1要比test1/1的访问时间晚了一些），如果不加-u选项的话，会把test2/1的访问时间变成和test1/1的访问时间一样。这样讲也许你会迷糊，不妨看一看。</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-linux中的数据备份_files/20150916-31.png"></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-linux中的数据备份_files/20150916-32.png"></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-linux中的数据备份_files/20150916-33.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>最后简单总结一下，平时你使用rsync同步数据的时候，使用-a选项基本上就可以达到我们想要的效果了，只是有时候会有个别的需求，会用到-a 
+--no-OPTION, -u, -L, --delete, 
+--exclude这些选项，但是笔者要求你把上面这些全部掌握，毕竟这才几个而已，大部分选项笔者都没有介绍。如果在以后的工作中遇到特殊需求了，就去查一下rsync的man文档吧。</FONT></DIV></DIV>
+<H4>rsync 应用实例</H4>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-linux中的数据备份_files/20150916-34.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>这个则为第三种方式。这两种方式如果写到脚本里，备份起来就有麻烦了，因为要输入密码，脚本本来就是自动的，不可能做到的。但是不代表没有解决办法。那就是通过密钥验证，密钥不设立密码就ok了。还记得在前面笔者曾经介绍过通过密钥登录远程主机吗，下面要讲的内容就是那些东西了。</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-linux中的数据备份_files/20150916-35.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>在这个过程中会有一些交互的过程，因为笔者的/root/.ssh/id_rsa已经存在，所以会问是否覆盖，笔者选择覆盖，然后会提示要输入这个密钥的密码，出于安全考虑应该定义个密码，但是我们的目的就是为了自动化同步数据，所以这里不输入任何密码，直接按回车，即密码为空。最后则生成了私钥(/root/.ssh/id_rsa)和公钥文件(/root/.ssh/id_rsa.pub)</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-linux中的数据备份_files/20150916-36.png"></DIV></DIV>
+<DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>2）通过后台服务的方式</FONT></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>这种方式可以理解成这样，在远程主机上建立一个rsync的服务器，在服务器上配置好rsync的各种应用，然后本机作为rsync的一个客户端去连接远程的rsync服务器。下面笔者就介绍一下，如何去配置一台rsync服务器。</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-linux中的数据备份_files/20150916-37.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>其中配置文件分为两部分全部配置部分和模块配置部分，全局部分就是几个参数而已，就像笔者的rsyncd.conf中port, 
+log file, pid file, address这些都属于全局配置，而[test] 
+以下部分就是模块配置部分了。一个配置文件中可以有多个模块，模块名自定义，格式就像笔者的rsyncd.conf中的这样。其实模块中的一些参数例如use 
+chroot, max connections, udi, gid, auth users, secrets file以及hosts 
+allow都可以配置成全局的参数。当然笔者给出的参数并不是所有的，你可以通过man rsyncd.conf 获得更多信息</FONT></DIV></DIV>
+<PRE class="brush: bash;">下面就简单解释一下这些参数的意义：
+
+port ：指定在哪个端口启动rsyncd服务，默认是873
+
+log file ：指定日志文件
+
+pid file ：指定pid文件，这个文件的作用涉及到服务的启动以及停止等进程管理操作
+
+address ：指定启动rsyncd服务的IP，假如你的机器有多个IP，就可以指定其中一个启动rsyncd服务，默认是在全部IP上启动
+
+[test] ：指定模块名，自定义
+
+path ：指定数据存放的路径
+
+use chroot ：true|false 默认是true，意思是在传输文件以前首先chroot到path参数所指定的目录下。这样做的原因是实现额外的安全防护，但是缺点是需要以roots权限，
+并且不能备份指向外部的符号连接所指向的目录文件。默认情况下chroot值为true，如果你的数据当中有软连接文件的话建议设置成false。
+
+max connections ：指定最大的连接数，默认是0即没有限制
+
+read only ：ture|false 如果为true则不能上传到该模块指定的路径下
+
+list ：指定当用户查询该服务器上的可用模块时，该模块是否被列出，设定为true则列出，false则隐藏
+
+uid/gid ：指定传输文件时，以哪个用户/组的身份传输
+
+auth users ：指定传输时要使用的用户名
+
+secrets file ：指定密码文件，该参数连同上面的参数如果不指定则不使用密码验证
+
+hosts allow ：指定被允许连接该模块的主机，可以是IP或者网段，如果是多个，之间用空格隔开
+</PRE>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-linux中的数据备份_files/20150916-38.png"></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-linux中的数据备份_files/20150916-39.png"></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux系统日常管理-linux中的数据备份_files/20150916-40.png"></DIV></DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

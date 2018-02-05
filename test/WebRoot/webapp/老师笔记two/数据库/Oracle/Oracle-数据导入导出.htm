@@ -1,0 +1,269 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0080)http://172.13.19.31:6060/note_html/数据库/Oracle/108010-Oracle-数据导入导出.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>Oracle-数据导入导出</TITLE> <LINK href="Oracle-数据导入导出_files/standalone.css" 
+rel="stylesheet"> <LINK href="Oracle-数据导入导出_files/overlay-apple.css" rel="stylesheet"> 
+<LINK href="Oracle-数据导入导出_files/article_edit.css" rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="Oracle-数据导入导出_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="Oracle-数据导入导出_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">Oracle-数据导入导出</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-12-29 16:46:24</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>数据导入导出，示例1</H3>
+<H4>1. 导出 SCOTT 模式下所有的数据库对象</H4>
+<PRE class="brush: sql;">在 DOS 提示符下输入以下代码：
+exp soctt/tiger file=c:\scott.dmp owner=scott
+
+--------------------------------------------------------
+-- 在这里 exp 是一个 DOS 命令，用于从数据库中导出数据；
+
+-- soctt/tiger：指定登录的用户名和密码；
+
+-- file：制定导出文件存放的位置和文件名，一般扩展名为 dmp；
+
+-- owner：表示以用户的方式导出数据。
+-- 远程导出：exp soctt/tiger@192.168.0.100:1521/ora11 file=c:\scott.dmp owner=scott
+--------------------------------------------------------
+</PRE>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="Oracle-数据导入导出_files/20150928-01.png"></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>以用户方式导出数据</FONT></DIV></DIV>
+<H4>2.以 SCOTT 用户登录数据库，将 dept 和 emp 表 DROP 掉</H4>
+<PRE class="brush: sql;">DROP TABLE emp;
+
+DROP TABLE dept;
+
+系统显示“表已删除” 。
+如何恢复表的数据呢？
+</PRE>
+<H4>3.恢复表的数据</H4>
+<PRE class="brush: sql;">在 DOS 提示符下输入如下语句：
+
+imp scott/tiger file=c:\scott.dmp full=y ignore=y
+
+----------------------------------------------------------
+-- scott/tiger：指定登录的用户名和密码；
+
+-- file：从那个文件获取数据，应是通过 EXP 命令导出的文件；
+
+-- full：导入文件中的所有内容；
+
+-- ignore：忽略导入过程中出现的错误。
+
+-- 远程导入：imp scott/tiger@192.168.0.100:1521/ora11 file=c:\scott.dmp full=y ignore=y
+---------------------------------------------------------
+</PRE>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="Oracle-数据导入导出_files/20150929-01.png"></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>以用户方式导入数据</FONT></DIV></DIV>
+<H3>数据导入导出，示例2：将 SCOTT 模式下的 dept 和 emp 表导入到 student 模式下</H3>
+<PRE class="brush: sql;">-- 1.首先以表的方式将 SCOTT 模式下的 dept 和 emp 表导出，在 DOS 提示符下，输入如下命令：
+
+exp scott/tiger file=c:\table.dmp tables=(dept,emp)
+
+-- 2.将导出的数据导入到 student 用户模式下，在 DOS 提示符下，输入如下命令：
+
+imp system/abcdef file=c:\table.dmp fromuser=SCOTT touser=student tables=(dept,emp)
+
+远程数据导入导出：
+
+exp xhcp_bns/xhcp_bns@192.168.10.191:1521/ora11 file=/app/xhcp_pro/bak_db.dmp tables=TAB_CMS_ARTICLE,tab_country,tab_city,tab_area,tab_county
+
+imp xhcp_bns/xhcp_bns@192.168.10.191:1521/ora11 file=/app/xhcp_pro/soft/sql/bak_db.dmp tables=TAB_CMS_ARTICLE,tab_country,tab_city,tab_area,tab_county
+
+</PRE>
+<P 
+style="color: red; text-indent: 0.8cm;">注意：将数据从一个用户导入另一个用户，一般由数据库管理员来完成，普通用户不能完成此操作。 
+</P>
+<H3>Export工具参数</H3>
+<TABLE>
+  <TBODY>
+  <TR>
+    <TH>参数名</TH>
+    <TH>参数描述</TH></TR>
+  <TR>
+    <TD>USERID</TD>
+    <TD>用户名/口令，用于登录到数据库中</TD></TR>
+  <TR>
+    <TD>FULL</TD>
+    <TD>是否将整个数据导出如： FULL=Y， 只有具有 EXP_FULL_DATABASE权限的用户才能导出整个数据库</TD></TR>
+  <TR>
+    <TD>BUFFER</TD>
+    <TD>数据缓冲区的大小</TD></TR>
+  <TR>
+    <TD>OWNER</TD>
+    <TD>以用户方式导出时，用户列表</TD></TR>
+  <TR>
+    <TD>FILE</TD>
+    <TD>输出文件(EXPDAT.DMP)， 默认存放在 C:\Documents and Settings\ （用户名）文件夹下</TD></TR>
+  <TR>
+    <TD>TABLES</TD>
+    <TD>以表方式导出时表的列表，如果是不是导出登录模式下的表，需要制定模式如（SCOTT.EMP）</TD></TR>
+  <TR>
+    <TD>INCTYPE</TD>
+    <TD>增量导出类型</TD></TR>
+  <TR>
+    <TD>ROWS</TD>
+    <TD>是否导出数据行(Y)</TD></TR>
+  <TR>
+    <TD>PARFILE</TD>
+    <TD>参数文件名</TD></TR>
+  <TR>
+    <TD>LOG</TD>
+    <TD>屏幕输出的日志文件</TD></TR></TBODY></TABLE>
+<H3>Import工具参数</H3>
+<TABLE>
+  <TBODY>
+  <TR>
+    <TH>参数名</TH>
+    <TH>参数描述</TH></TR>
+  <TR>
+    <TD>USERID</TD>
+    <TD>用户名/口令，用于登录到数据库中</TD></TR>
+  <TR>
+    <TD>FULL</TD>
+    <TD>导入整个文件，只有具有 IMP_FULL_DATABASE 权限的用户才能导入整个数据库</TD></TR>
+  <TR>
+    <TD>BUFFER</TD>
+    <TD>数据缓冲区大小</TD></TR>
+  <TR>
+    <TD>FROMUSER</TD>
+    <TD>所有人（导出的用户）用户名列表</TD></TR>
+  <TR>
+    <TD>FILE</TD>
+    <TD>输入文件(EXPDAT.DMP)</TD></TR>
+  <TR>
+    <TD>TOUSER</TD>
+    <TD>导入的用户名列表</TD></TR>
+  <TR>
+    <TD>TABLES</TD>
+    <TD>表名列表</TD></TR>
+  <TR>
+    <TD>IGNORE</TD>
+    <TD>忽略创建错误(N)</TD></TR>
+  <TR>
+    <TD>INCTYPE</TD>
+    <TD>增量导入类型</TD></TR>
+  <TR>
+    <TD>PARFILE</TD>
+    <TD>参数文件名</TD></TR>
+  <TR>
+    <TD>LOG</TD>
+    <TD>屏幕输出的日志文件</TD></TR></TBODY></TABLE>
+<H3>增量导入导出</H3>
+<PRE class="brush: sql;">在导入导出备份方式中，提供了很强大的一种方法，就是增量导出/导入，但是它必须作
+为 System 来完成增量的导入导出，而且只能是对整个数据库进行实施。增量导出又可以分
+为三种类别：
+
+1. 完全增量导出(Complete Export)：这种方式将把整个数据库文件导出备份：
+exp system/manager inctype=complete file=20041125.dmp
+
+为了方便检索和事后的查询，通常我们将备份文件以日期或者其他有明确含义的字符命
+名。
+
+2. 增量型增量导出(Incremental Export)： 这种方式将只会备份上一次备份后改变
+的结果：
+exp system/manager inctype=incremental file=20041125.dmp
+
+3. 累积型增量导出(Cumulate Export)：这种方式是导出自上次完全增量导出后数
+据库变化的信息：
+exp system/manager inctype=cumulative file=20041125.dmp
+
+通常情况下， DBA 们所要做的， 就是按照企业指定或者是自己习惯的标准(如果是自己指
+定的标准， 建议写好计划说明)， 一般， 我们采用普遍认可的下面的方式进行每天的增量备份：
+Mon：完全备份（A）
+Tue：增量导出（B）
+Wed：增量导出（C）
+Thu：增量导出（D）
+Fri：累计导出（E）
+Sat：增量导出（F）
+Sun：增量导出（G）
+
+这样，我们可以保证每周数据的完整性，以及恢复时的快捷和最大限度的数据损失。恢
+复的时候，假设事故发生在周末，DBA 可按这样的步骤来恢复数据库：
+
+第一步：用命令 CREATE DATABASE 重新生成数据库结构；
+
+第二步：创建一个足够大的附加回滚。
+
+第三步：完全增量导入 A：
+imp system/manager inctype=RESTORE FULL=y FILE=A
+
+第四步：累计增量导入 E：
+imp system/manager inctype=RESTORE FULL=Y FILE=E
+
+第五步：最近增量导入 F：
+imp system/manager inctype=RESTORE FULL=Y FILE=F
+</PRE>
+<H3>导入导出常见问题</H3>
+<H4>1.EXP-00091: Exporting questionable statistics或EXP-00091: 
+正在导出有问题的统计信息。(此问题为警告问题)</H4>
+<PRE class="brush: sql;">产生的原因是因为我们exp工具所在的环境变量中的NLS_LANG与DB中的NLS_CHARACTERSET不一致
+
+有两种方法来查看DB中的NLS_CHARACTERSET的值：
+1）select * from nls_database_parameters t where t.parameter='NLS_CHARACTERSET';
+ PARAMETER                 VALUE   
+------------------------- ---------------   
+NLS_CHARACTERSET          AL32UTF8
+
+2）select * from v$nls_parameters  where parameter='NLS_CHARACTERSET'; 
+ PARAMETER                 VALUE   
+------------------------- ---------------   
+NLS_CHARACTERSET          AL32UTF8
+
+windows下查看NLS_LANG环境变量
+echo %NLS_LANG%
+linux下查看NLS_LANG环境变量
+echo $NLS_LANG
+
+将DB和NLS_LANG环境变量修改为一致即可。
+
+windows下，可能会涉及到修改注册表：
+注册表里 \HKEY_LOCAL_MACHINE\SOFTWARE\ORACLE 查找键 NLS_LANG,这个键由Oracle标准客户端安装创建, 值是 NA 。这个导致了 ORA-12705错误。解决方法就是
+修改NA为SIMPLIFIED CHINESE_CHINA.ZHS16GBK。
+
+ Linux下 如果环境变量 NLS_LANG 值是NA 会引起 ORA-12705 错误，解决方法是修改set NLS_LANG＝SIMPLIFIED CHINESE_CHINA.ZHS16GBK。
+（SIMPLIFIED CHINESE_CHINA.ZHS16GBK是NLS_LANG的值，可以自己根据实际情况修改）
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

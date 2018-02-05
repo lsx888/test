@@ -1,0 +1,204 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0082)http://172.13.19.31:6060/note_html/服务器/Apache-httpd/1002010-目录结构与启动.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>目录结构与启动</TITLE> <LINK href="目录结构与启动_files/standalone.css" rel="stylesheet"> 
+<LINK href="目录结构与启动_files/overlay-apple.css" rel="stylesheet"> <LINK href="目录结构与启动_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="目录结构与启动_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="目录结构与启动_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">目录结构与启动</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-11-24 15:50:00</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>目录结构</H3>
+<PRE class="brush: bash;">[root@Centos ~]# tree -d ${HOME}/support/apache2/
+...../apache2/
+├── bin    #存放启动或关闭httpd的脚本文件
+├── build
+├── cgi-bin  #cgi程序文件的存放目录
+├── conf
+│   └── extra    #扩展配置文件
+│   │   ├── httpd-autoindex.conf
+│   │   ├── httpd-languages.conf
+│   │   ├── httpd-ssl.conf
+│   │   ├── httpd-dav.conf
+│   │   ├── httpd-autoindex.conf
+│   │   ├── httpd-manual.conf
+│   │   ├── httpd-userdir.conf
+│   │   ├── httpd-default.conf
+│   │   ├── httpd-mpm.conf
+│   │   ├── httpd-vhosts.conf
+│   │   ├── httpd-info.conf
+│   │   ├── httpd-multilang-errordoc.conf
+│   │   └── proxy-html.conf
+│   └── httpd.conf 主配置文件
+├── error    #发生服务器端错误时返回给客户端的错误页面
+│   └── include   
+├── htdocs  #Web页面所在的目录
+├── icons   #存放httpd的图标文件
+│   └── small
+├── include  #存放头文件
+├── logs     #httpd的日志文件
+├── man      #帮助手册
+│   ├── man1
+│   └── man8
+├── manual  #httpd的配置手册
+│   ├── developer
+│   ├── faq
+│   ├── howto
+│   ├── images
+│   ├── misc
+│   ├── mod
+│   ├── platform
+│   ├── programs
+│   ├── rewrite
+│   ├── ssl
+│   ├── style
+│   │   ├── css
+│   │   ├── lang
+│   │   ├── latex
+│   │   ├── scripts
+│   │   └── xsl
+│   │       └── util
+│   └── vhosts
+└── modules  #存放httpd的模块
+</PRE>
+<H3>apache启动、停止、重启命令</H3>
+<PRE class="brush: bash;">apahce启动命令：
+${HTTPD_HOME}/bin/apachectl start 启动
+
+apache停止命令
+${HTTPD_HOME}/bin/apachectl stop   停止
+
+apache重新启动命令：
+${HTTPD_HOME}/bin/apachectl restart 重启
+
+要在重启 Apache 服务器时不中断当前的连接，则应运行：
+${HTTPD_HOME}/sbin/apachectl graceful
+
+如果apache安装成为linux的服务的话，可以用以下命令操作：（关于linux服务的启动请参考CentOS-10302-设置开机自启动文章内容，一般情况下，我们都会将httpd设置为开机自启动）
+
+service httpd start 启动
+
+service httpd restart 重新启动
+
+service httpd stop 停止服务
+</PRE>
+<H3>启动常见问题</H3>
+<OL>
+  <LI>
+  <H4>启动时提示异常：AH00558</H4>
+<PRE class="brush: bash;">启动时提示异常：AH00558: httpd: Could not reliably determine the server's fully qualified domain name, 
+using 192.168.2.128. Set the 'ServerName' directive globally to suppress this message
+或者
+启动时提示异常：httpd: Could not reliably determine the server's fully qualified domain name, using 127.0.0.1 for ServerName
+
+
+修改/etc/hosts文件，配置一个主机名，对应主机ip（测试过，非主要修改）
+
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+192.168.2.104 www.test.com www
+
+
+或者
+修改${APACHE_HOME}/conf/httpd.conf文件，将
+#ServerName www.example.com:80
+
+修改为：ServerName IP地址:80
+注意：ServerName的端口号要与Listen 80的端口号对应，（80端口需要root权限才能使用，所以建议修改为8080端口）
+</PRE></LI>
+  <LI>
+  <H4>启动后远程无法访问</H4>
+<PRE class="brush: bash;">查看防火墙设置：
+   iptables -nvL | grep tcp或者iptables -nvL | grep 8080
+   查看端口是否开通，如果未开通，使用iptables开通即可（开通方式请查看 服务器 - CentOS - 11102-linux系统日常管理-linux的防火墙）
+</PRE></LI>
+  <LI>
+  <H4>启动后远程访问403错误，没有权限</H4>
+<PRE class="brush: bash;">1.httpd.conf文件
+DocumentRoot /usr/local/www/data
+
+&lt;directory "/usr/local/www/data"&gt;
+Options Indexes FollowSymLinks
+AllowOverride None
+Order allow,deny
+Allow from all
+&lt;/directory&gt;我们常常会重新指定web文件存放的目录，比如设定
+DocumentRoot /var/www
+这时往往会忽略了对后面的Directory 项的修改，必须将里面的路径同时修改为 /var/www才行，否则将会访问所有目录都出现 403 forbidden错误。
+
+2.
+&lt;Directory /&gt;
+Options FollowSymLinks
+AllowOverride None
+Order deny,allow
+Deny from all
+&lt;/Directory&gt;
+ 
+
+这里的“Deny from all”已经拒绝了一切连接。把该行改成“allow from all”，修改后的代码如下，问题解决。 
+
+&lt;Directory /&gt;
+Options FollowSymLinks
+AllowOverride None
+Order deny,allow
+allow from all
+&lt;/Directory&gt;
+
+
+3.配置了不同的VirtualHost，并且有某个VirtualHost的DocumentRoot不在全局的DocumentRoot目录下，这时必须在全局种单独增加对该目录的Directory 项进行设置，
+否则该VirtualHost下的所有访问均会出现403 forbidden错误。
+
+这个问题是因为Apache2对于权限和安全的更高要求，对分布在不同磁盘上的目录文件进行严格管理，我们进行web规划的时候必须注意这一点。
+
+
+4.用非root账户安装的httpd，而使用root账号启动，导致的无法访问。记住一点就行了，用什么用户安装就用什么用户启动。
+
+5.其他原因
+1）：看看User Group指定的用户有没有权限访问那个目录，否则用chown修改目录的所有者
+2）：看看是不是seLinux搞得鬼，一般没事把selinux停了再重启linux，selinux的配置文件在/etc/selinux/config，改成disable
+（修改方式可查看 服务器 - CentOS - 11102-linux系统日常管理-linux的防火墙）
+3）：我把所有的都做了发现还是不行，那么可能是apache是用root安装的，把apache卸了用一个非root用户重新安装。
+
+</PRE></LI>
+  <LI></LI></OL>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

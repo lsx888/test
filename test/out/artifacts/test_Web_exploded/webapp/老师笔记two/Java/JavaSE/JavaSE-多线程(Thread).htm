@@ -1,0 +1,281 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0081)http://172.13.19.31:6060/note_html/Java/JavaSE/1017010-JavaSE-多线程(Thread).html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>JavaSE-多线程(Thread)</TITLE> <LINK href="JavaSE-多线程(Thread)_files/standalone.css" 
+rel="stylesheet"> <LINK href="JavaSE-多线程(Thread)_files/overlay-apple.css" rel="stylesheet"> 
+<LINK href="JavaSE-多线程(Thread)_files/article_edit.css" rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="JavaSE-多线程(Thread)_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="JavaSE-多线程(Thread)_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">JavaSE-多线程(Thread)</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-06-13 17:13:30</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>进程和线程</H3>
+<H4>进程</H4>
+<UL>
+  <LI>进程：进程是程序执行的一个实例，比如说，10个用户同时执行IE，那么就有10个独立的进程(尽管他们共享同一个可执行代码)。</LI>
+  <LI>进程的特点：每一个进程都有自己的独立的一块内存空间、一组资源系统。其内部数据和状态都是完全独立的。</LI>
+  <LI>进程的优点是提高CPU运行效率，在同一时间内执行多个程序，即并发执行。但是从严格上讲,也不是绝对的同一时刻执行多个程序，只不过CPU在执行时通过时间片等调度算法不同进程高速切换。</LI>
+  <LI>每个子进程都只有一个父进程。</LI>
+  <LI>守护进程(后台进程)：在系统的引导的时候会开启很多服务，这些服务就叫做守护进程，也叫后台服务程序，它的生命周期较长，在系统关闭时终止。</LI></UL>
+<H4>线程</H4>
+<UL>
+  <LI>线程：一个线程是进程的一个顺序执行流。</LI>
+  <LI>同类的多个线程共享一块内存空间和一组系统资源，线程本身的数据通常只有CPU的寄存器数据，以及一个供程序执行时的堆栈。线程在切换时负荷小，因此，线程也被称为轻负荷进程。<SPAN 
+  style="color: rgb(255, 0, 0);">一个进程中可以包含多个线程。</SPAN></LI></UL>
+<DIV id="content_div_1">
+<H3>Java中线程的实现</H3>
+<UL>
+  <LI>继承Thread类：继承Thread类，覆写run方法。必要时要调用父类Thread类的构造方法，构造子类。如：要给子类设置线程名称的构造方法。实现步骤如下： 
+    
+  <OL>
+    <LI>定义线程类，继承Thread类</LI>
+    <LI>重写run方法</LI>
+    <LI>实例化线程（通过new关键字实例化）</LI>
+    <LI>用实例化的对象，通过.调用start方法，让线程可执行。</LI></OL></LI>
+  <LI>实现Runable接口：重写Runable接口中的run方法。可以在该子类中定义属性，实现多线程的资源共享。也可以在其中定义其他方法。Thread类就实现了Runable接口。推荐使用这种方式实现多线程。实现步骤如下： 
+    
+  <OL>
+    <LI>定义线程类，实现Runable接口</LI>
+    <LI>重写run方法</LI>
+    <LI>实例化线程（通过new关键字实例化），new Thread(自定义线程实例化对象,线程名称)</LI>
+    <LI>用实例化的对象，通过.调用start方法，让线程可执行。</LI></OL></LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_2">
+<H3>为什么实现Runable接口来实现多线程更好</H3>
+<OL>
+  <LI>Java是单继承，如果继承了Thread类，就不能继承其他和业务逻辑相关的父类了。</LI>
+  <LI>使用Runable接口实现多线程，可以实现资源共享，多个线程共享同一资源。</LI></OL></DIV>
+<HR>
+
+<DIV id="content_div_4">
+<H3>Java程序每次运行至少启动几个线程</H3>
+<OL>
+  <LI>main线程</LI>
+  <LI>垃圾回收线程</LI></OL></DIV>
+<HR>
+
+<H3>线程的优先级</H3>
+<UL>
+  <LI>Java线程的优先级从1（Thread.MIN_PRIORITY）到10（Thread.MAX_PRIORITY 
+  ）级别，值越大优先级越高。默认优先级为5（Thread.NORM_PRIORITY）</LI>
+  <LI>设置优先级只是改变线程获取cup资源的几率，但也不能保证，优先级越高的线程先执行。</LI>
+  <LI>使用Thread对象的public final void setPriority(int 
+newPriority)方法设置线程优先级。</LI></UL>
+<H3>父线程和子线程</H3>
+<UL>
+  <LI>如果在线程A中创建了线程B和线程C，那么线程A就是线程B和线程C的父线程。</LI>
+  <LI>执行顺序根据线程优先级来获得cpu资源来决定，不是父线程执行完才执行子线程。只跟父线程中创建子线程的位置有关。</LI></UL>
+<H3>后台线程</H3>
+<UL>
+  <LI>所谓的后台线程，是指在程序运行的时候在后台提供一种通用服务的线程，并且这种线程并不属于程序中不可或缺的部分。</LI>
+  <LI>当所有的非后台线程结束时，程序也就终止了，同时会杀死所有后台线程。(后台线程可以使用死循环)</LI>
+  <LI>反过来说，只要有任何非后台线程(用户线程)还在运行，程序就不会终止。</LI>
+  <LI>后台线程在不执行finally子句的情况下就会终止其run方法。</LI>
+  <LI>后台线程创建的子线程也是后台线程。</LI>
+  <LI>使用Thread类的 public final void 
+  setDaemon(true)方法设置线程为后台线程。（注意：必须在线程调用start方法之前设置为后台线程）</LI>
+  <LI>如果将main线程设置为后台线程，那么会报异常</LI></UL>
+<H3>线程睡眠与打断</H3>
+<UL>
+  <LI>睡眠：使用Thread类的public static native void sleep(long millis) throws 
+  InterruptedException方法是当前线程睡眠。该方法抛出一个非运行时异常，该异常在该对象的interrupt方法调用时抛出。</LI>
+  <LI>打断：Thread类的public void interrupt()方法。打断调用该方法的线程。</LI>
+  <LI>线程睡眠时不会释放锁，如果在同步代码块中，其他线程必须等待当前睡眠的线程执行后再去竞争cpu资源。如果不在同步代码块中，线程没有获得锁，那么其他线程也不用排队进入，只要获得cpu资源即可执行。</LI></UL>
+<H3>强制执行和礼让</H3>
+<UL>
+  <LI>强制执行：public final void join() throws InterruptedException该方法默认调用了public 
+  final synchronized void join(0)throws InterruptedException</LI>
+  <LI>礼让：public static native void 
+  yield()，会让当前线程释放cpu资源，让其他线程先执行。（这种礼让不一定成功）</LI>
+  <LI>使用yield()的目的是让相同优先级的线程之间能适当的轮转执行。但是，实际中无法保证yield()达到让步目的，因为让步的线程还有可能被线程调度程序再次选中。<BR></LI></UL>
+<H3>线程同步：java允许多线程并发控制，当多个线程同时操作一个可共享的资源变量时（如数据的增删改查）， 
+将会导致数据不准确，相互之间产生冲突，因此加入同步锁以避免在该线程没有完成操作之前，被其他线程的调用， 从而保证了该变量的唯一性和准确性。</H3>
+<UL>
+  <LI>同步方法，即有synchronized关键字修饰的方法。</LI>
+  <LI>同步代码块，即有synchronized关键字修饰的语句块。synchronized(obj){}；obj即需要加锁的对象。</LI>
+  <LI>使用特殊域变量(volatile)实现线程同步   
+  <UL>
+    <LI>volatile关键字为域变量的访问提供了一种免锁机制</LI>
+    <LI>使用volatile修饰域相当于告诉虚拟机该域可能会被其他线程更新</LI>
+    <LI>因此每次使用该域就要重新计算，而不是使用寄存器中的值</LI>
+    <LI>volatile不会提供任何原子操作，它也不能用来修饰final类型的变量</LI></UL></LI>
+  <LI>使用重入锁实现线程同步;在JavaSE5.0中新增了一个java.util.concurrent包来支持同步。 
+  ReentrantLock类是可重入、互斥、实现了Lock接口的锁， 
+  它与使用synchronized方法和快具有相同的基本行为和语义，并且扩展了其能力</LI>
+  <LI>使用局部变量实现线程同步;如果使用ThreadLocal管理变量，则每一个使用该变量的线程都获得该变量的副本， 
+  副本之间相互独立，这样每一个线程都可以随意修改自己的变量副本，而不会对其他线程产生影响。</LI></UL>
+<H3>内置锁、对象锁、类锁</H3>
+<UL>
+  <LI>java的内置锁：每个java对象都可以用做一个实现同步的锁，这些锁成为内置锁。线程进入同步代码块或方法的时候会自动获得该锁，在退出同步代码块或方法时会释放该锁。</LI>
+  <LI>java内置锁是一个互斥锁，这就是意味着最多只有一个线程能够获得该锁，当线程A尝试去获得线程B持有的内置锁时，线程A必须等待或者阻塞，直到线程B释放这个锁，如果B线程不释放这个锁，那么A线程将永远等待下去。</LI>
+  <LI>java的对象锁和类锁：java的对象锁和类锁在锁的概念上基本上和内置锁是一致的，但是，两个锁实际是有很大的区别的，对象锁是用于对象实例方法，或
+   者一个对象实例上的，类锁是用于类的静态方法或者一个类的class对象上的。我们知道，类的对象实例可以有很多个，但是每个类只有一个class对象，
+   所以不同对象实例的对象锁是互不干扰的，但是每个类只有一个类锁。</LI>
+  <LI><SPAN 
+  style="color: rgb(255, 0, 0);">类锁和对象锁是两个不一样的锁，控制着不同的区域，它们是互不干扰的。同样，线程获得对象锁的同时，也可以获得该类锁，即同时获得两个锁，这是允许的。</SPAN></LI>
+  <LI><SPAN 
+  style="color: rgb(255, 0, 0);">synchronized的缺陷：当某个线程进入同步方法获得对象锁，那么其他线程访问这
+   里对象的同步方法时，必须等待或者阻塞，这对高并发的系统是致命的，这很容易导致系统的崩溃。如果某个线程在同步方法里面发生了死循环，那么它就永远不会
+   释放这个对象锁，那么其他线程就要永远的等待。这是一个致命的问题。</SPAN></LI>
+  <LI><SPAN 
+  style="color: rgb(255, 0, 0);">一个类的对象锁和另一个类的对象锁是没有关联的，当一个线程获得A类的对象锁时，它同时也可以获得B类的对象锁。</SPAN></LI>
+  <LI><SPAN style="color: rgb(255, 0, 0);">锁在API中也称作对象监视器（object's 
+  monitor）。<BR></SPAN></LI></UL>
+<H3>等待与唤醒</H3>
+<UL>
+  <LI>Object类的wait方法。使当前调用该方法的线程等待，如果没有传参数或者参数为0，表示无限期等待，直到被唤醒。如果参数不为0，那么等待参数所表示的时间。等待的时间过后，重新进入cpu的竞争。调用wait方法后，当前线程会释放已经获得的cpu资源，还会释放监视器锁，当前线程进入等待队列。处于等待状态。当调用notify或notifyAll方法唤醒后，从等待队列出来，进入cpu的竞争。</LI>
+  <LI>wait、notify和notifyAll都只能在以下三种情况下使用：   
+  <UL>
+    <LI>通过执行此对象的同步实例方法。 （synchronized方法）</LI>
+    <LI>通过执行在此对象上进行同步的 synchronized 语句的正文。 （synchronized代码块）</LI>
+    <LI>对于 Class 类型的对象，可以通过执行该类的同步静态方法。（静态同步方法）</LI></UL></LI></UL>
+<DIV id="content_div_3">
+<H3>线程的状态</H3>
+<OL>
+  <LI>创建状态：在程序中用构造方法创建了一个线程对象后，新的线程对象便处于新建状态，此时，它已经有了相应的内存空间和其他资源，但还处于不可运行状态。</LI>
+  <LI>就绪状态：新建线程对象后，调用该线程的start()方法就可以启动线程。当调用该方法后，线程就进入就绪状态。此时，线程将进入线程队列排队，等待CPU服务，这表明它已经具备了运行条件。</LI>
+  <LI>运行状态：当就绪状态的线程配调用并获得处理器资源时，线程就进入了运行状态。此时，自动调用该线程对象的run()方法。run()方法定义了该线程的操作和功能。</LI>
+  <LI>阻塞状态：一个正在执行的线程在某系特殊情况下，如被人挂起或需要执行时耗时的输入和输出操作时，会让出CPU并暂时中止自己的执行，进入阻塞状态。可在执行状态下，如果调用sleep、suspend、wait等方法，线程都将进入阻塞状态。阻塞时，线程不能进入排队队列，只有当一起阻塞的原因被消除后，线程才可以转入就绪状态。</LI>
+  <LI>死亡状态：线程调用stop方法时或run方法执行结束后，即处于死亡状态。此时，线程不具有继续运行的能力。</LI></OL></DIV>
+<HR>
+
+<H3>线程其他概念</H3>
+<DIV id="content_div_5">
+<H4>同步与死锁</H4>
+<UL>
+  <LI>同步：如果多个线程要操作同一资源时，如果不同步，就有可能出现资源同步问题。如：num = 
+  10;有多个线程同时对num--，并且当num等于0时，不再--，但运行结果可能出现负值。这就是同步问题。synchronized关键字实现同步，一种是同步方法，一种是同步代码块。</LI>
+  <LI>死锁：就是指两个线程都在等待对方先完成，造成了程序的停滞，一般程序的死锁都是在程序运行时出现的。过多的同步就会造成死锁。</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_12">
+<H4>什么是死锁(deadlock同上)</H4>
+<H4 
+style="text-indent: 0.8cm;">死锁就是两个或两个以上的线程被无限的阻塞，线程之间相互等待所需资源。这种情况可能发生在当两个线程尝试获取其它资源的锁，而每个线程又陷入无限等待其它资源锁的释放，除非一个用户进程被终止。就 
+JavaAPI 而言，线程死锁可能发生在以下情况：</H4>
+<UL>
+  <LI>当两个线程相互调用 Thread的public final void join() throws 
+  InterruptedException方法</LI>
+  <LI>当两个线程使用嵌套的同步块，一个线程占用了另外一个线程必需的锁，互相等待时被阻塞就有可能出现死锁。</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_13">
+<H4>活锁(livelock)</H4>
+<H5 
+style="color: red; text-indent: 0.8cm;">指事物1可以使用资源，但它让其他事物先使用资源；事物2可以使用资源，但它也让其他事物先使用资源，于是两者一直谦让，都无法使用资源。例如：鞠躬问题，别人每鞠躬一次，你也要向别人鞠躬一次。如此循环。无限循环也可以称作活锁。</H5></DIV>
+<HR>
+
+<DIV id="content_div_14">
+<H4>线程饿死</H4>
+<H5 
+style="color: red; text-indent: 0.8cm;">如果事务T1封锁了数据R,事务T2又请求封锁R，于是T2等待。T3也请求封锁R，当T1释放了R上的封锁后，系统首先批准了T3的请 
+求，T2仍然等待。然后T4又请求封锁R，当T3释放了R上的封锁之后，系统又批准了T4的请求......T2可能永远等待，这就是线程饿死。</H5>
+<H5 style="color: green; text-indent: 0.8cm;">活锁有一定几率解开。而死锁(deadlock)是无法解开的。 
+避免活锁或线程饿死的简单方法是采用先来先服务的策略。当多个事务请求封锁同一数据对象时，封锁子系统按请求封锁的先后次序对事务排队，数据对象上的锁一旦释放就批准申请队列中第一个事务获得锁。</H5></DIV>
+<HR>
+
+<H3>线程常见问题</H3>
+<DIV id="content_div_6">
+<H4>Thread.start()与 Thread.run()有什么区别？</H4>
+<UL>
+  <LI>Thread.start()方法(native)启动线程，使之进入就绪状态，当cpu分配时间该线程时，由JVM调度执行run()方法。</LI>
+  <LI>我们需要run()和start()这两个方法是因为JVM创建一个单独的线程不同于普通方法的调用，所以这项工作由线程的start方法来完成，start由本地方法实现，需要显示地被调用，使用这俩个方法的另外一个好处是任何一个对象都可以作为线程运行，只要实现了Runnable接口，这就避免因继承了Thread类而造成的Java的多继承问题。</LI></UL></DIV>
+<DIV id="content_div_7">
+<H4>什么时候抛出IllegalMonitorStateException 异常，为什么？</H4>
+<UL>
+  <LI>调用wait()/notify()/notifyAll()中的任何一个方法时，如果当前线程没有获得该对象的锁，那么就会抛出 
+  IllegalMonitorStateException 的异常(也就是说程序在没有执行对象的任何同步块或者同步方法时，仍然尝试调用 
+  wait()/notify()/notifyAll()时)。由于该异常是 RuntimeExcpetion 
+  的子类，所以该异常不一定要捕获(尽管你可以捕获只要你愿意).作为RuntimeException，此类异常不会在wait(),notify(),notifyAll()的方法签名提及。</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_8">
+<H4>Sleep()、suspend()和 wait()之间有什么区别？</H4>
+<UL style="color: red;">
+  <LI>Thread.sleep()使当前线程在指定的时间处于“非运行”(Not 
+  Runnable)状态。线程一直持有对象的监视器。比如一个线程当前在一个同步块或同步方法中，其它线程不能进入该块或方法中。如果另一线程调用了interrupt()方法，它将唤醒那个“睡眠的”线程。</LI>
+  <LI>注意：sleep()是一个静态方法。这意味着只对当前线程有效，一个常见的错误是调用t.sleep()，(这里的t是一个不同于当前线程的线程)。即便是执行t.sleep()，也是当前线程进入睡眠，而不是t线程。t.suspend()是过时的方法，使用 
+  suspend()导致线程进入停滞状态，该线程会一直持有对象的监视器，suspend()容易引起死锁问题。</LI>
+  <LI>object.wait()使当前线程出于“不可运行”状态，和sleep()不同的是wait是 
+  object的方法而不是thread。调用object.wait()时，线程先要获取这个对象的对象锁，当前线程必须在锁对象保持同步，把当前线程添加到等待队列中，随后另一线程可以同步同一个对象锁来调用 
+  object.notify()，这样将唤醒原来等待中的线程，然后释放该锁。基本上 wait()/notify()与 
+  sleep()/interrupt()类似，只是前者需要获取对象锁。</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_9">
+<H4>在静态方法上使用同步时会发生什么事？</H4>
+<UL>
+  <LI>同步静态方法时会获取该类的“Class”对象，所以当一个线程进入同步的静态方法中时，线程监视器获取类本身的对象锁，其它线程不能进入这个类的任何静态同步方法。它不像实例方法，因为多个线程可以同时访问不同实例同步实例方法。</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_10">
+<H4>当一个同步方法已经执行，线程能够调用对象上的非同步实例方法吗？</H4>
+<UL>
+  <LI>可以，一个非同步方法总是可以被调用而不会有任何问题。实际上，Java 
+  没有为非同步方法做任何检查，锁对象仅仅在同步方法或者同步代码块中检查。如果一个方法没有声明为同步，即使你在使用共享数据 Java 
+  照样会调用，而不会做检查是否安全，所以在这种情况下要特别小心。一个方法是否声明为同步取决于临界区访问(critial section 
+  access)，如果方法不访问临界区(共享资源或者数据结构)就没必要声明为同步的。</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_11">
+<H4>在一个对象上两个线程可以调用两个不同的同步实例方法吗？</H4>
+<UL>
+  <LI>不能，因为一个对象已经同步了实例方法，线程获取了对象的对象锁。所以只有执行完该方法释放对象锁后才能执行其它同步方法。</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_15">
+<H4>什么是ThreadLocal类，怎么使用它？</H4>
+<H5 style="text-indent: 0.8cm;">ThreadLocal 是一个线程级别的局部变量，并非“本地线程”。ThreadLocal 
+为每个使用该变量的线程提供了一个独立的变量副本，每个线程修改副本时不影响其它线程对象的副本。下面是线程局部变量(ThreadLocal 
+variables)的关键点：</H5>
+<UL>
+  <LI>一个线程局部变量(ThreadLocal variables)为每个线程方便地提供了一个单独的变量。</LI>
+  <LI>ThreadLocal 实例通常作为静态的私有的(private static)字段出现在一个类中，这个类用来关联一个线程。</LI>
+  <LI>当多个线程访问 ThreadLocal 实例时，每个线程维护 ThreadLocal 提供的独立的变量副本。</LI>
+  <LI>常用的使用可在 DAO 模式中见到，当 DAO 
+  类作为一个单例类时，数据库链接(connection)被每一个线程独立的维护，互不影响。(基于线程的单例)</LI></UL></DIV>
+<HR>
+
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

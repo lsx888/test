@@ -1,0 +1,456 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0076)http://172.13.19.31:6060/note_html/Java/JavaEE/1002010-Servlet-生命周期.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>Servlet-生命周期</TITLE> <LINK href="Servlet-生命周期_files/standalone.css" rel="stylesheet"> 
+<LINK href="Servlet-生命周期_files/overlay-apple.css" rel="stylesheet"> <LINK href="Servlet-生命周期_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="Servlet-生命周期_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="Servlet-生命周期_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">Servlet-生命周期</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-07-13 10:43:01</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>servlet处理表单</H3>
+<H4>html代码</H4>
+<PRE class="brush: xml;">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
+&lt;title&gt;表单提交&lt;/title&gt;
+&lt;link type="text/css"  rel="stylesheet" href="/JavaEE/webpage/bootcss/css/bootstrap.min.css"/&gt;
+
+&lt;script type="text/javascript" src="/JavaEE/webpage/bootcss/js/jquery.min.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="/JavaEE/webpage/bootcss/js/bootstrap.min.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="/JavaEE/webpage/form/form.js"&gt;&lt;/script&gt;
+
+&lt;style type="text/css"&gt;
+
+.row{
+	margin-top : 5px;
+}
+
+
+&lt;/style&gt;
+
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class="container" &gt;
+
+&lt;div class="panel panel-primary" style="margin-top: 10px;"&gt;
+&lt;div class="panel-heading"&gt;&lt;a style="text-align: right;" href="/JavaEE/form/edit.do"&gt;注册&lt;/a&gt;&lt;/div&gt;
+  &lt;form id="form1" action="/JavaEE/form/add.do" method="get"&gt;
+  &lt;div class="panel-body"&gt;
+
+
+		&lt;div class="row"&gt;
+		  &lt;div class="col-md-6"&gt;
+				
+				&lt;!--  &lt;div class="has-error has-feedback"&gt;  --&gt;
+				&lt;div class="input-group"&gt;
+				  &lt;span class="input-group-addon"&gt;用户名&lt;/span&gt;
+				  &lt;input name="user" type="text" class="form-control" placeholder="用户名" aria-describedby="sizing-addon2"&gt;
+				&lt;/div&gt;
+				&lt;!-- &lt;div&gt;
+				&lt;span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"&gt;&lt;/span&gt;
+  				&lt;span  class="sr-only"&gt;(error)&lt;/span&gt;	
+				&lt;label class="control-label"&gt;Input with warning&lt;/label&gt;
+				&lt;/div&gt; 
+				&lt;/div&gt;--&gt;
+				
+		  &lt;/div&gt;
+		  &lt;div class="col-md-6"&gt;
+				
+				&lt;div class="input-group"&gt;
+				  &lt;span class="input-group-addon" id="sizing-addon2"&gt;手机号码&lt;/span&gt;
+				  &lt;input name="pho" type="text" class="form-control" placeholder="手机号" aria-describedby="sizing-addon2"&gt;
+				&lt;/div&gt;
+				
+		  &lt;/div&gt;
+		&lt;/div&gt;
+		
+		&lt;div class="row"&gt;
+		  &lt;div class="col-md-6"&gt;
+				
+				&lt;div class="input-group"&gt;
+				  &lt;span class="input-group-addon" id="sizing-addon2"&gt;密码&lt;/span&gt;
+				  &lt;input name="pass" type="password" class="form-control" placeholder="密码" aria-describedby="sizing-addon2"&gt;
+				&lt;/div&gt;
+				
+		  &lt;/div&gt;
+		  &lt;div class="col-md-6"&gt;
+				
+				&lt;div class="input-group"&gt;
+				  &lt;span class="input-group-addon" id="sizing-addon2"&gt;确认密码&lt;/span&gt;
+				  &lt;input id="repass" type="password" class="form-control" placeholder="确认密码" aria-describedby="sizing-addon2"&gt;
+				&lt;/div&gt;
+				
+		  &lt;/div&gt;
+		&lt;/div&gt;
+		
+		
+		&lt;div class="row"&gt;
+		  &lt;div class="col-md-6"&gt;
+				
+				
+				&lt;div class="input-group"&gt;
+				  &lt;span class="input-group-addon" id="sizing-addon2"&gt;爱好&lt;/span&gt;
+					&lt;div class=" form-control"&gt;
+				    &lt;label&gt;
+				      &lt;input name="fav" type="checkbox" value="1"&gt; 运动
+				    &lt;/label&gt;
+				    &lt;label&gt;
+				      &lt;input name="fav" type="checkbox" value="2"&gt; 购物
+				    &lt;/label&gt;
+				    &lt;label&gt;
+				      &lt;input name="fav" type="checkbox" value="3"&gt; 旅游
+				    &lt;/label&gt;
+				    &lt;label&gt;
+				      &lt;input name="fav" type="checkbox" value="4"&gt; 看书
+				    &lt;/label&gt;
+				    &lt;label&gt;
+				      &lt;input name="fav" type="checkbox" value="5"&gt; 上网
+				    &lt;/label&gt;
+				  &lt;/div&gt;
+				&lt;/div&gt;
+				
+				
+					
+				
+		  &lt;/div&gt;
+		  &lt;div class="col-md-6"&gt;
+				
+				&lt;div class="input-group"&gt;
+				  &lt;span class="input-group-addon" id="sizing-addon2"&gt;确认密码&lt;/span&gt;
+				  &lt;input id="repass" type="password" class="form-control" placeholder="确认密码" aria-describedby="sizing-addon2"&gt;
+				&lt;/div&gt;
+				
+		  &lt;/div&gt;
+		&lt;/div&gt;
+		
+ 	
+   &lt;/div&gt;
+   
+   &lt;div class="panel-footer"&gt;
+
+		&lt;div class="row"&gt;
+		  &lt;div class="col-md-6" align="right"&gt;
+				&lt;!-- button的type为submit点击后表单才会提交
+					而且button必须放在form元素里面，type="submit"点击后表单才会提交
+				 --&gt;
+				&lt;button type="submit" class="btn btn-primary"&gt;提交&lt;/button&gt;
+				
+		  &lt;/div&gt;
+		  &lt;div class="col-md-6"&gt;
+				
+				&lt;button type="reset" class="btn btn-primary"&gt;重置&lt;/button&gt;
+				
+		  &lt;/div&gt;
+		&lt;/div&gt;
+	
+		&lt;/div&gt;
+		&lt;/form&gt;
+   
+ &lt;/div&gt;
+ 
+&lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</PRE>
+<H4>form.js代码</H4>
+<PRE class="brush: js;">
+$(document).ready(function(){
+	//--简单的表单验证
+	function validPass(){
+		var el = $('[name="pass"]');
+		var pass = el.val();
+		var passReg = /^\S{6,18}$/;
+		
+		if(!passReg.test($.trim(pass))){
+			inputBorder(el,{msg:"密码不正确",id:"pass",isOK:false});
+			return false;
+		}
+		
+		inputBorder(el,{msg:"",id:"pass",isOK:true});
+		return true;
+	}
+	
+	function validUser(){
+		var el =  $('[name="user"]');
+		var user = el.val();
+		var userReg = /^\S{3,12}$/;
+		if(!userReg.test($.trim(user))){
+			inputBorder(el,{msg:"用户名不正确",id:"user",isOK:false});
+			return false;
+		}
+		
+		
+		inputBorder(el,{msg:"",id:"user",isOK:true});
+		return true;
+	}
+	
+	$(document).on("blur",'[name="pass"]',validPass);
+	$(document).on("blur",'[name="user"]',validUser);
+	
+	$("#form1").on("submit",function(){
+		
+		if(!validPass() &amp;&amp; !validUser()){
+			return false;
+		}
+		
+		return true;//-- submit事件函数中，return false。表示表单验证不通过，不会提交表单。
+	});
+	
+	var html = '&lt;div id="${id}"&gt;';
+		html += '&lt;span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"&gt;&lt;/span&gt;';
+		html += '&lt;span  class="sr-only"&gt;(error)&lt;/span&gt;';
+		html += '&lt;label class="control-label"&gt;${msg}&lt;/label&gt;';
+		html += '&lt;/div&gt;';
+		
+	var htmlOK = '&lt;div id="${id}"&gt;';
+		htmlOK += '&lt;span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"&gt;&lt;/span&gt;';
+		htmlOK += '&lt;span  class="sr-only"&gt;(success)&lt;/span&gt;';
+//		htmlOK += '&lt;label class="control-label"&gt;${msg}&lt;/label&gt;';
+		htmlOK += '&lt;/div&gt;';
+		
+	var wrapHtml = '&lt;div class="${has} has-feedback"&gt;&lt;/div&gt;';
+
+	/**
+	 * el：这里是input的JQuery对象
+	 */
+	function inputBorder(el,msgObj){
+		el = el.parent();
+		var parent = el.parent();
+		
+		$("#"+msgObj.id).remove();
+		
+		if(!parent.hasClass("col-md-6")){
+			el.unwrap();
+		}
+		
+		
+		var wrap;
+		var h;
+		if(msgObj.isOK){
+			wrap = wrapHtml.replace("${has}","has-success");
+			h = htmlOK.replace("${msg}",msgObj.msg).replace("${id}",msgObj.id);
+		}else{
+			wrap = wrapHtml.replace("${has}","has-error");
+			h = html.replace("${msg}",msgObj.msg).replace("${id}",msgObj.id);
+		}
+		
+		el.wrap(wrap);
+		el.parent().append(h);
+	}
+	
+});
+</PRE>
+<H4>Java代码</H4>
+<PRE class="brush: java;">package com.yyoo.servlet;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+public class FormServlet extends HttpServlet {
+
+	private static final long serialVersionUID = 1L;
+	
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		request.setCharacterEncoding("UTF-8");//-- 设置编码格式，需在getParameter方法之前，否则是没有效果的
+		response.setCharacterEncoding("UTF-8");
+		
+		//-- 获取前台form表单传递的参数
+		String user = request.getParameter("user");
+		//-- 参数user是input标签的name属性的值，如果不设置name属性，那么这里是得不到参数值的，会返回null
+		String pass = request.getParameter("pass");
+		String pho = request.getParameter("pho");
+		
+		System.out.println(user);
+		System.out.println(pass);
+		System.out.println(pho);
+		
+		//-- 后台获取checkbox的选中的值
+		String[] faves = request.getParameterValues("fav");
+		
+		//-- getParameterValues方法，用于获取前台同一个name属性，对应的多个值
+		
+		System.out.println(Arrays.asList(faves));
+		
+		
+		System.out.println("======================");
+		//-- 获取参数的名称
+		Enumeration&lt;String&lt; names = request.getParameterNames();
+		while(names.hasMoreElements()){
+			System.out.println(names.nextElement());
+		}
+		System.out.println("======================");
+		Map&lt;String, String[]&lt; map = request.getParameterMap();
+		Set&lt;String&lt; keyes = map.keySet();
+		for(String str : keyes){
+			System.out.println(str + ":"+Arrays.asList(map.get(str)));
+		}
+		
+		PrintWriter p = response.getWriter();
+		
+		p.write("&lt;html&lt;");
+		
+		p.write("&lt;head&lt;");
+		p.write("&lt;meta charset='UTF-8'/&lt;");
+		p.write("&lt;/head&lt;");
+		
+		p.write("&lt;body&lt;");
+		p.write("&lt;h1&lt;用户名："+ user +"&lt;/h1&lt;");
+		p.write("&lt;h1&lt;密码："+ pass +"&lt;/h1&lt;");
+		p.write("&lt;h1&lt;爱好："+ Arrays.asList(faves) +"&lt;/h1&lt;");
+		p.write("&lt;h1&lt;电话："+ pho +"&lt;/h1&lt;");
+		p.write("&lt;/body&lt;");
+		
+		p.write("&lt;/html&lt;");
+		
+		p.close();
+	}
+	
+	
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("post");
+		this.doGet(request, response);
+	}
+	
+	@Override
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		System.out.println("servcie");
+		this.doGet(request, response);
+	}
+	//-- service：如果重写了service方法，那么不论表单是get提交还是post提交，都只执行service方法
+
+}
+
+</PRE>
+<H3>get方法和post方法的区别</H3>
+<UL>
+  <LI>通过表单提交到的servlet,看form的method是get还是post</LI>
+  <LI>通过链接访问的URL和直接在浏览器地址栏中键入的URL地址都是使用doGet方法</LI>
+  <LI>get是吧参数数据队列加到提交表单的Action属性所指的url中，值和表单内各个字段--对应，在url中可以看到。格式为“URL?字段1=输入数据1&amp;字段2=输入素具2&amp;....”,再将其送到服务器。内容是放在HTTP协议的消息头的。</LI>
+  <LI>Post是通过HTTP post机制，将表单内各个字段与其内容放置在http协议的消息体内传送到后台servlet，用户看不到这个过程。</LI>
+  <LI>Get是不安全的，因为参数信息会显示在url上，Post相对安全</LI>
+  <LI>Get传输的数据量小，这主要是因为受URL长度限制；而Post方式提交，基本没有大小限制（但一般都会限制），所以在<SPAN style="color: rgb(255, 0, 0);">上传文件只能使用Post</SPAN></LI>
+  <LI>两种方式在参数传递时的编码方式也是不一样的。</LI></UL>
+<H3>servlet的生命周期</H3>
+<PRE class="brush: java;">package com.yyoo.servlet;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+//--loadOnStartup：启动时加载，如果不设置，就是在第一次访问servlet的时候加载，这个过程是会执行init方法的
+//--loadOnStartup的值，表示当前servlet加载的顺序
+@WebServlet(urlPatterns="/Cycle",loadOnStartup=5)
+public class CycleServlet extends HttpServlet {
+
+	private static final long serialVersionUID = 1L;
+	
+	static{
+		System.out.println("servlet的静态代码块");
+	}
+	
+	{
+		System.out.println("servlet的构造块");
+	}
+	
+	public CycleServlet(){
+		System.out.println("servlet的构造方法");
+	}
+
+	@Override
+	public void init() throws ServletException {
+		
+		System.out.println("servlet的初始化方法");
+	}
+	
+	
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		System.out.println("servlet的doGet方法");
+	}
+	
+	
+	@Override
+	public void destroy() {
+		
+		System.out.println("servlet的销毁方法");
+	}
+	
+}
+
+</PRE>
+<P style="text-indent: 0.8cm;">
+servlet的生命周期：由容器创建(tomcat)，在第一次访问该servlet的时候创建，长时间不访问或重启、关闭服务器的时候销毁。如果设置了loadOnStartup配置，那么将在服务器（tomcat）启动的时候加载、实例化和初始化 
+</P>
+<OL>
+  <LI>加载：ClassLoder加载，执行类的加载顺序</LI>
+  <LI>实例化：在第一次访问该servlet的时候实例化，要先于初始化方法（执行类的实例化顺序）</LI>
+  <LI>初始化：init方法，在第一次访问该servlet的时候初始化，要后于实例化构造方法</LI>
+  <LI>服务：doGet、doPost、service方法</LI>
+  <LI>销毁：destroy方法</LI>
+  <LI>GC</LI></OL>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

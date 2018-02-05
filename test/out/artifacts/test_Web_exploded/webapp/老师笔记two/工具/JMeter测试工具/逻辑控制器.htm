@@ -1,0 +1,168 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0078)http://172.13.19.31:6060/note_html/工具/JMeter测试工具/1008010-逻辑控制器.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>逻辑控制器</TITLE> <LINK href="逻辑控制器_files/standalone.css" rel="stylesheet"> 
+<LINK href="逻辑控制器_files/overlay-apple.css" rel="stylesheet"> <LINK href="逻辑控制器_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="逻辑控制器_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="逻辑控制器_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">逻辑控制器</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-09-24 15:55:05</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV id="cnblogs_post_body">
+<P><SPAN style="font-size: 16px;">JMeter中的Logic Controller用于为Test 
+Plan中的节点添加逻辑控制器。</SPAN></P>
+<P><SPAN style="font-size: 16px;">JMeter中的Logic 
+Controller分为两类：一类<STRONG>用来控制Test Plan执行过程中节点的逻辑执行顺序</STRONG>，如：Loop 
+Controller、If Controller等；另一类<STRONG>则与节点逻辑执行顺序无关</STRONG>，用于对Test 
+Plan中的脚本进行分组、方便JMeter统计执行结果以及进行脚本的运行时控制等，如：Throughput Controller、Transaction 
+Controller。</SPAN></P>
+<P>&nbsp;</P>
+<P><SPAN style="font-size: 16px;"><STRONG>一、控制Test Plan中的节点执行顺序的Logic 
+Controller</STRONG></SPAN></P>
+<P><STRONG>1、ForEach Controller</STRONG>：类似于编程语言中的for each语句。如下图：</P>
+<P><IMG alt="" src="逻辑控制器_files/20150924-10.jpg"></P>
+<P>通常情况下，ForEach Controller常与Regular Expression Extractor配合使用。</P>
+<P>&nbsp;</P>
+<P><STRONG>2、If 
+Controller</STRONG>：类似于编程语言中的if语句，根据给定表达式的值决定是否执行该节点下的子节点。如下图：</P>
+<P><IMG alt="" src="逻辑控制器_files/20150924-11.jpg"></P>
+<P><STRONG>注意</STRONG>：条件判断语句<SPAN 
+style="color: rgb(255, 0, 0);">如果是字符串一点要在参数前加引号，<SPAN style="color: rgb(0, 0, 0);">如：a.<SPAN 
+style="color: rgb(255, 0, 0);">"</SPAN>${foreach_city}<SPAN style="color: rgb(255, 0, 0);">"</SPAN>=="beijing"　b.<SPAN 
+style="color: rgb(255, 0, 0);">"</SPAN>${foreach_city}<SPAN style="color: rgb(255, 0, 0);">"</SPAN>!="beijing"</SPAN></SPAN></P>
+<P>如果选中“Evaluate for all 
+Children”选项，则该Controller在每个子节点执行时执行一次，否则，该Controller仅在入口执行一次。</P>
+<P>&nbsp;</P>
+<P><STRONG>3、Interleave Controller</STRONG>：<SPAN style="color: rgb(51, 153, 102);">在每次迭代时，顺序选取该节点下的一个子节点执行</SPAN>。如下图：</P>
+<P><IMG alt="" src="逻辑控制器_files/20150924-12.jpg"></P>
+<P>如果选中“Ignore sub-controller 
+blocks”选项，则该Controller将其下的子Controller当成单一元素处理，并仅允许每个子Controller一次发出一个请求。</P>
+<P>在该示例中，设置迭代次数为4次，节点的执行顺序是：Req1-HTTP Request –Req2—HTTP Request—Req3—HTTP 
+Request.</P>
+<P>&nbsp;</P>
+<P><STRONG>4、Loop Controller</STRONG>：简单地为其下的子节点运行指定次数。如下图：</P>
+<P><IMG alt="" src="逻辑控制器_files/20150924-13.jpg"></P>
+<P>&nbsp;</P>
+<P><STRONG>5、Once Only Controller</STRONG>：是为了<SPAN style="color: rgb(51, 153, 102);">让Test 
+Plan中的某些内容在整个Test Plan的执行期间对每个线程仅执行一次</SPAN>（例如，每个线程仅需要执行一次“登录”操作）。如：将Once Only 
+Controller作为Loop Controller的子节点，Once Only Controller在每次循环的第一次迭代时均会被执行。如下图：</P>
+<P>&nbsp;<IMG alt="" src="逻辑控制器_files/20150924-14.jpg"></P>
+<P>&nbsp;</P>
+<P><STRONG>6、Random Controller</STRONG>：每次执行时，从其子节点中随机选取一个来执行。如下图：</P>
+<P>&nbsp;<IMG alt="" src="逻辑控制器_files/20150924-15.jpg"></P>
+<P>&nbsp;</P>
+<P><STRONG>7、Random Order Controller</STRONG>：每次执行时，按照随机产生的顺序执行其下的所有子节点。注意，<SPAN 
+style="color: rgb(51, 153, 102);">该Controller与Random Controller的不同之处在于，Random 
+Controller只选择执行其所有子节点中的一个，而Random Order 
+Controller则按照随机顺序全部执行该Controller下的所有子节点</SPAN>。</P>
+<P><IMG alt="" src="逻辑控制器_files/20150924-16.jpg"></P>
+<P>&nbsp;</P>
+<P><STRONG>8、Switch Controller</STRONG>：类似程序语言中的switch函数，该<SPAN style="color: rgb(51, 153, 102);">Controller根据给定的值n(可以使用参数)选择执行其下的第n+1个子节点</SPAN>。如下图：</P>
+<P>&nbsp;<IMG alt="" src="逻辑控制器_files/20150924-17.png"></P>
+<P>需要注意的是，<SPAN style="color: rgb(51, 153, 102);">Switch 
+Controller只接受整数值，并且给定的值n是以0为基础的</SPAN>，因此当给定的值“2”时，意味着该Controller下的第3个子节点会被执行。同时，Switch 
+Controller接受参数作为其值。</P>
+<P>&nbsp;</P>
+<P><STRONG>9、While 
+Controller</STRONG>：是另一个用于控制循环的Controller。可以为该Controller设置一个Condition.Condition的取值可以为以下三者之一：</P>
+<P>空：如果Condition取值为空，则该Condition迭代执行Controller下的所有子节点，直到最后一个子节点返回失败为止。需要注意的是，如果不是最后一个子节点失败，而是该Controller中的其他子节点失败，该Controller不会停止，而会继续循环执行过程。</P>
+<P>LAST：如果Condition取值为字符串LAST，则该Controller迭代执行Controller下的所有子节点，直到最后一个子节点返回失败为止（与Controller为空时的行为相同）。同时，如果该Controller的上一个节点失败，则Test 
+Plan在执行时不会进入该Controlller。</P>
+<P>表达式：除了为空和LAST外，Controller还可以取一个表达式。当Controller取值为表达式时，如果表达式的取值是字符串false，While 
+Controller就退出循环。以下列出了几个可用的表达式：</P>
+<P>${VAR}：当参数VAR的值被设置成false时退出循环。</P>
+<P>${__javascript(“${VAR}”==”dennis”)}：当参数VAR的值不为dennis时退出循环。</P>
+<P>${_P(myproperty)}：当属性myproperty的取值为false时退出循环。</P>
+<P>&nbsp;</P>
+<P><STRONG><SPAN style="font-size: 16px;">二、其它Logic 
+Controller</SPAN></STRONG></P>
+<P>除了以上的9种Logic Controller外，JMeter还支持其他7种Logic Controller.</P>
+<P><STRONG>1、Include Controller</STRONG>：用于在Test Plan中包含一个外部的jmx文件。</P>
+<P>在Test Plan运行时，被包含的jmx文件中测试计划中<SPAN 
+style="color: rgb(51, 153, 102);">不能有线程组</SPAN>，只允许有一个Simple Controller和该Simple 
+Controller下的子节点（可添加任何采样器，控制器），<SPAN style="color: rgb(51, 153, 102);">不允许有Cookie 
+Manager、User Defined Variable</SPAN>等。</P>
+<P>如果用户需要使用Cookie Manager<SPAN lang="EN-US" lang="EN-US" 
+xml:lang="EN-US">或者&nbsp;用户自定义变量，都应该在顶层的测试计划中设置，不应该包含在外部文件中，否则不会它们不会起作用。</SPAN></P>
+<P>注意：<SPAN style="color: rgb(51, 153, 102);">被包含文件中的Simple 
+Controller及其子节点将会替换Test Plan中的Include Controller</SPAN>.</P>
+<P><IMG alt="" src="逻辑控制器_files/20150924-18.png"></P>
+<P><STRONG>2、Simple 
+Controller</STRONG>：如同该Controller的名称，是JMeter中最简单的一个Controller。该Controller仅用于对Test 
+Plan中的元件进行分组，不具有任何的逻辑控制或运行时的功能。</P>
+<P><IMG alt="" src="逻辑控制器_files/20150924-19.jpg"></P>
+<P>&nbsp;</P>
+<P><STRONG>3、Module Controller</STRONG>：为Test Plan提供了在运行时动态执行给定的Test 
+Plan片段的能力。如下图：</P>
+<P>&nbsp;<IMG alt="" src="逻辑控制器_files/20150924-20.jpg"></P>
+<P>从图中可以看出，无论是放在本Thread Group、其他的Thread Group，或是WorkBench下的Test 
+Plan片段，都可以在Module Controller中被调用。</P>
+<P>&nbsp;</P>
+<P><STRONG>4、Runtime 
+Controller</STRONG>：用于指定其子节点的运行时长。该Controller中指定的时间以秒为单位，仅对该Controller的子节点有效。</P>
+<P><IMG alt="" src="逻辑控制器_files/20150924-21.jpg"></P>
+<P>&nbsp;</P>
+<P><STRONG>5、Throughput Controller</STRONG>：<SPAN style="color: rgb(51, 153, 102);">用于控制其下的子节点的执行次数与负载比例分配的</SPAN>。</P>
+<P>Throughput 
+Controller允许用户使用两种模式控制其下子节点的执行顺序：比例模式和总数模式。总数模式指定该Controller下所有子节点的准确迭代次数，而比例模式允许负载在Controller下的子节点以某种比例进行分配。<SPAN 
+style="color: rgb(51, 153, 102);">在比例模式下，设定的Throughput值为一个0-100之间的整数</SPAN>，表示该Controller迭代次数占总迭代次数的百分比。</P>
+<P>可能你已经意识到，<SPAN style="color: rgb(255, 0, 0);">如果要在一个Test 
+Plan中体现用户场景，Throughput Controller应该是最合适的选择</SPAN>。</P>
+<P>图A给出了总数模式下的Throughput Controller，在这种模式下，每个线程最多运行Java 
+Request10次（具体的运行次数还取决于线程组中线程数和迭代次数的设置，如果设定的Total 
+Execution的次数大于线程组中设置的迭代次数，每个线程最多运行线程组中设定的迭代次数）。</P>
+<P><IMG alt="" src="逻辑控制器_files/20150924-22.jpg"></P>
+<P>图B给出了比例模式下的Throughput Controller，从图中可以看出，该Test Plan包含了两个Throughput 
+Controller，第一个设定的Percentage为70，也就是70%，第二个设定的Percentage为30，也就是30%。线程组的线程数设置为10，迭代次数也设置为10.在这种模式下，req1被运行70次，req2被运行30次。如下图：</P>
+<P><IMG alt="" src="逻辑控制器_files/20150924-23.jpg"></P>
+<P><IMG alt="" src="逻辑控制器_files/20150924-24.jpg"></P>
+<P><IMG alt="" src="逻辑控制器_files/20150924-25.jpg"></P>
+<P>&nbsp;</P>
+<P><STRONG>6、Transaction Controller</STRONG>：用于将Test 
+Plan中的特定部分组织成一个Transaction，JMeter中Transaction的作用在于，可以针对Transaction统计其响应时间、吞吐量等。</P>
+<P>在有些情况下，一个用户操作可能需要多个Sampler来模拟，此时，使用Transaction 
+Controller，可以更准确地得到该用户操作的性能指标，如响应时间等。</P>
+<P><IMG alt="" src="逻辑控制器_files/20150924-26.jpg"></P>
+<P>&nbsp;</P>
+<P><STRONG>7、Recording Controller</STRONG>：唯一的用途是用于存放JMeter录制得到的脚本。</P>
+<P><IMG alt="" src="逻辑控制器_files/20150924-27.jpg"></P>
+<P>&nbsp;</P></DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

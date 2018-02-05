@@ -1,0 +1,61 @@
+@import url( a.css ) all;
+li {
+	margin-top: 15px;
+}
+h3 {
+	border-color: rgb(32, 90, 167); padding: 5px 15px; border-radius: 3px; color: rgb(255, 255, 255); font-size: 16px; margin-right: 10px; margin-left: 10px; text-shadow: 2px 2px 3px #222222; background-color: rgb(32, 90, 167);
+}
+h4 {
+	border-color: rgb(77, 144, 254); padding: 3px 15px; border-radius: 3px; color: rgb(34, 34, 34); font-size: 14px; margin-right: 20px; margin-left: 20px; text-shadow: 1px 1px 2px #fff; background-color: rgb(202, 222, 254);
+}
+.bb {
+	padding: 1px;
+}
+.oper_div {
+	display: none;
+}
+.tt:hover {
+	padding: 1px; border: 0.5px dashed blue;
+}
+.form_div {
+	border: 0.5px dashed red;
+}
+.list_form_div {
+	margin: 5px; padding: 1px; border: 0.5px solid black;
+}
+label {
+	margin: 2px;
+}
+input {
+	margin: 2px;
+}
+input {
+	height: 20px;
+}
+button {
+	margin-left: 20px;
+}
+#file_form_id {
+	margin: 5px; padding: 1px; border: 1.5px solid black;
+}
+.fileImgDiv {
+	width: 280px; height: 210px; text-align: center;
+}
+.fileImg {
+	border: 0.5px solid black; width: 280px; height: 180px;
+}
+.fileImg:hover {
+	border: 2px solid red; cursor: pointer;
+}
+.fileA {
+	
+}
+table {
+	border-collapse: collapse;
+}
+table thead {
+	padding: 7px 5px; border: 1px solid rgb(204, 204, 204); border-image: none; color: rgb(68, 68, 68); min-width: 50px; background-color: rgb(237, 237, 237);
+}
+table td {
+	padding: 5px; border: 1px solid rgb(204, 204, 204); border-image: none; min-width: 50px;
+}

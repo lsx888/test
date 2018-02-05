@@ -1,0 +1,228 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0075)http://172.13.19.31:6060/note_html/web/Javascript/1001090-js的对象继承.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>js的对象继承</TITLE> <LINK href="js的对象继承_files/standalone.css" rel="stylesheet"> 
+<LINK href="js的对象继承_files/overlay-apple.css" rel="stylesheet"> <LINK href="js的对象继承_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="js的对象继承_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="js的对象继承_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">js的对象继承</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-07-01 12:40:15</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>继承的方式</H3>
+<P style="text-indent: 0.8cm;">ECMAScript 实现继承的方式不止一种。这是因为 JavaScript 
+中的继承机制并不是明确规定的，而是通过模仿实现的。这意味着所有的继承细节并非完全由解释程序处理。作为开发者，你有权决定最适用的继承方式。</P>
+<H3>对象冒充</H3>
+<P style="text-indent: 0.8cm;">其原理如下：构造函数使用 this 
+关键字给所有属性和方法赋值（即采用类声明的构造函数方式）。因为构造函数只是一个函数，所以可使 ClassA 构造函数成为 ClassB 
+的方法，然后调用它。ClassB 就会收到 ClassA 的构造函数中定义的属性和方法。例如，用下面的方式定义 ClassA 和 ClassB： </P>
+<PRE class="brush: js;">function ClassA(sColor) {
+    this.color = sColor;
+    this.sayColor = function () {
+        alert(this.color);
+    };
+};
+
+
+function ClassB(sColor) {
+    this.newMethod = ClassA;
+    this.newMethod(sColor);
+    delete this.newMethod;
+   //以上3行代码中，为 ClassA 赋予了方法 newMethod（请记住，函数名只是指向它的指针）。然后调用该方法，传递给它的是 ClassB 构造函数的参数 sColor。
+  //最后一行代码删除了对 ClassA 的引用，这样以后就不能再调用它。
+
+   this.name = sName;
+   this.sayName = function () {
+        alert(this.name);
+   };
+   //所有新属性和新方法都必须在删除了新方法的代码行后定义。否则，可能会覆盖超类的相关属性和方法：
+};
+
+
+//为证明上面的代码有效，可以运行下面的例子：
+var objA = new ClassA("blue");
+var objB = new ClassB("red", "John");
+objA.sayColor();	//输出 "blue"
+objB.sayColor();	//输出 "red"
+objB.sayName();		//输出 "John"
+</PRE>
+<H4>对象冒充可以实现多重继承</H4>
+<P style="text-indent: 0.8cm;">例如，如果存在两个类 ClassX 和 ClassY，ClassZ 
+想继承这两个类，可以使用下面的代码： </P>
+<PRE class="brush: js;">function ClassZ() {
+    this.newMethod = ClassX;
+    this.newMethod();
+    delete this.newMethod;
+
+    this.newMethod = ClassY;
+    this.newMethod();
+    delete this.newMethod;
+};
+</PRE>
+<H4 style="text-indent: 0.8cm;">对象冒充的弊端</H4>
+<OL>
+  <LI><SPAN style="color: rgb(255, 0, 0);">如果存在两个类 ClassX 和 ClassY 
+  具有同名的属性或方法，ClassY具有高优先级</SPAN>。因为它从后面的类继承。用对象冒充可以实现多重继承。</LI>
+  <LI><SPAN 
+  style="color: rgb(255, 0, 0);">构造函数中包括函数属性时，每次执行构造函数的时候都会重复定义函数属性，降低效率</SPAN>。</LI></OL>
+<H3>call() 方法和apply() 方法</H3>
+<P style="text-indent: 0.8cm;">两个方法和使用对象冒充的原理是一样的。只需替换前3行代码即可： </P>
+<PRE class="brush: js;">function ClassB(sColor, sName) {
+    //this.newMethod = ClassA;
+    //this.newMethod(color);
+    //delete this.newMethod;
+    ClassA.call(this, sColor);//或者ClassA.apply(this, new Array(sColor));
+
+    this.name = sName;
+    this.sayName = function () {
+        alert(this.name);
+    };
+};
+</PRE>
+<H3>原型链（prototype chaining）</H3>
+<P style="text-indent: 0.8cm;">如果用原型方式重定义前面例子中的类，它们将变为下列形式：</P>
+<PRE class="brush: js;">function ClassA() {
+}
+
+ClassA.prototype.color = "blue";
+ClassA.prototype.sayColor = function () {
+    alert(this.color);
+};
+
+function ClassB() {
+}
+
+ClassB.prototype = new ClassA();//此列是该方式的关键。
+//这里，把 ClassB 的 prototype 属性设置成 ClassA 的实例。
+//这很有意思，因为想要 ClassA 的所有属性和方法，但又不想逐个将它们 ClassB 的 prototype 属性。
+//还有比把 ClassA 的实例赋予 prototype 属性更好的方法吗
+//调用 ClassA 的构造函数，没有给它传递参数。这在原型链中是标准做法。要确保构造函数没有任何参数
+
+ClassB.prototype.name = "";
+ClassB.prototype.sayName = function () {
+    alert(this.name);
+};
+/*
+与对象冒充相似，子类的所有属性和方法都必须出现在 prototype 属性被赋值后，因为在它之前赋值的所有方法都会被删除。
+为什么？因为 prototype 属性被替换成了新对象，添加了新方法的原始对象将被销毁
+*/
+
+
+//可通过运行下面的例子测试以上代码：
+
+var objA = new ClassA();
+var objB = new ClassB();
+objA.color = "blue";
+objB.color = "red";
+objB.name = "John";
+objA.sayColor();
+objB.sayColor();
+objB.sayName();
+
+</PRE>
+<P style="text-indent: 0.8cm;">此外，在原型链中，instanceof 运算符的运行方式也很独特。对 ClassB 
+的所有实例，instanceof 为 ClassA 和 ClassB 都返回 true。例如：</P>
+<PRE class="brush: java;">var objB = new ClassB();
+alert(objB instanceof ClassA);	//输出 "true"
+alert(objB instanceof ClassB);	//输出 "true"
+/*
+在 ECMAScript 的弱类型世界中，这是极其有用的工具，不过使用对象冒充时不能使用它
+*/
+</PRE>
+<H4 style="text-indent: 0.8cm;">原型链的弊端</H4>
+<OL>
+  <LI>调用 ClassA 的构造函数，没有给它传递参数。这在原型链中是标准做法。<SPAN 
+  style="color: rgb(255, 0, 0);">要确保构造函数没有任何参数   </SPAN></LI>
+  <LI><SPAN style="color: rgb(255, 0, 0);">不支持多重继承</SPAN>。记住，原型链会用另一类型的对象重写类的 
+  prototype 属性</LI></OL>
+<H3>混合方式</H3>
+<P 
+style="text-indent: 0.8cm;">使用对象冒充有重复定义函数属性的弊端，使用原型链有要确保构造函数没有任何参数的弊端和不支持多继承。那么我们可以<SPAN 
+style="color: rgb(255, 0, 0);">用对象冒充继承构造函数的属性，用原型链继承 prototype 
+对象的方法</SPAN>来解决这个问题。如下代码：</P>
+<PRE class="brush: js;">function ClassA(sColor) {
+   //1.一般属性使用构造方法定义
+    this.color = sColor;
+}
+ 
+//2.函数属性使用原型方式定义
+ClassA.prototype.sayColor = function () {
+    alert(this.color);
+};
+ 
+
+function ClassX(sNo){
+	this.sNo = sNo;
+}
+
+ClassX.prototype.getSNo = function(){
+	return this.sNo;
+}
+
+
+
+function ClassB(sColor, sName, sNo) {
+    ClassA.call(this, sColor);//3.使用对象冒充，将一般属性继承
+    ClassX.call(this,sNo);
+    this.name = sName;
+}
+ 
+ClassB.prototype = new ClassA();//4.使用原型链将函数属性继承下来
+var x = new ClassX();
+ClassB.prototype = x.getSNo;//-- 多继承，只能分别设置继承的方法
+ 
+ClassB.prototype.sayName = function () {//-- 定义子类特有函数
+    alert(this.name);
+};
+ 
+//下面的例子测试了上面的代码：
+var objA = new ClassA("blue");
+var objB = new ClassB("red", "John",'sno');
+objA.sayColor();    //输出 "blue"
+objB.sayColor();    //输出 "red"
+objB.sayName(); //输出 "John"
+</PRE>
+<P style="text-indent: 0.8cm;">由于这种混合方式使用了原型链，所以<SPAN style="color: rgb(255, 0, 0);">instanceof 
+运算符仍能正确运行</SPAN>。</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

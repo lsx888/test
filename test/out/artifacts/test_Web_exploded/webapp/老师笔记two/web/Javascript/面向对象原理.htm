@@ -1,0 +1,158 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0075)http://172.13.19.31:6060/note_html/web/Javascript/1001100-面向对象原理.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>面向对象原理</TITLE> <LINK href="面向对象原理_files/standalone.css" rel="stylesheet"> 
+<LINK href="面向对象原理_files/overlay-apple.css" rel="stylesheet"> <LINK href="面向对象原理_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="面向对象原理_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="面向对象原理_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">面向对象原理</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-06-30 12:27:26</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>prototype、__proto__与Object、Function关系介绍</H3>
+<UL>
+  <LI>Function、Object：Js自带的函数对象</LI>
+  <LI>prototype：每一个函数对象都有一个显示的prototype属性,它代表了对象的原型(Function.prototype函数对象是个例外，没有prototype属性)</LI>
+  <LI>__proto__：每个对象都有一个名为__proto__的内部隐藏属性，指向于它所对应的原型对象(chrome、firefox中名称为__proto__，并且可以被访问到)。原型链正是基于__proto__才得以形成(note：不是基于函数对象的属性prototype)。Object.prototype对象的_proto_为null</LI></UL>
+<PRE class="brush: js;">var o1 = {};
+var o2 =new Object();
+        
+function f1(){}
+  var f2 = function(){}
+  var f3 = new Function('str','console.log(str)');
+    
+  f3('aabb');   // aabb
+  console.log('typeof Object:'+typeof Object);            //function
+  console.log('typeof Function:'+typeof Function);        //function
+  console.log('typeof o1:'+typeof o1);   //object
+  console.log('typeof o2:'+typeof o2);   //object
+  console.log('typeof f1:'+typeof f1);   //function
+  console.log('typeof f2:'+typeof f2);   //function
+  console.log('typeof f3:'+typeof f3);   //function
+</PRE>
+<UL>
+  <LI><SPAN style="font-size: 9pt;">通常我们认为o1、o2是对象，即普通对象；</SPAN><SPAN style="font-size: 9pt;">f1、f2、f3为函数。 
+   但是其实函数也是对象，是由Function构造的，   f3这种写法就跟对象的创建的写法一样。</SPAN></LI>
+  <LI><SPAN style="font-size: 9pt;">f1、f2最终也都像f3一样是有Function这个函数构造出来的   
+  f1、f2、f3为函数对象</SPAN></LI>
+  <LI><SPAN style="font-size: 9pt;">Function跟Object本身也是函数对象。</SPAN></LI></UL>
+<H3>Function、Object、Prototype、__proto__对象间的关系</H3>
+<P style="text-indent: 0.8cm;">Js中每个对象(null除外)都和另一个对象相关联，通过以下例子跟内存效果图来分析</P>
+<PRE class="brush: js;">function Animal(){
+        
+    }
+    var  anim = new Animal();
+    
+    console.log('***********Animal anim proto*****************');
+    console.log('typeof Animal.prototype:' +typeof Animal.prototype);  //object 
+    console.log('anim.__proto__===Animal.prototype:'+(anim.__proto__===Animal.prototype));  //true
+    console.log('Animal.__proto__===Function.prototype:'+(Animal.__proto__===Function.prototype));  //true
+    console.log('Animal.prototype.__proto__===Object.prototype:'+(Animal.prototype.__proto__===Object.prototype));  //true
+    
+    console.log('***********Function proto*****************');
+    console.log('typeof Function.prototype:'+typeof Function.prototype);  //function
+    console.log('typeof Function.__proto__:'+typeof Function.__proto__);  //function
+    console.log('typeof Function.prototype.prototype:'+typeof Function.prototype.prototype); //undefined
+    console.log('typeof Function.prototype.__proto__:'+typeof Function.prototype.__proto__);   //object
+    console.log('Function.prototype===Function.__proto__:'+(Function.prototype===Function.__proto__)); //true
+
+    console.log('***********Object proto*****************');
+    console.log('typeof Object.prototype:'+typeof Object.prototype);  //object
+    console.log('typeof Object.__proto__:'+typeof Object.__proto__);  //function
+    console.log('Object.prototype.prototype:'+Object.prototype.prototype);  //undefied
+    console.log('Object.prototype.__proto__===null:'+(Object.prototype.__proto__===null));  //null
+
+    console.log('***********Function Object  proto关系*****************');
+    console.log('Function.prototype===Object.__proto__:'+(Function.prototype===Object.__proto__));   //true
+    console.log('Function.__proto__===Object.__proto__:'+(Function.__proto__===Object.__proto__));   //true
+    console.log('Function.prototype.__proto__===Object.prototype:'+(Function.prototype.__proto__===Object.prototype));   //true
+
+    /********************* 系统定义的对象Array、Date ****************************/
+    console.log('**************test Array、Date****************');      
+    var array = new Array();
+    var date = new Date();
+    console.log('array.__proto__===Array.prototype:'+(array.__proto__===Array.prototype));   //true
+    console.log('Array.__proto__===Function.prototype:'+(Array.__proto__===Function.prototype));  //true
+    console.log('date.__proto__===Date.prototype:'+(date.__proto__===Date.prototype));    //true
+    console.log('Date.__proto__===Function.prototype:'+(Date.__proto__===Function.prototype));     //true
+</PRE>
+<P style="text-indent: 0.8cm;">通过上图Function、Object、Prototype关系图中，可以得出一下几点：</P>
+<OL>
+  <LI><SPAN 
+  style="line-height: 21px; font-size: 14px;">所有对象所有对象，包括函数对象的原型链最终都指向了Object.prototype，而<SPAN 
+  style="color: rgb(255, 0, 0);">Object.prototype.__proto__===null，原型链至此结束</SPAN>。</SPAN></LI>
+  <LI><SPAN 
+  style="line-height: 21px; font-size: 14px;">Animal.prototype是一个普通对象。</SPAN></LI>
+  <LI><SPAN 
+  style="line-height: 21px; font-size: 14px;">Object是一个函数对象，也是Function构造的，Object.prototype是一个普通对象。</SPAN></LI>
+  <LI><SPAN 
+  style="line-height: 21px; font-size: 14px;">Object.prototype.__</SPAN>proto<SPAN 
+  style="line-height: 21px; font-size: 14px;">__指向null。</SPAN></LI>
+  <LI><SPAN 
+  style="line-height: 21px; font-size: 14px;">Function.prototype是一个函数对象，前面说函数对象都有一个显示的prototype属性，但是Function.prototype却没有prototype属性，即Function.prototype.prototype===undefined，所有<SPAN 
+  style="color: rgb(255, 0, 0);">Function.prototype函数对象是一个特例，没有prototype属性。</SPAN></SPAN></LI>
+  <LI><SPAN 
+  style="line-height: 21px; font-size: 14px;">Object虽是Function构造的一个函数对象，但是Object.prototype没有指向Function.prototype，即Object.prototype!==Function.prototype。</SPAN></LI></OL>
+<H3>Prototype跟Constructor关系介绍</H3>
+<P style="text-indent: 0.8cm;">在 JavaScript 
+中，每个函数对象都有名为“prototype”的属性(上面提到过Function.prototype函数对象是个例外，没有prototype属性)，用于引用原型对象。此原型对象又有名为“constructor”的属性，它反过来引用函数本身。这是一种循环引用（i.e. 
+Animal.prototype.constructor===Animal）。</P>
+<P style="text-indent: 0.8cm;">通过以下例子跟内存效果图来分析Prototype、constructor间的关系</P>
+<PRE class="brush: java;"> console.log('**************constructor****************'); 
+
+    console.log('anim.constructor===Animal:'+(anim.constructor===Animal))    ;    //true
+    console.log('Animal===Animal.prototype.constructor:'+(Animal===Animal.prototype.constructor))    ;    //true
+    console.log('Animal.constructor===Function.prototype.constructor:'+(Animal.constructor===Function.prototype.constructor));   //true
+    console.log('Function.prototype.constructor===Function:'+(Function.prototype.constructor===Function));    //true
+    console.log('Function.constructor===Function.prototype.constructor:'+(Function.constructor===Function.prototype.constructor));    //true
+
+    console.log('Object.prototype.constructor===Object:'+(Object.prototype.constructor===Object));    //true
+    console.log('Object.constructor====Function:'+(Object.constructor===Function));    //true 
+</PRE>
+<OL>
+  <LI><SPAN 
+  style="line-height: 21px; font-size: 14px;">注意Object.constructor===Function；本身Object就是Function函数构造出来的</SPAN></LI>
+  <LI><SPAN 
+  style="line-height: 1.5; font-size: 10.5pt;">如何查找一个对象的constructor，就是在该对象的原型链上寻找碰到的第一个constructor属性所指向的对象。</SPAN></LI></OL>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

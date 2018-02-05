@@ -1,0 +1,1109 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0078)http://172.13.19.31:6060/note_html/数据库/Redis/1001022-数据结构-集合sets.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>数据结构-集合sets</TITLE> <LINK href="数据结构-集合sets_files/standalone.css" rel="stylesheet"> 
+<LINK href="数据结构-集合sets_files/overlay-apple.css" rel="stylesheet"> <LINK href="数据结构-集合sets_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="数据结构-集合sets_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="数据结构-集合sets_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">数据结构-集合sets</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-04-22 22:05:52</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<PRE class="brush: bash;">#向集合myset中加入一个新元素"one"
+127.0.0.1:6379&gt; sadd myset "one"
+(integer) 1
+127.0.0.1:6379&gt; sadd myset "two"
+(integer) 1
+#列出集合myset中的所有元素
+127.0.0.1:6379&gt; smembers myset
+1) "one"
+2) "two"
+#判断元素1是否在集合myset中，返回1表示存在
+127.0.0.1:6379&gt; sismember myset "one"
+(integer) 1
+#判断元素3是否在集合myset中，返回0表示不存在
+127.0.0.1:6379&gt; sismember myset "three"
+(integer) 0
+#新建一个新的集合yourset
+127.0.0.1:6379&gt; sadd yourset "1"
+(integer) 1
+127.0.0.1:6379&gt; sadd yourset "2"
+(integer) 1
+127.0.0.1:6379&gt; smembers yourset
+1) "1"
+2) "2"
+#对两个集合求并集
+127.0.0.1:6379&gt; sunion myset yourset
+1) "1"
+2) "one"
+3) "2"
+4) "two"
+</PRE>
+<H3>集合sets命令</H3>
+<DIV class="container">
+<UL>
+  <LI style="display: none;" data-name="append" data-group="string"><A href="http://172.13.19.31:6060/commands/append.html"><SPAN 
+  class="command">APPEND                   <SPAN class="args">                   
+   key                    value                   </SPAN>                 
+  </SPAN>                 <SPAN class="summary">追加一个值到key上</SPAN>               
+  </A>             </LI>
+  <LI style="display: none;" data-name="auth" data-group="connection"><A href="http://172.13.19.31:6060/commands/auth.html"><SPAN 
+  class="command">AUTH                   <SPAN class="args">                    
+  password                   </SPAN>                 </SPAN>                 
+  <SPAN class="summary">验证服务器命令</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="bgrewriteaof" data-group="server"><A 
+  href="http://172.13.19.31:6060/commands/bgrewriteaof.html"><SPAN class="command">BGREWRITEAOF 
+                    <SPAN class="args"></SPAN>                 </SPAN>           
+        <SPAN class="summary">异步重写追加文件命令</SPAN>               </A>             
+  </LI>
+  <LI style="display: none;" data-name="bgsave" data-group="server"><A href="http://172.13.19.31:6060/commands/bgsave.html"><SPAN 
+  class="command">BGSAVE                   <SPAN class="args"></SPAN>            
+       </SPAN>                 <SPAN class="summary">异步保存数据集到磁盘上</SPAN>          
+       </A>             </LI>
+  <LI style="display: none;" data-name="bitcount" data-group="string"><A href="http://172.13.19.31:6060/commands/bitcount.html"><SPAN 
+  class="command">BITCOUNT                   <SPAN class="args">                 
+     key                    [start end]                   </SPAN>                
+   </SPAN>                 <SPAN class="summary">统计字符串指定起始位置的字节数</SPAN>          
+       </A>             </LI>
+  <LI style="display: none;" data-name="bitop" data-group="string"><A href="http://172.13.19.31:6060/commands/bitop.html"><SPAN 
+  class="command">BITOP                   <SPAN class="args">                    
+  operation                    destkey                    key [key ...]          
+           </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">Perform bitwise operations between strings</SPAN>              
+   </A>             </LI>
+  <LI style="display: none;" data-name="bitpos" data-group="string"><A href="http://172.13.19.31:6060/commands/bitpos.html"><SPAN 
+  class="command">                  BITPOS                   <SPAN class="args"> 
+                     key                    bit                    [start]       
+               [end]                   </SPAN>                 </SPAN>           
+        <SPAN class="summary">Find first bit set or clear in a string</SPAN>     
+            </A>             </LI>
+  <LI style="display: none;" data-name="blpop" data-group="list"><A href="http://172.13.19.31:6060/commands/blpop.html"><SPAN 
+  class="command">                  BLPOP                   <SPAN class="args">  
+                    key [key ...]                    timeout                   
+  </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">删除，并获得该列表中的第一元素，或阻塞，直到有一个可用</SPAN>               </A>          
+     </LI>
+  <LI style="display: none;" data-name="brpop" data-group="list"><A href="http://172.13.19.31:6060/commands/brpop.html"><SPAN 
+  class="command">BRPOP                   <SPAN class="args">                    
+  key [key ...]                    timeout                   </SPAN>             
+      </SPAN>                 <SPAN 
+  class="summary">删除，并获得该列表中的最后一个元素，或阻塞，直到有一个可用</SPAN>               </A>        
+       </LI>
+  <LI style="display: none;" data-name="brpoplpush" data-group="list"><A href="http://172.13.19.31:6060/commands/brpoplpush.html"><SPAN 
+  class="command">BRPOPLPUSH                   <SPAN class="args">               
+       source                    destination                    timeout          
+           </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">弹出一个列表的值，将它推到另一个列表，并返回它;或阻塞，直到有一个可用</SPAN>               </A>  
+             </LI>
+  <LI style="display: none;" data-name="client kill" data-group="server"><A 
+  href="http://172.13.19.31:6060/commands/client-kill.html"><SPAN class="command">CLIENT 
+  KILL                   <SPAN class="args">                    [ip:port]        
+              [ID client-id]                    [TYPE normal|slave|pubsub]       
+               [ADDR ip:port]                    [SKIPME yes/no]                 
+    </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">关闭客户端连接</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="client list" data-group="server"><A 
+  href="http://172.13.19.31:6060/commands/client-list.html"><SPAN class="command">CLIENT 
+  LIST                   <SPAN class="args"></SPAN>                 </SPAN>      
+             <SPAN class="summary">获得客户端连接列表</SPAN>               </A>           
+    </LI>
+  <LI style="display: none;" data-name="client getname" data-group="server"><A 
+  href="http://172.13.19.31:6060/commands/client-getname.html"><SPAN class="command">CLIENT 
+  GETNAME                   <SPAN class="args"></SPAN>                 </SPAN>   
+                <SPAN class="summary">获得当前连接名称</SPAN>               </A>         
+      </LI>
+  <LI style="display: none;" data-name="client pause" data-group="server"><A 
+  href="http://172.13.19.31:6060/commands/client-pause.html"><SPAN class="command">CLIENT 
+  PAUSE                   <SPAN class="args">                    timeout         
+            </SPAN>                 </SPAN>                 <SPAN class="summary">暂停处理客户端命令</SPAN> 
+                </A>             </LI>
+  <LI style="display: none;" data-name="client setname" data-group="server"><A 
+  href="http://172.13.19.31:6060/commands/client-setname.html"><SPAN class="command">CLIENT 
+  SETNAME                   <SPAN class="args">                    
+  connection-name                   </SPAN>                 </SPAN>              
+     <SPAN class="summary">设置当前连接的名字</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="cluster addslots" 
+  data-group="cluster"><A href="http://172.13.19.31:6060/commands/cluster-addslots.html"><SPAN 
+  class="command">CLUSTER ADDSLOTS                   <SPAN class="args">         
+             slot [slot ...]                   </SPAN>                 </SPAN>   
+                <SPAN class="summary">Assign new hash slots to receiving 
+  node</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="cluster count-failure-reports" 
+  data-group="cluster"><A href="http://172.13.19.31:6060/commands/cluster-count-failure-reports.html"><SPAN 
+  class="command">                  CLUSTER COUNT-FAILURE-REPORTS                
+     <SPAN class="args">                    node-id                   </SPAN>    
+               </SPAN>                 <SPAN class="summary">Return the number 
+  of failure reports active for a given node</SPAN>               </A>           
+    </LI>
+  <LI style="display: none;" data-name="cluster countkeysinslot" data-group="cluster"><A 
+  href="http://172.13.19.31:6060/commands/cluster-countkeysinslot.html"><SPAN 
+  class="command">                  CLUSTER COUNTKEYSINSLOT                   
+  <SPAN class="args">                    slot                   </SPAN>          
+         </SPAN>                 <SPAN class="summary">Return the number of 
+  local keys in the specified hash slot</SPAN>               </A>             
+  </LI>
+  <LI style="display: none;" data-name="cluster delslots" 
+  data-group="cluster"><A href="http://172.13.19.31:6060/commands/cluster-delslots.html"><SPAN 
+  class="command">                  CLUSTER DELSLOTS                   <SPAN 
+  class="args">                    slot [slot ...]                   </SPAN>     
+              </SPAN>                 <SPAN class="summary">Set hash slots as 
+  unbound in receiving node</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="cluster failover" 
+  data-group="cluster"><A href="http://172.13.19.31:6060/commands/cluster-failover.html"><SPAN 
+  class="command">                  CLUSTER FAILOVER                   <SPAN 
+  class="args">                    [FORCE|TAKEOVER]                   </SPAN>    
+               </SPAN>                 <SPAN class="summary">Forces a slave to 
+  perform a manual failover of its master.</SPAN>               </A>             
+  </LI>
+  <LI style="display: none;" data-name="cluster forget" data-group="cluster"><A 
+  href="http://172.13.19.31:6060/commands/cluster-forget.html"><SPAN class="command"> 
+                   CLUSTER FORGET                   <SPAN class="args">          
+            node-id                   </SPAN>                 </SPAN>            
+       <SPAN class="summary">Remove a node from the nodes table</SPAN>           
+      </A>             </LI>
+  <LI style="display: none;" data-name="cluster getkeysinslot" data-group="cluster"><A 
+  href="http://172.13.19.31:6060/commands/cluster-getkeysinslot.html"><SPAN 
+  class="command">                  CLUSTER GETKEYSINSLOT                   
+  <SPAN class="args">                    slot                    count           
+          </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">Return local key names in the specified hash slot</SPAN>       
+          </A>             </LI>
+  <LI style="display: none;" data-name="cluster info" data-group="cluster"><A 
+  href="http://172.13.19.31:6060/commands/cluster-info.html"><SPAN class="command"> 
+                   CLUSTER INFO                   <SPAN class="args"></SPAN>     
+              </SPAN>                 <SPAN class="summary">Provides info about 
+  Redis Cluster node state</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="cluster keyslot" data-group="cluster"><A 
+  href="http://172.13.19.31:6060/commands/cluster-keyslot.html"><SPAN class="command"> 
+                   CLUSTER KEYSLOT                   <SPAN class="args">         
+             key                   </SPAN>                 </SPAN>               
+    <SPAN class="summary">Returns the hash slot of the specified key</SPAN>      
+           </A>             </LI>
+  <LI style="display: none;" data-name="cluster meet" data-group="cluster"><A 
+  href="http://172.13.19.31:6060/commands/cluster-meet.html"><SPAN class="command"> 
+                   CLUSTER MEET                   <SPAN class="args">            
+          ip                    port                   </SPAN>                 
+  </SPAN>                 <SPAN class="summary">Force a node cluster to 
+  handshake with another node</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="cluster nodes" data-group="cluster"><A 
+  href="http://172.13.19.31:6060/commands/cluster-nodes.html"><SPAN class="command"> 
+                   CLUSTER NODES                   <SPAN class="args"></SPAN>    
+               </SPAN>                 <SPAN class="summary">Get Cluster config 
+  for the node</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="cluster replicate" 
+  data-group="cluster"><A href="http://172.13.19.31:6060/commands/cluster-replicate.html"><SPAN 
+  class="command">                  CLUSTER REPLICATE                   <SPAN 
+  class="args">                    node-id                   </SPAN>             
+      </SPAN>                 <SPAN class="summary">Reconfigure a node as a 
+  slave of the specified master node</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="cluster reset" data-group="cluster"><A 
+  href="http://172.13.19.31:6060/commands/cluster-reset.html"><SPAN class="command"> 
+                   CLUSTER RESET                   <SPAN class="args">           
+           [HARD|SOFT]                   </SPAN>                 </SPAN>         
+          <SPAN class="summary">Reset a Redis Cluster node</SPAN>               
+  </A>             </LI>
+  <LI style="display: none;" data-name="cluster saveconfig" 
+  data-group="cluster"><A href="http://172.13.19.31:6060/commands/cluster-saveconfig.html"><SPAN 
+  class="command">                  CLUSTER SAVECONFIG                   <SPAN 
+  class="args"></SPAN>                 </SPAN>                 <SPAN class="summary">Forces 
+  the node to save cluster state on disk</SPAN>               </A>             
+  </LI>
+  <LI style="display: none;" data-name="cluster set-config-epoch" data-group="cluster"><A 
+  href="http://172.13.19.31:6060/commands/cluster-set-config-epoch.html"><SPAN 
+  class="command">                  CLUSTER SET-CONFIG-EPOCH                   
+  <SPAN class="args">                    config-epoch                   </SPAN>  
+                 </SPAN>                 <SPAN class="summary">Set the 
+  configuration epoch in a new node</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="cluster setslot" data-group="cluster"><A 
+  href="http://172.13.19.31:6060/commands/cluster-setslot.html"><SPAN class="command"> 
+                   CLUSTER SETSLOT                   <SPAN class="args">         
+             slot                    IMPORTING|MIGRATING|STABLE|NODE             
+         [node-id]                   </SPAN>                 </SPAN>             
+      <SPAN class="summary">Bind an hash slot to a specific node</SPAN>          
+       </A>             </LI>
+  <LI style="display: none;" data-name="cluster slaves" data-group="cluster"><A 
+  href="http://172.13.19.31:6060/commands/cluster-slaves.html"><SPAN class="command"> 
+                   CLUSTER SLAVES                   <SPAN class="args">          
+            node-id                   </SPAN>                 </SPAN>            
+       <SPAN class="summary">List slave nodes of the specified master 
+  node</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="cluster slots" data-group="cluster"><A 
+  href="http://172.13.19.31:6060/commands/cluster-slots.html"><SPAN class="command"> 
+                   CLUSTER SLOTS                   <SPAN class="args"></SPAN>    
+               </SPAN>                 <SPAN class="summary">Get array of 
+  Cluster slot to node mappings</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="command" data-group="server"><A href="http://172.13.19.31:6060/commands/command.html"><SPAN 
+  class="command">                  COMMAND                   <SPAN 
+  class="args"></SPAN>                 </SPAN>                 <SPAN class="summary">Get 
+  array of Redis command details</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="command count" data-group="server"><A 
+  href="http://172.13.19.31:6060/commands/command-count.html"><SPAN class="command"> 
+                   COMMAND COUNT                   <SPAN class="args"></SPAN>    
+               </SPAN>                 <SPAN class="summary">Get total number of 
+  Redis commands</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="command getkeys" data-group="server"><A 
+  href="http://172.13.19.31:6060/commands/command-getkeys.html"><SPAN class="command"> 
+                   COMMAND GETKEYS                   <SPAN class="args"></SPAN>  
+                 </SPAN>                 <SPAN class="summary">Extract keys 
+  given a full Redis command</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="command info" data-group="server"><A 
+  href="http://172.13.19.31:6060/commands/command-info.html"><SPAN class="command"> 
+                   COMMAND INFO                   <SPAN class="args">            
+          command-name [command-name ...]                   </SPAN>              
+     </SPAN>                 <SPAN class="summary">Get array of specific Redis 
+  command details</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="config get" data-group="server"><A href="http://172.13.19.31:6060/commands/config-get.html"><SPAN 
+  class="command">                  CONFIG GET                   <SPAN class="args"> 
+                     parameter                   </SPAN>                 </SPAN> 
+                  <SPAN class="summary">获取配置参数的值</SPAN>               </A>       
+        </LI>
+  <LI style="display: none;" data-name="config rewrite" data-group="server"><A 
+  href="http://172.13.19.31:6060/commands/config-rewrite.html"><SPAN class="command">CONFIG 
+  REWRITE                   <SPAN class="args"></SPAN>                 </SPAN>   
+                <SPAN class="summary">从写内存中的配置文件</SPAN>               </A>       
+        </LI>
+  <LI style="display: none;" data-name="config set" data-group="server"><A href="http://172.13.19.31:6060/commands/config-set.html"><SPAN 
+  class="command">CONFIG SET                   <SPAN class="args">               
+       parameter                    value                   </SPAN>              
+     </SPAN>                 <SPAN class="summary">设置配置文件</SPAN>               
+  </A>             </LI>
+  <LI style="display: none;" data-name="config resetstat" data-group="server"><A 
+  href="http://172.13.19.31:6060/commands/config-resetstat.html"><SPAN class="command">CONFIG 
+  RESETSTAT                   <SPAN class="args"></SPAN>                 </SPAN> 
+                  <SPAN class="summary">复位再分配使用info命令报告的统计</SPAN>               
+  </A>             </LI>
+  <LI style="display: none;" data-name="dbsize" data-group="server"><A href="http://172.13.19.31:6060/commands/dbsize.html"><SPAN 
+  class="command">DBSIZE                   <SPAN class="args"></SPAN>            
+       </SPAN>                 <SPAN class="summary">返回当前数据库里面的keys数量</SPAN>     
+            </A>             </LI>
+  <LI style="display: none;" data-name="debug object" data-group="server"><A 
+  href="http://172.13.19.31:6060/commands/debug-object.html"><SPAN class="command">DEBUG 
+  OBJECT                   <SPAN class="args">                    key            
+         </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">获取一个key的debug信息</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="debug segfault" data-group="server"><A 
+  href="http://172.13.19.31:6060/commands/debug-segfault.html"><SPAN class="command">DEBUG 
+  SEGFAULT                   <SPAN class="args"></SPAN>                 </SPAN>  
+                 <SPAN class="summary">使服务器崩溃命令</SPAN>               </A>        
+       </LI>
+  <LI style="display: none;" data-name="decr" data-group="string"><A href="http://172.13.19.31:6060/commands/decr.html"><SPAN 
+  class="command">DECR                   <SPAN class="args">                    
+  key                   </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">整数原子减1</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="decrby" data-group="string"><A href="http://172.13.19.31:6060/commands/decrby.html"><SPAN 
+  class="command">                  DECRBY                   <SPAN class="args"> 
+                     key                    decrement                   </SPAN>  
+                 </SPAN>                 <SPAN class="summary">原子减指定的整数</SPAN>   
+              </A>             </LI>
+  <LI style="display: none;" data-name="del" data-group="generic"><A href="http://172.13.19.31:6060/commands/del.html"><SPAN 
+  class="command">DEL                   <SPAN class="args">                    
+  key [key ...]                   </SPAN>                 </SPAN>                
+   <SPAN class="summary">删除一个key</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="discard" data-group="transactions"><A 
+  href="http://172.13.19.31:6060/commands/discard.html"><SPAN class="command">   
+                 DISCARD                   <SPAN class="args"></SPAN>            
+       </SPAN>                 <SPAN class="summary">丢弃所有 MULTI 之后发的命令</SPAN>    
+             </A>             </LI>
+  <LI style="display: none;" data-name="dump" data-group="generic"><A href="http://172.13.19.31:6060/commands/dump.html"><SPAN 
+  class="command">DUMP                   <SPAN class="args">                    
+  key                   </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">导出key的值</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="echo" data-group="connection"><A href="http://172.13.19.31:6060/commands/echo.html"><SPAN 
+  class="command">ECHO                   <SPAN class="args">                    
+  message                   </SPAN>                 </SPAN>                 
+  <SPAN class="summary">回显输入的字符串</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="eval" data-group="scripting"><A href="http://172.13.19.31:6060/commands/eval.html"><SPAN 
+  class="command">EVAL                   <SPAN class="args">                    
+  script                    numkeys                    key [key ...]             
+         arg [arg ...]                   </SPAN>                 </SPAN>         
+          <SPAN class="summary">在服务器端执行 LUA 脚本</SPAN>               </A>         
+      </LI>
+  <LI style="display: none;" data-name="evalsha" data-group="scripting"><A href="http://172.13.19.31:6060/commands/evalsha.html"><SPAN 
+  class="command">EVALSHA                   <SPAN class="args">                  
+    sha1                    numkeys                    key [key ...]             
+         arg [arg ...]                   </SPAN>                 </SPAN>         
+          <SPAN class="summary">在服务器端执行 LUA 脚本</SPAN>               </A>         
+      </LI>
+  <LI style="display: none;" data-name="exec" data-group="transactions"><A href="http://172.13.19.31:6060/commands/exec.html"><SPAN 
+  class="command">EXEC                   <SPAN class="args"></SPAN>              
+     </SPAN>                 <SPAN class="summary">执行所有 MULTI 之后发的命令</SPAN>      
+           </A>             </LI>
+  <LI style="display: none;" data-name="exists" data-group="generic"><A href="http://172.13.19.31:6060/commands/exists.html"><SPAN 
+  class="command">EXISTS                   <SPAN class="args">                   
+   key [key ...]                   </SPAN>                 </SPAN>               
+    <SPAN class="summary">查询一个key是否存在</SPAN>               </A>             
+</LI>
+  <LI style="display: none;" data-name="expire" data-group="generic"><A href="http://172.13.19.31:6060/commands/expire.html"><SPAN 
+  class="command">EXPIRE                   <SPAN class="args">                   
+   key                    seconds                   </SPAN>                 
+  </SPAN>                 <SPAN class="summary">设置一个key的过期的秒数</SPAN>             
+    </A>             </LI>
+  <LI style="display: none;" data-name="expireat" data-group="generic"><A href="http://172.13.19.31:6060/commands/expireat.html"><SPAN 
+  class="command">EXPIREAT                   <SPAN class="args">                 
+     key                    timestamp                   </SPAN>                 
+  </SPAN>                 <SPAN class="summary">设置一个UNIX时间戳的过期时间</SPAN>          
+       </A>             </LI>
+  <LI style="display: none;" data-name="flushall" data-group="server"><A href="http://172.13.19.31:6060/commands/flushall.html"><SPAN 
+  class="command">FLUSHALL                   <SPAN class="args"></SPAN>          
+         </SPAN>                 <SPAN class="summary">清空所有数据库命令</SPAN>          
+       </A>             </LI>
+  <LI style="display: none;" data-name="flushdb" data-group="server"><A href="http://172.13.19.31:6060/commands/flushdb.html"><SPAN 
+  class="command">FLUSHDB                   <SPAN class="args"></SPAN>           
+        </SPAN>                 <SPAN class="summary">清空当前的数据库命令</SPAN>          
+       </A>             </LI>
+  <LI style="display: none;" data-name="geoadd" data-group="geo"><A href="http://172.13.19.31:6060/commands/geoadd.html"><SPAN 
+  class="command">GEOADD                   <SPAN class="args">                   
+   key                    longitude latitude member [longitude latitude member 
+  ...]                   </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">添加一个或多个地理空间位置到sorted set</SPAN>               </A>             
+  </LI>
+  <LI style="display: none;" data-name="geohash" data-group="geo"><A href="http://172.13.19.31:6060/commands/geohash.html"><SPAN 
+  class="command">                  GEOHASH                   <SPAN 
+  class="args">                    key                    member [member ...]    
+                 </SPAN>                 </SPAN>                 <SPAN class="summary">返回一个标准的地理空间的Geohash字符串</SPAN> 
+                </A>             </LI>
+  <LI style="display: none;" data-name="geopos" data-group="geo"><A href="http://172.13.19.31:6060/commands/geopos.html"><SPAN 
+  class="command">GEOPOS                   <SPAN class="args">                   
+   key                    member [member ...]                   </SPAN>          
+         </SPAN>                 <SPAN class="summary">返回地理空间的经纬度</SPAN>         
+        </A>             </LI>
+  <LI style="display: none;" data-name="geodist" data-group="geo"><A href="http://172.13.19.31:6060/commands/geodist.html"><SPAN 
+  class="command">GEODIST                   <SPAN class="args">                  
+    key                    member1                    member2                    
+  [unit]                   </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">返回两个地理空间之间的距离</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="georadius" data-group="geo"><A href="http://172.13.19.31:6060/commands/georadius.html"><SPAN 
+  class="command">GEORADIUS                   <SPAN class="args">                
+      key                    longitude                    latitude               
+       radius                    m|km|ft|mi                    [WITHCOORD]       
+               [WITHDIST]                    [WITHHASH]                    
+  [COUNT count]                   </SPAN>                 </SPAN>                
+   <SPAN class="summary">查询指定半径内所有的地理空间元素的集合。</SPAN>               </A>          
+     </LI>
+  <LI style="display: none;" data-name="georadiusbymember" data-group="geo"><A 
+  href="http://172.13.19.31:6060/commands/georadiusbymember.html"><SPAN class="command">GEORADIUSBYMEMBER 
+                    <SPAN class="args">                    key                   
+   member                    radius                    m|km|ft|mi                
+      [WITHCOORD]                    [WITHDIST]                    [WITHHASH]    
+                  [COUNT count]                   </SPAN>                 
+  </SPAN>                 <SPAN class="summary">查询指定半径内匹配到的最大距离的一个地理空间元素。</SPAN> 
+                </A>             </LI>
+  <LI style="display: none;" data-name="get" data-group="string"><A href="http://172.13.19.31:6060/commands/get.html"><SPAN 
+  class="command">GET                   <SPAN class="args">                    
+  key                   </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">返回key的value</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="getbit" data-group="string"><A href="http://172.13.19.31:6060/commands/getbit.html"><SPAN 
+  class="command">                  GETBIT                   <SPAN class="args"> 
+                     key                    offset                   </SPAN>     
+              </SPAN>                 <SPAN 
+  class="summary">返回位的值存储在关键的字符串值的偏移量。</SPAN>               </A>             
+  </LI>
+  <LI style="display: none;" data-name="getrange" data-group="string"><A href="http://172.13.19.31:6060/commands/getrange.html"><SPAN 
+  class="command">GETRANGE                   <SPAN class="args">                 
+     key                    start                    end                   
+  </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">获取存储在key上的值的一个子字符串</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="getset" data-group="string"><A href="http://172.13.19.31:6060/commands/getset.html"><SPAN 
+  class="command">GETSET                   <SPAN class="args">                   
+   key                    value                   </SPAN>                 
+  </SPAN>                 <SPAN class="summary">设置一个key的value，并获取设置前的值</SPAN>    
+             </A>             </LI>
+  <LI style="display: none;" data-name="hdel" data-group="hash"><A href="http://172.13.19.31:6060/commands/hdel.html"><SPAN 
+  class="command">HDEL                   <SPAN class="args">                    
+  key                    field [field ...]                   </SPAN>             
+      </SPAN>                 <SPAN class="summary">删除一个或多个Hash的field</SPAN>     
+            </A>             </LI>
+  <LI style="display: none;" data-name="hexists" data-group="hash"><A href="http://172.13.19.31:6060/commands/hexists.html"><SPAN 
+  class="command">                  HEXISTS                   <SPAN 
+  class="args">                    key                    field                  
+   </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">判断field是否存在于hash中</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="hget" data-group="hash"><A href="http://172.13.19.31:6060/commands/hget.html"><SPAN 
+  class="command">HGET                   <SPAN class="args">                    
+  key                    field                   </SPAN>                 </SPAN> 
+                  <SPAN class="summary">获取hash中field的值</SPAN>               </A> 
+              </LI>
+  <LI style="display: none;" data-name="hgetall" data-group="hash"><A href="http://172.13.19.31:6060/commands/hgetall.html"><SPAN 
+  class="command">HGETALL                   <SPAN class="args">                  
+    key                   </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">从hash中读取全部的域和值</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="hincrby" data-group="hash"><A href="http://172.13.19.31:6060/commands/hincrby.html"><SPAN 
+  class="command">HINCRBY                   <SPAN class="args">                  
+    key                    field                    increment                   
+  </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">将hash中指定域的值增加给定的数字</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="hincrbyfloat" data-group="hash"><A href="http://172.13.19.31:6060/commands/hincrbyfloat.html"><SPAN 
+  class="command">HINCRBYFLOAT                   <SPAN class="args">             
+         key                    field                    increment               
+      </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">将hash中指定域的值增加给定的浮点数</SPAN>               </A>             
+</LI>
+  <LI style="display: none;" data-name="hkeys" data-group="hash"><A href="http://172.13.19.31:6060/commands/hkeys.html"><SPAN 
+  class="command">HKEYS                   <SPAN class="args">                    
+  key                   </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">获取hash的所有字段</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="hlen" data-group="hash"><A href="http://172.13.19.31:6060/commands/hlen.html"><SPAN 
+  class="command">HLEN                   <SPAN class="args">                    
+  key                   </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">获取hash里所有字段的数量</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="hmget" data-group="hash"><A href="http://172.13.19.31:6060/commands/hmget.html"><SPAN 
+  class="command">HMGET                   <SPAN class="args">                    
+  key                    field [field ...]                   </SPAN>             
+      </SPAN>                 <SPAN class="summary">获取hash里面指定字段的值</SPAN>        
+         </A>             </LI>
+  <LI style="display: none;" data-name="hmset" data-group="hash"><A href="http://172.13.19.31:6060/commands/hmset.html"><SPAN 
+  class="command">HMSET                   <SPAN class="args">                    
+  key                    field value [field value ...]                   </SPAN> 
+                  </SPAN>                 <SPAN class="summary">设置hash字段值</SPAN> 
+                </A>             </LI>
+  <LI style="display: none;" data-name="hset" data-group="hash"><A href="http://172.13.19.31:6060/commands/hset.html"><SPAN 
+  class="command">HSET                   <SPAN class="args">                    
+  key                    field                    value                   
+  </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">设置hash里面一个字段的值</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="hsetnx" data-group="hash"><A href="http://172.13.19.31:6060/commands/hsetnx.html"><SPAN 
+  class="command">HSETNX                   <SPAN class="args">                   
+   key                    field                    value                   
+  </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">设置hash的一个字段，只有当这个字段不存在时有效</SPAN>               </A>            
+   </LI>
+  <LI style="display: none;" data-name="hstrlen" data-group="hash"><A href="http://172.13.19.31:6060/commands/hstrlen.html"><SPAN 
+  class="command">HSTRLEN                   <SPAN class="args">                  
+    key                    field                   </SPAN>                 
+  </SPAN>                 <SPAN class="summary">获取hash里面指定field的长度</SPAN>        
+         </A>             </LI>
+  <LI style="display: none;" data-name="hvals" data-group="hash"><A href="http://172.13.19.31:6060/commands/hvals.html"><SPAN 
+  class="command">HVALS                   <SPAN class="args">                    
+  key                   </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">获得hash的所有值</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="incr" data-group="string"><A href="http://172.13.19.31:6060/commands/incr.html"><SPAN 
+  class="command">INCR                   <SPAN class="args">                    
+  key                   </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">执行原子加1操作</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="incrby" data-group="string"><A href="http://172.13.19.31:6060/commands/incrby.html"><SPAN 
+  class="command">INCRBY                   <SPAN class="args">                   
+   key                    increment                   </SPAN>                 
+  </SPAN>                 <SPAN class="summary">执行原子增加一个整数</SPAN>               
+  </A>             </LI>
+  <LI style="display: none;" data-name="incrbyfloat" data-group="string"><A 
+  href="http://172.13.19.31:6060/commands/incrbyfloat.html"><SPAN class="command">INCRBYFLOAT 
+                    <SPAN class="args">                    key                   
+   increment                   </SPAN>                 </SPAN>                 
+  <SPAN class="summary">执行原子增加一个浮点数</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="info" data-group="server"><A href="http://172.13.19.31:6060/commands/info.html"><SPAN 
+  class="command">INFO                   <SPAN class="args">                    
+  [section]                   </SPAN>                 </SPAN>                 
+  <SPAN class="summary">获得服务器的详细信息</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="keys" data-group="generic"><A href="http://172.13.19.31:6060/commands/keys.html"><SPAN 
+  class="command">KEYS                   <SPAN class="args">                    
+  pattern                   </SPAN>                 </SPAN>                 
+  <SPAN class="summary">查找所有匹配给定的模式的键</SPAN>               </A>             
+</LI>
+  <LI style="display: none;" data-name="lastsave" data-group="server"><A href="http://172.13.19.31:6060/commands/lastsave.html"><SPAN 
+  class="command">LASTSAVE                   <SPAN class="args"></SPAN>          
+         </SPAN>                 <SPAN class="summary">获得最后一次同步磁盘的时间</SPAN>      
+           </A>             </LI>
+  <LI style="display: none;" data-name="lindex" data-group="list"><A href="http://172.13.19.31:6060/commands/lindex.html"><SPAN 
+  class="command">LINDEX                   <SPAN class="args">                   
+   key                    index                   </SPAN>                 
+  </SPAN>                 <SPAN class="summary">获取一个元素，通过其索引列表</SPAN>            
+     </A>             </LI>
+  <LI style="display: none;" data-name="linsert" data-group="list"><A href="http://172.13.19.31:6060/commands/linsert.html"><SPAN 
+  class="command">LINSERT                   <SPAN class="args">                  
+    key                    BEFORE|AFTER                    pivot                 
+     value                   </SPAN>                 </SPAN>                 
+  <SPAN class="summary">在列表中的另一个元素之前或之后插入一个元素</SPAN>               </A>          
+     </LI>
+  <LI style="display: none;" data-name="llen" data-group="list"><A href="http://172.13.19.31:6060/commands/llen.html"><SPAN 
+  class="command">LLEN                   <SPAN class="args">                    
+  key                   </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">获得队列(List)的长度</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="lpop" data-group="list"><A href="http://172.13.19.31:6060/commands/lpop.html"><SPAN 
+  class="command">LPOP                   <SPAN class="args">                    
+  key                   </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">从队列的左边出队一个元素</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="lpush" data-group="list"><A href="http://172.13.19.31:6060/commands/lpush.html"><SPAN 
+  class="command">LPUSH                   <SPAN class="args">                    
+  key                    value [value ...]                   </SPAN>             
+      </SPAN>                 <SPAN class="summary">从队列的左边入队一个或多个元素</SPAN>       
+          </A>             </LI>
+  <LI style="display: none;" data-name="lpushx" data-group="list"><A href="http://172.13.19.31:6060/commands/lpushx.html"><SPAN 
+  class="command">LPUSHX                   <SPAN class="args">                   
+   key                    value                   </SPAN>                 
+  </SPAN>                 <SPAN class="summary">当队列存在时，从队到左边入队一个元素</SPAN>        
+         </A>             </LI>
+  <LI style="display: none;" data-name="lrange" data-group="list"><A href="http://172.13.19.31:6060/commands/lrange.html"><SPAN 
+  class="command">LRANGE                   <SPAN class="args">                   
+   key                    start                    stop                   
+  </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">从列表中获取指定返回的元素</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="lrem" data-group="list"><A href="http://172.13.19.31:6060/commands/lrem.html"><SPAN 
+  class="command">LREM                   <SPAN class="args">                    
+  key                    count                    value                   
+  </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">从列表中删除元素</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="lset" data-group="list"><A href="http://172.13.19.31:6060/commands/lset.html"><SPAN 
+  class="command">LSET                   <SPAN class="args">                    
+  key                    index                    value                   
+  </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">设置队列里面一个元素的值</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="ltrim" data-group="list"><A href="http://172.13.19.31:6060/commands/ltrim.html"><SPAN 
+  class="command">LTRIM                   <SPAN class="args">                    
+  key                    start                    stop                   </SPAN> 
+                  </SPAN>                 <SPAN 
+  class="summary">修剪到指定范围内的清单</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="mget" data-group="string"><A href="http://172.13.19.31:6060/commands/mget.html"><SPAN 
+  class="command">MGET                   <SPAN class="args">                    
+  key [key ...]                   </SPAN>                 </SPAN>                
+   <SPAN class="summary">获得所有key的值</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="migrate" data-group="generic"><A href="http://172.13.19.31:6060/commands/migrate.html"><SPAN 
+  class="command">MIGRATE                   <SPAN class="args">                  
+    host                    port                    key                    
+  destination-db                    timeout                    [COPY]            
+          [REPLACE]                   </SPAN>                 </SPAN>            
+       <SPAN class="summary">原子性的将key从redis的一个实例移到另一个实例</SPAN>               
+  </A>             </LI>
+  <LI style="display: none;" data-name="monitor" data-group="server"><A href="http://172.13.19.31:6060/commands/monitor.html"><SPAN 
+  class="command">MONITOR                   <SPAN class="args"></SPAN>           
+        </SPAN>                 <SPAN class="summary">实时监控服务器</SPAN>             
+    </A>             </LI>
+  <LI style="display: none;" data-name="move" data-group="generic"><A href="http://172.13.19.31:6060/commands/move.html"><SPAN 
+  class="command">MOVE                   <SPAN class="args">                    
+  key                    db                   </SPAN>                 </SPAN>    
+               <SPAN class="summary">移动一个key到另一个数据库</SPAN>               </A>    
+           </LI>
+  <LI style="display: none;" data-name="mset" data-group="string"><A href="http://172.13.19.31:6060/commands/mset.html"><SPAN 
+  class="command">MSET                   <SPAN class="args">                    
+  key value [key value ...]                   </SPAN>                 </SPAN>    
+               <SPAN class="summary">设置多个key value</SPAN>               </A>     
+          </LI>
+  <LI style="display: none;" data-name="msetnx" data-group="string"><A href="http://172.13.19.31:6060/commands/msetnx.html"><SPAN 
+  class="command">                  MSETNX                   <SPAN class="args"> 
+                     key value [key value ...]                   </SPAN>         
+          </SPAN>                 <SPAN class="summary">设置多个key 
+  value,仅当key存在时</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="multi" data-group="transactions"><A 
+  href="http://172.13.19.31:6060/commands/multi.html"><SPAN 
+  class="command">MULTI                   <SPAN class="args"></SPAN>             
+      </SPAN>                 <SPAN class="summary">标记一个事务块开始</SPAN>             
+    </A>             </LI>
+  <LI style="display: none;" data-name="object" data-group="generic"><A href="http://172.13.19.31:6060/commands/object.html"><SPAN 
+  class="command">OBJECT                   <SPAN class="args">                   
+   subcommand                    [arguments [arguments ...]]                   
+  </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">检查内部的再分配对象</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="persist" data-group="generic"><A href="http://172.13.19.31:6060/commands/persist.html"><SPAN 
+  class="command">PERSIST                   <SPAN class="args">                  
+    key                   </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">移除key的过期时间</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="pexpire" data-group="generic"><A href="http://172.13.19.31:6060/commands/pexpire.html"><SPAN 
+  class="command">PEXPIRE                   <SPAN class="args">                  
+    key                    milliseconds                   </SPAN>                
+   </SPAN>                 <SPAN class="summary">设置key的有效时间以毫秒为单位</SPAN>         
+        </A>             </LI>
+  <LI style="display: none;" data-name="pexpireat" data-group="generic"><A href="http://172.13.19.31:6060/commands/pexpireat.html"><SPAN 
+  class="command">PEXPIREAT                   <SPAN class="args">                
+      key                    milliseconds-timestamp                   </SPAN>    
+               </SPAN>                 <SPAN 
+  class="summary">设置key的到期UNIX时间戳以毫秒为单位</SPAN>               </A>             
+  </LI>
+  <LI style="display: none;" data-name="pfadd" data-group="hyperloglog"><A href="http://172.13.19.31:6060/commands/pfadd.html"><SPAN 
+  class="command">PFADD                   <SPAN class="args">                    
+  key                    element [element ...]                   </SPAN>         
+          </SPAN>                 <SPAN 
+  class="summary">将指定元素添加到HyperLogLog</SPAN>               </A>             
+</LI>
+  <LI style="display: none;" data-name="pfcount" data-group="hyperloglog"><A 
+  href="http://172.13.19.31:6060/commands/pfcount.html"><SPAN class="command">   
+                 PFCOUNT                   <SPAN class="args">                   
+   key [key ...]                   </SPAN>                 </SPAN>               
+    <SPAN class="summary">Return the approximated cardinality of the set(s) 
+  observed by the HyperLogLog at key(s).</SPAN>               </A>             
+  </LI>
+  <LI style="display: none;" data-name="pfmerge" data-group="hyperloglog"><A 
+  href="http://172.13.19.31:6060/commands/pfmerge.html"><SPAN class="command">   
+                 PFMERGE                   <SPAN class="args">                   
+   destkey                    sourcekey [sourcekey ...]                   
+  </SPAN>                 </SPAN>                 <SPAN class="summary">Merge N 
+  different HyperLogLogs into a single one.</SPAN>               </A>            
+   </LI>
+  <LI style="display: none;" data-name="ping" data-group="connection"><A href="http://172.13.19.31:6060/commands/ping.html"><SPAN 
+  class="command">                  PING                   <SPAN 
+  class="args"></SPAN>                 </SPAN>                 <SPAN class="summary">Ping 
+  服务器</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="psetex" data-group="string"><A href="http://172.13.19.31:6060/commands/psetex.html"><SPAN 
+  class="command">PSETEX                   <SPAN class="args">                   
+   key                    milliseconds                    value                  
+   </SPAN>                 </SPAN>                 <SPAN class="summary">Set the 
+  value and expiration in milliseconds of a key</SPAN>               </A>        
+       </LI>
+  <LI style="display: none;" data-name="psubscribe" data-group="pubsub"><A href="http://172.13.19.31:6060/commands/psubscribe.html"><SPAN 
+  class="command">                  PSUBSCRIBE                   <SPAN class="args"> 
+                     pattern [pattern ...]                   </SPAN>             
+      </SPAN>                 <SPAN class="summary">Listen for messages 
+  published to channels matching the given patterns</SPAN>               </A>    
+           </LI>
+  <LI style="display: none;" data-name="pubsub" data-group="pubsub"><A href="http://172.13.19.31:6060/commands/pubsub.html"><SPAN 
+  class="command">                  PUBSUB                   <SPAN class="args"> 
+                     subcommand                    [argument [argument ...]]     
+                </SPAN>                 </SPAN>                 <SPAN class="summary">Inspect 
+  the state of the Pub/Sub subsystem</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="pttl" data-group="generic"><A href="http://172.13.19.31:6060/commands/pttl.html"><SPAN 
+  class="command">                  PTTL                   <SPAN class="args">   
+                   key                   </SPAN>                 </SPAN>         
+          <SPAN class="summary">获取key的有效毫秒数</SPAN>               </A>            
+   </LI>
+  <LI style="display: none;" data-name="publish" data-group="pubsub"><A href="http://172.13.19.31:6060/commands/publish.html"><SPAN 
+  class="command">PUBLISH                   <SPAN class="args">                  
+    channel                    message                   </SPAN>                 
+  </SPAN>                 <SPAN class="summary">发布一条消息到频道</SPAN>               
+  </A>             </LI>
+  <LI style="display: none;" data-name="punsubscribe" data-group="pubsub"><A 
+  href="http://172.13.19.31:6060/commands/punsubscribe.html"><SPAN class="command">PUNSUBSCRIBE 
+                    <SPAN class="args">                    [pattern [pattern 
+  ...]]                   </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">停止发布到匹配给定模式的渠道的消息听</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="quit" data-group="connection"><A href="http://172.13.19.31:6060/commands/quit.html"><SPAN 
+  class="command">QUIT                   <SPAN class="args"></SPAN>              
+     </SPAN>                 <SPAN class="summary">关闭连接，退出</SPAN>               
+  </A>             </LI>
+  <LI style="display: none;" data-name="randomkey" data-group="generic"><A href="http://172.13.19.31:6060/commands/randomkey.html"><SPAN 
+  class="command">RANDOMKEY                   <SPAN class="args"></SPAN>         
+          </SPAN>                 <SPAN class="summary">返回一个随机的key</SPAN>        
+         </A>             </LI>
+  <LI style="display: none;" data-name="readonly" data-group="cluster"><A href="http://172.13.19.31:6060/commands/readonly.html"><SPAN 
+  class="command">                  READONLY                   <SPAN class="args"></SPAN> 
+                  </SPAN>                 <SPAN class="summary">Enables read 
+  queries for a connection to a cluster slave node</SPAN>               </A>     
+          </LI>
+  <LI style="display: none;" data-name="readwrite" data-group="cluster"><A href="http://172.13.19.31:6060/commands/readwrite.html"><SPAN 
+  class="command">                  READWRITE                   <SPAN class="args"></SPAN> 
+                  </SPAN>                 <SPAN class="summary">Disables read 
+  queries for a connection to a cluster slave node</SPAN>               </A>     
+          </LI>
+  <LI style="display: none;" data-name="rename" data-group="generic"><A href="http://172.13.19.31:6060/commands/rename.html"><SPAN 
+  class="command">                  RENAME                   <SPAN class="args"> 
+                     key                    newkey                   </SPAN>     
+              </SPAN>                 <SPAN class="summary">将一个key重命名</SPAN>     
+            </A>             </LI>
+  <LI style="display: none;" data-name="renamenx" data-group="generic"><A href="http://172.13.19.31:6060/commands/renamenx.html"><SPAN 
+  class="command">RENAMENX                   <SPAN class="args">                 
+     key                    newkey                   </SPAN>                 
+  </SPAN>                 <SPAN class="summary">重命名一个key,新的key必须是不存在的key</SPAN>  
+               </A>             </LI>
+  <LI style="display: none;" data-name="restore" data-group="generic"><A href="http://172.13.19.31:6060/commands/restore.html"><SPAN 
+  class="command">                  RESTORE                   <SPAN 
+  class="args">                    key                    ttl                    
+  serialized-value                    [REPLACE]                   </SPAN>        
+           </SPAN>                 <SPAN class="summary">Create a key using the 
+  provided serialized value, previously obtained using DUMP.</SPAN>              
+   </A>             </LI>
+  <LI style="display: none;" data-name="role" data-group="server"><A href="http://172.13.19.31:6060/commands/role.html"><SPAN 
+  class="command">                  ROLE                   <SPAN 
+  class="args"></SPAN>                 </SPAN>                 <SPAN class="summary">Return 
+  the role of the instance in the context of replication</SPAN>               
+  </A>             </LI>
+  <LI style="display: none;" data-name="rpop" data-group="list"><A href="http://172.13.19.31:6060/commands/rpop.html"><SPAN 
+  class="command">                  RPOP                   <SPAN class="args">   
+                   key                   </SPAN>                 </SPAN>         
+          <SPAN class="summary">从队列的右边出队一个元</SPAN>               </A>            
+   </LI>
+  <LI style="display: none;" data-name="rpoplpush" data-group="list"><A href="http://172.13.19.31:6060/commands/rpoplpush.html"><SPAN 
+  class="command">RPOPLPUSH                   <SPAN class="args">                
+      source                    destination                   </SPAN>            
+       </SPAN>                 <SPAN 
+  class="summary">删除列表中的最后一个元素，将其追加到另一个列表</SPAN>               </A>             
+  </LI>
+  <LI style="display: none;" data-name="rpush" data-group="list"><A href="http://172.13.19.31:6060/commands/rpush.html"><SPAN 
+  class="command">RPUSH                   <SPAN class="args">                    
+  key                    value [value ...]                   </SPAN>             
+      </SPAN>                 <SPAN class="summary">从队列的右边入队一个元素</SPAN>          
+       </A>             </LI>
+  <LI style="display: none;" data-name="rpushx" data-group="list"><A href="http://172.13.19.31:6060/commands/rpushx.html"><SPAN 
+  class="command">RPUSHX                   <SPAN class="args">                   
+   key                    value                   </SPAN>                 
+  </SPAN>                 <SPAN class="summary">从队列的右边入队一个元素，仅队列存在时有效</SPAN>     
+            </A>             </LI>
+  <LI style="display: list-item;" data-name="sadd" data-group="set"><A href="http://172.13.19.31:6060/commands/sadd.html"><SPAN 
+  class="command"></SPAN></A><SPAN class="command">SADD                   <SPAN 
+  class="args">                    key                    member [member ...]    
+                 </SPAN>                 </SPAN>                 <SPAN class="summary">添加一个或者多个元素到集合(set)里</SPAN> 
+                            </LI>
+  <LI style="display: none;" data-name="save" data-group="server"><A href="http://172.13.19.31:6060/commands/save.html"><SPAN 
+  class="command">SAVE                   <SPAN class="args"></SPAN>              
+     </SPAN>                 <SPAN class="summary">同步数据到磁盘上</SPAN>               
+  </A>             </LI>
+  <LI style="display: list-item;" data-name="scard" data-group="set"><SPAN 
+  class="command">SCARD                   <SPAN class="args">                    
+  key                   </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">获取集合里面的元素数量</SPAN>                           </LI>
+  <LI style="display: none;" data-name="script exists" data-group="scripting"><A 
+  href="http://172.13.19.31:6060/commands/script-exists.html"><SPAN class="command">SCRIPT 
+  EXISTS                   <SPAN class="args">                    script [script 
+  ...]                   </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">Check existence of scripts in the script cache.</SPAN>         
+        </A>             </LI>
+  <LI style="display: none;" data-name="script flush" data-group="scripting"><A 
+  href="http://172.13.19.31:6060/commands/script-flush.html"><SPAN class="command"> 
+                   SCRIPT FLUSH                   <SPAN class="args"></SPAN>     
+              </SPAN>                 <SPAN 
+  class="summary">删除服务器缓存中所有Lua脚本。</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="script kill" data-group="scripting"><A 
+  href="http://172.13.19.31:6060/commands/script-kill.html"><SPAN class="command">SCRIPT 
+  KILL                   <SPAN class="args"></SPAN>                 </SPAN>      
+             <SPAN class="summary">杀死当前正在运行的 Lua 脚本。</SPAN>               </A>   
+            </LI>
+  <LI style="display: none;" data-name="script load" data-group="scripting"><A 
+  href="http://172.13.19.31:6060/commands/script-load.html"><SPAN class="command">SCRIPT 
+  LOAD                   <SPAN class="args">                    script           
+          </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">从服务器缓存中装载一个Lua脚本。</SPAN>               </A>             </LI>
+  <LI style="display: list-item;" data-name="sdiff" data-group="set"><SPAN 
+  class="command">SDIFF                   <SPAN class="args">                    
+  key [key ...]                   </SPAN>                 </SPAN>                
+   <SPAN class="summary">获得队列不存在的元素</SPAN>                           </LI>
+  <LI style="display: list-item;" data-name="sdiffstore" data-group="set"><SPAN 
+  class="command">SDIFFSTORE                   <SPAN class="args">               
+       destination                    key [key ...]                   </SPAN>    
+               </SPAN>                 <SPAN 
+  class="summary">获得队列不存在的元素，并存储在一个关键的结果集</SPAN>                           </LI>
+  <LI style="display: none;" data-name="select" data-group="connection"><A href="http://172.13.19.31:6060/commands/select.html"><SPAN 
+  class="command">SELECT                   <SPAN class="args">                   
+   index                   </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">选择新数据库</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="set" data-group="string"><A href="http://172.13.19.31:6060/commands/set.html"><SPAN 
+  class="command">SET                   <SPAN class="args">                    
+  key                    value                    [EX seconds]                   
+   [PX milliseconds]                    [NX|XX]                   </SPAN>        
+           </SPAN>                 <SPAN class="summary">设置一个key的value值</SPAN>   
+              </A>             </LI>
+  <LI style="display: none;" data-name="setbit" data-group="string"><A href="http://172.13.19.31:6060/commands/setbit.html"><SPAN 
+  class="command">SETBIT                   <SPAN class="args">                   
+   key                    offset                    value                   
+  </SPAN>                 </SPAN>                 <SPAN class="summary">Sets or 
+  clears the bit at offset in the string value stored at key</SPAN>              
+   </A>             </LI>
+  <LI style="display: none;" data-name="setex" data-group="string"><A href="http://172.13.19.31:6060/commands/setex.html"><SPAN 
+  class="command">                  SETEX                   <SPAN class="args">  
+                    key                    seconds                    value      
+               </SPAN>                 </SPAN>                 <SPAN class="summary">设置key-value并设置过期时间（单位：秒）</SPAN> 
+                </A>             </LI>
+  <LI style="display: none;" data-name="setnx" data-group="string"><A href="http://172.13.19.31:6060/commands/setnx.html"><SPAN 
+  class="command">SETNX                   <SPAN class="args">                    
+  key                    value                   </SPAN>                 </SPAN> 
+                  <SPAN class="summary">设置的一个关键的价值，只有当该键不存在</SPAN>               
+  </A>             </LI>
+  <LI style="display: none;" data-name="setrange" data-group="string"><A href="http://172.13.19.31:6060/commands/setrange.html"><SPAN 
+  class="command">SETRANGE                   <SPAN class="args">                 
+     key                    offset                    value                   
+  </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">Overwrite part of a string at key starting at the specified 
+  offset</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="shutdown" data-group="server"><A href="http://172.13.19.31:6060/commands/shutdown.html"><SPAN 
+  class="command">                  SHUTDOWN                   <SPAN class="args"> 
+                     [NOSAVE]                    [SAVE]                   
+  </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">关闭服务</SPAN>               </A>             </LI>
+  <LI style="display: list-item;" data-name="sinter" data-group="set"><SPAN 
+  class="command">SINTER                   <SPAN class="args">                   
+   key [key ...]                   </SPAN>                 </SPAN>               
+    <SPAN class="summary">获得两个集合的交集</SPAN>                           </LI>
+  <LI style="display: list-item;" data-name="sinterstore" data-group="set"><SPAN 
+  class="command">SINTERSTORE                   <SPAN class="args">              
+        destination                    key [key ...]                   </SPAN>   
+                </SPAN>                 <SPAN 
+  class="summary">获得两个集合的交集，并存储在一个关键的结果集</SPAN>                           </LI>
+  <LI style="display: list-item;" data-name="sismember" data-group="set"><SPAN 
+  class="command">SISMEMBER                   <SPAN class="args">                
+      key                    member                   </SPAN>                 
+  </SPAN>                 <SPAN class="summary">确定一个给定的值是一个集合的成员</SPAN>          
+                   </LI>
+  <LI style="display: none;" data-name="slaveof" data-group="server"><A href="http://172.13.19.31:6060/commands/slaveof.html"><SPAN 
+  class="command">SLAVEOF                   <SPAN class="args">                  
+    host                    port                   </SPAN>                 
+  </SPAN>                 <SPAN class="summary">指定当前服务器的主服务器</SPAN>              
+   </A>             </LI>
+  <LI style="display: none;" data-name="slowlog" data-group="server"><A href="http://172.13.19.31:6060/commands/slowlog.html"><SPAN 
+  class="command">SLOWLOG                   <SPAN class="args">                  
+    subcommand                    [argument]                   </SPAN>           
+        </SPAN>                 <SPAN class="summary">管理再分配的慢查询日志</SPAN>         
+        </A>             </LI>
+  <LI style="display: list-item;" data-name="smembers" data-group="set"><SPAN 
+  class="command">SMEMBERS                   <SPAN class="args">                 
+     key                   </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">获取集合里面的所有key</SPAN>                           </LI>
+  <LI style="display: list-item;" data-name="smove" data-group="set"><SPAN 
+  class="command">                  SMOVE                   <SPAN class="args">  
+                    source                    destination                    
+  member                   </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">移动集合里面的一个key到另一个集合</SPAN>                           </LI>
+  <LI style="display: none;" data-name="sort" data-group="generic"><A href="http://172.13.19.31:6060/commands/sort.html"><SPAN 
+  class="command">SORT                   <SPAN class="args">                    
+  key                    [BY pattern]                    [LIMIT offset count]    
+                  [GET pattern [GET pattern ...]]                    [ASC|DESC]  
+                    [ALPHA]                    [STORE destination]               
+      </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">对队列、集合、有序集合排序</SPAN>               </A>             </LI>
+  <LI style="display: list-item;" data-name="spop" data-group="set"><SPAN class="command">SPOP 
+                    <SPAN class="args">                    key                   
+   [count]                   </SPAN>                 </SPAN>                 
+  <SPAN class="summary">删除并获取一个集合里面的元素</SPAN>                           </LI>
+  <LI style="display: list-item;" data-name="srandmember" data-group="set"><SPAN 
+  class="command">SRANDMEMBER                   <SPAN class="args">              
+        key                    [count]                   </SPAN>                 
+  </SPAN>                 <SPAN class="summary">从集合里面随机获取一个key</SPAN>            
+                 </LI>
+  <LI style="display: list-item;" data-name="srem" data-group="set"><SPAN class="command"> 
+                   SREM                   <SPAN class="args">                    
+  key                    member [member ...]                   </SPAN>           
+        </SPAN>                 <SPAN class="summary">从集合里删除一个或多个key</SPAN>      
+                       </LI>
+  <LI style="display: none;" data-name="strlen" data-group="string"><A href="http://172.13.19.31:6060/commands/strlen.html"><SPAN 
+  class="command">                  STRLEN                   <SPAN class="args"> 
+                     key                   </SPAN>                 </SPAN>       
+            <SPAN class="summary">获取指定key值的长度</SPAN>               </A>          
+     </LI>
+  <LI style="display: none;" data-name="subscribe" data-group="pubsub"><A href="http://172.13.19.31:6060/commands/subscribe.html"><SPAN 
+  class="command">SUBSCRIBE                   <SPAN class="args">                
+      channel [channel ...]                   </SPAN>                 </SPAN>    
+               <SPAN class="summary">监听频道发布的消息</SPAN>               </A>         
+      </LI>
+  <LI style="display: list-item;" data-name="sunion" data-group="set"><SPAN 
+  class="command">SUNION                   <SPAN class="args">                   
+   key [key ...]                   </SPAN>                 </SPAN>               
+    <SPAN class="summary">添加多个set元素</SPAN>                           </LI>
+  <LI style="display: list-item;" data-name="sunionstore" data-group="set"><SPAN 
+  class="command">SUNIONSTORE                   <SPAN class="args">              
+        destination                    key [key ...]                   </SPAN>   
+                </SPAN>                 <SPAN 
+  class="summary">合并set元素，并将结果存入新的set里面</SPAN>                           </LI>
+  <LI style="display: none;" data-name="sync" data-group="server"><A href="http://172.13.19.31:6060/commands/sync.html"><SPAN 
+  class="command">SYNC                   <SPAN class="args"></SPAN>              
+     </SPAN>                 <SPAN class="summary">用于复制的内部命令</SPAN>              
+   </A>             </LI>
+  <LI style="display: none;" data-name="time" data-group="server"><A href="http://172.13.19.31:6060/commands/time.html"><SPAN 
+  class="command">TIME                   <SPAN class="args"></SPAN>              
+     </SPAN>                 <SPAN class="summary">返回当前服务器时间</SPAN>              
+   </A>             </LI>
+  <LI style="display: none;" data-name="ttl" data-group="generic"><A href="http://172.13.19.31:6060/commands/ttl.html"><SPAN 
+  class="command">TTL                   <SPAN class="args">                    
+  key                   </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">获取key的有效时间（单位：秒）</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="type" data-group="generic"><A href="http://172.13.19.31:6060/commands/type.html"><SPAN 
+  class="command">TYPE                   <SPAN class="args">                    
+  key                   </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">获取key的存储类型</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="unsubscribe" data-group="pubsub"><A 
+  href="http://172.13.19.31:6060/commands/unsubscribe.html"><SPAN class="command">UNSUBSCRIBE 
+                    <SPAN class="args">                    [channel [channel 
+  ...]]                   </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">停止频道监听</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="unwatch" data-group="transactions"><A 
+  href="http://172.13.19.31:6060/commands/unwatch.html"><SPAN 
+  class="command">UNWATCH                   <SPAN class="args"></SPAN>           
+        </SPAN>                 <SPAN class="summary">取消事务命令</SPAN>              
+   </A>             </LI>
+  <LI style="display: none;" data-name="wait" data-group="generic"><A href="http://172.13.19.31:6060/commands/wait.html"><SPAN 
+  class="command">WAIT                   <SPAN class="args">                    
+  numslaves                    timeout                   </SPAN>                 
+  </SPAN>                 <SPAN class="summary">Wait for the synchronous 
+  replication of all the write commands sent in the context of the current 
+  connection</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="watch" data-group="transactions"><A 
+  href="http://172.13.19.31:6060/commands/watch.html"><SPAN class="command">     
+               WATCH                   <SPAN class="args">                    
+  key [key ...]                   </SPAN>                 </SPAN>                
+   <SPAN class="summary">锁定key直到执行了 MULTI/EXEC 命令</SPAN>               </A>      
+         </LI>
+  <LI style="display: none;" data-name="zadd" data-group="sorted_set"><A href="http://172.13.19.31:6060/commands/zadd.html"><SPAN 
+  class="command">ZADD                   <SPAN class="args">                    
+  key                    [NX|XX]                    [CH]                    
+  [INCR]                    score member [score member ...]                   
+  </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">添加到有序set的一个或多个成员，或更新的分数，如果它已经存在</SPAN>               </A>      
+         </LI>
+  <LI style="display: none;" data-name="zcard" data-group="sorted_set"><A href="http://172.13.19.31:6060/commands/zcard.html"><SPAN 
+  class="command">ZCARD                   <SPAN class="args">                    
+  key                   </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">获取一个排序的集合中的成员数量</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="zcount" data-group="sorted_set"><A href="http://172.13.19.31:6060/commands/zcount.html"><SPAN 
+  class="command">ZCOUNT                   <SPAN class="args">                   
+   key                    min                    max                   </SPAN>   
+                </SPAN>                 <SPAN 
+  class="summary">给定值范围内的成员数与分数排序</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="zincrby" data-group="sorted_set"><A 
+  href="http://172.13.19.31:6060/commands/zincrby.html"><SPAN 
+  class="command">ZINCRBY                   <SPAN class="args">                  
+    key                    increment                    member                   
+  </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">增量的一名成员在排序设置的评分</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="zinterstore" data-group="sorted_set"><A 
+  href="http://172.13.19.31:6060/commands/zinterstore.html"><SPAN class="command">ZINTERSTORE 
+                    <SPAN class="args">                    destination           
+           numkeys                    key [key ...]                    [WEIGHTS 
+  weight [weight ...]]                    [AGGREGATE SUM|MIN|MAX]                
+     </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">相交多个排序集，导致排序的设置存储在一个新的关键</SPAN>               </A>             
+  </LI>
+  <LI style="display: none;" data-name="zlexcount" data-group="sorted_set"><A 
+  href="http://172.13.19.31:6060/commands/zlexcount.html"><SPAN 
+  class="command">ZLEXCOUNT                   <SPAN class="args">                
+      key                    min                    max                   
+  </SPAN>                 </SPAN>                 <SPAN class="summary">Count 
+  the number of members in a sorted set between a given lexicographical 
+  range</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="zrange" data-group="sorted_set"><A href="http://172.13.19.31:6060/commands/zrange.html"><SPAN 
+  class="command">                  ZRANGE                   <SPAN class="args"> 
+                     key                    start                    stop        
+              [WITHSCORES]                   </SPAN>                 </SPAN>     
+              <SPAN class="summary">根据指定的index返回，返回sorted set的成员列表</SPAN>        
+         </A>             </LI>
+  <LI style="display: none;" data-name="zrangebylex" data-group="sorted_set"><A 
+  href="http://172.13.19.31:6060/commands/zrangebylex.html"><SPAN class="command">ZRANGEBYLEX 
+                    <SPAN class="args">                    key                   
+   min                    max                    [LIMIT offset count]            
+         </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">Return a range of members in a sorted set, by lexicographical 
+  range</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="zrevrangebylex" 
+  data-group="sorted_set"><A href="http://172.13.19.31:6060/commands/zrevrangebylex.html"><SPAN 
+  class="command">                  ZREVRANGEBYLEX                   <SPAN 
+  class="args">                    key                    max                    
+  min                    [LIMIT offset count]                   </SPAN>          
+         </SPAN>                 <SPAN class="summary">Return a range of members 
+  in a sorted set, by lexicographical range, ordered from higher to lower 
+  strings.</SPAN>               </A>             </LI>
+  <LI style="display: none;" data-name="zrangebyscore" 
+  data-group="sorted_set"><A href="http://172.13.19.31:6060/commands/zrangebyscore.html"><SPAN 
+  class="command">                  ZRANGEBYSCORE                   <SPAN class="args"> 
+                     key                    min                    max           
+           [WITHSCORES]                    [LIMIT offset count]                  
+   </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">根据指定的score返回，返回sorted set的成员列表</SPAN>               </A>       
+        </LI>
+  <LI style="display: none;" data-name="zrank" data-group="sorted_set"><A href="http://172.13.19.31:6060/commands/zrank.html"><SPAN 
+  class="command">ZRANK                   <SPAN class="args">                    
+  key                    member                   </SPAN>                 
+  </SPAN>                 <SPAN class="summary">确定在排序集合成员的索引</SPAN>              
+   </A>             </LI>
+  <LI style="display: none;" data-name="zrem" data-group="sorted_set"><A href="http://172.13.19.31:6060/commands/zrem.html"><SPAN 
+  class="command">ZREM                   <SPAN class="args">                    
+  key                    member [member ...]                   </SPAN>           
+        </SPAN>                 <SPAN class="summary">从排序的集合中删除一个或多个成员</SPAN>    
+             </A>             </LI>
+  <LI style="display: none;" data-name="zremrangebylex" 
+  data-group="sorted_set"><A href="http://172.13.19.31:6060/commands/zremrangebylex.html"><SPAN 
+  class="command">ZREMRANGEBYLEX                   <SPAN class="args">           
+           key                    min                    max                   
+  </SPAN>                 </SPAN>                 <SPAN class="summary">Remove 
+  all members in a sorted set between the given lexicographical range</SPAN>     
+            </A>             </LI>
+  <LI style="display: none;" data-name="zremrangebyrank" 
+  data-group="sorted_set"><A href="http://172.13.19.31:6060/commands/zremrangebyrank.html"><SPAN 
+  class="command">                  ZREMRANGEBYRANK                   <SPAN 
+  class="args">                    key                    start                  
+    stop                   </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">在排序设置的所有成员在给定的索引中删除</SPAN>               </A>             
+</LI>
+  <LI style="display: none;" data-name="zremrangebyscore" data-group="sorted_set"><A 
+  href="http://172.13.19.31:6060/commands/zremrangebyscore.html"><SPAN class="command">ZREMRANGEBYSCORE 
+                    <SPAN class="args">                    key                   
+   min                    max                   </SPAN>                 </SPAN>  
+                 <SPAN class="summary">删除一个排序的设置在给定的分数所有成员</SPAN>               
+  </A>             </LI>
+  <LI style="display: none;" data-name="zrevrange" data-group="sorted_set"><A 
+  href="http://172.13.19.31:6060/commands/zrevrange.html"><SPAN 
+  class="command">ZREVRANGE                   <SPAN class="args">                
+      key                    start                    stop                    
+  [WITHSCORES]                   </SPAN>                 </SPAN>                 
+  <SPAN class="summary">在排序的设置返回的成员范围，通过索引，下令从分数高到低</SPAN>               </A>    
+           </LI>
+  <LI style="display: none;" data-name="zrevrangebyscore" data-group="sorted_set"><A 
+  href="http://172.13.19.31:6060/commands/zrevrangebyscore.html"><SPAN class="command">ZREVRANGEBYSCORE 
+                    <SPAN class="args">                    key                   
+   max                    min                    [WITHSCORES]                    
+  [LIMIT offset count]                   </SPAN>                 </SPAN>         
+          <SPAN class="summary">返回的成员在排序设置的范围，由得分，下令从分数高到低</SPAN>               
+  </A>             </LI>
+  <LI style="display: none;" data-name="zrevrank" data-group="sorted_set"><A 
+  href="http://172.13.19.31:6060/commands/zrevrank.html"><SPAN 
+  class="command">ZREVRANK                   <SPAN class="args">                 
+     key                    member                   </SPAN>                 
+  </SPAN>                 <SPAN class="summary">确定指数在排序集的成员，下令从分数高到低</SPAN>      
+           </A>             </LI>
+  <LI style="display: none;" data-name="zscore" data-group="sorted_set"><A href="http://172.13.19.31:6060/commands/zscore.html"><SPAN 
+  class="command">ZSCORE                   <SPAN class="args">                   
+   key                    member                   </SPAN>                 
+  </SPAN>                 <SPAN class="summary">获取成员在排序设置相关的比分</SPAN>            
+     </A>             </LI>
+  <LI style="display: none;" data-name="zunionstore" data-group="sorted_set"><A 
+  href="http://172.13.19.31:6060/commands/zunionstore.html"><SPAN class="command">ZUNIONSTORE 
+                    <SPAN class="args">                    destination           
+           numkeys                    key [key ...]                    [WEIGHTS 
+  weight [weight ...]]                    [AGGREGATE SUM|MIN|MAX]                
+     </SPAN>                 </SPAN>                 <SPAN 
+  class="summary">添加多个排序集和导致排序的设置存储在一个新的关键</SPAN>               </A>             
+  </LI>
+  <LI style="display: none;" data-name="scan" data-group="generic"><A href="http://172.13.19.31:6060/commands/scan.html"><SPAN 
+  class="command">SCAN                   <SPAN class="args">                    
+  cursor                    [MATCH pattern]                    [COUNT count]     
+                </SPAN>                 </SPAN>                 <SPAN class="summary">增量迭代key</SPAN> 
+                </A>             </LI>
+  <LI style="display: list-item;" data-name="sscan" data-group="set"><SPAN 
+  class="command">                  SSCAN                   <SPAN class="args">  
+                    key                    cursor                    [MATCH 
+  pattern]                    [COUNT count]                   </SPAN>            
+       </SPAN>                 <SPAN class="summary">迭代set里面的元素</SPAN><A href="http://172.13.19.31:6060/commands/sscan.html"> 
+                </A>             </LI>
+  <LI style="display: none;" data-name="hscan" data-group="hash"><A href="http://172.13.19.31:6060/commands/hscan.html"><SPAN 
+  class="command">HSCAN                   <SPAN class="args">                    
+  key                    cursor                    [MATCH pattern]               
+       [COUNT count]                   </SPAN>                 </SPAN>           
+        <SPAN class="summary">迭代hash里面的元素</SPAN>               </A>             
+  </LI>
+  <LI style="display: none;" data-name="zscan" data-group="sorted_set"><A href="http://172.13.19.31:6060/commands/zscan.html"><SPAN 
+  class="command">ZSCAN                   <SPAN class="args">                    
+  key                    cursor                    [MATCH pattern]               
+       [COUNT count]                   </SPAN>                 </SPAN>           
+        <SPAN class="summary">迭代sorted sets里面的元素</SPAN>               </A>       
+        </LI></UL></DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

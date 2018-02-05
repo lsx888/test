@@ -1,0 +1,198 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0084)http://172.13.19.31:6060/note_html/数据库/Oracle/103010-Oracle-表空间TABLESPACE.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>Oracle-表空间TABLESPACE</TITLE> <LINK href="Oracle-表空间TABLESPACE_files/standalone.css" 
+rel="stylesheet"> <LINK href="Oracle-表空间TABLESPACE_files/overlay-apple.css" rel="stylesheet"> 
+<LINK href="Oracle-表空间TABLESPACE_files/article_edit.css" rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="Oracle-表空间TABLESPACE_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="Oracle-表空间TABLESPACE_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">Oracle-表空间TABLESPACE</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-05-10 10:24:12</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV id="content_div_1">
+<H3>概述和组成</H3>
+<H4 
+style="text-indent: 0.8cm;">表空间是数据库的逻辑组成部分。从物理上讲，数据库数据存放在数据文件中；从逻辑上讲，数据库是存放在表空间中，表空间由一个或者多个数据文件组成。</H4>
+<OL>
+  <LI>oracle 的逻辑结构包含 表空间 段 区 块</LI>
+  <LI>数据库是由表空间构成，表空间又是由段构成，段是由区构成，区是由 oracle的块构成，这样做是为了提高数据库的效率</LI>
+  <LI>作用：A.控制数据库占用的磁盘空间 B.dba 可以将不同数据类型部署到不同的位置，这样 
+有利于i/0的性能，同时利于备份和恢复等管理</LI></OL></DIV>
+<HR>
+
+<DIV id="content_div_2">
+<H3>创建表空间的语法</H3>
+<H4 style="color: red; text-indent: 0.8cm;">创建表空间采用create 
+tablespace命令完成,需要注意的是一般情况下，建立表空间，是特权用户和dba来执行的。如果其他用户要创建必须要有 create tablespace 
+的系统权限.语法结构：CREATE TABLESPACE tablespace_name DATAFILE file_name [SIZE int_num 
+[K|M ]] [AUTOEXTEND [ON|OFF]];//size 在Oracle 11g中是必须的<BR></H4>
+<OL>
+  <LI>create tablesapce data01 datafile 'd:\test\data01.dbf' size 20m uniform 
+  size 128k; 
+  //说明：创建一个名称为data01的表空间，并为该表空间建立一个名称为data.01.dbf的数据文件，大小为20M，区的大小为128k</LI>
+  <LI>CREATE TABLESPACE mytablespace DATAFILE 
+  'D:\ORACLE\PRODUCT\10.2.0\ORADATA\MYDB\MYTABLESPACE.DBF' SIZE 10M AUTOEXTEND 
+  ON;//说明：创建一个名为mytablespace的表空间，数据文件名为MYTABLESPACE.DBF大小为10M可自动扩展</LI>
+  <LI>CREATE TABLESPACE mytablespace DATAFILE 
+  'D:\ORACLE\PRODUCT\10.2.0\ORADATA\MYDB\MYTABLESPACE.DBF' SIZE 
+  10M,'D:\ORACLE\PRODUCT\10.2.0\ORADATA\MYDB\MYTABLESPACE-1.DBF' SIZE 
+10M;</LI></OL>
+<H4 
+style="color: red; text-indent: 0.8cm;">语法解释：tablespace_name是要创建的表空间的名称，DATAFILE指定组成表空间的一个或多个数据文件（当有多个数据文件时使用逗号分隔），file_name是数据文件的路径及名称，SIZE指定文件的大小，AUTOEXTEND子句用来启用或禁用数据文件的自动扩展。路径可以随意设置，建议AUTOEXTENTD属性为OFF 
+。</H4></DIV>
+<HR>
+
+<DIV id="content_div_3">
+<H3>使用自定义的表空间</H3>
+<OL>
+  <LI>create table mydept(deptno number(4),dname varchar2(14),loc varchar2(13)) 
+  tablespace data01;//如果不指定表空间，且创建该表的用户没有设置默认的表空间，就默认放在 SYSTEM 
+  表空间下，如果该用户设置了默认表空间就放在用户设置的默认表空间下。</LI>
+  <LI>create table emp(empno,ename) tablespace data01 as select empno,ename from 
+  scott.emp;</LI></OL></DIV>
+<HR>
+
+<DIV id="content_div_4">
+<H3>表空间的状态</H3>
+<H4 
+style="text-indent: 0.8cm;">当建立表空间的时候，表空间处于联机的(online)状态,此时表空间是可以访问的，并且是可以读写，既可以在表空间上执行各种语句。但是在进行系统维护或者数据维护的时候，可能需要改变表空间的状态(脱机，联机，只读)。 
+一般由特权用户和dba来操作</H4>
+<UL>
+  <LI>表空间脱机：alter tablespace 表空间名 offline;</LI>
+  <LI>表空间联机：alter tablespace 表空间名 online;</LI>
+  <LI>只读表空间：alter tablespace 表空间 read only; // 
+  当建立表空间时，表空间可以读写，如果不希望在表空间上执行update ，delete ，insert操作，那么可以将表空间修改为只读</LI>
+  <LI>读写表空间：alter tablespace 表空间 read write;</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_5">
+<H3>扩展表空间</H3>
+<UL>
+  <LI>添加数据文件 alter tablespace TBS001 add datafile 'd:\tbs002.dbf' size 20m;</LI>
+  <LI>增加数据文件的大小 alter database datafile 'd:\tbs001.dbf' resize 20m;</LI>
+  <LI>设置自动增长 alter database datafile 'd:\tbs002.dbf' autoextend on next 10m 
+  maxsize 500m; //9i前每个数据文件是有大小的.之后的版本有人说没有大小限制(取决自己磁盘)</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_6">
+<H3>表空间相关操作</H3>
+<UL>
+  <LI>显示表空间中的所有表：select * from user_tables where 
+  TABLESPACE_NAME='DATA01';//个人发现在oralce系统中 系统表 或者 视图 是区分大写)</LI>
+  <LI>查看某表所在的表空间(知道表名)：select tablespace_name,table_name from user_tables where 
+  table_name='EMP';</LI>
+  <LI style="color: red;">删除表空间：drop tablespace DATA01 including contents and 
+  datafiles;// 说明： including contents 表示删除表空间时候，删除该表空间的所有数据对象，而datafiles 
+  表示将数据库文件也删除。</LI>
+  <LI>查询表空间的信息：select * from dba_tablespaces;</LI>
+  <LI>查询表空间的所有的数据文件：select file_name,bytes from dba_data_files where 
+  tablesapce_name='TBS001'</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_7">
+<H3>移动数据文件（处理磁盘损坏的时候，将数据文件进行迁移）</H3>
+<OL>
+  <LI>找出数据文件对应的表空间 select tablespace_name from dba_data_files where 
+  file_name='D:\TBS001.DBF';</LI>
+  <LI>使表空间脱机 确保数据文件的一致性 alter tablespacce tbs001 offline;</LI>
+  <LI>使用命令移动数据文件到指定的目标位置 （sqlplus中能成功，PL/Sql中不能成功 不知道原因） host move d:\tbs001.dbf 
+  E:\tbs001.dbf;</LI>
+  <LI>修改表空间对应的数据文件为新磁盘下的数据文件 alter tablespace TBS001 rename datafile 
+  'D:\TBS001.DBF' to 'E:\TBS001.DBF';</LI>
+  <LI>使表空间联机 alter tablespace TBS001 online;</LI></OL></DIV>
+<HR>
+
+<H3>表空间示例代码</H3>
+<PRE class="brush: sql;">--创建表空间(存放dbf文件的文件夹必须存在)
+create tablespace tablespace_1 datafile 'd:\datafile\test_datafile.dbf' size 10M autoextend off;
+
+/*
+       语法结构：CREATE TABLESPACE tablespace_name DATAFILE file_name [SIZE int_num [K|M ]] [AUTOEXTEND [ON|OFF]];
+       
+       语法解释：tablespace_name是要创建的表空间的名称，DATAFILE指定组成表空间的一个或多个数据文件
+       （当有多个数据文件时使用逗号分隔），file_name是数据文件的路径及名称，SIZE指定文件的大小，
+       AUTOEXTEND子句用来启用或禁用数据文件的自动扩展。路径可以随意设置，建议AUTOEXTENTD属性为OFF 。
+*/
+
+select * from user_tables where TABLESPACE_NAME='TABLESPACE_1';
+
+select * from user_tables where TABLESPACE_NAME='USERS' and table_name = 'EMP';
+
+select distinct tablespace_name from user_tables;
+
+
+
+--删除表空间：
+drop tablespace TABLESPACE_1 including contents and datafiles;
+--// 说明： including contents 表示删除表空间时候，删除该表空间的所有数据对象，而datafiles 表示将数据库文件也删除。
+</PRE>
+<HR>
+
+<DIV id="content_div_8">
+<H3>临时表空间</H3>
+<H4 style="color: red; text-indent: 0.8cm;">临时表空间的创建方法和上面一致只是开头用create temporary 
+tablespace</H4></DIV>
+<H3>常见问题</H3>
+<H4>创建用户并指定表空间，然后通过自定义角色给用户授权，自定义角色拥有resource和connect权限：提示表空间无法访问</H4>
+<P style="text-indent: 0.8cm;">Oralce的特殊权限 </P>
+<UL>
+  <LI>系统权限unlimited tablespace是隐含在dba, resource角色中的一个系统权限. 
+  当用户得到dba或resource的角色时, unlimited tablespace系统权限也隐式受权给用户.</LI>
+  <LI>系统权限unlimited tablespace不能被授予role, 可以被授予用户.</LI>
+  <LI>系统权限unlimited tablespace不会随着resource, dba被授予role而授予给用户.</LI></UL>
+<H4>普通用户也可以用sysdba登录</H4>
+<P 
+style="text-indent: 0.8cm;">Oracle默认的认证方式是OS认证，所以如果以安装oracle的账号登陆服务器，就不需要登录数据库，只要在服务器端不用输入用户名密码就可以以DBA权限登录数据库： 
+</P>
+<P style="text-indent: 0.8cm;">修改 
+安装路径\oraclexe\app\oracle\product\11.2.0\server\network\ADMIN\sqlnet.ora文件中的SQLNET.AUTHENTICATION_SERVICES参数即可，下次登录的时候将不会再是ODS认证的了：<BR>windows下如果将该参数设置为NTS或者ALL或者注释掉才可以使用OS认证，设置为NONE或者任何其他值都不能使用OS认证<BR>linux下如果设置为ALL或者注释掉才可以使用OS认证，设置为任何其他值都不能使用OS认证。<BR>
+建议：注释掉 </P>
+<H4>Oracle误删表空间文件后数据库无法启动解决，报错表空间文件不存在</H4>
+<OL>
+  <LI>sqlplus sys/密码 as sysdba&nbsp;&nbsp;&nbsp; 　　&nbsp; #以dba身份登陆数据库<BR></LI>
+  <LI>shutdown immediate;&nbsp;&nbsp;&nbsp; 　 #关闭数据库<BR></LI>
+  <LI>startup mount;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 　　　　#打开控制文件</LI>
+  <LI>alter database datafile '/opt/oracle/oradata/tbs.dbf' offline drop;&nbsp; 
+  #注销被误删的表空间文件也可以通过文件号来删除</LI>
+  <LI>alter database open;&nbsp;&nbsp;&nbsp; 
+  　　#打开数据库，如果提示打开成功，就没有问题了，如果还有文件未找到，再次执行1~5的操作<BR></LI></OL>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

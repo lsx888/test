@@ -1,0 +1,260 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0079)http://172.13.19.31:6060/note_html/服务器/CentOS/10101-在VMare虚拟机上安装.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>在VMare虚拟机上安装</TITLE> <LINK href="在VMare虚拟机上安装_files/standalone.css" rel="stylesheet"> 
+<LINK href="在VMare虚拟机上安装_files/overlay-apple.css" rel="stylesheet"> <LINK href="在VMare虚拟机上安装_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="在VMare虚拟机上安装_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="在VMare虚拟机上安装_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">在VMare虚拟机上安装</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-08-20 11:39:33</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>一、下载安装镜像文件</H3>
+<P 
+style="text-indent: 0.8cm;">这里安装CentOS-7-x86_64-Minimal-1503-01.iso(注意这是一个64位的，根据实际情况选择你的安装镜像)。这个自带安装软件最少，简单而小巧，偏于你了解安装和部署开发环境，所以选择这个版本，作为linux开发者，熟悉命令行界面是最基本的。关于镜像文件的下载和版本这里不做讲解。百度一下啥都有。</P>
+<H3>二、VMare新建虚拟机</H3>
+<P style="text-indent: 0.8cm;">VMware 
+新建一个linux虚拟机，根据需要配置好各项设置，都是傻瓜安装，不多讲。以下是新建虚拟机的过程：</P>
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="在VMare虚拟机上安装_files/20150411-01.png" 
+rel="#20150411-01"> <FONT>1.新建虚拟机</FONT> </DIV>
+<DIV class="apple_overlay" id="20150411-01"><IMG alt="图片不存在" src="在VMare虚拟机上安装_files/20150411-01.png"> 
+</DIV></DIV>
+<HR>
+
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="在VMare虚拟机上安装_files/20150411-02.png" 
+rel="#20150411-02"> <FONT>2.选择典型</FONT> </DIV>
+<DIV class="apple_overlay" id="20150411-02"><IMG alt="图片不存在" src="在VMare虚拟机上安装_files/20150411-02.png"> 
+</DIV></DIV>
+<HR>
+
+<P 
+style="text-indent: 0.8cm;">注意：下面这一步（图中）选择最后一项。在虚拟机新建后，再配置安装镜像的路径。（否则，你安装完后，系统起不来，很多人都遇到过这冲情况。）</P>
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="在VMare虚拟机上安装_files/20150411-03.png" 
+rel="#20150411-03"> <FONT>3.选择跳过</FONT> </DIV>
+<DIV class="apple_overlay" id="20150411-03"><IMG alt="图片不存在" src="在VMare虚拟机上安装_files/20150411-03.png"> 
+</DIV></DIV>
+<P 
+style="text-indent: 0.8cm;">　如果你选择第二项，硬件设置中多了一个CD/DVD(IDE)，装载了autoinst.iso，另一个CD/DVD 
+2(IDE)装载了安装镜像CentOS-6.3-x86_64-minimal.iso，重新建了个虚拟机，发现在选择安装镜像文件那里，有个提示“CentOS 
+64-bit detected.This operating system will use Easy Install 
+。就是这里导致的。所以这里强调：在安装镜像选择那里，选择“I will install the operating system 
+later.“，创建完后，硬件设置中设置安装镜像。</P>
+<HR>
+
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="在VMare虚拟机上安装_files/20150411-04.png" 
+rel="#20150411-04"> <FONT>4.选择安装的系统</FONT> </DIV>
+<DIV class="apple_overlay" id="20150411-04"><IMG alt="图片不存在" src="在VMare虚拟机上安装_files/20150411-04.png"> 
+</DIV></DIV>
+<P style="text-indent: 0.8cm;">注意这里选择的系统名称和版本，一定要和镜像文件对应。</P>
+<HR>
+
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="在VMare虚拟机上安装_files/20150411-05.png" 
+rel="#20150411-05"> <FONT>5.选择安装路径</FONT> </DIV>
+<DIV class="apple_overlay" id="20150411-05"><IMG alt="图片不存在" src="在VMare虚拟机上安装_files/20150411-05.png"> 
+</DIV></DIV>
+<P 
+style="text-indent: 0.8cm;">注意这里最好不要中文路径。（没验证过，职业病）。虚拟机名字。随便填写，如果你安装了多个linux，那就最好填写不同的名字以便区分。</P>
+<HR>
+
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="在VMare虚拟机上安装_files/20150411-06.png" 
+rel="#20150411-06"> <FONT>6.指定磁盘空间</FONT> </DIV>
+<DIV class="apple_overlay" id="20150411-06"><IMG alt="图片不存在" src="在VMare虚拟机上安装_files/20150411-06.png"> 
+</DIV></DIV>
+<P style="text-indent: 0.8cm;">这里了可以直接默认，以后还可以设置。</P>
+<HR>
+
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="在VMare虚拟机上安装_files/20150411-07.png" 
+rel="#20150411-07"> <FONT>7.完成</FONT> </DIV>
+<DIV class="apple_overlay" id="20150411-07"><IMG alt="图片不存在" src="在VMare虚拟机上安装_files/20150411-07.png"> 
+</DIV></DIV>
+<P style="text-indent: 0.8cm;">这里了可以直接点击完成。可以之后来设置的。这样虚拟机就创建好了。</P>
+<HR>
+
+<H3>三、设置新建的虚拟机</H3>
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="在VMare虚拟机上安装_files/20150411-08.png" 
+rel="#20150411-08"> <FONT>1.打开设置页面</FONT> </DIV>
+<DIV class="apple_overlay" id="20150411-08"><IMG alt="图片不存在" src="在VMare虚拟机上安装_files/20150411-08.png"> 
+</DIV></DIV>
+<P style="text-indent: 0.8cm;">点击红框中任何一个都可以打开设置页面。</P>
+<HR>
+
+<P style="text-indent: 0.8cm;">其他的设置都比较简单，这里主要说明一下以下两个设置：</P>
+<HR>
+
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="在VMare虚拟机上安装_files/20150411-09.png" 
+rel="#20150411-09"> <FONT>2.设置安装镜像路径</FONT> </DIV>
+<DIV class="apple_overlay" id="20150411-09"><IMG alt="图片不存在" src="在VMare虚拟机上安装_files/20150411-09.png"> 
+</DIV></DIV>
+<P style="text-indent: 0.8cm;">选择好CentOsMini 的iso存放路径。就是把光驱设置成使用ISO挂载。</P>
+<HR>
+
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="在VMare虚拟机上安装_files/20150411-10.png" 
+rel="#20150411-10"> <FONT>3.设置网络</FONT> </DIV>
+<DIV class="apple_overlay" id="20150411-10"><IMG alt="图片不存在" src="在VMare虚拟机上安装_files/20150411-10.png"> 
+</DIV></DIV>
+<P style="text-indent: 0.8cm;">选择好桥接模式。</P>
+<HR>
+
+<H3>四、安装CentOs</H3>
+<P style="text-indent: 0.8cm;">1.首先会让你选择进入方式，按默认进入就行了。之后会检查一些东东。</P>
+<HR>
+
+<P style="text-indent: 0.8cm;">2.就进入了图形化配置的界面，首先是选择语言。</P>
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="在VMare虚拟机上安装_files/20150412-06.png" 
+rel="#20150412-06"> <FONT>2.选择语言</FONT> </DIV>
+<DIV class="apple_overlay" id="20150412-06"><IMG alt="图片不存在" src="在VMare虚拟机上安装_files/20150412-06.png"> 
+</DIV></DIV>
+<HR>
+
+<P style="text-indent: 0.8cm;">3.设置安装位置.安装源也可设置，一般默认自动检测就行了。</P>
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="在VMare虚拟机上安装_files/20150412-07.png" 
+rel="#20150412-07"> <FONT></FONT> </DIV>
+<DIV class="apple_overlay" id="20150412-07"><IMG alt="图片不存在" src="在VMare虚拟机上安装_files/20150412-07.png"> 
+</DIV></DIV>
+<P style="text-indent: 0.8cm;">4.设置安装位置，安装位置直接选新建虚拟机时建立的硬盘位置就行。</P>
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="在VMare虚拟机上安装_files/20150412-08.png" 
+rel="#20150412-08"> <FONT></FONT> </DIV>
+<DIV class="apple_overlay" id="20150412-08"><IMG alt="图片不存在" src="在VMare虚拟机上安装_files/20150412-08.png"> 
+</DIV></DIV>
+<HR>
+
+<P style="text-indent: 0.8cm;">5.开启网络。</P>
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="在VMare虚拟机上安装_files/20150412-09.png" 
+rel="#20150412-09"> <FONT></FONT> </DIV>
+<DIV class="apple_overlay" id="20150412-09"><IMG alt="图片不存在" src="在VMare虚拟机上安装_files/20150412-09.png"> 
+</DIV></DIV>
+<HR>
+
+<P style="text-indent: 0.8cm;">6.点击开始安装。</P>
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="在VMare虚拟机上安装_files/20150412-10.png" 
+rel="#20150412-10"> <FONT></FONT> </DIV>
+<DIV class="apple_overlay" id="20150412-10"><IMG alt="图片不存在" src="在VMare虚拟机上安装_files/20150412-10.png"> 
+</DIV></DIV>
+<HR>
+
+<P style="text-indent: 0.8cm;">7.等待安装完毕页面。</P>
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="在VMare虚拟机上安装_files/20150412-11.png" 
+rel="#20150412-11"> <FONT></FONT> </DIV>
+<DIV class="apple_overlay" id="20150412-11"><IMG alt="图片不存在" src="在VMare虚拟机上安装_files/20150412-11.png"> 
+</DIV></DIV>
+<HR>
+
+<P style="text-indent: 0.8cm;">8.设置root密码。</P>
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="在VMare虚拟机上安装_files/20150412-12.png" 
+rel="#20150412-12"> <FONT></FONT> </DIV>
+<DIV class="apple_overlay" id="20150412-12"><IMG alt="图片不存在" src="在VMare虚拟机上安装_files/20150412-12.png"> 
+</DIV></DIV>
+<HR>
+
+<P style="text-indent: 0.8cm;">9.结束配置。（当然也可以创建用户，这里跳过）</P>
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="在VMare虚拟机上安装_files/20150412-13.png" 
+rel="#20150412-13"> <FONT></FONT> </DIV>
+<DIV class="apple_overlay" id="20150412-13"><IMG alt="图片不存在" src="在VMare虚拟机上安装_files/20150412-13.png"> 
+</DIV></DIV>
+<HR>
+
+<P style="text-indent: 0.8cm;">10.重启</P>
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="在VMare虚拟机上安装_files/20150412-14.png" 
+rel="#20150412-14"> <FONT></FONT> </DIV>
+<DIV class="apple_overlay" id="20150412-14"><IMG alt="图片不存在" src="在VMare虚拟机上安装_files/20150412-14.png"> 
+</DIV></DIV>
+<HR>
+
+<P style="text-indent: 0.8cm;">11.使用root账户登录</P>
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="在VMare虚拟机上安装_files/20150412-15.png" 
+rel="#20150412-15"> <FONT></FONT> </DIV>
+<DIV class="apple_overlay" id="20150412-15"><IMG alt="图片不存在" src="在VMare虚拟机上安装_files/20150412-15.png"> 
+</DIV></DIV>
+<HR>
+
+<H3>五、常见问题</H3>
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="在VMare虚拟机上安装_files/20150412-01.png" 
+rel="#20150412-01"> <FONT></FONT> </DIV>
+<DIV class="apple_overlay" id="20150412-01"><IMG alt="图片不存在" src="在VMare虚拟机上安装_files/20150412-01.png"> 
+</DIV></DIV>
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="在VMare虚拟机上安装_files/20150412-02.png" 
+rel="#20150412-02"> <FONT></FONT> </DIV>
+<DIV class="apple_overlay" id="20150412-02"><IMG alt="图片不存在" src="在VMare虚拟机上安装_files/20150412-02.png"> 
+</DIV></DIV>
+<P style="text-indent: 0.8cm;">以上两种问题都是由于主机的虚拟机设置Intel virtual 
+Tehnology被设置为禁用了。进入主机bios设置为可用就行了。</P>
+<HR>
+
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="在VMare虚拟机上安装_files/20150412-03.png" 
+rel="#20150412-03"> <FONT></FONT> </DIV>
+<DIV class="apple_overlay" id="20150412-03"><IMG alt="图片不存在" src="在VMare虚拟机上安装_files/20150412-03.png"> 
+</DIV></DIV>
+<P style="text-indent: 0.8cm;">出现以上问题，按下图设置vmware就可以了。</P>
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="在VMare虚拟机上安装_files/20150412-04.png" 
+rel="#20150412-04"> <FONT>1.进入设置页面</FONT> </DIV>
+<DIV class="apple_overlay" id="20150412-04"><IMG alt="图片不存在" src="在VMare虚拟机上安装_files/20150412-04.png"> 
+</DIV></DIV>
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="在VMare虚拟机上安装_files/20150412-05.png" 
+rel="#20150412-05"> <FONT>2.修改内存设置</FONT> </DIV>
+<DIV class="apple_overlay" id="20150412-05"><IMG alt="图片不存在" src="在VMare虚拟机上安装_files/20150412-05.png"> 
+</DIV></DIV>
+<HR>
+
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 2013 ~ 2015 作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

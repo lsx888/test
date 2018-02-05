@@ -1,0 +1,190 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0084)http://172.13.19.31:6060/note_html/数据库/Oracle/102010-Oracle-Oracle的体系结构.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>2-Oracle的体系结构</TITLE> <LINK href="2-Oracle的体系结构_files/standalone.css" 
+rel="stylesheet"> <LINK href="2-Oracle的体系结构_files/overlay-apple.css" rel="stylesheet"> 
+<LINK href="2-Oracle的体系结构_files/article_edit.css" rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="2-Oracle的体系结构_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="2-Oracle的体系结构_files/my-highlighter.css" rel="stylesheet">     
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+	 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+		
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+	 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+	 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+		
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">2-Oracle的体系结构</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-03-20 18:08:14</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV id="content_div_1">
+<H3>Windows中的Oracle服务</H3>
+<H4 style="text-indent: 0.8cm;">Oracle服务的名称通常是一个包含全局数据库名称和OracleHOME名的字符串</H4>
+<UL>
+  <LI>OracleHOME_NAMETNSListener服务：此服务是Oracle的监听程序。要连接到数据库服务器，客户端必须先连接到驻留在数据库服务器上的监听进程。 
+  监听器接收从客户端发出的请求，然后将请求传递给数据库服务器。一旦建立了连接，客户端和数据库服务器就可以直接通信了。 
+  监听器监听并接受来自客户端的连接请求。若监听器未启动，客户端将无法连接到数据库服务器。</LI>
+  <LI>OracleServiceSID服务：此实例是为名为SID(系统标识符)的数据库实例创建的。Oracle实例由一个系统标识符SID唯一地标识，以区别于此计算机上的其它任何实例。每次新创建一个数据库，系统会自动为该数据库的实例创建一个服务。如果此服务未启动，数据库客户端应用程序连接到数据库服务器时就会出现错误。</LI>
+  <LI>OracleHOME_NAMEiSQL*Plus服务：要使用 iSQL*Plus，必须启动该服务.</LI>
+  <LI>OracleDBConsoleOracle_SID服务：要使用企业管理器必须启动该服务。 
+每次新创建一个数据库，也会新创建一个此项服务。</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_2">
+<H3>Oracle的体系结构</H3>
+<H4 style="text-indent: 0.8cm;">数据库的体系结构是指数据库的组成、工作过程与原理，以及数据在数据库中的组织和管理机制。</H4>
+<H4>Oracle服务器</H4>
+<UL>
+  <LI>Oracle服务器由Oracle数据库和Oracle 实例组成。Oracle 
+  数据库是一个数据的集合，它在物理上是由一系列的文件组成，在逻辑上是由一系列的逻辑组件构成的。Oracle实例是后台进程与内存结构的集合。</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_3">
+<H3>Oracle组件概述</H3>
+<UL>
+  <LI>实例：后台进程与内存结构的集合称为Oracle 
+  实例。如果要访问数据库中的数据，就必须启动一个实例，也就是说，只有通过实例才能访问到数据库中的数据。实例启动时将分配一个系统全局区(SGA)并启动一系列的后台进程。在任何时候，一个实例只能打开并使用一个数据库。反之，一个数据库可以同时被多个实例打开。</LI>
+  <LI>会话：会话是用户与Oracle服务器的单个连接。当用户与服务器建立连接时创建会话。而当用户与服务器断开连接时关闭会话。当一个数据库用户同时用多个不同的应用程序或从多个终端连接服务器时，则为该用户创建多个并行会话。</LI>
+  <LI>内存：          
+  <UL>
+    <LI>系统全局区(SGA)：实例启动时分配该内存区，是Oracle实例的一个基本组件。</LI>
+    <LI>程序全局区(PGA)：服务器进程启动时分配该内存区。PGA (Program Globe 
+    Area)是在用户进程连接到数据库并创建一个会话时自动分配的，该区内保留每个与Oracle数据库连接的用户进程所需的内存。PGA为非共享区，只能由单个进程使用，当一个会话结束后，PGA 
+    释放。</LI></UL></LI>
+  <LI>进程：          
+  <UL>
+    <LI>用户进程：当数据库用户请求连接服务器时启动。当数据库用户运行一个应用程序准备 
+    向数据库服务器发送请求时，即创建了用户进程，如用户启动SQL*Plus 时，系统自动建立 
+    了一个用户进程。用户进程不能直接与数据库交互，而必须借助于服务器进程</LI>
+    <LI>服务器进程：在Oracle实例启动时启动。它用于处理连接到该实例的用户进程的请求，当用户建立与数据库的连接时，即产生服务器进程。服务器进程和用户进程通信并为所连接的用户请求服务。服务器进程直接与Oracle 
+    数据库交互，实现调用和返回结果。服务器进程可以仅处理一个用户进程的请求，也可以处理多个用户进程的请求。</LI>
+    <LI>后台进程：在Oracle数据库中，为了使系统性能更好和协调多个用户，实例系统中使用了一些附加进程，被称为后台进程。这些后台进程存在于操作系统中，在实例启动时自动启动</LI></UL></LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_4">
+<H3>SGA (System Globe Area)系统全局区又称共享全局区</H3>
+<H4 style="text-indent: 0.8cm;">它用来存储数据库信息，并由多个数据库进程共享。当数据库实例启动时，SGA 
+的内存被自动分配。SGA 是数据库中占用服务 器内存最大的一个区域，同时也是影响数据库性能的一个重要指标。 SGA 
+按其作用不同，可分为共享池、数据缓冲区、日志缓冲区等</H4>
+<UL>
+  <LI>共享池：共享池是对SQL、PL/SQL 程序进行语法分析、编译和执行的内存区域，它由 
+  库缓存和数据字典缓存组成，其中，库缓存含有最近执行的SQL、PL/SQL语句的信息，数据字典缓存中含有从数据字典中得到的表、索引、字段和权限等信息。如果共享池太小，则运行SQL、PL/SQL程序所需的时间就会较长，数据库的性能就会受到影响。当用户执行一个查询语句时，Oracle系统首先在数据字典缓存中查看要查询的表、字段等在数据库中是否存在，用户是否有相应权限，如果有再在库缓存中查找是否存在该语句的信息，如果存在则直接执行，如果不存在再对该查询语句进行编译和执行。</LI>
+  <LI>数据缓冲区：数据缓冲区用于存储从磁盘数据文件中读入的数据，由所有用户共享。数据被修改时，首先要从数据文件中取出，存储于数据缓冲区中，修改的数据、插入的数据都被存储于数据缓冲区，当修改完成或满足其它条件时，数据才被写入到数据文件中。Oracle服务器进程在处理一个查询时，首先查找数据缓冲区中是否存在所需的数据块。 
+  如果没有找到，服务器进程才会去从数据文件中读取信息，并保存到数据缓冲区中。当以后再有进程要读取这些块时，就不用再从数据文件中读取，而是直接从数据缓冲区中读了，这样就提高了读取速度。因此，数据缓冲区的大小对数据库的读取速度有直接影响。</LI>
+  <LI>日志缓冲区：所有对数据库的修改先记录到日志缓冲区，当缓冲区中的数据达到一定数 
+  量时，再由日志写入进程LGWR把日志数据写入到日志文件中。数据更改可能来自INSERT、 
+  UPDATE、DELETE、CREATE、ALTER和DROP等操作。相对于数据缓冲区，日志缓冲区对数据库性能的影响较小</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_5">
+<H3>后台进程(常用的有以下几种)</H3>
+<UL>
+  <LI>进程监控（PMON）：主要作用是在用户进程出现故障时执行进程恢复</LI>
+  <LI>系统监控（SMON）：主要完成以下任务：在实例启动时执行实例恢复；整理数据文件的自由空间；释放不再使用的临时段</LI>
+  <LI>数据写入进程（DBWR）：执行下列任务：管理数据缓冲区，以便用户进程能找到空闲的缓冲区；将所有修改了的缓冲区的数据写入数据文件；使用LRU(最近最少使用)算法将最近使用过的块保留在内存中；通过延迟写来优化磁盘I/O 
+  读写。</LI>
+  <LI>日志写入进程（LGWR）：此后台进程负责将日志缓冲区的数据写入日志文件。数据库正在运行时，如果对数据进行修改，则产生日志信息，日志信息首先产生于日志缓冲区中。此缓冲区按照“先进先出”的原则进行操作，当日志信息达到一定数量时，由LGWR 
+  进程将日志数据写入到日志文件</LI>
+  <LI>检查点（CKPT）：保证所有修改过的数据库缓冲区内的数据都被写入到数据库文件，在给定的时间内，检查点完成后，CKPT进程更新数据文件头和控制文件，保存检查点信息，以保证数据库的同步。这样做主要是为了在数据库恢复时只需要提供从上一个检查点以来的修改，确定开始恢复数据的位置，即称为检查点</LI>
+  <LI>归档进程（ARCH）：当数据库运行在归档日志方式时，才会启动该进程。在日志写满时将日志信息写到磁盘或磁带，用于磁盘故障时的数据库恢复。在一个日志文件 
+  写满以后，Oracle 服务器就开始将数据写入到下一个日志文件，此过程被称为日志切换。Oracle 
+  数据库有两种运行方式，即归档日志方式和非归档日志方式。在非归档日志方式下，日志切换时直接覆盖以前的文件，不产生归档日志。在归档日志方式下，在日志切换之前，ARCH 
+  进程会对已写满的日志文件进行存档</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_6">
+<H3>物理组件</H3>
+<H4 
+style="text-indent: 0.8cm;">Oracle数据库的物理文件主要有三类：数据文件、控制文件和日志文件。其它还有归档日志文件、参数文件和口令文件等。</H4>
+<UL>
+  <LI>数据文件：是用于存储数据库数据的文件，如表、索引数据等都存储在数据文件中。每 个Oracle 数据库都有一个或多个数据文件（10g 中默认有5 
+  个），一个数据文件只能与一个数据库相关联。</LI>
+  <LI>控制文件：是记录数据库物理结构的二进制文件，Oracle 数据库根据它来查找物理文件的位置，它包含维护和验证数据库完整性的必要信息。每个Oracle 
+  数据库都有一个或多个控制文件（10g 中默认有3 个）。</LI>
+  <LI>日志文件：又被称为联机日志文件或重做日志文件，用于记录对数据库进行的修改信息，对数据库所做的全部修改都被记录到日志中。每个Oracle 
+  数据库都有一个或多个日志文件 （10g 中默认有3 个）。日志文件主要用于在数据库出现故障时实施数据恢复。</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_7">
+<H3>逻辑组件</H3>
+<UL>
+  <LI>表空间（TABLESPACE）：数据库可以划分为一个或多个逻辑单位，该逻辑单位被称为表空间，它是数所库中最大的逻辑单位。每个表空间由一个或多个数据文件组成，一个数据文件只能与一个表空间关联，这是逻辑上和物理上的统一。数据库管理员可以创建若干个表空间，创建表空间时可以指定数据文件及其要分配的磁盘空间的大小。在每个数据库中都有一个名为SYSTEM的表空间，即系统表空间，它在创建数据库或安装数据库时自动创建的，用于存储系统的数据字典表、系统程序单元、过程、函数、包和触 
+  发器等，也可以用于存储用户表、索引等对象。</LI>
+  <LI>段（SEGENT）：存在于表空间中，是包含于表空间中的一种指定类型的逻辑存储结构， 
+  由一组区组成。按照段中所存数据的特征以及优化系统性能的需要，将段分为4 类：数据段、索引段、回退段、临时段</LI>
+  <LI>区（EXTENT）：是磁盘空间分配的最小单位。磁盘按区划分，每次至少分配一个区。区为段分配空间，它由连续的数据块组成。当段创建时，它至少包含一个区。当段中所有空间已完全使用时，系统自动为该段分配一个新区。区不能跨数据文件存在，只能存在于一个数据文件中</LI>
+  <LI>数据块（DATA BLOCK ）：是数据库中最小的数据组织单位与管理单位，是Oracle服务器所能分配、读取或写入的最小存储单元。Oracle 
+  服务器以数据块为单位管理数据文件的存储空间。数据块的取值范围在2KB~4KB之间，10g中默认大小是8K。</LI>
+  <LI>模式（SCHEMA）：是对用户所创建的数据库对象的总称，在Oracle中任何数据库对象都属于一个特定用户，一个用户及其所拥有的对象称为模式。一个用户与相同名称的模式相关联，因此，模式又称为用户模式</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_8">
+<H3>相关图片</H3>
+<DIV class="fileImgDiv" id="1358235601281">
+<DIV id="apple"><IMG class="fileImg" id="1358235601281_img" alt="图片不存在" src="2-Oracle的体系结构_files/1358235601281.bmp" 
+rel="#1358235601281_rel">          <FONT>Oracle体系结构</FONT>       </DIV>
+<DIV class="apple_overlay" id="1358235601281_rel"><IMG alt="图片不存在" src="2-Oracle的体系结构_files/1358235601281.bmp"> 
+      </DIV></DIV>
+<DIV class="fileImgDiv" id="1358318130046">
+<DIV id="apple"><IMG class="fileImg" id="1358318130046_img" alt="图片不存在" src="2-Oracle的体系结构_files/1358318130046.bmp" 
+rel="#1358318130046_rel">         <FONT>tnsnames.ora服务配置</FONT>       </DIV>
+<DIV class="apple_overlay" id="1358318130046_rel"><IMG alt="图片不存在" src="2-Oracle的体系结构_files/1358318130046.bmp"> 
+      </DIV></DIV></DIV>
+<HR>
+
+<DIV id="content_div_9">
+<H3>Oracle常用工具</H3>
+<OL>
+  <LI>Oracle 企业管理器（Oracle Enterprise Manager ），简称OEM 
+  ：从10g开始，可以用浏览器的方式来访问企业管理器。它是Oracle的集成管理平台，能够管理整个Oracle环境，让用户可以以可视化的方式完成管理数据库对象、监视服务器的实时性能、对数据库进行备份和恢复、完成作业系统等一系列的功能。在Oracle 
+  10g安装完成后，开始时只有SYS和SYSTEM用户才能登录到OEM，且SYS用户只能以SYSDBA 
+  或SYSOPER身份，SYSTEM用户只能以NORMAL身份，其他用户必须经过相应的授权后才能登录。url：http: //主机名:1158/em</LI>
+  <LI>SQL*Plus：Oracle 最常用的工具之一，可用于接受和执行SQL 语句和PL/SQL 块。 
+  它有两种界面：字符界面和图形界面。使用SQL*Plus可以完成打开和关闭数据库、建立与数据库的连接、查看帮助信息、生成简单报表，以格式化的形式输出查询结果、查询数据字典、向用户提示信息并接受用户输入等数据库操作。</LI>
+  <LI>iSQL*Plus 工具 ：在浏览器地址栏中输入http://主机名:5560/isqlplus进入登陆页面</LI>
+  <LI>PL/SQL Developer工具：在实际Oracle开发中，经常使用一个功能强大的第三方工具。PL/SQL 
+  Developer基本上可以实现Oracle开发中的任何操作。它运行在客户端时必须先安装Oracle客户端，并且通过网络配置向导配置网络服务名后才能正常与服务器连接。</LI></OL></DIV>
+<HR>
+
+<DIV id="content_div_10">
+<H3>本地网络服务配置</H3>
+<OL>
+  <LI>本地网络服务名，即客户端与服务器的连接字符串，本地网络服务名是客户端的配置，Oracle客户端安装后，可以使用客户端自带的网络配置向导（Net 
+  Configuration Assistant）进行配置。1. 启动Net Configuration 
+  Assistant。选择“本地Net服务名配置”选项，进行配置。Net Configuration Assistant 或Net Manager 
+  工具</LI>
+  <LI>直接修改相关的参数文件：服务器端的监听配置包括监听协议、端口号以及其它相关信息的参数。监听器配置存储在一个名叫listener.ora的参数文件中，该文件在 
+  Windows环境下可能的位置是 
+  “安装目录\oracle\product\10.2.0\db_1\NETWORK\ADMIN\”我们可以不自己配置监听器，因为在安装Oracle 
+  的时候系统已经为我们配置好了 一个名叫“LISTENER 
+  ”的监听器，端口号默认是1521，它对应的服务是OracleOraDb10g_home1TNSListener。在客户端创建服务 
+  名时，需要指定服务器端服务名、网络协议、主机名和监听器端口等。这些配置信息都存储 
+  在tnsnames.ora文件中，保存位置与listener.ora相同。</LI></OL></DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 2013 ~ 2030 作者：zzy</DIV><!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

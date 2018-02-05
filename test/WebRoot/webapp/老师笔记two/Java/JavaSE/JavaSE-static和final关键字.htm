@@ -1,0 +1,348 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0086)http://172.13.19.31:6060/note_html/Java/JavaSE/1004020-JavaSE-static和final关键字.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>JavaSE-static和final关键字</TITLE> <LINK href="JavaSE-static和final关键字_files/standalone.css" 
+rel="stylesheet"> <LINK href="JavaSE-static和final关键字_files/overlay-apple.css" 
+rel="stylesheet"> <LINK href="JavaSE-static和final关键字_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="JavaSE-static和final关键字_files/shCoreEclipse.css" 
+rel="stylesheet">	 <LINK href="JavaSE-static和final关键字_files/my-highlighter.css" 
+rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">JavaSE-static和final关键字</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-07-08 10:09:31</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>instanceof关键字：判断某个对象是否是某个类的实例，实例   instanceof (类名、接口名)返回一个boolean</H3>
+<H3>static关键字：示例</H3>
+<PRE class="brush: java;">public class Test4 {
+	public static void main(String[] args){
+		Static1 t1 = new Static1();
+		Static1 t2 = new Static1();
+		
+		t1.a = 10;
+		t1.b = 100;
+		
+		//无论一个类生成了多少个对象实例，所有的对象实例都共同使用唯一的份静态成员变量， 
+		//一个对象实例对该变量进行了修改，其他对象实例的该成员变量也随之更改。
+		System.out.println(t2.a);//0
+		System.out.println(t2.b);//100
+		
+		// 类名.成员变量名(推荐使用这种方式调用) 来使用它
+		Static1.b = 200;
+		System.out.println(t2.b);//200
+		System.out.println(t1.b);//200
+		
+		//类名.方法名(推荐使用这种方式调用)
+		Static1.method();
+		
+		//多态形式调用时
+		Static1 tt = new Static2();
+		tt.method();//结果为：static1 mehod is running!调用的父类方法，所以推荐通过类名调用类方法
+		
+		//子类可以继承父类的类方法，但不可以重写父类的类方法
+		Static2.m();
+		
+	}
+}
+
+
+class Static1{
+	int a;
+	static int b;
+	
+	public static void method(){
+		System.out.println("static1 mehod is running!");
+	}
+	
+	public static void m(){
+		System.out.println("super m is running!");
+	}
+}
+
+
+class Static2 extends Static1{
+	
+	//此处不是重写父类方法，而是隐藏了父类的此方法
+	public static void method(){
+		System.out.println("static2 mehod is running!");
+	}
+}
+</PRE>
+<UL>
+  <LI>  1).<FONT style="color: red;">可以修饰属性。</FONT>   
+  <UL>
+    <LI>    无论一个类生成了多少个对象实例，所有的对象实例都共同使用唯一的份静态成员变量，    
+    一个对象实例对该变量进行了修改，其他对象实例的该成员变量也随之更改。     </LI>
+    <LI>    如果一个成员变量是static的，那么我们可以通过     <FONT 
+    style="color: red;">类名.成员变量名(推荐使用这种方式调用)</FONT> 来使用它。     </LI>
+    <LI>    如果一个方法是static的，<FONT style="color: red;">    
+    那么它只可以直接调用static的成员变量，不能调用非static的成员变量。</FONT> 。     </LI>
+    <LI>    如果一个方法不是static的，<FONT style="color: red;">    
+    那么它可以直接调用static的成员变量。</FONT> 。     </LI>
+    <LI><FONT style="color: red;">    不能在静态方法中使用this关键字。</FONT> 。     
+  </LI></UL></LI>
+  <LI>2).<FONT style="color: red;">可以修饰方法。(类方法)</FONT>   
+  <UL>
+    <LI>如果一个方法是static的，那么我们可以通过     <FONT 
+    style="color: red;">类名.方法名(推荐使用这种方式调用)</FONT> 来使用它。     </LI>
+    <LI><FONT style="color: red;">子类可以继承父类的类方法，但不可以重写父类的类方法</FONT></LI></UL></LI>
+  <LI>3).<FONT style="color: red;">可以修饰类（只能是内部类，一般类不能使用该关键字修饰）。</FONT></LI>
+  <LI>4).<FONT style="color: red;">static代码块：静态代码块。</FONT>   
+<PRE class="brush: java;">public class Test6 {
+	public static void main(String[] args){
+		StaticCls1 t1 = new StaticCls1();
+		
+		System.out.println("---------------------------");
+		StaticCls1 t2 = new StaticCls1();
+		
+		System.out.println("---------------------------");
+		new StaticCls2();//由于上面已经运行了StaticCls1的static代码块，所以这里不会再运行了
+	}
+}
+
+//该类不能被继承
+class StaticCls1{
+	/**
+	 * 以下块依次执行，并且static块不论生成多少个对象只执行一次(类被加载的时候执行，不可能加载多次，所以只执行一次)
+	 */
+	static
+	{
+		System.out.println("1 static kuai is running!");
+	}
+	
+	{
+		System.out.println("1 kuai is running!");
+	}	
+	
+	public StaticCls1(){
+		System.out.println("1 constructor is running!");
+	}
+	
+}
+
+class StaticCls2 extends StaticCls1{
+	static
+	{
+		System.out.println("2 static kuai is running!");
+	}
+	
+	{
+		System.out.println("2 kuai is running!");
+	}	
+	
+	public StaticCls2(){
+		System.out.println("2 constructor is running!");
+	}
+}
+</PRE></LI></UL>
+<H3>Java中常用的内存区域 ：</H3>
+<UL>
+  <LI>栈内存空间：保存所有对象名称(更准确的说是保存了引用的堆内存空间的地址)。   
+  <UL>
+    <LI>栈的优势是，存取速度比堆要快，仅次于寄存器，栈数据可以共享。但缺点是，存在栈中的数据大小与生存期必须是确定的，缺乏灵活性。</LI>
+    <LI>栈中主要存放一些基本类型的变量数据（int, short, long, byte, float, double, boolean, 
+    char）和对象的引用。 </LI></UL></LI>
+  <LI>堆内存空间：保存每个对象的具体属性内容。   
+  <UL>
+    <LI>堆是由垃圾回收来负责的，堆的优势是可以动态地分配内存大小，生存期也不必事先告诉编译器，因为它是在运行时动态分配内存的，Java的垃圾收集器会自动收走这些不再使用的数据。但缺点是，由于要在运行时动态分配内存，存取速度较慢。 
+        </LI></UL></LI>
+  <LI>全局数据区：保存static类型的属性。常量</LI>
+  <LI>全局代码区：保存所有的方法定义。</LI></UL>
+<DIV id="content_div_1">
+<H3>代码块</H3>
+<UL>
+  <LI>普通代码块：就是指直接在方法中定义的代码块。按普通代码的执行顺序执行。</LI>
+  <LI>构造块：是直接写在类中的代码块。先于构造方法执行。</LI>
+  <LI>静态块：是使用static关键字修饰的放在类中的代码块。在类加载的时候执行(同一次执行，同一个类只加载一次，所以无论实例化多少个对象，该静态块只执行一次)。</LI>
+  <LI>同步代码块(synchronized)：在使用同步代码块时必须指定一个需要同步的对象，但一般都将当前对象(this)设置成同步对象。</LI></UL></DIV>
+<H3>new一个对象时，代码的执行顺序</H3>
+<OL>
+  <LI>首先加载：加载顺序：1.静态属性定义 2.静态方法声明  （定义和声明完全结束后）  3. 静态属性赋值 4.静态块</LI>
+  <LI>其次实例化：实例化顺序：1.普通属性定义、2. 普通方法声明  (定义和声明完全结束后）3.普通属性赋值 4.构造块   (以上完全结束后)  
+  构造方法中的代码</LI>
+  <LI><SPAN style="color: rgb(255, 0, 0);">只要执行new，那么就会进入实例化过程</SPAN></LI><SPAN 
+  style="color: rgb(255, 0, 0);"></SPAN>   
+  <LI><SPAN style="color: rgb(255, 0, 0);">继承：父类先于子类加载、实例化</SPAN></LI><SPAN 
+  style="color: rgb(255, 0, 0);"></SPAN>   
+  <LI><SPAN style="color: rgb(255, 0, 0);">继承：new 的时候先实例化父类再实例化子类</SPAN> 
+<PRE class="brush: java;">public class People {
+    String name;
+
+    public People() {
+        System.out.print(1);
+    }
+
+    public People(String name) {
+        System.out.print(2);
+        this.name = name;
+    }
+    
+    public static void main(String[] args) {
+		new Child("maki");//--调用子类的有参构造
+	}
+}
+
+class Child extends People {
+    People father;
+
+    public Child(String name) {
+    	//--每个子类的构造方法的第一行都默认执行了一个super();父类的无参构造
+    	//--如果要调用父类的其他构造方法，必须在第一行显式调用
+    	//--如果父类没有无参构造，那么必须显式调用有参构造，否则会报错
+        System.out.print(3);
+        this.name = name;
+        father = new People(name + ":F");
+    }
+
+    public Child() {
+        System.out.print(4);
+    }
+    
+}
+
+//--以上程序执行结果：132
+</PRE></LI>
+  <LI><SPAN 
+style="color: rgb(255, 0, 0);">继承：父类与子类加载顺序执行完后，才会执行实例化顺序</SPAN></LI>
+  <LI><SPAN 
+  style="color: rgb(255, 0, 0);">加载顺序只执行一次，而实例化顺序有多少个new就执行多少次</SPAN></LI></OL>
+<PRE class="brush: java;">public class LoadSort  {
+
+
+	//-- 加载顺序：1.静态属性定义 2.静态方法声明  （定义和声明完全结束后）  3. 静态属性赋值 4.静态块
+	//-- 实例化顺序：1.普通属性定义、2. 普通方法声明  (定义和声明完全结束后）3.普通属性赋值 4.构造块   (以上完全结束后)  构造方法中的代码
+	//-- 说明：只要执行new，那么就会进入实例化过程
+
+	public static int k = 0;
+	public static LoadSort t1 = new LoadSort("t1");
+	public static LoadSort t2 = new LoadSort("t2");
+	public static int i = print("i");
+	public static int n = 99;
+
+	public int j = print("j");
+	
+	{
+		print("构造快");
+	}
+
+	static {
+		print("静态块");
+	}
+
+	public LoadSort(String str) {
+		System.out.println((++k) + ":" + str + "    i=" + i + "  n=" + n);
+		++n;
+		++i;
+	}
+
+	public static int print(String str) {
+		System.out.println((++k) + ":" + str + "   i=" + i + "   n=" + n);
+		++n;
+		return ++i;
+	}
+	
+	public static void main(String[] args) {
+		
+	}
+}
+</PRE>
+<H3>final关键字：示例</H3>
+<PRE class="brush: java;">public class Test5 {
+	public static void main(String[] args){
+		FinalCls2 t = new FinalCls2();
+//		t.a = 10;//此处是错误的，编译错误
+		
+//		t.finalCls4 = new FinalCls4();//此处是错误的，编译错误
+		t.finalCls4.name = "xi'an";//这是正确的
+		
+	}
+}
+
+//该类不能被继承
+final class FinalCls1{
+	
+}
+
+class FinalCls2{
+	
+	//这样定义就为常量了，所以不能修改其值
+	final int a = 5;
+	
+	final FinalCls4 finalCls4 = new FinalCls4();
+	
+	//该方法不能被重写，但可以重载
+	public final void m1(){
+		
+	}
+	
+	public final void m1(int a){
+		
+	}
+}
+
+class FinalCls3 extends FinalCls2{
+//	public final void m1(){//此处是错误的，编译错误
+//		
+//	}
+}
+
+class FinalCls4{
+	//final修饰引用类型时，表示该引用类型不能再指向其他对象了。(但其指向的对象的属性，如果不是final类型，即可改变)
+	String name = "chengdu";
+}
+</PRE>
+<UL>
+  <LI>  1).<FONT style="color: red;">可以修饰属性。</FONT>   
+  <UL>
+    <LI>final修饰属性，表示该类是一个终态属性(常量)，即不能被修改。</LI>
+    <LI>final修饰原生数据类型时，表示该原生数据类型的值不能被改变(即10不能变更为20)。</LI>
+    <LI><FONT style="color: red;">final修饰属性必须赋初值，如果不赋初值，则要在该类的每一个构造方法中赋初值。    
+    如果属性声明就赋值了，其他地方(构造方法中)就不能再赋值了。     </FONT></LI>
+    <LI>final修饰引用类型时，表示该引用类型不能再指向其他对象了。(但其指向的对象的属性，如果不是final类型，就可改变)</LI></UL></LI>
+  <LI>2).<FONT style="color: red;">可以修饰方法。</FONT>   
+  <UL>
+    <LI>final修饰方法，表示该类是一个终态方法，即不能被重写(但可以重载)。</LI></UL></LI>
+  <LI>3).<FONT style="color: red;">可以修饰类。</FONT>   
+  <UL>
+    <LI>final修饰类，表示该类是一个终态类，即不能被继承。</LI></UL></LI></UL>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

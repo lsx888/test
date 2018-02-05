@@ -1,0 +1,113 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0079)http://172.13.19.31:6060/note_html/服务器/CentOS/10903-软件安装-源码包安装.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>软件安装-源码包安装</TITLE> <LINK href="软件安装-源码包安装_files/standalone.css" rel="stylesheet"> 
+<LINK href="软件安装-源码包安装_files/overlay-apple.css" rel="stylesheet"> <LINK href="软件安装-源码包安装_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="软件安装-源码包安装_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="软件安装-源码包安装_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">软件安装-源码包安装</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-04-21 21:33:59</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>简介</H3>
+<P style="text-indent: 0.8cm;">
+其实，在linux下面安装一个源码包是最常用的，在日常的管理工作中，大部分软件都是通过源码安装的。安装一个源码包，是需要我们自己把源代码编译成二进制的可执行文件。如果你读得懂这些源代码，那么你就可以去修改这些源代码自定义功能，然后再去编译成你想要的。使用源码包的好处除了可以自定义修改源代码外还可以定制相关的功能，因为源码包在编译的时候是可以附加额外的选项的。 
+</P>
+<P style="text-indent: 0.8cm;">
+源码包的编译用到了linux系统里的编译器，常见的源码包一般都是用C语言开发的，这也是因为C语言为linux上最标准的程序语言。Linux上的C语言编译器叫做gcc，利用它就可以把C语言变成可执行的二进制文件。所以如果你的机器上没有安装gcc就没有办法去编译源码。你可以使用 
+yum install -y gcc 来完成安装。 </P>
+<H4>安装一个源码包，通常需要三个步骤：</H4>
+<OL>
+  <LI>./configure 在这一步可以定制功能，加上相应的选项即可，具有有什么选项可以通过”./configure --help 
+  ”命令来查看。在这一步会自动检测你的linux系统与相关的套件是否有编译该源码包时需要的库，因为一旦缺少某个库就不能完成编译。只有检测通过后才会生成一个Makefile文件</LI>
+  <LI>make 使用这个命令会根据Makefile文件中预设的参数进行编译，这一步其实就是gcc在工作了</LI>
+  <LI>make install 安装步骤，生成相关的软件存放目录和配置文件的过程</LI></OL>
+<P style="text-indent: 0.8cm;">
+上面介绍的3步并不是所有的源码包软件都一样的，也就是说源码包的安装并非具有一定的标准安装步骤。这就需要你拿到源码包解压后，然后进入到目录找相关的帮助文档，通常会以INSTALL或者README为文件名。所以，一定要去看一下。 
+</P>
+<H3>源码包安装示例</H3>
+<H4>1.下载一个源码包</H4>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" src="软件安装-源码包安装_files/20150826-08.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>这里要提一下，建议以后你把所有下载的源码包放到/usr/local/src/目录下，这个并不是必须的，只是一个约定。方便你和你的同事将来更好的去运维这台服务器。wget即为下载的命令，后边跟源码包的下载地址。该地址为从网上找的一个apache的下载地址。</FONT></DIV></DIV>
+<H4>2.解压源码包</H4>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" src="软件安装-源码包安装_files/20150826-09.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>一般的源码包都是一个压缩包，如何解压一个.tar.gz的包请参考命令tar</FONT></DIV></DIV>
+<H4>3. 配置相关的选项，并生成Makefile</H4>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" src="软件安装-源码包安装_files/20150826-10.png"></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>使用./configure --help 
+可以查看可用的选项。一般常用的有”--prefix=PREFIX “ 
+这个选项的意思是定义软件包安装到哪里。到这里，再提一个小小的约定，通常源码包都是安装在/usr/local/目录下的。比如，我们把apache安装在/usr/local/apache2下，那么这里就应该这样写” 
+--prefix=/usr/local/apache2”。其他还有好多选项，如果你有耐心你可以挨个去看一看都有什么作用。</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="软件安装-源码包安装_files/20150826-11.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>在这里只定义了apache的安装目录，其他都是默认。回车后，开始执行check操作</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="软件安装-源码包安装_files/20150826-12.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>等check结束后生成了Makefile文件</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="软件安装-源码包安装_files/20150826-13.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>除了查看有没有生成Makefile文件来判定有没有完成./config 
+的操作外，还可以通过这个命令”echo $?”来判定，如果是0，则表示上一步操作成功完成，否则就是没有成功。</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="软件安装-源码包安装_files/20150826-14.png"></DIV></DIV>
+<H4>4. 进行编译</H4>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" src="软件安装-源码包安装_files/20150826-15.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>这一步操作，就是把源代码编译成二进制的可执行文件，这一步也是最漫长的一步，编译时间的长短取决于源代码的多少和机器配置</FONT></DIV></DIV>
+<H4>5. 安装</H4>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" src="软件安装-源码包安装_files/20150826-16.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>在安装前，先确认上一步操作是否成功完成</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="软件安装-源码包安装_files/20150826-17.png"></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>make install 
+会创建相应的目录以及文件。当完成安装后，会在/usr/local目录下多了一个apache2目录，这就是apache所安装的目录了</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="软件安装-源码包安装_files/20150826-18.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>其实在日常的源码安装工作中，并不是每个都像这样顺利完成安装的，遇到错误不能完成安装的情况是很多的。通常都是因为缺少某一个库文件导致的。这就需要你仔细琢磨报错信息或者查看当前目录下的config.log去得到相关的信息。另外，如果自己不能解决那就去网上google一下吧，通常你会得到你想要的答</FONT></DIV></DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

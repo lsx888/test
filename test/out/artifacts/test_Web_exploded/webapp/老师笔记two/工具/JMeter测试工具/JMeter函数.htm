@@ -1,0 +1,96 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0078)http://172.13.19.31:6060/note_html/工具/JMeter测试工具/1007010-JMeter函数.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>JMeter函数</TITLE> <LINK href="JMeter函数_files/standalone.css" rel="stylesheet"> 
+<LINK href="JMeter函数_files/overlay-apple.css" rel="stylesheet"> <LINK href="JMeter函数_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="JMeter函数_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="JMeter函数_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">JMeter函数</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-09-24 15:39:28</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<P style="text-indent: 0.8cm;">
+JMeter函数是一些能够转化在测试树中取样器或者其他配置元件的域的特殊值。一个函数的调用就像这样：${_functionName(var1,var2,var3)}，functionName匹配函数名，圆括号内设置函数的参数，例如${_time(YMD)}实际参数因函数而不同。不需要参数的函数使圆括号内为空，例如${_theadNum}. 
+</P>
+<H3>Jmeter函数有两种</H3>
+<UL>
+  <LI>自定义静态值（或者变量）：自定义静态值允许当一个测试树编译并且提交运行时自定义变量被它们的静态值代替。这个替代在测试运行开始时发生一次。这可以用来替换所有的HTTP请求中的DOMAIN域。</LI>
+  <LI>内置函数：内置函数允许写进任何非控制器测试组件的任何域，这包括取样器，定时器，监听器，修改器，断言，前置处理器，后置处理器和配置元件。</LI>
+  <LI>注意：如果使用和内置函数同样的名字定义一个自定义变量，你的自定义静态变量会覆盖内置函数，所以不建议名字相同。</LI></UL>
+<H3>函数列表</H3>
+<PRE class="brush: java;">
+    regexFunction　　　　　　　　-正则表达式函数
+    counter
+    threadNum　　　　               -得到线程数
+    intSum　　　　　　               -添加变量
+    StringFromFile　　                -从文件读取一行
+    machineName　　                -得到本地计算机名
+    JavaScript(Apache Rhino)
+    random number
+    CSVRead　　　　                 -从CSV文件读取一个属性
+    P　　　　　　　                   -读取一个属性
+    setProperty　　                  -设置一个属性
+    log　　　　　　                   -记录一个日志
+    logn　　　　　　                 -记录一个日志
+    BeanShell　　　                 -运行BeanShell
+    split　　　　　　                -分隔一个字符串变量
+    XPATH　　　　　               -使用一个xpath表达式
+    time　　　　　　               -返回一些格式的当前时间
+    jexl　　　　　　                -执行一个jexl表达式
+
+</PRE>
+<H3>一些内置函数的用法</H3>
+<H4>_csvRead 函数</H4>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" src="JMeter函数_files/20150924-10.png"></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="JMeter函数_files/20150924-11.png"></DIV></DIV>
+<H4>_Random 函数</H4>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" src="JMeter函数_files/20150924-12.png"></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="JMeter函数_files/20150924-13.png"></DIV></DIV>
+<H4>_StringFromFile 函数</H4>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" src="JMeter函数_files/20150924-14.png"></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="JMeter函数_files/20150924-15.png"></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="JMeter函数_files/20150924-16.png"></DIV></DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

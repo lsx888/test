@@ -1,0 +1,288 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0074)http://172.13.19.31:6060/note_html/服务器/CentOS/11001-shell-基础知识.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>shell-基础知识</TITLE> <LINK href="shell-基础知识_files/standalone.css" rel="stylesheet"> 
+<LINK href="shell-基础知识_files/overlay-apple.css" rel="stylesheet"> <LINK href="shell-基础知识_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="shell-基础知识_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="shell-基础知识_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">shell-基础知识</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-08-31 11:14:45</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>什么是shell</H3>
+<P 
+style="text-indent: 0.8cm;">简单点理解，就是系统跟计算机硬件交互时使用的中间介质，它只是系统的一个工具。实际上，在shell和计算机硬件之间还有一层东西那就是系统内核了。打个比方，如果把计算机硬件比作一个人的躯体，而系统内核则是人的大脑，至于shell，把它比作人的五官似乎更加贴切些。回到计算机上来，用户直接面对的不是计算机硬件而是shell，用户把指令告诉shell，然后shell再传输给系统内核，接着内核再去支配计算机硬件去执行各种操作。 
+</P>
+<P 
+style="text-indent: 0.8cm;">linux发布版本（Redhat/CentOS）系统默认安装的shell叫做bash，即Bourne 
+Again Shell，它是sh（Bourne Shell）的增强版本。Bourn Shell 是最早行起来的一个shell，创始人叫Steven 
+Bourne，为了纪念他所以叫做Bourn Shell，检称sh。目前流行的shell有ash、bash、ksh、csh、zsh等，我们可以用#echo 
+$SHELL命令来查看你自己的shell类型。这里我们主要讲bash shell </P>
+<P style="text-indent: 0.8cm;">Shell初学者请注意，在平常应用中，建议不要用 root 帐号运行 Shell 
+。作为普通用户，不管您有意还是无意，都无法破坏系统；但如果是 root，那就不同了，只要敲几个字母，就可能导致灾难性后果 </P>
+<H3>bash的特点</H3>
+<H4>1.记录命令历史</H4>
+<DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>我们敲过的命令，linux是会有记录的，预设可以记录1000条历史命令。这些命令保存在用户的家目录中的.bash_history文件中。有一点需要你知道的是，只有当用户正常退出当前shell时，在当前shell中运行的命令才会保存至.bash_history文件中。与命令历史有关的有一个有意思的字符那就是”!”了。常用的有这么几个应用：（1）!! 
+（连续两个”!”），表示执行上一条指令；（2）!n（这里的n是数字），表示执行命令历史中第n条指令，例如”!100”表示执行命令历史中第100个命令；（3）!字符串（字符串大于等于1），例如!ta，表示执行命令历史中最近一次以ta为开头的指令</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="shell-基础知识_files/20150826-19.png"></DIV></DIV>
+<H4>2.指令和文件名补全</H4>
+<P style="text-indent: 0.8cm;">
+就是按tab键，它可以帮你补全一个指令，也可以帮你补全一个路径或者一个文件名。连续按两次tab键，系统则会把所有的指令或者文件名都列出来 </P>
+<H4>3.别名</H4>
+<DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>这个就是bash所特有的功能之一了。我们可以通过alias把一个常用的并且很长的指令别名一个简洁易记的指令。如果不想用了，还可以用unalias解除别名功能。直接敲alias会看到目前系统预设的alias 
+</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="shell-基础知识_files/20150826-20.png"></DIV></DIV>
+<H4>4.通配符</H4>
+<DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>在bash下，可以使用*来匹配零个或多个字符，而用?匹配一个字符</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="shell-基础知识_files/20150826-21.png"></DIV></DIV>
+<H4>5.输入输出重定向</H4>
+<P style="text-indent: 0.8cm;">
+输入重定向用于改变命令的输入，输出重定向用于改变命令的输出。输出重定向更为常用，它经常用于将命令的结果输入到文件中，而不是屏幕上。输入重定向的命令是&lt;，输出重定向的命令是&gt;，另外还有错误重定向2&gt;，以及追加重定向&gt;&gt;
+</P>
+<H4>6.管道符</H4>
+<P style="text-indent: 0.8cm;">管道符”|”，就是把前面的命令运行的结果丢给后面的命令 </P>
+<H4>7.作业控制</H4>
+<P style="text-indent: 0.8cm;">
+当运行一个进程时，你可以使它暂停（按Ctrl+z），然后使用fg命令恢复它，利用bg命令使他到后台运行，你也可以使它终止（按Ctrl+c） </P>
+<H3>shell中的特殊符号</H3>
+<OL>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>* ：代表零个或多个字符或数字</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-基础知识_files/20150826-22.png"></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>test后面可以没有任何字符，也可以有多个字符，总之有或没有都能匹配出来</FONT></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>? ：只代表一个任意的字符</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-基础知识_files/20150826-23.png"></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>不管是数字还是字母，只要是一个都能匹配出来</FONT></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT># 
+  ：这个符号在linux中表示注释说明的意思，即”#”后面的内容linux忽略掉</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-基础知识_files/20150826-24.png"></DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>在命令的开头或者中间插入”#” 
+  ，linux都会忽略掉的。这个符号在shell脚本中用的很多</FONT></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>\ ：脱意字符，将后面的特殊符号（例如”*” 
+  ）还原为普通字符</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-基础知识_files/20150826-25.png"></DIV></DIV></LI>
+  <LI>| 
+  ：管道符，前面多次说过，它的作用在于将符号前面命令的结果丢给符号后面的命令。这里提到的后面的命令，并不是所有的命令都可以的，一般针对文档操作的命令比较常用，例如cat, 
+  less, head, tail, grep, cut, sort, wc, uniq, tee, tr, split, sed, 
+  awk等等，其中grep, sed, awk为正则表达式必须掌握的工具</LI>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>$ 
+  ：除了用于变量前面的标识符外，还有一个妙用，就是和’!’结合起来使用</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-基础知识_files/20150826-26.png"></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>‘!$’表示上条命中中最后一个变量（也许称为变量不合适，总之就是上条命令中最后出现的那个东西）例如上边命令最后是test.txt那么在当前命令下输入!$则代表test.txt</FONT></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>grep ：过滤一个或多个字符</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-基础知识_files/20150826-27.png"></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>cut ：截取某一个字段</FONT></DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>语法：cut -d “分隔字符” [-cf] n 
+  这里的n是数字</FONT></DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>-d 
+  ：后面跟分隔字符，分隔字符要用双引号括起来</FONT></DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>-c ：后面接的是第几个字符</FONT></DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>-f ：后面接的是第几个区块</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-基础知识_files/20150826-28.png"></DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>-d 后面跟分隔字符，这里使用冒号作为分割字符，-f 1 
+  就是截取第一段，-f和1之间的空格可有可无。</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-基础知识_files/20150826-29.png"></DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>-c 
+  后面可以是1个数字n，也可以是一个区间n1-n2，还可以是多个数字n1,n2,n3</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-基础知识_files/20150826-30.png"></DIV></DIV></LI>
+  <LI>sort ：用做排序   
+<PRE class="brush: bash;">  语法：sort [-t 分隔符] [-kn1,n2] [-nru] 这里的n1 &lt; n2
+  -t 分隔符 ：作用跟cut的-d一个意思
+  -n ：使用纯数字排序
+  -r ：反向排序
+  -u ：去重复
+  -kn1,n2 ：由n1区间排序到n2区间，可以只写-kn1，即对n1字段排序
+  </PRE>
+  <DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-基础知识_files/20150826-31.png"></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-基础知识_files/20150826-32.png"></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-基础知识_files/20150826-33.png"></DIV></DIV></LI>
+  <LI>wc ：统计文档的行数、字符数、词数，常用的选项为   
+<PRE class="brush: bash;">  -l ：统计行数
+  -m ：统计字符数
+  -w ：统计词数
+  </PRE>
+  <DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-基础知识_files/20150826-34.png"></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>uniq 
+  ：去重复的行，常用的选项只有一个：</FONT></DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>-c 
+  ：统计重复的行数，并把行数写在前面</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-基础知识_files/20150826-35.png"></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>有一点需要注意，在进行uniq之前，需要先用sort排序然后才能uniq，否则你将得不到你想要的，上面的试验当中已经是排序过所以省略掉那步了</FONT></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>tee 
+  ：后跟文件名，类似与重定向”&gt;”，但是比重定向多了一个功能，在把文件写入后面所跟的文件中的同时，还显示在屏幕上</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-基础知识_files/20150826-36.png"></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>tr 
+  ：替换字符，常用来处理文档中出现的特殊符号，如DOS文档中出现的^M符号。常用的选项有两个：</FONT></DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>-d ：删除某个字符，-d 
+  后面跟要删除的字符</FONT></DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>-s ：把重复的字符去掉</FONT></DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>最常用的就是把小写变大写： tr ‘[a-z]’ 
+  ‘[A-Z]’</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-基础知识_files/20150826-37.png"></DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>当然替换一个字符也是完全可以的</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-基础知识_files/20150826-38.png"></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>不过替换、删除以及去重复都是针对一个字符来讲的，有一定局限性。如果是针对一个字符串就不再管用了，所以建议只是简单了解这个tr即可，以后你还会学到更多可以实现针对字符串操作的工具</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-基础知识_files/20150826-39.png"></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>split 
+  ：切割文档，常用选项：</FONT></DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>-b 
+  ：依据大小来分割文档，单位为byte</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-基础知识_files/20150826-40.png"></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>格式如上例，后面的passwd为分割后文件名的前缀，分割后的文件名为passwdaa, 
+  passwdab, passwdac …</FONT></DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>-l ：依据行数来分割文档</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-基础知识_files/20150826-41.png"></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>； 
+  ：分号。平时我们都是在一行中敲一个命令，然后回车就运行了，那么想在一行中运行两个或两个以上的命令如何呢？则需要在命令之间加一个”;”了。</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-基础知识_files/20150826-42.png"></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>~ ：用户的家目录，如果是root则是 /root 
+  ，普通用户则是 /home/username</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-基础知识_files/20150826-43.png"></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT> &amp; 
+  ：如果想把一条命令放到后台执行的话，则需要加上这个符号。通常用于命令运行时间非常长的情况。</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-基础知识_files/20150826-44.png"></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>使用jobs可以查看当前shell中后台执行的任务。用fg可以调到前台执行。这里的sleep命令就是休眠的意思，后面跟数字，单位为秒，常用语循环的shell脚本中。</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-基础知识_files/20150826-45.png"></DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>此时你按一下CTRL +z 
+  使之暂停，然后再输入bg可以再次进入后台执行。</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-基础知识_files/20150826-46.png"></DIV>
+  <DIV align="left" 
+  style="padding: 5px 0px;"><FONT>如果是多任务情况下，想要把任务调到前台执行的话，fg后面跟任务号，任务号可以使用jobs命令得到。</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-基础知识_files/20150826-47.png"></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>&gt;, &gt;&gt;, 2&gt;, 
+  2&gt;&gt; ：前面讲过重定向符号&gt; 以及&gt;&gt;　分别表示取代和追加的意思，然后还有两个符号就是这里的2&gt;和 
+  2&gt;&gt;　分别表示错误重定向和错误追加重定向，当我们运行一个命令报错时，报错信息会输出到当前的屏幕，如果想重定向到一个文本里，则要用2&gt;或者2&gt;&gt;</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-基础知识_files/20150826-48.png"></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left" style="padding: 5px 0px;"><FONT>[ ] 
+  ：中括号，中间为字符组合，代表中间字符中的任意一个</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-基础知识_files/20150826-49.png"></DIV></DIV></LI>
+  <LI>&amp;&amp; 与 ||   
+<PRE class="brush: bash;">在上面刚刚提到了分号，用于多条命令间的分隔符。另外还有两个可以用于多条命令中间的特殊符号，那就是 “&amp;&amp;”和”||”。下面笔者把这几种情况全列出：
+
+1) command1 ; command2
+
+2) command1 &amp;&amp; command2
+
+3) command1 || command2
+
+使用”;”时，不管command1是否执行成功都会执行command2； 使用”&amp;&amp;”时，只有command1执行成功后，command2才会执行，否则command2不执行；使用”||”时，
+command1执行成功后command2 不执行，否则去执行command2，总之command1和command2总有一条命令会执行。
+</PRE>
+  <DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="shell-基础知识_files/20150826-50.png"></DIV></DIV></LI></OL>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

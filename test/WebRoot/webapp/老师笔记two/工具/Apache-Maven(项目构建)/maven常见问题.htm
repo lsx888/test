@@ -1,0 +1,79 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0091)http://172.13.19.31:6060/note_html/工具/Apache-Maven（项目构建）/1011010-maven常见问题.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>maven常见问题</TITLE> <LINK href="maven常见问题_files/standalone.css" rel="stylesheet"> 
+<LINK href="maven常见问题_files/overlay-apple.css" rel="stylesheet"> <LINK href="maven常见问题_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="maven常见问题_files/shCoreEclipse.css" 
+rel="stylesheet">	 <LINK href="maven常见问题_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">maven常见问题</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-02-24 14:08:29</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>找不到jdk编译器</H3>
+<P style="text-indent: 0.8cm;">maven的jdk默认使用1.4或1.5，反正不是现在常用的1.6或者1.7、1.8。在执行mvn 
+install时会出现以下错误 </P>
+<PRE class="brush: bash;">[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:2.0.2:compile (default-compile) on project springJMS: Compilation failure: Compilation failure:
+[ERROR] /home/frank/programcode/SpringJMSSample/src/main/java/huangbowen/net/jms/MessageSender.java:[6,1] error: annotations are not supported in -source 1.3
+[ERROR] 
+[ERROR] (use -source 5 or higher to enable annotations)
+[ERROR] /home/frank/programcode/SpringJMSSample/src/main/java/net/EmbedBrokerApp.java:[5,7] error: static import declarations are not supported in -source 1.3
+[ERROR] -&gt; [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+</PRE>
+<P style="text-indent: 0.8cm;">该错误我们可以通过配置maven-compiler-plugin的属性来处理，处理方式参考常用插件 
+- maven-compiler-plugin。<SPAN 
+style="color: rgb(255, 0, 0);">配置插件时，注意一点：使用的插件的版本要与你使用的maven版本一致，否则会出现一些意想不到让人摸不着头脑的错误。 
+</SPAN></P>
+<H3>依赖的jar包，想同步下载其源码</H3>
+<P style="text-indent: 0.8cm;">eclipse 的 Maven 
+插件提供了这个功能，配置很简单，只需要勾选windows-Preferences-Maven- Download Artifact Sources 
+这个选项就可以了 。勾选后，修改pom文件，就会自动下载sources包了。 </P>
+<H3>高版本的maven如3.3.3及以上，配置不了jdk1.5或jdk1.6</H3>
+<P 
+style="text-indent: 0.8cm;">在${MAVEN_HOME}/conf目录下有一个toolchains.xml文件，修改改文件的配置即可。 
+</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

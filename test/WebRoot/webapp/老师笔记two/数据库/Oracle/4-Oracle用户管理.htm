@@ -1,0 +1,153 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0082)http://172.13.19.31:6060/note_html/数据库/Oracle/104010-Oracle-Oracle用户管理.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>4-Oracle用户管理</TITLE> <LINK href="4-Oracle用户管理_files/standalone.css" rel="stylesheet"> 
+<LINK href="4-Oracle用户管理_files/overlay-apple.css" rel="stylesheet"> <LINK href="4-Oracle用户管理_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="4-Oracle用户管理_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="4-Oracle用户管理_files/my-highlighter.css" rel="stylesheet">     
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+	 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+		
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+	 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+	 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+		
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">4-Oracle用户管理</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-03-21 10:35:41</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV id="content_div_1">
+<H3>Oracle默认用户</H3>
+<UL>
+  <LI>SYS：是Oracle 
+  中的一个超级用户。数据库中所有的数据字典和视图都存储在SYS模式中。数据字典存储了用来管理数据库对象的所有信息，是Oracle数据库中非常重要的系统信息。SYS用户主要用来维护系统信息和管理实例，SYS用户只能以SYSOPER或SYSDBA角色登陆。默认口令是：change_on_install</LI>
+  <LI>SYSTEM：是Oracle默认的系统管理员，它拥有DBA权限。该用户拥有Oracle管理工具使用的内部表和视图。通常通过SYSTEM用户管理Oracle数据库的用户、权限和存储等。不建议在SYSTEM用户模式中创建用户表。其默认口令是：manager</LI>
+  <LI>SCOTT：是Oracle数据库的一个示范用户。在数据库安装时创建(在10g 中默认情 
+  况下，该用户是被锁定的，可在安装时解锁)。SCOTT用户模式下有四个示范表，其中有两个是dept(部门表)和emp(员工表)，许多示例中都用到了这些表。如果安装时不更改其口令，其默认口令是TIGER。<SPAN><STRONG>scott用户相关代码scott.sql</STRONG></SPAN> 
+    <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=show&amp;uri=/code/oracle/sql/scott.sql" 
+  target="_blank">查看</A>   <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=down&amp;uri=/code/oracle/sql/scott.sql" 
+  target="_blank">下载</A>   </LI></UL>
+<H4 
+style="color: red; text-indent: 0.8cm;">SYS和SYSTEM用户都是Oracle系统用户，它们使用SYSTEM表空间存储模式对象</H4></DIV>
+<HR>
+
+<DIV id="content_div_2">
+<H3>创建用户(创建步骤)</H3>
+<OL>
+  <LI>Oracle中可以用CREATE 
+  USER命令来创建新用户。每个用户都有一个默认表空间和一个临时表空间，在创建时可以为它们指定，如果不指定，Oracle就把SYSTEM设为默认表空间，TEMP设为临时表空间。创建语法如下：</LI>
+  <P>CREATE USER user_name IDENTIFIED BY password [DEFAULT TABLESPACE 
+  tablespace_name1] [TEMPORARY TABLESPACE tablespace_name2];</P>
+  <LI>为第一步创建的对象授权，一般是将两个角色(CONNECT ，RESOURCE)赋给 
+  此用户即可。作为一般的开发用户，这两个权限已经足够，授权语法如下，其中：popedom_name为权限名或角色名，object_name为对象名，user_name为用户名.</LI>
+  <P>GRANT popedom_name [ON object_name] TO user_name;</P>
+  <LI style="color: green;">继续输入下面的授权命令，为用户 
+  user1授予查看表dept的权限，user1同时还拥有了把此查看权限授予其他用户的权限。其中emp为表名，user1为用户名,OPTION是权限名</LI>
+  <P>GRANT SELECT ON emp TO user1 WITH GRANT OPTION;</P>
+  <P></P>
+  <H4>示例代码</H4>
+<PRE class="brush: sql;">   --创建用户
+create user test identified by asdf;
+
+--给用户授权
+grant connect,resource to test;
+
+--解除用户权限
+revoke connect,resource from test;
+
+--修改密码
+alter user test identified by aaa;
+
+--锁定用户
+alter user test account lock;
+
+--解除锁定
+alter user test account unlock;
+
+--删除用户
+drop user test cascade;
+  </PRE>
+  <P></P></OL>
+<H3>其他操作</H3>
+<UL>
+  <LI>ALTER USER命令修改用户口令，语法如下：</LI>
+  <P>ALTER USER user_name IDENTIFIED BY new_password;</P>
+  <LI>DROP USER命令用于删除用户。当删除一个用户时，如果该用户模式中包 含模式对象时，必须使用CASCADE选项以删除模式对象。</LI>
+  <P>DROP USER user_name [CASCADE];</P>
+  <LI>修改用户处于锁定(非锁定)状态</LI>
+  <P>ALTER USER 用户名 ACCOUNT LOCK|UNLOCK</P>
+  <LI>回收权限</LI>
+  <P>REVOKE 角色|权限 FROM 用户(角色)</P></UL></DIV>
+<HR>
+
+<DIV id="content_div_3">
+<H3>Oracle用户权限有两种类型：系统权限和对象权限。</H3>
+<UL>
+  <LI>系统权限是指允许用户执行某些数据库操作。如创建表空间就是一个系统权限。   
+  <UL>
+    <LI>CREATE SESSION（创建会话）</LI>
+    <LI>CREATE TABLE（创建表）</LI>
+    <LI>CREATE SEQUENCE（创建序列）</LI>
+    <LI>CREATE VIEW（创建视图）</LI>
+    <LI>CREATE PROCEDURE（创建过程）</LI></UL></LI>
+  <LI>对象权限指允许对某一特定对象(如表、视图等)执行特定操作。用户必须是对象的所有者或者是已经拥有了GRANT 
+  OPTION对象权限才能为其他用户授予对象权限</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_4">
+<H3>角色(这些预定义角色主要是为了向后兼容)</H3>
+<UL>
+  <LI>CONNECT角色：主要应用在临时用户，特别是那些不需要建表的用户，通常只赋予他们CONNECT 
+  role。CONNECT是使用Oracle的简单权限，拥有CONNECT角色的用户，可以与服务器建立连接会话(session，客户端对服务器连接，称为会话)</LI>
+  <LI>RESOURCE角色：更可靠和正式的数据库用户可以授予RESOURCE 
+  role。RESOURCE提供给用户另外的权限以创建他们自己的表、序列、过程(procedure)、触发器(trigger)、索引(index)等。</LI>
+  <LI>DBA角色：DBA 
+role拥有所有的系统权限----包括无限制的空间限额和给其他用户授予各种权限的能力。用户SYSTEM拥有DBA角色。</LI></UL>
+<H3>角色的相关操作</H3>
+<UL>
+  <LI style="color: red;">使用具有SYSDBA 权限的用户登录数据库，使用如下语句创建一个角色：</LI>
+  <P>CREATE ROLE developer_role;</P>
+  <LI>将权限授权给角色</LI>
+  <P>GRANT CREATE SYNONYM,CREATE VIEW TO developer_role; 
+  //将创建同义词和视图的角色授权给developer_role 角色。</P>
+  <LI>将角色授权给某个角色：</LI>
+  <P>GRANT RESOURCE,CONNECT TO developer_role; //这样就将RESOURCE、CONNECT 
+  两个角色具有的权限授权给了developer_role 角色。</P>
+  <LI>将角色授权给用户：</LI>
+  <P>GRANT developer_role TO SCOTT; //SCOTT用户就拥有了developer_role 角色。</P></UL>
+<H3 style="color: green;">其他预定义角色(不要简单的使用这些 预定义角色。将来的版本中这些角色可能不会作为预定义角色)</H3>
+<UL style="color: green;">
+  <LI>DELETE_CATALOG_ROLE、EXECUTE_CATALOG_ROLE、SELECT_CATALOG_ROLE这些角色主要用于访问数据字典视图和包。</LI>
+  <LI>EXP_FULL_DATABASE和IMP_FULL_DATABASE这两个角色用于数据导入导出工具的使用。</LI>
+  <LI>AQ_USER_ROLE和AQ_ADMINISTRATOR_ROLE这两个角色用于oracle 高级查询功能。(AQ：Advanced 
+  Query)</LI>
+  <LI>RECOVERY_CATALOG_OWNER用于创建拥有恢复库的用户</LI></UL></DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 2013 ~ 2030 作者：zzy</DIV><!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

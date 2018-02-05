@@ -1,0 +1,152 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0081)http://172.13.19.31:6060/note_html/Java/JavaSE/1010010-JavaSE-数据结构与算法.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>JavaSE-数据结构与算法</TITLE> <LINK href="JavaSE-数据结构与算法_files/standalone.css" 
+rel="stylesheet"> <LINK href="JavaSE-数据结构与算法_files/overlay-apple.css" rel="stylesheet"> 
+<LINK href="JavaSE-数据结构与算法_files/article_edit.css" rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="JavaSE-数据结构与算法_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="JavaSE-数据结构与算法_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">JavaSE-数据结构与算法</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-09-17 15:30:49</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>数据结构：</H3>
+<UL>
+  <LI>线性数据结构：线性表、栈、队列、串、数组和文件。</LI>
+  <LI>非线性数据结构：树和图</LI></UL>
+<H4>栈-数组</H4>
+<PRE class="brush: java;">import java.util.Arrays;
+
+public class Stack{
+	private int[] s = new int[10];
+
+	private int top = 0;
+
+	/**
+	 * 测试栈是否为空。
+	 *
+	 */
+	public boolean empty(){
+		return top == 0;
+	}
+	
+	/**
+	 * 查看堆栈顶部的对象，但不从堆栈中移除它。
+	 *
+	 */
+	public Integer peek(){
+		if(empty() == false){
+			return s[top];
+		}else{
+			return null;
+		}
+	}
+	
+	/**
+	 * 移除堆栈顶部的对象，并作为此函数的值返回该对象。
+	 *
+	 */
+	 public Integer pop(){
+		if(empty() == false){
+			int empt = s[top];
+			top --;
+			return empt;
+		}else{
+			return null;
+		}
+	 }
+
+	/**
+	 *把项压入堆栈顶部。
+	 *
+	 */
+	 public Integer push(int e){
+		int len = this.s.length;
+		if(len - 1 == top){
+			s = Arrays.copyOf(s,len+10);			
+		} 
+		s[++top] = e;
+		return e;
+	 }
+
+
+}
+</PRE>
+<H4>栈-链表</H4>
+<DIV><SPAN><STRONG>链表实现的栈StackTest.java</STRONG></SPAN> <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=show&amp;uri=/code/javase/objectdetail/StackTest.java" 
+target="_blank">查看</A> <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=down&amp;uri=/code/javase/objectdetail/StackTest.java" 
+target="_blank">下载</A> </DIV>
+<H4>队列</H4>
+<DIV><SPAN><STRONG>QueueTest.java</STRONG></SPAN> <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=show&amp;uri=/code/javase/objectdetail/QueueTest.java" 
+target="_blank">查看</A> <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=down&amp;uri=/code/javase/objectdetail/QueueTest.java" 
+target="_blank">下载</A> </DIV>
+<H4>单向链表</H4>
+<DIV><SPAN><STRONG>Link.java</STRONG></SPAN> <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=show&amp;uri=/code/javase/objectdetail/Link.java" 
+target="_blank">查看</A> <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=down&amp;uri=/code/javase/objectdetail/Link.java" 
+target="_blank">下载</A> </DIV>
+<H3>简单的数据结构</H3>
+<H4>两数的互换</H4>
+<DIV><SPAN><STRONG>ChangeTest.java</STRONG></SPAN> <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=show&amp;uri=/code/javase/objectdetail/ChangeTest.java" 
+target="_blank">查看</A> <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=down&amp;uri=/code/javase/objectdetail/ChangeTest.java" 
+target="_blank">下载</A> </DIV>
+<H4>数组元素统计</H4>
+<DIV><SPAN><STRONG>ArrayTest.java</STRONG></SPAN> <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=show&amp;uri=/code/javase/objectdetail/ArrayTest.java" 
+target="_blank">查看</A> <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=down&amp;uri=/code/javase/objectdetail/ArrayTest.java" 
+target="_blank">下载</A> </DIV>
+<H4>金额转换为中文大写</H4>
+<DIV><SPAN><STRONG>UperMoney.java</STRONG></SPAN> <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=show&amp;uri=/code/javase/objectdetail/UperMoney.java" 
+target="_blank">查看</A> <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=down&amp;uri=/code/javase/objectdetail/UperMoney.java" 
+target="_blank">下载</A> </DIV>
+<H4>冒泡排序</H4>
+<DIV><SPAN><STRONG>BubbleSort.java</STRONG></SPAN> <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=show&amp;uri=/code/javase/objectdetail/BubbleSort.java" 
+target="_blank">查看</A> <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=down&amp;uri=/code/javase/objectdetail/BubbleSort.java" 
+target="_blank">下载</A> </DIV>
+<H4>选择排序</H4>
+<DIV><SPAN><STRONG>SelectSort.java</STRONG></SPAN> <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=show&amp;uri=/code/javase/objectdetail/SelectSort.java" 
+target="_blank">查看</A> <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=down&amp;uri=/code/javase/objectdetail/SelectSort.java" 
+target="_blank">下载</A> </DIV>
+<H4>二分查找</H4>
+<DIV><SPAN><STRONG>SearchSort.java</STRONG></SPAN> <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=show&amp;uri=/code/javase/objectdetail/SearchSort.java" 
+target="_blank">查看</A> <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=down&amp;uri=/code/javase/objectdetail/SearchSort.java" 
+target="_blank">下载</A> </DIV>
+<H4>二叉树排序</H4>
+<DIV><SPAN><STRONG>BinaryTree.java</STRONG></SPAN> <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=show&amp;uri=/code/javase/objectdetail/BinaryTree.java" 
+target="_blank">查看</A> <A href="http://172.13.19.31:6060/achiever/note_html/codeHelper.do?oper=down&amp;uri=/code/javase/objectdetail/BinaryTree.java" 
+target="_blank">下载</A> </DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

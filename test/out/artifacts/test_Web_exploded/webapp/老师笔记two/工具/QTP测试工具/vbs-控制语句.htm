@@ -1,0 +1,237 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0077)http://172.13.19.31:6060/note_html/工具/QTP测试工具/1003010-vbs-控制语句.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>vbs-控制语句</TITLE> <LINK href="vbs-控制语句_files/standalone.css" rel="stylesheet"> 
+<LINK href="vbs-控制语句_files/overlay-apple.css" rel="stylesheet"> <LINK href="vbs-控制语句_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="vbs-控制语句_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="vbs-控制语句_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">vbs-控制语句</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-09-30 14:34:36</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>流程控制语句</H3>
+<PRE class="brush: vb;">VBScript中可以使用以下条件语句：
+
+1.If…Then…Else语句
+    
+2.Select Case语句
+</PRE>
+<H4>If…Then…Else语句</H4>
+<PRE class="brush: vb;">If…Then…Else语句结构如下：
+	
+If condition Then statements [Else elsestatements]
+
+或者使用块形式
+	
+If condition Then
+    [statements]
+[ElseIf condition-n Then
+    [elseifstatements]] . . .
+[Else
+    [elsestatements]]
+End If
+
+主要参数：
+
+    condition：为一个（多个）数值或字符串表达式，其运算结果为True或False，若condition为Null，则被视为False。
+    statements：为condition等于True时执行的一条或多条（以冒号分开）语句。
+
+对于短小简单的测试，可以使用单行形式（第一种语法），但块形式（第二种语法）提供了比单行形式更强的结构化与适应性，比较容易阅读、维护及调试。
+	
+'1. 条件为True时
+'单行形式
+Dim myDate
+myDate = #2011-9-8#   '日期时间字符串需用#括起来
+If myDate &lt; Now Then myDate = Now
+'块形式
+If i = 100 Then
+    c = True
+    i = 0
+End If
+ 
+'2. 条件为True和False时
+If user.UserName = "admin" Then
+    showAdminPage = True
+Else
+    showAdminPage = False
+End If
+ 
+'3. 对多个条件判断
+If value = 0 Then
+    MsgBox(0)
+ElseIf value = 1 Then
+    MsgBox(9999)
+Else
+    MsgBox("输入不合法！")
+End If
+</PRE>
+<H4>Select Case语句</H4>
+<PRE class="brush: vb;">语法结构如下：
+	
+Select Case testexpression
+    [Case expressionlist-n
+        [statements-n]] . . .
+    [Case Else expressionlist-n
+        [elsestatements-n]]
+End Select
+
+主要参数：
+
+    testexpression：任意数值或字符串表达式。
+    statements：当testexpression与expressionlist-n中的任意部分匹配时，执行的一条或多条语句。
+
+Select Case结构提供了If...Then...ElseIf结构的另一个变通形式，功能与If...Then...ElseIf类似，但可以使代码更加简练易读，它与Case语句关联使用。
+
+	
+Dim value : value = 5   '多条语句在一行,需用冒号分开
+Select Case value
+    Case 0:
+        MsgBox(0)
+    Case 1:
+        MsgBox(9999)
+    Case Else
+        MsgBox("输入不合法！")
+End Select
+</PRE>
+<H3>循环控制语句</H3>
+<PRE class="brush: vb;">VBScript中可以使用以下循环语句：
+
+1.Do...Loop语句
+
+2.While...Wend语句
+
+3.For...Next语句
+
+4;For Each...Next语句
+
+</PRE>
+<H4>Do...Loop语句</H4>
+<PRE class="brush: vb;">当（或直到）条件为True时循环，语法结构如下：
+
+当条件为True时重复执行某语句块。
+	
+Do [{While | Until} condition]
+    [statements]
+    [Exit Do]
+    [statements]
+Loop
+
+当条件变为True之前重复执行某语句块。
+	
+Do
+    [statements]
+    [Exit Do]
+    [statements]
+Loop [{While | Until} condition]
+
+主要参数：
+
+    condition：数值或字符串表达式，其值为True或False。如果condition为Null，则condition被当作False。
+    statements：当condition为True时被重复执行的一条或多条命令。
+
+Exit Do可以退出循环体，循环可以嵌套使用。
+
+	
+Do Until response = vbNo
+    myNum = Int(6 * Rnd + 1)   '产生1到6之间的随机数
+    response = MsgBox(myNum &amp; "想要另一个数吗？", vbYesNo)
+Loop
+ 
+Dim check, counter
+check = True : counter = 0
+Do
+    Do While count &lt; 20
+        counter = counter + 1  '增加计数器
+        If counter = 10 Then
+            check = false
+            Exit Do   '终止内循环
+        End If
+    Loop
+Loop Until Not check
+</PRE>
+<H4>While…Wend语句</H4>
+<PRE class="brush: vb;">当条件为True时循环，语法结构如下：
+	
+While condition
+    [statements]
+Wend
+
+主要参数：
+
+    condition：数值或字符串表达式，其值为True或False。如果condition为Null，则condition被当作False。
+    statements：当condition为True时被重复执行的一条或多条命令。
+
+While…Wend没有Exit语句，从头一直循环到尾，若要在中途退出，则需用Do…Loop语句。
+</PRE>
+<H4>For…Next语句</H4>
+<PRE class="brush: vb;">指定循环次数，使用计数器重复运行语句，语法结构如下：
+	
+For counter = start To end [Step step]
+    [statements]
+    [Exit For]
+    [statements]
+Next
+
+主要参数：
+
+    counter：用做循环计数器的数值变量。这个变量不能是数组元素或用户自定义类型的元素。
+    start：counter的初值。
+    end：counter的终值。
+    step：counter的步长。如果没有指定，则step的默认值为1。
+
+</PRE>
+<H4>For Each…Next语句</H4>
+<PRE class="brush: vb;">对于集合中的每项或数组中的每个元素，重复执行一组语句，语法结构如下：
+	
+For Each element In group
+    [statements]
+    [Exit For]
+    [statements]
+Next [element]
+
+主要参数：
+
+    element：用来枚举集合或数组中所有元素的变量。对于集合，element可能是Variant变量、通用Object变量或任意指定的Automation对象变量。对于数组，element只能是Variant变量。
+    group：对象集合或数组的名称。
+
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

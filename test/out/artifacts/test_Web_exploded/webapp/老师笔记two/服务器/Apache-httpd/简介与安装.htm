@@ -1,0 +1,314 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0078)http://172.13.19.31:6060/note_html/服务器/Apache-httpd/1001010-简介与安装.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>简介与安装</TITLE> <LINK href="简介与安装_files/standalone.css" rel="stylesheet"> 
+<LINK href="简介与安装_files/overlay-apple.css" rel="stylesheet"> <LINK href="简介与安装_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="简介与安装_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="简介与安装_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">简介与安装</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-11-18 17:07:57</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>环境检查</H3>
+<DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>先使用如下命令检查httpd服务器的依赖软件的安装</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="简介与安装_files/20151111-01.png"></DIV>
+<DIV align="left" 
+style="padding: 5px 0px;"><FONT>CentOS默认有zlib、openssl等软件，如果版本和httpd服务器不匹配可以先卸载后重新安装。</FONT></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>使用gcc 
+-v检查gcc是否安装</FONT></DIV></DIV>
+<H3>部分依赖软件说明</H3>
+<H4>zlib</H4>
+<P style="text-indent: 0.8cm;">zlib是提供数据压缩用的函式库，由Jean-loup Gailly与Mark 
+Adler所开发，初版0.9版在1995年5月1日发表。zlib使用DEFLATE算法，最初是为libpng函式库所写的，后来普遍为许多软件所使用。此函式库为自由软件，使用zlib授权。 
+</P>
+<H4>OpenSSL</H4>
+<P style="text-indent: 0.8cm;">OpenSSL 
+是一个强大的安全套接字层密码库，囊括主要的密码算法、常用的密钥和证书封装管理功能及SSL协议，并提供丰富的应用程序供测试或其它目的使用。 </P>
+<P style="text-indent: 0.8cm;">
+在OpenSSL被曝出现严重安全漏洞后，发现多数通过SSL协议加密的网站使用名为OpenSSL的开源软件包。OpenSSL漏洞不仅影响以https开头的网站，黑客还可利用此漏洞直接对个人电脑发起“心脏出血”（Heartbleed）攻击。据分析，Windows上有大量软件使用了存在漏洞的OpenSSL代码库，可能被黑客攻击抓取用户电脑上的内存数据。 
+</P>
+<H4>apr、apr-util</H4>
+<P style="text-indent: 0.8cm;">为apache提供跨平台的支持APR(Apache portable Run-time 
+libraries，Apache可移植运行库)APR的目的如其名称一样，主要为上层的应用程序提供一个可以跨越多操作系统平台使用的底层支持接口库。apr-util依赖于apr（就是说要安装apr-util必须先安装apr） 
+</P>
+<H4>pcre</H4>
+<P style="text-indent: 0.8cm;">PCRE(Perl Compatible Regular 
+Expressions)是一个Perl库，包括 perl 兼容的正则表达式库。这些在执行正规表达式模式匹配时用与Perl 
+5同样的语法和语义是很有用的。Boost太庞大了，使用boost 
+regex后，程序的编译速度明显变慢。测试了一下，同样一个程序，使用boost::regex编译时需要3秒，而使用pcre不到1秒。因此改用pcre来解决C语言中使用正则表达式的问题 
+</P>
+<H4>GCC</H4>
+<P style="text-indent: 0.8cm;">GCC（GNU Compiler Collection，GNU编译器套件），是由 GNU 
+开发的编程语言编译器。它是以GPL许可证所发行的自由软件，也是 
+GNU计划的关键部分。GCC原本作为GNU操作系统的官方编译器，现已被大多数类Unix操作系统（如Linux、BSD、Mac OS 
+X等）采纳为标准的编译器，GCC同样适用于微软的Windows。[2]  GCC是自由软件过程发展中的著名例子，由自由软件基金会以GPL协议发布。 </P>
+<P style="text-indent: 0.8cm;">GCC 原名为 GNU C 语言编译器（GNU C Compiler），因为它原本只能处理 
+C语言。GCC 很快地扩展，变得可处理 
+C++。后来又扩展能够支持更多编程语言，如Fortran、Pascal、Objective-C、Java、Ada、Go以及各类处理器架构上的汇编语言等，所以改名GNU编译器套件（GNU 
+Compiler Collection）。 </P>
+<H4>Perl 5 [可选]</H4>
+<P style="text-indent: 0.8cm;">有些用Perl写的支持脚本，如apxs或dbmmanage 
+，需要Perl5解释器(5.003或以上的版本就足够了)。如果系统中存在多个Perl解释器，比如有系统提供的Perl 4，还有你自己安装的Perl 
+5，推荐你使用 --with-perl 选项来确保configure脚本使用正确的版本。如果configure没有没找到Perl 
+5也没关系，这并不影响Apache httpd的编译和安装，只是相关的支持脚本不能使用而已。 </P>
+<H3>下载</H3>
+<H4>apache相关项目的下载地址</H4>
+<P style="text-indent: 0.8cm;"><A href="http://archive.apache.org/dist/" target="_black">http://archive.apache.org/dist/</A>&nbsp;&nbsp;官方下载地址，该地址可以下载下载apache下所有的项目。 
+</P>
+<H4>apr、apr-util下载地址</H4>
+<P style="text-indent: 0.8cm;"><A href="http://apr.apache.org/download.cgi" 
+target="_black">http://apr.apache.org/download.cgi</A>&nbsp;&nbsp;官方下载地址，该地址一般是下载最新的版本，截止目前，官方最新版本为 
+apr-1.5.2、 apr-util-1.5.4、 apr-iconv-1.2.1 </P>
+<H4>zlib下载地址</H4>
+<P style="text-indent: 0.8cm;"><A href="http://www.zlib.net/" 
+target="_black">http://www.zlib.net/</A>&nbsp;&nbsp;官方下载地址，该地址一般是下载最新的版本，截止目前，官方最新版本为zlib-1.2.8 
+</P>
+<H4>pcre下载地址</H4>
+<P style="text-indent: 0.8cm;"><A href="http://www.pcre.org/" 
+target="_black">http://www.pcre.org/</A>&nbsp;&nbsp;官方下载地址，该地址一般是下载最新的版本，截止目前，官方最新版本为pcre-1.2.8 
+</P>
+<H4>apache httpd下载地址</H4>
+<P style="text-indent: 0.8cm;"><A href="http://httpd.apache.org/download.cgi" 
+target="_black">http://httpd.apache.org/download.cgi</A>&nbsp;&nbsp;官方下载地址，该地址一般是下载最新的版本，截止目前，官方最新版本为 
+httpd-2.4.17 </P>
+<H3>安装(按顺序安装)</H3>
+<H4>1.apr安装</H4>
+<PRE class="brush: bash;"># tar -zxvf apr-1.5.2.tar.gz
+# cd apr-1.5.2
+# ./configure --prefix=${HOME}/support/apr
+（注意：如果执行时出现此错误
+configure: error: no acceptable C compiler found in $PATH
+执行：yum -y install gcc
+前提条件：该机器可访问互联网。
+然后再执行：./configure --prefix=${HOME}/support/apr
+）
+# make
+# make install
+</PRE>
+<H4>2.apr-util安装（注意要先安装apr）</H4>
+<PRE class="brush: bash;"># tar -zxvf apr-util-1.5.4.tar.gz
+# cd apr-util-1.5.4
+# ./configure --prefix=${HOME}/support/apr-util --with-apr=${HOME}/support/apr
+# make
+# make install
+</PRE>
+<H4>3.pcre安装（注意：此软件我们这里其实Linux centOS7已经自带，如果有必要，可以卸载后重装）</H4>
+<PRE class="brush: bash;">$ tar -zxvf pcre-8.37.tar.gz
+$ cd pcre-8.37
+$ ./configure --prefix=${HOME}/support/pcre
+（注意：如果执行时出现此错误
+configure: error: You need a C++ compiler for C++ support
+执行：yum install -y gcc gcc-c++
+前提条件：该机器可访问互联网。
+然后再执行：./configure --prefix=${HOME}/support/pcre
+）
+# make
+# make install
+</PRE>
+<H4>4.zlib安装（注意：先卸载centOS7自带的zlib）</H4>
+<PRE class="brush: bash;">$ tar -zxvf zlib-1.2.8.tar.gz
+$ cd zlib-1.2.8
+$  ./configure --prefix=${HOME}/support/zlib
+$ make &amp;&amp; make install
+</PRE>
+<DIV class="section">
+<H3>httpd安装：第一步configure</H3>
+<P>这一步是为你的特定平台和个人需求设置代码树。位于发行版主目录的<CODE>configure</CODE>脚本会完成这个步骤(对下载Apache源代码树的CVS版本的开发者，需要装有<CODE>autoconf</CODE>和<CODE>libtool</CODE>，并执行<CODE>buildconf</CODE>，对于官方发行版则没必要)。</P>
+<P>简单执行<CODE>./configure</CODE>可以用所有的默认值设置代码树，同时<CODE>./configure</CODE>可以接受命令行参数以改变默认值。通常，环境变量要预先设置，其他选项可以跟在<CODE>./configure</CODE>后面。除了许多迎合你的需求的选项，最重要的选项是指示Apache应该被装在哪个目录的目录前缀(prefix)，因为Apache需要这个目录以正常运作。</P>
+<P>为了让你对能指定什么有一个简单的印象，此例演示编译Apache，用了一个特定的编译器及其编译参数，而且允许今后通过DSO机制动态装载两个附加的模块modules 
+mod_rewrite和mod_speling：</P>
+<DIV class="example">
+<P><CODE>$ CC="pgcc" CFLAGS="-O2" \<BR>./configure --prefix=/sw/pkg/apache \<BR>
+--enable-rewrite=shared \<BR>--enable-speling=shared </CODE></P></DIV>
+<P><CODE>configure</CODE>需要运行几分钟，以测试功能是否在你的系统中有效，并建立稍后编译服务器所需要的许多Makefile。</P>
+<P>获得Apache设置参数的最简单方法是执行<CODE>./configure --help</CODE>，其中有对大多数参数和环境变量的简要说明。</P>
+<H4>环境变量</H4>
+<P><CODE>autoconf</CODE>编译进程用了几个环境变量来设置编译环境。通常，这些变量只是改变如何编译Apache，而不是改变服务器最终的功能。可以在执行<CODE>configure</CODE>之前预先设置这些变量，而更简单的方法是象上面例子那样，直接在<CODE>configure</CODE>的命令行中指定。</P>
+<DL>
+  <DT><CODE>CC=...</CODE></DT>
+  <DD>C编译器的名称</DD>
+  <DT><CODE>CPPFLAGS=...</CODE></DT>
+  <DD>各种C预处理和编译器参数</DD>
+  <DT><CODE>CFLAGS=...</CODE></DT>
+  <DD>C编译器的调试和优化参数</DD>
+  <DT><CODE>LDFLAGS=...</CODE></DT>
+  <DD>各种连接器参数</DD>
+  <DT><CODE>LIBS=...</CODE></DT>
+  <DD>连接器的库位置信息("-L" and "-l"参数)</DD>
+  <DT><CODE>INCLUDES=...</CODE></DT>
+  <DD>头文件的搜索目录("-I<EM>dir</EM>").</DD>
+  <DT><CODE>TARGET=...</CODE> [Default: apache]</DT>
+  <DD>目标执行文件名</DD>
+  <DT><CODE>NOTEST_CPPFLAGS=...</CODE></DT>
+  <DT><CODE>NOTEST_CFLAGS=...</CODE></DT>
+  <DT><CODE>NOTEST_LDFLAGS=...</CODE></DT>
+  <DT><CODE>NOTEST_LIBS=...</CODE></DT>
+  <DD>这些参数与不带<CODE>NOTEST</CODE>的同名参数功能相同，但是，它们仅在autoconf执行功能测试以后才起作用，如此就允许包含以后编译时必须的而在功能测试时会出错的参数。</DD>
+  <DT><CODE>SHLIB_PATH=...</CODE></DT>
+  <DD>编译器和连接器共享的库路径</DD></DL>
+<H4>autoconf的输出参数</H4>
+<DL>
+  <DT><CODE>--help</CODE></DT>
+  <DD>显示所有有效参数的用法，而并不实施任何设置</DD>
+  <DT><CODE>--quiet</CODE></DT>
+  <DD>阻止一般的"checking..."信息的出现</DD>
+  <DT><CODE>--verbose</CODE></DT>
+  <DD>在设置过程中详细显示包括被检测文件名的信息</DD></DL>
+<H4>路径名</H4>
+<P>目前有两种方法设置Apache安装其文件的路径名。首先，可以指定一个目录来安装Apache本身。</P>
+<DL>
+  <DT><CODE>--prefix=<EM>PREFIX</EM></CODE> [Default:  /usr/local/apache2]</DT>
+  <DD>使Apache的文件装在这个目录下</DD></DL>
+<P>还可以把内定结构的文件装在其他目录。</P>
+<DL>
+  <DT><CODE>--exec-prefix=<EM>EPREFIX</EM></CODE> [Default:   
+  <EM>PREFIX</EM>]</DT>
+  <DD>指定安装内定结构文件的目录。</DD></DL>
+<P>其次，使用<CODE>config.layout</CODE>文件可以对各种类型的文件指定安装目录，从而更灵活地安装Apache。<CODE>config.layout</CODE>文件包含了几个设置例子，你可以参照这些例子按你的需要进行设置，其中不同类型的布局用被分入各个组，如命名为<CODE>FOO</CODE>的<CODE>&lt;Layout 
+FOO&gt;...&lt;/Layout&gt;</CODE>。</P>
+<DL>
+  <DT><CODE>--enable-layout=<EM>LAYOUT</EM></CODE></DT>
+  <DD>用已命名的<CODE>config.layout</CODE>布局文件来指定安装目录。</DD></DL>
+<H4>模块</H4>
+<P>Apache是模块化的服务器，核心服务器种只包含了功能最常用的模块，而扩展功能由其他模块提供。设置过程中，你必须指定需要包含的模块。文档中有<A 
+href="http://itlab.idcquan.com/linux/manual/ApacheManual/mod/index.html">模块清单</A>备查，其中<A 
+href="http://itlab.idcquan.com/linux/manual/ApacheManual/mod/module-dict.html#Status">状态</A>为"Base"的模块会被默认地包含进核心服务器，如果你不需要包含某个模块(比如<CODE 
+class="module"><A href="http://itlab.idcquan.com/linux/manual/ApacheManual/mod/mod_userdir.html">mod_userdir</A></CODE>)，则必须明确地禁用它；其他状态的模块(比如<CODE 
+class="module"><A href="http://itlab.idcquan.com/linux/manual/ApacheManual/mod/mod_expires.html">mod_expires</A></CODE>)，也必须明确启用以使之包含进核心服务器。</P>
+<P>Apache有两种使用模块的方法，其一是永久性包含进核心；如果操作系统支持动态共享对象(DSO)，而且能为<CODE>autoconf</CODE>所检测，则模块还可以被<EM>动态编译</EM>。DSO模块的存储是独立与核心的，可以被核心使用由<CODE 
+class="module"><A href="http://itlab.idcquan.com/linux/manual/ApacheManual/mod/mod_so.html">mod_so</A></CODE>模块提供的运行时刻配置指令包含或排除。如果编译中包含有任何动态模块，则mod_so模块会被自动包含进核心。如果希望核心能够装载DSO，而不实际编译任何动态模块，需要明确指定<CODE>--enable-so</CODE>。</P>
+<DL>
+  <DT><CODE>--enable-<EM>MODULE</EM>[=shared]</CODE></DT>
+  <DD>编译并包含模块<EM>MODULE</EM>。<EM>MODULE</EM>是文档中去掉"_module"的模块名。要将一个模块编译成DSO，需要加<CODE>=shared</CODE>选项。</DD>
+  <DT><CODE>--disable-<EM>MODULE</EM></CODE></DT>
+  <DD>排除可能被编译并包含的模块<EM>MODULE</EM>。</DD>
+  <DT><CODE>--enable-modules=<EM>MODULE-LIST</EM></CODE></DT>
+  <DD>编译并包含用空格分隔的<EM>MODULE-LIST</EM>。</DD>
+  <DT><CODE>--enable-mods-shared=<EM>MODULE-LIST</EM></CODE></DT>
+  <DD>编译并包含用空格分隔的<EM>MODULE-LIST</EM>成DSO。</DD></DL>
+<P><CODE>--enable-modules</CODE>和<CODE>--enable-mods-shared</CODE>中的<EM>MODULE-LIST</EM>选项通常是一个用空格分隔的模块列表，例如编译并包含enable 
+mod_dav and mod_info，可以</P>
+<DIV class="example">
+<P><CODE>./configure --enable-dav --enable-info</CODE></P></DIV>
+<P>或者，等效地写成：</P>
+<DIV class="example">
+<P><CODE>./configure --enable-modules="dav info"</CODE></P></DIV>
+<P>另外，可以用关键字<CODE>all</CODE>或<CODE>most</CODE>一次性包含“所有的”或者“大多数”模块，然后再用<CODE>--disable-<EM>MODULE</EM></CODE>来排除你不需要的模块。例如，包含所有的模块为DSO，而排除mod_info，可以</P>
+<DIV class="example">
+<P><CODE>./configure --enable-mods-shared=all --disable-info </CODE></P></DIV>
+<P>除了标准模块组，Apache 2.0还提供了一个选择，就是<A href="http://itlab.idcquan.com/linux/manual/ApacheManual/mpm.html">多道处理模块(Multi-Processing 
+Modules)</A>(MPMs)。编译过程中必须包含一个且只有一个MPM，<A href="http://itlab.idcquan.com/linux/manual/ApacheManual/mpm.html">MPM 
+documentation page</A>有对应各种平台的默认MPM，但是也可以在<CODE>configure</CODE>命令行中改变。</P>
+<DL>
+  <DT><CODE>--with-mpm=<EM>NAME</EM></CODE></DT>
+  <DD>选择叫<EM>NAME</EM>的MPM.</DD></DL>
+<H4>DBM</H4>
+<P>Apache的某些功能，如<CODE class="module"><A href="http://itlab.idcquan.com/linux/manual/ApacheManual/mod/mod_auth_dbm.html">mod_auth_dbm</A></CODE>和 
+<CODE class="module"><A href="http://itlab.idcquan.com/linux/manual/ApacheManual/mod/mod_rewrite.html">mod_rewrite</A></CODE>中的DBM 
+<CODE class="directive"><A href="http://itlab.idcquan.com/linux/manual/ApacheManual/mod/mod_rewrite.html#rewritemap">RewriteMap</A></CODE>使用简单的 
+键/值 
+数据库来实现信息快速检索。Apache内置了支持SDBM的源代码，所以数据库总是被支持的。如果要使用其他数据库类型，可以使用的<CODE>configure</CODE>选项有：</P>
+<DL>
+  <DT><CODE>--with-gdbm[=<EM>path</EM>]</CODE></DT>
+  <DT><CODE>--with-ndbm[=<EM>path</EM>]</CODE></DT>
+  <DT><CODE>--with-berkeley-db[=<EM>path</EM>]</CODE></DT>
+  <DD>如果没有指定<EM>path</EM>，Apache会在常规搜索路径中寻找头文件和库；明确地指定<EM>path</EM>会引导Apache到<EM>path</EM><CODE>/lib</CODE>和<EM>path</EM><CODE>/include</CODE>中寻找这些文件，另外，<EM>path</EM>可以指定特定的头文件和库的路径，并用冒号隔开。</DD></DL>
+<H4>Suexec</H4>
+<P>Apache包含了一个叫<A href="http://itlab.idcquan.com/linux/manual/ApacheManual/suexec.html">suexec</A>的支持程序，可以隔离用户的CGI程序。但是，如果suexec没有被正确配置，会引发严重的安全问题，使用这个功能以前，应该仔细阅读和斟酌<A 
+href="http://itlab.idcquan.com/linux/manual/ApacheManual/suexec.html">suexec 
+documentation</A>。</P></DIV>
+<H3>安装apache httpd示例</H3>
+<PRE class="brush: bash;">./configure \
+--prefix=${HOME}/support/apache2 \
+--sysconfdir=${HOME}/support/apache2/conf \
+--with-z=${HOME}/support/zlib \
+--with-apr=${HOME}/support/apr \
+--with-apr-util=${HOME}/support/apr-util/ \
+--with-pcre=${HOME}/support/pcre \
+--disable-userdir \
+--enable-so \
+--enable-deflate=shared \
+--enable-expires=shared \
+--enable-rewrite=shared \
+--enable-static-support
+
+make &amp;&amp; make install
+
+#----------------------------------------------------------------------------------------------------------------
+# ./configure \                                 //执行当前目录下软件自带的配置命令
+# --prefix=${HOME}/support/apache2 \            //指定Apache软件安装的位置
+# --sysconfdir=${HOME}/support/apache2/conf \   //指定Apache服务器的配置文件存放位置，不写时默认就是该路径
+# --with-z=${HOME}/support/zlib \               //指定zlib库文件的位置
+# --with-apr=${HOME}/support/apr \              //指定apr的安装位置
+# --with-apr-util=${HOME}/support/apr-util/ \   //指定apr-util的安装位置
+# --with-pcre=${HOME}/support/pcre \            //指定pcre的安装位置
+# --disable-userdir \                           //请求的映像到用户特定目录
+# --enable-so \                      	      //以动态共享对象（DSO）编译
+# --enable-deflate=shared \                     //缩小传输编码的支持
+# --enable-expires=shared \                     //期满头控制
+# --enable-rewrite=shared \		      //基于规则的url控制
+# --enable-static-support                       //建立一个静态链接版本的支持
+#----------------------------------------------------------------------------------------------------------------
+
+#其他参数
+--prefix：#安装路径
+--sysconfdir：#指定配置文件路径
+--enable-so：#DSO兼容，DSO=Dynamic Shared Object，动态共享对象，可实现模块动态生效
+--enable-ssl：#支持SSL/TLS，可以实现https访问
+--enable-cgi：#支持CGI脚本（默认对非线程的MPM模式开启）
+--enable-rewrite：#启用Rewrite功能
+--enable-deflate：#支持压缩
+--with-z：#使用指定的zlib库，不指定路径会自动寻找
+--with-pcre：#使用指定的PCRE库，不指定路径会自动寻找
+--with-apr：#指定apr安装路径
+--with-apr-util：#指定apr-util安装路径
+--enable-modules：#支持动态启用的模块，可选参数有“all”，“most”，“few”，“reallyall”
+--enable-mpms-shared：#支持动态加载的MPM模块，可选“all”
+--with-mpm：#设置默认启用的MPM模式
+
+</PRE>
+<P style="text-indent: 0.8cm;">
+安装成功后，会在${HOME}/support/目录学看到apache2目录，接下来就可启动httpd服务。但在启动之前，我们先来看看httpd的目录结构及配置 
+</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

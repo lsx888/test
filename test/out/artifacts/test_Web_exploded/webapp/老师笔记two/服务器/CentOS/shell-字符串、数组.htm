@@ -1,0 +1,176 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0078)http://172.13.19.31:6060/note_html/服务器/CentOS/11007-shell-字符串、数组.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>shell-字符串、数组</TITLE> <LINK href="shell-字符串、数组_files/standalone.css" rel="stylesheet"> 
+<LINK href="shell-字符串、数组_files/overlay-apple.css" rel="stylesheet"> <LINK href="shell-字符串、数组_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="shell-字符串、数组_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="shell-字符串、数组_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">shell-字符串、数组</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-09-03 17:43:35</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>字符串</H3>
+<PRE class="brush: bash;">     单引号
+
+    str='this is a string'
+
+单引号字符串的限制：
+
+    单引号里的任何字符都会原样输出，单引号字符串中的变量是无效的；
+    单引号字串中不能出现单引号（对单引号使用转义符后也不行）。
+
+双引号
+
+    your_name='qinjx'
+    str="Hello, I know your are \"$your_name\"! \n"
+
+双引号的优点：
+
+    双引号里可以有变量
+    双引号里可以出现转义字符
+
+拼接字符串
+
+    your_name="qinjx"
+    greeting="hello, "$your_name" !"
+    greeting_1="hello, ${your_name} !"
+    echo $greeting $greeting_1
+
+获取字符串长度
+
+    string="abcd"
+    echo ${#string} #输出 4
+
+提取子字符串
+
+    string="alibaba is a great company"
+    echo ${string:1:4} #输出liba
+
+查找子字符串
+
+    string="alibaba is a great company"
+    echo `expr index "$string" is`
+</PRE>
+<H3>数组</H3>
+<P 
+style="text-indent: 0.8cm;">bash支持一维数组（不支持多维数组），并且没有限定数组的大小。类似与C语言，数组元素的下标由0开始编号。获取数组中的元素要利用下标，下标可以是整数或算术表达式，其值应大于或等于0。 
+ </P>
+<H4>定义数组</H4>
+<PRE class="brush: bash;">在Shell中，用括号来表示数组，数组元素用“空格”符号分割开。定义数组的一般形式为：
+    array_name=(value1 ... valuen)
+例如：
+
+    array_name=(value0 value1 value2 value3)
+
+或者
+
+    array_name=(
+    value0
+    value1
+    value2
+    value3
+    )
+
+
+还可以单独定义数组的各个分量：
+
+    array_name[0]=value0
+    array_name[1]=value1
+    array_name[2]=value2
+
+可以不使用连续的下标，而且下标的范围没有限制。 
+</PRE>
+<H4>读取数组</H4>
+<PRE class="brush: bash;">读取数组元素值的一般格式是：
+    ${array_name[index]}
+例如：
+
+    valuen=${array_name[2]}
+
+举个例子：
+
+    #!/bin/sh
+    NAME[0]="Zara"
+    NAME[1]="Qadir"
+    NAME[2]="Mahnaz"
+    NAME[3]="Ayan"
+    NAME[4]="Daisy"
+    echo "First Index: ${NAME[0]}"
+    echo "Second Index: ${NAME[1]}"
+
+运行脚本，输出：
+
+$./test.sh
+First Index: Zara
+Second Index: Qadir
+
+使用@ 或 * 可以获取数组中的所有元素，例如：
+
+    ${array_name[*]}
+    ${array_name[@]}
+
+举个例子：
+
+    #!/bin/sh
+    NAME[0]="Zara"
+    NAME[1]="Qadir"
+    NAME[2]="Mahnaz"
+    NAME[3]="Ayan"
+    NAME[4]="Daisy"
+    echo "First Method: ${NAME[*]}"
+    echo "Second Method: ${NAME[@]}"
+
+运行脚本，输出：
+
+$./test.sh
+First Method: Zara Qadir Mahnaz Ayan Daisy
+Second Method: Zara Qadir Mahnaz Ayan Daisy
+</PRE>
+<H4>获取数组的长度</H4>
+<PRE class="brush: bash;">获取数组长度的方法与获取字符串长度的方法相同，例如：
+
+    # 取得数组元素的个数
+    length=${#array_name[@]}
+    # 或者
+    length=${#array_name[*]}
+    # 取得数组单个元素的长度
+    lengthn=${#array_name[n]}
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

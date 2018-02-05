@@ -1,0 +1,331 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0102)http://172.13.19.31:6060/note_html/数据库/Oracle/105009-Oracle-视图、序列、索引、同义词、数据字典.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>Oracle-视图、序列、索引、同义词、数据字典</TITLE> <LINK href="Oracle-视图、序列、索引、同义词、数据字典_files/standalone.css" 
+rel="stylesheet"> <LINK href="Oracle-视图、序列、索引、同义词、数据字典_files/overlay-apple.css" 
+rel="stylesheet"> <LINK href="Oracle-视图、序列、索引、同义词、数据字典_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="Oracle-视图、序列、索引、同义词、数据字典_files/shCoreEclipse.css" 
+rel="stylesheet">	 <LINK href="Oracle-视图、序列、索引、同义词、数据字典_files/my-highlighter.css" 
+rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">Oracle-视图、序列、索引、同义词、数据字典</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-06-14 12:08:49</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>视图</H3>
+<PRE class="brush: sql;">-------------视图
+--创建视图(用system用户先给scott用户授权 grant create view to scott)
+create view view_deptno_10 as select * from emp where deptno = 10;
+
+--当前用户的系统权限
+select * from USER_SYS_PRIVS;
+--当前用户的角色
+select * from USER_role_PRIVS;
+--每个角色包含哪些权限
+select * from role_sys_privs;
+
+
+select * from view_deptno_10;
+
+--对原表的修改会体现在视图中
+update emp set deptno = 20 where empno=7782;
+commit;
+
+--简单的视图(单表)是可以修改数据的---但是不建议使用视图修改数据
+--对视图的修改也会体现到原表中
+update view_deptno_10 set deptno = 20 where empno=7782;
+commit;
+
+update emp set deptno = 10 where empno=7782;
+commit;
+
+--创建一个视图，包括部门编号、部门名称、部门所有员工的平均工资、最大、最少工资
+
+select d.deptno,d.dname,round(avg(nvl(p.sal,0)+nvl(p.comm,0)),2),max(nvl(p.sal,0)+nvl(p.comm,0)),min(nvl(p.sal,0)+nvl(p.comm,0))
+from emp p,dept d where p.deptno(+) = d.deptno group by d.deptno,d.dname;
+
+
+create or replace view view_count(deptno,dname,avg_sal,max_sal,min_sal) as select d.deptno,d.dname,round(avg(nvl(p.sal,0)+nvl(p.comm,0)),2),max(nvl(p.sal,0)+nvl(p.comm,0)),min(nvl(p.sal,0)+nvl(p.comm,0))
+from emp p,dept d where p.deptno(+) = d.deptno group by d.deptno,d.dname with read only;
+
+--查询视图中哪些列是可以被修改的
+select * from user_updatable_columns where table_name = 'VIEW_DEPTNO_10';
+
+select * from view_count;
+select * from dept;--ACCOUNTING
+
+--参考Oracle教程PPT的less11_视图(视图定义中包含组函数或group by等内容的视图不可使用DML语句)
+update view_count set avg_sal = 1000 where deptno=10;
+
+--用with read only子句屏蔽掉DML语句
+create or replace view view_deptno_10 as select * from emp where deptno = 10 with read only;
+update view_deptno_10 set deptno = 20 where empno=7782;
+commit;
+
+
+---删除视图
+drop view view_deptno_10;
+drop view view_count;
+</PRE>
+<H3>序列</H3>
+<PRE class="brush: sql;">------------------------序列
+/*
+     CREATE SEQUENCE sequence
+       [INCREMENT BY n] --间隔(一定非0的数)
+       [START WITH n] --初始值
+       [{MAXVALUE n | NOMAXVALUE}] -- 最大值
+       [{MINVALUE n | NOMINVALUE}] -- 最小值
+       [{CYCLE | NOCYCLE}] -- 是否循环
+       [{CACHE n | NOCACHE}]; --是否缓存
+*/
+--定义序列
+create sequence seq_test increment by 1 start with 1 maxvalue 999999 minvalue 1 nocycle cache 5;
+
+select seq_test.nextval from dual;
+select seq_test.currval from dual;
+
+--修改序列(但是：不能修改初始的值)
+alter sequence seq_test increment by 7 /*start with 1*/ maxvalue 999999 minvalue 1 nocycle cache 5;
+
+---修改后，只有将来的序列值会被改变
+select seq_test.nextval from dual;
+select seq_test.currval from dual;
+
+--要改变序列的初始值，只能先删除序列再创建
+
+--删除序列
+drop sequence seq_test;
+
+----序列应用
+select * from tab_teacher;
+---为tab_teacher创建一个序列
+create sequence seq_tab_teacher increment by -1 start with 99999 maxvalue 99999 minvalue 1 nocycle cache 5;
+
+--通过序列自减添加主键
+
+insert into tab_teacher(id,name,age,course) values(seq_tab_teacher.nextval,'李建',22,'语文');
+insert into tab_teacher(id,name,age,course) values(seq_tab_teacher.nextval,'李建1',22,'语文1');
+insert into tab_teacher(id,name,age,course) values(seq_tab_teacher.nextval,'李建2',22,'语文2');
+insert into tab_teacher(id,name,age,course) values(seq_tab_teacher.nextval,'李建3',22,'语文3');
+insert into tab_teacher(id,name,age,course) values(seq_tab_teacher.nextval,'李建4',22,'语文4');
+commit;
+
+/*
+序列在下列情况下出现裂缝：
+       回滚
+       系统异常
+       多个表同时使用同一序列
+*/
+insert into tab_teacher(id,name,age,course) values(seq_tab_teacher.nextval,'李建5',22,'语文5');
+rollback;
+
+select seq_tab_teacher.currval from dual;
+select seq_test.currval from dual;
+
+---USER_SEQUENCES获取序列定义信息，如果指定NOCACHE 选项，则列LAST_NUMBER 显示序列中下一个有效的值
+select * from user_sequences;
+</PRE>
+<H3>索引</H3>
+<PRE class="brush: sql;">---------索引
+
+---索引的类型主要有：唯一索引、组全索引、反向键索引、位图索引等。
+
+create sequence seq_tab_student increment by 1 start with 5  maxvalue 999999 minvalue 1 nocycle;
+
+drop sequence seq_tab_student;
+
+BEGIN 
+  FOR l_temp IN 1..100000 LOOP 
+    INSERT INTO tab_student VALUES(seq_tab_student.nextval,'abcde',1,20); 
+ END LOOP; 
+END; 
+
+commit;
+
+--创建索引前
+select * from tab_student where id = '李建';--0.438秒
+
+
+---为name这个字段创建索引
+--创建标准索引(普通索引)
+create index  index_tab_student_name on tab_student(name);
+---普通索引
+select * from tab_student where name = '李建';---0.718秒
+--删除索引
+drop index index_tab_student_name;
+
+---创建唯一性索引
+create unique index index_tab_student_name on tab_student(name);
+--唯一性索引
+select * from tab_student where name = '李建';---0.38秒
+
+
+--创建组合索引
+/*
+       如果在job 和deptno 列上创建了组合索引，但并不
+       是只要在查询条件中有列的信息就使用索引，而是有先后顺序的。在创建索引时的顺序应该
+       是最频繁访问的列放置在列表的最前面。
+*/
+create index  index_tab_student_name on tab_student(name,age);
+
+
+--创建反向键索引
+create index index_tab_student_name on tab_student(name) reverse;
+---修改反向键索引为标准索引
+alter index index_tab_student_name rebuild noreverse;
+
+---前面使用的索引都是创建在高基数列上，也就是在此列上重复值较少。对低基数列上可以创建位图索引，来提高查询效率
+create bitmap index_tab_student_name on tab_student(name);
+
+
+--删除索引
+drop index index_tab_student_name;
+
+
+--创建位图索引
+CREATE BITMAP INDEX bit_index ON emp(job);
+
+
+/*
+     索引表(索引组织表)：
+           前面建立的各种索引都是与表关联的可选结构，查询时先在索引中查找，然后根据 
+          ROWID到表中取数据。每次查询都要重复这样的操作。如果表不是太大，并且主要以查询操
+          作为主时，能不能考虑将表的数据也存储在索引中，从而提高性能。Oracle 提出了索引组织
+          表的概念。数据存储在索引中原来存放ROWID的位置。
+          
+          
+          
+      创建语法：
+          CREATE TABLE ind_org_table 
+        (id number(5) primary key, 
+        Name varchar2(10) 
+        ) ORGANIZATION INDEX; 
+
+*/
+</PRE>
+<H3>同义词</H3>
+<PRE class="brush: sql;">---以system身份登录，创建一个用户test
+create user test identified by asdf;
+grant connect,resource to test;
+
+---登录scott用户，为test用户授权可查询emp表
+grant select on emp to test with grant option;
+
+---登录test用户，查询emp表
+select * from scott.emp;
+---用户test只能查询emp表
+select * from scott.dept;
+
+
+------------同义词
+--以system用户身份登录，给test用户授权 创建同义词的权限
+grant create synonym to test;
+
+--以test用户身份登录，创建同义词
+create synonym test_dept for scott.dept; 
+
+--在test用户身份下，查询test_dept
+select * from test_dept;
+---表或视图不存在,因为scott用户没给test用户授权查找或修改dept表的权限
+---登录scott用户，为test用户授权可查询dept表
+grant select on dept to test with grant option;
+
+--删除同义词
+drop synonym test_dept;
+
+-----以上叫做私有同义词，表示该同义词只能在创建它的用户中使用
+
+
+-----公有同义词(公有同义词比私有同义词多一个关键字public)
+--只有拥有创建公有同义词权限的人可以创建
+--登录system用户，创建公有同义词
+create public synonym test_dept for scott.dept;
+
+---登录scott用户，为test用户授权可查询dept表
+--上面已经授权：grant select on dept to test with grant option;
+
+--登录test用户，查询同义词
+select * from test_dept;
+--登录scott用户，查询同义词
+select * from test_dept;
+</PRE>
+<H3>数据字典</H3>
+<PRE class="brush: sql;">--查询数据字典视图 USER_CONSTRAINTS(约束)
+select * from USER_CONSTRAINTS;
+select * from USER_CONSTRAINTS where table_name = 'TAB_STUDENT';
+
+
+ /*可以通过下列数据字典视图查看所添加的注释:
+            ALL_COL_COMMENTS
+            USER_COL_COMMENTS
+            ALL_TAB_COMMENTS
+            USER_TAB_COMMENTS
+ */
+            
+  --查看当前用户定义的表
+  select * from user_tables;
+
+  --查看用户定义的各种数据库对象
+  SELECT  * FROM user_objects ;
+
+  --查看用户定义的表, 视图, 同义词和序列
+  SELECT	* FROM  user_catalog; 
+
+
+
+/*
+关于系统权限的几个数据字典：
+USER_SYS_PRIVS：当前用户具有的系统权限段ADM表示是否允许将权限在赋予其他用户，是否指定了WITH ADMIN OPTION
+USER_role_PRIVS：当前用户被授予的角色（权限的集合） 、
+role_sys_privs：每个角色包含什么权限 。
+*/
+
+
+--user_updatable_columns：查询视图中哪些列是可以被修改的
+select * from user_updatable_columns;
+
+
+---USER_SEQUENCES获取序列定义信息，如果指定NOCACHE 选项，则列LAST_NUMBER 显示序列中下一个有效的值
+select * from user_sequences;
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

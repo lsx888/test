@@ -1,0 +1,95 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0059)http://172.13.19.31:6060/note_html/web/http/1-HTTP简介.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>1-HTTP简介</TITLE> <LINK href="1-HTTP简介_files/standalone.css" rel="stylesheet"> 
+<LINK href="1-HTTP简介_files/overlay-apple.css" rel="stylesheet"> <LINK href="1-HTTP简介_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="1-HTTP简介_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="1-HTTP简介_files/my-highlighter.css" rel="stylesheet">     
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+	 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+		
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+	 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+	 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+		
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">1-HTTP简介</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-03-25 17:50:33</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>http简介</H3>
+<P style="text-indent: 0.8cm;">HTTP是Hyper Text Transfer 
+Protocol（超文本传输协议）的缩写。它的发展是万维网协会（World Wide Web 
+Consortium）和Internet工作小组IETF（Internet Engineering Task 
+Force）合作的结果，（他们）最终发布了一系列的RFC，RFC 1945定义了HTTP/1.0版本。其中最著名的就是RFC 2616。RFC 
+2616定义了今天普遍使用的一个版本——HTTP 1.1。 </P>
+<P style="text-indent: 0.8cm;">HTTP协议（HyperText Transfer 
+Protocol，超文本传输协议）是用于从WWW服务器传输超文本到本地浏览器的传送协议。它可以使浏览器更加高效，使网络传输减少。它不仅保证计算机正确快速地传输超文本文档，还确定传输文档中的哪一部分，以及哪部分内容首先显示(如文本先于图形)等。</P>
+<H3>技术架构</H3>
+<P 
+style="text-indent: 0.8cm;">HTTP协议通常承载于TCP协议之上，有时也承载于TLS或SSL协议层之上，这个时候，就成了我们常说的HTTPS。<SPAN 
+style="background-color: rgb(255, 255, 153);">默认HTTP的端口号为80，HTTPS的端口号为443。 
+</SPAN></P>
+<DIV class="fileImgDiv">
+<DIV id="apple"><IMG class="fileImg" alt="图片不存在" src="1-HTTP简介_files/20150324-01.jpg" 
+rel="#20150324-01"> <FONT>http协议层</FONT> </DIV>
+<DIV class="apple_overlay" id="20150324-01"><IMG alt="图片不存在" src="1-HTTP简介_files/20150324-01.jpg"> 
+</DIV></DIV>
+<H3>版本历史</H3>
+<DIV>
+<UL>
+  <LI>0.9　已过时。只接受 GET 一种请求方法，没有在通讯中指定版本号，且不支持请求头。由于该版本不支持 POST 
+  方法，所以客户端无法向服务器传递太多信息。</LI>
+  <LI>HTTP/1.0　这是第一个在通讯中指定版本号的HTTP 协议版本，至今仍被广泛采用，特别是在代理服务器中。</LI>
+  <LI>HTTP/1.1　当前版本。持久连接被默认采用，并能很好地配合代理服务器工作。还支持以管道方式同时发送多个请求，以便降低线路负载，提高传输速度。</LI>
+  <LI>HTTP/2.0 开发中</LI></UL></DIV>
+<H3>HTTP/1.1相较于 HTTP/1.0 协议的主要区别</H3>
+<DIV>
+<UL>
+  <LI>HTTP 
+  1.0规定浏览器与服务器只保持短暂的连接，浏览器的每次请求都需要与服务器建立一个TCP连接，服务器完成请求处理后立即断开TCP连接，服务器不跟踪每个客户也不记录过去的请求。HTTP 
+  1.1支持持久连接，在一个TCP连接上可以传送多个HTTP请求和响应，减少了建立和关闭连接的消耗和延迟。 </LI>
+  <LI>HTTP 
+  1.1还允许客户端不用等待上一次请求结果返回，就可以发出下一次请求，但服务器端必须按照接收到客户端请求的先后顺序依次回送响应结果，以保证客户端能够区分出每次请求的响应内容，这样也显著地减少了整个下载过程所需要的时间。</LI>
+  <LI>HTTP 1.0不支持Host请求头字段。HTTP 
+  1.1中增加Host请求头字段后，WEB浏览器可以使用主机头名来明确表示要访问服务器上的哪个WEB站点，这才实现了在一台WEB服务器上可以在同一个IP地址和端口号上使用不同的主机名来创建多个虚拟WEB站点。</LI>
+  <LI>HTTP 1.1还提供了与身份认证、状态管理和Cache缓存等机制相关的请求头和响应头</LI></UL></DIV>
+<H3>运作方式</H3>
+<P style="text-indent: 0.8cm;">
+在WWW中，“客户”与“服务器”是一个相对的概念，只存在于一个特定的连接期间，即在某个连接中的客户在另一个连接中可能作为服务器。基于HTTP协议的客户/服务器模式的信息交换过程，它分四个过程：建立连接、发送请求信息、发送响应信息、关闭连接。 
+</P>
+<OL>
+  <LI>建立连接。由HTTP客户端发起一个请求，建立一个到服务器指定端口（默认是80端口）的TCP连接。HTTP服务器则在那个端口监听客户端发送过来的请求。一旦收到请求，服务器（向客户端）发回一个状态行，比如"HTTP/1.1 
+  200 
+  OK"，和（响应的）消息，消息的消息体可能是请求的文件、错误消息、或者其它一些信息。HTTP使用TCP而不是UDP的原因在于（打开）一个网页必须传送很多数据，而TCP协议提供传输控制，按顺序组织数据，和错误纠正。</LI>
+  <LI>发送请求信息。一个客户机与服务器建立连接后，发送一个请求给服务器，请求方式的格式为，统一资源标识符、协议版本号，后边是MIME信息包括请求修饰符、客户机信息和可能的内容。</LI>
+  <LI>发送响应信息。服务器接到请求后，给予相应的响应信息，其格式为一个状态行包括信息的协议版本号、一个成功或错误的代码，后边是MIME信息包括服务器信息、实体信息和可能的内容。</LI>
+  <LI>关闭连接。</LI></OL>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 2013 ~ 2030 作者：zzy</DIV><!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

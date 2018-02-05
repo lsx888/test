@@ -1,0 +1,163 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0082)http://172.13.19.31:6060/note_html/Java/JavaSE/1012010-JavaSE-异常(Exception).html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>JavaSE-异常(Exception)</TITLE> <LINK href="JavaSE-异常(Exception)_files/standalone.css" 
+rel="stylesheet"> <LINK href="JavaSE-异常(Exception)_files/overlay-apple.css" rel="stylesheet"> 
+<LINK href="JavaSE-异常(Exception)_files/article_edit.css" rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="JavaSE-异常(Exception)_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="JavaSE-异常(Exception)_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">JavaSE-异常(Exception)</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-06-03 16:17:14</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV id="content_div_1">
+<H3>异常处理机制</H3>
+<OL>
+  <LI>一旦产生异常，则首先会产生一个异常类的实例化对象。</LI>
+  <LI>在try语句中放可能产生异常的代码，并对产生的异常进行捕捉。try块中一旦出现异常，try块中出现异常的代码之后的代码都不执行，直接执行出抓取该异常的catch块</LI>
+  <LI>产生的异常对象与catch语句中的各个异常类进行匹配，如果匹配成功，则执行catch语句中的代码。</LI>
+  <LI>无论是否产生异常，finally语句都会执行。</LI></OL></DIV>
+<HR>
+
+<DIV id="content_div_2">
+<H3>异常的继承结构</H3>
+<H4>异常的结构图</H4>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" src="JavaSE-异常(Exception)_files/20160602-01.jpg"></DIV></DIV>
+<H4 
+style="text-indent: 0.8cm;">Java的异常结构中有两个最常用的类，Exception和Error，它们都是Throwable的子类。</H4>
+<UL>
+  <LI>Exception：一般表示的是程序中出现的问题，可以直接使用try{}catch(){}处理。</LI>
+  <LI>Error：一般指的是JVM错误，程序中无法处理。</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_3">
+<H3>异常的分类</H3>
+<UL>
+  <LI>可查异常Checked exception(非 Runtime Exception)：在编译时就必须处理。</LI>
+  <LI>不可查异常Unchecked exception (Runtime Exception) 
+：Error、RuntimeException</LI></UL></DIV>
+<HR>
+
+<H3>异常处理的方式</H3>
+<UL>
+  <LI>对于运行时异常(runtime exception)，我们可以不对其进行处理，也可以对其进行处理。</LI>
+  <LI>对应非运行时异常，必须处理。</LI>
+  <LI>异常的处理方式有以下两种： 
+  <UL>
+    <LI>直接捕获处理：使用try ... catch ... finally ... 块对异常进行处理。</LI>
+    <LI>用throws关键字抛出异常：通常在方法上可以直接抛出方法中可能存在的异常，多个异常中间使用逗号隔开。其他方法在调用该方法时，要么直接捕获处理异常，那么再次抛出。当main方法调用这些方法时，如果还是不捕获处理，直接抛出那么这些异常将由JVM处理，JVM在碰到异常后，之后的代码将不再执行。</LI></UL></LI></UL>
+<DIV id="content_div_4">
+<H3>异常注意</H3>
+<UL>
+  <LI>我们可以使用多个catch块来捕获异常，这时需要将父类型的catch块放到子类型的catch块之后，这样才能保证后续的catch可能被执行，否则子类型的catch将永远无法到达，Java 
+  编译器会报编译错误；如果多个catch 块的异常类型是独立的(MyException, MyException2)，那么谁前谁后都是可以的。</LI>
+  <LI>如果try 块中存在return 语句，那么首先也需要将finally 块中的代码执行完毕，然后方法再返回。</LI>
+  <LI>如果try 块中存在System.exit(0)语句，那么就不会执行finally 
+  块中的代码，因为System.exit(0)会终止当前运行的Java虚拟机，程序会在虚拟机终止前结束执行。</LI>
+  <LI>NullPointerException是空指针异常，出现该异常的原因在于某个引用为null，但你却调用了它的某个方法。这时就会出现该异常。</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_5">
+<H3>throw与throws</H3>
+<UL>
+  <LI>throws：在定义一个方法时可以使用throws关键字声明，表示此方法不处理异常，而交给方法的调用处进行处理。格式如下：public 返回值 
+  方法名(参数...)throws 异常类{}。多个异常用逗号隔开。</LI>
+  <LI>throw：直接使用throw关键字人为地声明一个异常，直接声明异常类的实例化对象。throw new 
+  XxxxException("message");我们可以通过throw在catch块中声明一个自定义对象，将RuntimeException转换为该自定义对象，然后抛出该自定义对象，让调用此方法的方法必须处理RuntimeException<BR></LI></UL>
+<P 
+style="color: red; text-indent: 0.8cm;">throws可以层层上报，直到JVM。在main方法中throws异常，则程序出现问题就交由JVM处理，将导致程序中断。throw关键字不能单独使用，要么try..catch..要么throws</P>
+<P style="color: red; text-indent: 0.8cm;">throws可以抛出方法中不可能出现的异常。<BR></P></DIV>
+<HR>
+
+<DIV id="content_div_6">
+<H3>关于重载和重写</H3>
+<UL>
+  <LI>重载：异常跟重载没有联系。</LI>
+  <LI>重写：子类重写父类方法，抛出的异常应是父类异常或父类异常的子类也可以不抛出异常。如果父类没有抛出异常，则子类不能抛出异常。</LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_7">
+<H3>自定义异常</H3>
+<H4 
+style="text-indent: 0.8cm;">需要继承自Exception，仿Exception对象，编写构造方法。构造方法中直接调用父类的对应构造方法。</H4></DIV>
+<HR>
+
+<H3>常见异常</H3>
+<UL>
+  <LI>runtimeException子类   
+  <UL>
+    <LI>java.lang.ArrayIndexOutOfBoundsException    
+    数组索引越界异常。当对数组的索引值为负数或大于等于数组大小时抛出。</LI>
+    <LI>java.lang.ArithmeticException    算术条件异常。譬如：整数除零等。</LI>
+    <LI>java.lang.NullPointerException    
+    空指针异常。当应用试图在要求使用对象的地方使用了null时，抛出该异常。譬如：调用null对象的实例方法、访问null对象的属性、计算null对象的长度、使用throw语句抛出null等等</LI>
+    <LI>java.lang.ClassNotFoundException    
+    找不到类异常。当应用试图根据字符串形式的类名构造类，而在遍历CLASSPAH之后找不到对应名称的class文件时，抛出该异常。</LI>
+    <LI>java.lang.NegativeArraySizeException  数组长度为负异常</LI>
+    <LI>java.lang.ArrayStoreException 数组中包含不兼容的值抛出的异常</LI>
+    <LI>java.lang.SecurityException 安全性异常</LI>
+    <LI>java.lang.IllegalArgumentException 非法参数异常</LI>
+    <LI>java.lang.NumberFormatException 非法参数异常的子类，数字格式化异常</LI>
+    <LI>java.lang.StringIndexOutOfBoundsException 字符串索引超出范围抛出的异常</LI>
+    <LI>java.lang.ClassCastException -- 类型转换异常</LI>
+    <LI>java.util.InputMismatchException -- Scanner输入时类型不对应的异常（输入值类型不匹配异常）</LI>
+    <LI>java.lang.StackOverflowError -- 栈溢出（递归）</LI>
+    <LI>java.lang.UnsupportedOperationException -- 
+    不支持的操作异常（Arrays.asList方法转换后的list对象，无法用addAll添加使用同样方法转换后的list）</LI>
+    <LI>java.util.NoSuchElementException -- 
+    集合迭代器迭代时，如果集合为空，直接调用next方法时报此异常<BR></LI></UL></LI>
+  <LI>IOException   
+  <UL>
+    <LI>IOException：操作输入流和输出流时可能出现的异常。</LI>
+    <LI>EOFException   文件已结束异常</LI>
+    <LI>FileNotFoundException   文件未找到异常</LI></UL></LI>
+  <LI>其他   
+  <UL>
+    <LI>SQLException   操作数据库异常类</LI>
+    <LI>NoSuchFieldException   字段未找到异常</LI>
+    <LI>NoSuchMethodException   方法未找到抛出的异常</LI>
+    <LI>IllegalAccessException  不允许访问某类异常</LI>
+    <LI>InstantiationException  
+    当应用程序试图使用Class类中的newInstance()方法创建一个类的实例，而指定的类对象无法被实例化时，抛出该异常</LI></UL></LI></UL>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

@@ -1,0 +1,261 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0070)http://172.13.19.31:6060/note_html/web/Javascript/1001041-DOM操作.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>DOM操作</TITLE> <LINK href="DOM操作_files/standalone.css" rel="stylesheet"> 
+<LINK href="DOM操作_files/overlay-apple.css" rel="stylesheet"> <LINK href="DOM操作_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="DOM操作_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="DOM操作_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">DOM操作</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-06-29 12:19:00</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>DOM操作方法，参考W3CShool，对象操作手册的document和Element以及Attribute对象</H3>
+<H4>获取DOM对象的方法</H4>
+<PRE class="brush: js;">	//--获取DOM对象的方法，document对象的如下方法获取DOM对象
+//	getElementById() 返回对拥有指定 id 的第一个对象的引用。 
+//	getElementsByName() 返回带有指定名称的对象集合。 
+//	getElementsByTagName() 返回带有指定标签名的对象集合。 
+
+
+//-- js可以直接创建html DOM元素
+	var div = document.createElement("div");//--参数就是元素的名称，返回的是对应名称的DOM对象
+
+//-- 创建之后，该dom对象并没有加入HTML文档流（也就是说页面上不会显示），需要通过appendChild方法添加到指定位置
+	//-- 如下：添加到body元素的子元素
+	document.body.appendChild(div);
+
+</PRE>
+<H3>DOM节点</H3>
+<P style="text-indent: 0.8cm;">在 HTML DOM 中，所有事物都是节点。DOM 是被视为节点树的 
+HTML。我们上面所谓的DOM对象也是节点 </P>
+<UL>
+  <LI>整个文档是一个文档节点</LI>
+  <LI>每个 HTML 元素是元素节点</LI>
+  <LI>HTML 元素内的文本是文本节点</LI>
+  <LI>每个 HTML 属性是属性节点</LI>
+  <LI>注释是注释节点</LI></UL>
+<H4>HTML DOM 节点树</H4>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" src="DOM操作_files/20160629-01.png"></DIV>
+<DIV align="left" style="padding: 5px 0px;"><FONT>DOM 节点树</FONT></DIV></DIV>
+<H4>HTML DOM 节属性</H4>
+<UL>
+  <LI>nodeName 属性：nodeName 属性规定节点的名称。注：nodeName 始终包含 HTML 元素的大写字母标签名。 
+  <UL>
+    <LI>nodeName 是只读的</LI>
+    <LI>元素节点的 nodeName 与标签名相同 </LI>
+    <LI>属性节点的 nodeName 与属性名相同</LI>
+    <LI>文本节点的 nodeName 始终是 #text </LI>
+    <LI>文档节点的 nodeName 始终是 #document </LI></UL></LI>
+  <LI>nodeValue 属性：nodeValue 属性规定节点的值 
+  <UL>
+    <LI>元素节点的 nodeValue 是 undefined 或 null </LI>
+    <LI>本节点的 nodeValue 是文本本身</LI>
+    <LI>属性节点的 nodeValue 是属性值</LI></UL></LI>
+  <LI>nodeType 属性：nodeType 属性返回节点的类型。nodeType 是只读的。 
+  <UL>
+    <LI>元素：1</LI>
+    <LI>属性：2</LI>
+    <LI>文本：3</LI>
+    <LI>注释：8</LI>
+    <LI>文档：9</LI></UL></LI></UL>
+<H3>DOM对象childNodes和children区别</H3>
+<H4>HTML代码</H4>
+<PRE class="brush: xml">&lt;div id="div1" class="div"&gt;
+	&lt;span id="s1" class="sp" lang="zh-cn"&gt; &lt;/span&gt;
+&lt;/div&gt;
+</PRE>
+<PRE class="brush: js;">function test() {
+	 var o = document.getElementById("div1");
+	 var child = o.children;
+	 console.log("div1.children运行结果:");
+	 for(i = 0; i &lt; child.length; i++){
+	   console.log(child[i].tagName);
+	 }
+	  
+	 console.log("");
+	 child = o.childNodes;
+	 console.log("div1.childNodes运行结果:");
+	 for(i = 0; i &lt; child.length; i++){
+	   console.log(child[i].tagName);
+	 }
+	  
+ }
+  
+ test();
+
+/*
+div1.children运行结果:
+SPAN
+ 
+div1.childNodes运行结果:
+undefined
+SPAN
+undefined
+*/
+</PRE>
+<P style="text-indent: 0.8cm;">总结children只包含元素节点，childNodes包含所有节点 </P>
+<H3>示例：DOM实现表单初始化</H3>
+<H4>HTML代码</H4>
+<PRE class="brush: xml;">&lt;!-- 表单：form标签
+			action属性： 表单提交数据到哪个服务器的哪个程序处理
+			method属性：是http协议的方法,只有两个选项，默认get：get方式提交；post：post方式提交
+			enctype：如果表单中有文件上传，该属性必须，而且属性值默认不做修改
+		 --&gt;
+&lt;form action="url" method="get" enctype="application/x-www-form-urlencoded"&gt;
+			
+			&lt;fieldset&gt;&lt;legend&gt;用户信息&lt;/legend&gt;
+					
+					&lt;label&gt;姓名：&lt;/label&gt;
+					&lt;input id="name_id" name="name" type="text" value=""/&gt;
+					&lt;label&gt;性别：&lt;/label&gt;
+					&lt;input type="radio" checked="checked" name="sex" value="1"/&gt;&lt;label&gt;男&lt;/label&gt;
+					&lt;input  type="radio" name="sex" value="2"/&gt;&lt;label&gt;女&lt;/label&gt;
+					
+					&lt;label&gt;爱好：&lt;/label&gt;
+					&lt;input name="fav" type="checkbox" checked="checked" value="1"/&gt;&lt;label&gt;语文&lt;/label&gt;
+					&lt;input name="fav"  type="checkbox" value="2"/&gt;&lt;label&gt;数学&lt;/label&gt;
+					&lt;input name="fav"  type="checkbox" value="3"/&gt;&lt;label&gt;天文&lt;/label&gt;
+					&lt;input name="fav"  type="checkbox" value="4"/&gt;&lt;label&gt;地理&lt;/label&gt;
+					&lt;br/&gt;
+					&lt;label&gt;学历：&lt;/label&gt;
+					&lt;!--  multiple="multiple" 
+						option的selected="selected"属性，表示默认选择，如果多个option有selected属性设置，那么最终选择后面的
+					--&gt;
+					&lt;select id="edu_id" name="edu" style="width: 200px;"&gt;
+						&lt;!-- value属性的值是传送到后台程序的值，option元素中间的值，是浏览器页面显示的值 --&gt;
+						&lt;option value="小学"&gt;小学&lt;/option&gt;
+						&lt;option value="中学"&gt;中学&lt;/option&gt;
+						&lt;option value="高中"&gt;高中&lt;/option&gt;
+						&lt;option value="专科"&gt;专科&lt;/option&gt;
+						&lt;option value="本科"&gt;本科&lt;/option&gt;
+						&lt;option value="硕士" selected="selected"&gt;硕士&lt;/option&gt;
+						&lt;option value="博士"&gt;博士&lt;/option&gt;
+						&lt;option value="星矢"&gt;星矢&lt;/option&gt;
+					&lt;/select&gt;
+					
+					&lt;br/&gt;
+					&lt;label&gt;照片：&lt;/label&gt;&lt;input id="pho_id" name="pho" type="file"/&gt;
+					&lt;br/&gt;
+					&lt;label&gt;自我介绍：&lt;/label&gt;
+					&lt;br/&gt;
+					&lt;textarea rows="5" cols="150" style="resize:none;"&gt;默认值&lt;/textarea&gt;
+					
+			&lt;/fieldset&gt;
+			
+			&lt;fieldset&gt;&lt;legend&gt;账户信息&lt;/legend&gt;
+					&lt;label&gt;账号：&lt;/label&gt;&lt;input name="acct" type="text" value=""/&gt;
+					&lt;label&gt;密码：&lt;/label&gt;&lt;input name="pass" type="password" value=""/&gt;
+					&lt;label&gt;再次输入密码：&lt;/label&gt;&lt;input name="repass" type="password" value=""/&gt;
+			&lt;/fieldset&gt;
+			
+			&lt;!-- 一般情况下，以下两个按钮，都用button元素代替 --&gt;
+			&lt;!-- &lt;input type="submit" value="提交"/&gt;
+			&lt;input type="reset" value="重置"/&gt; --&gt;
+			
+			&lt;button type="submit"&gt;提交&lt;/button&gt;
+			&lt;button type="reset"&gt;重置&lt;/button&gt;
+			&lt;!-- button元素，不仅仅只用在form元素中 --&gt;
+			
+		&lt;/form&gt;
+		
+&lt;!-- label：就是输入框的文本显示  --&gt;
+
+&lt;!-- 
+input元素：根据type属性的不同而不同
+  'text'：文本输入框，text通过value属性设置默认值
+  'radio'：单选框，使用checked="checked"属性可以默认选择
+  'checkbox'：多选框，使用checked="checked"属性可以默认选择
+  'file'：文件上传
+  'password'：密码输入框
+  'submit'：提交表单按钮
+  'reset'：重置表单按钮，点击后，表单数据，恢复到默认值。如果没有默认值，那么恢复到没有值
+ --&gt;
+ 
+ &lt;!-- input元素的name属性：
+ 	name属性是表示传送到后台的客户输出信息的对应的参数的名称
+ 	name属性作用在radio和checkbox的时候，各个选项的name属性必须一致，当其传送到后台程序时，后台获取的checkbox的值是一个数组
+  --&gt;
+ 
+ &lt;!-- textarea：文本域注意和input的text区别，文本域要设置默认值： --&gt;
+ 
+ &lt;!-- 
+表单元素：（input等）都必须有如下几个属性：
+name：表示传入后台程序的参数名称（必须，如果没有，那么 将不会传到后台）
+value：可以为表单设置初始值（可有可无，如果没有，大部分默认为空）
+		select的option和checkbox、radio的value值是必须的，这些值都只在选中后才传到后台，如不设置后台得到的是空字符串
+ --&gt;
+</PRE>
+<H4>js代码</H4>
+<PRE class="brush: js;">//-- js、css、HTML代码都要注意代码执行的先后顺序
+//-- 表单赋值：
+//-- 1. 获取DOM对象并赋值
+document.getElementById("name_id").value = "颜俊";
+
+//--checkbox、radio赋值的时候，不能用value了，是用js代码让其选中
+var sexes = document.getElementsByName("sex");
+for(var i = 0;i  &lt; sexes.length; i++){
+	if(sexes[i].value == 2){
+		sexes[i].setAttribute("checked","checked");
+	}
+}
+
+var favs = document.getElementsByName("fav");
+for(var i = 0;i  &lt; favs.length; i++){
+	if([2,3,4].join(",").indexOf(favs[i].value) != -1){//--判断当前checkbox的值是否在要选择的值当中
+		favs[i].setAttribute("checked","checked");//-- 设置checked表示选中
+	}else{
+		favs[i].removeAttribute("checked");//-- 删除checked属性，表示不选中
+	}
+}
+
+
+//-- 学历下拉框(下拉框可以直接设置)，这个设置和option的选中没有直接关系
+//-- 这里的value是select元素的value
+document.getElementById("edu_id").value = "博士";
+
+//-- input输入框都可以通过value设置，file比较特殊（除外）
+//document.getElementById("pho_id").value = "C:\work\aa.txt";//-- 报错SecurityError: The operation is insecure.不安全
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

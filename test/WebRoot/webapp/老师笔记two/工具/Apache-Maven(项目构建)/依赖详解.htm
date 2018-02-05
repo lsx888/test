@@ -1,0 +1,241 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0086)http://172.13.19.31:6060/note_html/工具/Apache-Maven（项目构建）/1003011-依赖详解.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>依赖详解</TITLE> <LINK href="依赖详解_files/standalone.css" rel="stylesheet"> 
+<LINK href="依赖详解_files/overlay-apple.css" rel="stylesheet"> <LINK href="依赖详解_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="依赖详解_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="依赖详解_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">依赖详解</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-02-22 11:04:52</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>最简单的依赖</H3>
+<PRE class="brush: xml;">&lt;dependency&gt;  
+  &lt;groupId&gt;junit&lt;/groupId&gt;  
+  &lt;artifactId&gt;junit&lt;/artifactId&gt;  
+  &lt;version&gt;4.4&lt;/version&gt;  
+&lt;/dependency&gt; 
+</PRE>
+<P style="text-indent: 0.8cm;">依赖是使用Maven坐标来定位的，而Maven坐标主要由GAV（groupId, 
+artifactId, 
+version）构成。因此，使用任何一个依赖之间，你都需要知道它的Maven坐标。关于如何确定坐标。将在后面讲解。上例中我们声明了一个对junit的依赖，它的groupId是junit, 
+artifactId是junit, 
+version是4.4。这一组GAV构成了一个Maven坐标，基于此，Maven就能在本地或者远程仓库中找到对应的junit-4.4.jar文件。 </P>
+<H3>依赖归类</H3>
+<P style="text-indent: 0.8cm;">
+这里定义了一个Maven属性，其名称为spring.version，值是4.2.4.RELEASE。在这个POM中，我们就能用${spring.version}的方式来引用该属性。我们看到，所有spring相关的依赖的version元素现在都成了${spring.version}，当Maven运行的时候，它会自动用值4.2.4.RELEASE来替换这个引用。当我们需要升级spring的时候，只要更改一个地方便可，而且，你现在能很高的保证所有的spring依赖包都是同一个版本。 
+</P>
+<PRE class="brush: xml;">&lt;dependencies&gt;  
+      &lt;dependency&gt;  
+        &lt;groupId&gt;org.springframework&lt;/groupId&gt;  
+        &lt;artifactId&gt;spring-core&lt;/artifactId&gt;  
+        &lt;version&gt;${spring.version}&lt;/version&gt;  
+      &lt;/dependency&gt;  
+      &lt;dependency&gt;  
+        &lt;groupId&gt;org.springframework&lt;/groupId&gt;  
+        &lt;artifactId&gt;spring-beans&lt;/artifactId&gt;  
+        &lt;version&gt;${spring.version}&lt;/version&gt;  
+      &lt;/dependency&gt;  
+      &lt;dependency&gt;  
+        &lt;groupId&gt;org.springframework&lt;/groupId&gt;  
+        &lt;artifactId&gt;spring-web&lt;/artifactId&gt;  
+        &lt;version&gt;${spring.version}&lt;/version&gt;  
+      &lt;/dependency&gt;  
+      &lt;dependency&gt;  
+        &lt;groupId&gt;org.springframework&lt;/groupId&gt;  
+        &lt;artifactId&gt;spring-mock&lt;/artifactId&gt;  
+        &lt;version&gt;${spring.version}&lt;/version&gt;  
+      &lt;/dependency&gt;  
+    &lt;/dependencies&gt;  
+      
+    &lt;properties&gt;  
+      &lt;spring.version&gt;4.2.4.RELEASE&lt;/spring.version&gt;  
+    &lt;/properties&gt;
+</PRE>
+<H3>依赖范围(scope)</H3>
+<P 
+style="text-indent: 0.8cm;">对于Junit，一般来说你只有在运行测试的时候需要它，也就是说，它对于src/main/java的classpath没什么意义，并且，将Junit的jar文件打入最终的发布包也不是好事，这无谓的增加了发布包的大小。其实我们应该这样做： 
+</P>
+<PRE class="brush: xml;">&lt;dependency&gt;  
+  &lt;groupId&gt;junit&lt;/groupId&gt;  
+  &lt;artifactId&gt;junit&lt;/artifactId&gt;  
+  &lt;version&gt;4.4&lt;/version&gt;  
+  &lt;scope&gt;test&lt;/scope&gt;  
+&lt;/dependency&gt; 
+</PRE>
+<P 
+style="text-indent: 0.8cm;">于是，junit对于主源码classpath不可用，对于测试源码classpath可用，不会被打包。再举个例子，在开发javaee应用的时候我们一定会用到servlet-api，它对于主源码和测试源码都是必要的，因为我们的代码中会引入servlet-api的包。但是，在打包的时候，将其放入WAR包就会有问题，因为web容器会提供servlet-api，如果我们再将其打包就会造成依赖冲突，解决方案如下： 
+</P>
+<PRE class="brush: xml;">&lt;dependency&gt;  
+  &lt;groupId&gt;javax.servlet&lt;/groupId&gt;  
+  &lt;artifactId&gt;servlet-api&lt;/artifactId&gt;  
+  &lt;version&gt;2.4&lt;/version&gt;  
+  &lt;scope&gt;provided&lt;/scope&gt;  
+&lt;/dependency&gt; 
+</PRE>
+<P 
+style="text-indent: 0.8cm;">将依赖范围设置成provided，就意味着该依赖对于主源码classpath，以及测试classpath可用，但不会被打包。这正是servlet-api所需要的。 
+</P>
+<H4>主要的依赖范围以及作用：</H4>
+<P><SPAN 
+style="font-family: Microsoft YaHei;"><STRONG>compile</STRONG>：编译依赖范围（默认），使用此依赖范围对于编译、测试、运行三种 
+classpath 都有效，即在编译、测试和运行的时候都要使用该依赖jar包；</SPAN></P>
+<P><SPAN 
+style="font-family: Microsoft YaHei;"><STRONG>test</STRONG>：测试依赖范围，从字面意思就可以知道此依赖范围只能用于测试classpath，而在编译和运行项目时无法使用此类依赖，典型的是JUnit，它只用于编译测试代码和运行测试代码的时候才需要；</SPAN></P>
+<P><SPAN 
+style="font-family: Microsoft YaHei;"><STRONG>provided</STRONG>：此依赖范围，对于编译和测试classpath有效，而对运行时无效；</SPAN></P>
+<P><SPAN 
+style="font-family: Microsoft YaHei;"><STRONG>runtime</STRONG>：运行时依赖范围，对于测试和运行classpath有效，但是在编译主代码时无效，典型的就是JDBC驱动实现；</SPAN></P>
+<P><SPAN 
+style="font-family: Microsoft YaHei;"><STRONG>system</STRONG>：系统依赖范围，使用system范围的依赖时必须通过systemPath元素显示地指定依赖文件的路径，不依赖Maven仓库解析，所以可能会造成建构的不可移植，<SPAN 
+style="color: rgb(255, 0, 0);">谨慎使用</SPAN>。</SPAN></P>
+<P><SPAN 
+style="font-family: Microsoft YaHei;"><STRONG>import</STRONG>：导入依赖范围。</SPAN></P>
+<TABLE>
+  <TBODY>
+  <TR>
+    <TD>依赖范围（scope）</TD>
+    <TD>主源码classpath可用（compile）</TD>
+    <TD>测试源码classpath可用（test）</TD>
+    <TD>运行源码classpath可用（runtime）</TD>
+    <TD>会被打包</TD></TR>
+  <TR>
+    <TD>compile 缺省值</TD>
+    <TD>TRUE</TD>
+    <TD>TRUE</TD>
+    <TD>TRUE</TD>
+    <TD>TRUE</TD></TR>
+  <TR>
+    <TD>test</TD>
+    <TD>FALSE</TD>
+    <TD>TRUE</TD>
+    <TD>FALSE</TD>
+    <TD>FALSE</TD></TR>
+  <TR>
+    <TD>runtime</TD>
+    <TD>FALSE</TD>
+    <TD>TRUE</TD>
+    <TD>TRUE</TD>
+    <TD>TRUE</TD></TR>
+  <TR>
+    <TD>provided</TD>
+    <TD>TRUE</TD>
+    <TD>TRUE</TD>
+    <TD>FALSE</TD>
+    <TD>FALSE</TD></TR></TBODY></TABLE>
+<H3>分类器（classifer）</H3>
+<P 
+style="text-indent: 0.8cm;">GAV是Maven坐标最基本最重要的组成部分，但GAV不是全部。还有一个元素叫做分类器（classifier），90%的情况你不会用到它，但有些时候，分类器非常不可或缺。举个简单的例子，当我们需要依赖TestNG的时候，简单的声明GAV会出错，因为TestNG强制需要你提供分类器，以区别jdk14和jdk15，我们需要这样声明对TestNG的依赖： 
+</P>
+<PRE class="brush: xml;">&lt;dependency&gt;  
+  &lt;groupId&gt;org.testng&lt;/groupId&gt;  
+  &lt;artifactId&gt;testng&lt;/artifactId&gt;  
+  &lt;version&gt;5.7&lt;/version&gt;  
+  &lt;classifier&gt;jdk15&lt;/classifier&gt;  
+&lt;/dependency&gt;   
+</PRE>
+<P 
+style="text-indent: 0.8cm;">你会注意到maven下载了一个名为testng-5.7-jdk15.jar的文件。其命名模式实际上是artifactId-version-classifier.packaging。理解了这个模式以后，你就会发现很多文件其实都是默认构件的分类器扩展，如 
+myapp-1.0-test.jar, myapp-1.0-sources.jar。 </P>
+<P style="text-indent: 0.8cm;">
+分类器还有一个非常有用的用途是：我们可以用它来声明对test构件的依赖，比如，我们在一个核心模块的src/test/java中声明了一些基础类，然后我们发现这些测试基础类对于很多其它模块的测试类都有用。没有分类器，我们是没有办法去依赖src/test/java中的内容的，因为这些内容不会被打包到主构件中，它们单独的被打包成一个模式为artifactId-version-test.jar的文件。
+ 我们可以使用分类器来依赖这样的test构件： </P>
+<PRE class="brush: xml;">&lt;dependency&gt;  
+  &lt;groupId&gt;org.myorg.myapp&lt;/groupId&gt;  
+  &lt;artifactId&gt;core&lt;/artifactId&gt;  
+  &lt;version&gt;${project.version}&lt;/version&gt;  
+  &lt;classifier&gt;test&lt;/classifier&gt;  
+&lt;/dependency&gt; 
+</PRE>
+<H3>依赖管理（dependencyManagement）</H3>
+<P style="text-indent: 0.8cm;">
+实际的项目中，你会有一大把的Maven模块，而且你往往发现这些模块有很多依赖是完全项目的，A模块有个对spring的依赖，B模块也有，它们的依赖配置一模一样，同样的groupId, 
+artifactId, version，或者还有exclusions, 
+classifer。细心的分会发现这是一种重复，重复就意味着潜在的问题，Maven提供的dependencyManagement就是用来消除这种重复的。正确的做法是： 
+</P>
+<OL>
+  <LI>在父模块中使用dependencyManagement配置依赖</LI>
+  <LI>在子模块中使用dependencies添加依赖</LI></OL>
+<P 
+style="text-indent: 0.8cm;">dependencyManagement实际上不会真正引入任何依赖，dependencies才会。但是，当父模块中配置了某个依赖之后，子模块只需使用简单groupId和artifactId（这样在依赖的地方就可以不使用version等）就能自动继承相应的父模块依赖配置。例如： 
+</P>
+<P style="text-indent: 0.8cm;">父模块中如此声明： </P>
+<PRE class="brush: xml;">&lt;project&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;groupId&gt;org.sonatype.mavenbook&lt;/groupId&gt;
+	&lt;artifactId&gt;a-parent&lt;/artifactId&gt;
+	&lt;version&gt;1.0.0&lt;/version&gt;
+	...
+	&lt;dependencyManagement&gt;
+		&lt;dependencies&gt;
+			&lt;dependency&gt;
+				&lt;groupId&gt;mysql&lt;/groupId&gt;
+				&lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+				&lt;version&gt;5.1.2&lt;/version&gt;
+			&lt;/dependency&gt;
+			...
+			&lt;dependencies&gt;
+	&lt;/dependencyManagement&gt;  
+ &lt;/project&gt;
+</PRE>
+<P style="text-indent: 0.8cm;">子模块中如此声明： </P>
+<PRE class="brush: xml;">&lt;project&gt;  
+  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;  
+  &lt;parent&gt;  
+    &lt;groupId&gt;org.sonatype.mavenbook&lt;/groupId&gt;  
+    &lt;artifactId&gt;a-parent&lt;/artifactId&gt;  
+    &lt;version&gt;1.0.0&lt;/version&gt;  
+  &lt;/parent&gt;  
+  &lt;artifactId&gt;project-a&lt;/artifactId&gt;  
+  ...  
+  &lt;dependencies&gt;  
+    &lt;dependency&gt;  
+      &lt;groupId&gt;mysql&lt;/groupId&gt;  
+      &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;  
+    &lt;/dependency&gt;  
+  &lt;/dependencies&gt;  
+&lt;/project&gt;
+</PRE>
+<P 
+style="text-indent: 0.8cm;">你依赖配置越复杂，依赖管理所起到的作用就越大，它不仅能够帮助你简化配置，它还能够帮你巩固依赖配置，也就是说，在整个项目中，对于某个构件（如mysql）的依赖配置只有一种，这样就能避免引入不同版本的依赖，避免依赖冲突。 
+</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

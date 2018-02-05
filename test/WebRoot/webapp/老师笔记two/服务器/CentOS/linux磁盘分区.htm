@@ -1,0 +1,178 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0073)http://172.13.19.31:6060/note_html/服务器/CentOS/10701-linux磁盘分区.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>linux磁盘分区</TITLE> <LINK href="linux磁盘分区_files/standalone.css" rel="stylesheet"> 
+<LINK href="linux磁盘分区_files/overlay-apple.css" rel="stylesheet"> <LINK href="linux磁盘分区_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="linux磁盘分区_files/shCoreEclipse.css" 
+rel="stylesheet">	 <LINK href="linux磁盘分区_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">linux磁盘分区</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-08-20 17:07:17</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>分区介绍</H3>
+<UL>
+  <LI><SPAN style="color: red;">一个硬盘</SPAN>，可以分为：基本分区（主分区Primary 
+  Partion）和扩展分区（Extension Partion）</LI>
+  <LI style="color: red;">基本分区的数目+扩展分区的数目之和不能大于4</LI>
+  <LI>基本分区可以马上被使用，但不能再分区</LI>
+  <LI style="color: red;">扩展分区不能直接使用，必须进行再分区后才能使用。并且扩展分区最多只能有一个。</LI>
+  <LI>扩展分区，再分区，再分的区叫逻辑分区（Logical Partion）</LI>
+  <LI>扩展分区再分的逻辑分区，一般没有数量上的限制（虽说没有限制，但是一般情况下不会分得过细）</LI></UL>
+<H3>使用fdisk -l命令查看分区</H3>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux磁盘分区_files/20150820-01.png"></DIV>
+<DIV align="left"><FONT>磁盘分区查看</FONT></DIV></DIV>
+<UL>
+  <LI>图中Device列，表示驱动标识，“/dev/sda1”   
+  <UL>
+    <LI>dev表示：设备的意思</LI>
+    <LI>sd表示：SCSI硬盘。还有一种用hd表示的硬盘，叫IDE硬盘</LI>
+    <LI>sda表示：第一块SCSI硬盘，如果有多块，用‘a’，‘b’，‘c’，‘d’ .... 依次表示</LI>
+    <LI>sda1表示：第一块SCSI硬盘的第1个分区（其余如果有的话1~4是主分区或扩展分区，从5开始才是逻辑分区，而且逻辑分区必须从5开始），1表示分区号</LI></UL></LI>
+  <LI>图中System列，表示分区类型   
+  <UL>
+    <LI>Linux表示：主分区</LI>
+    <LI>Extended表示：扩展分区</LI></UL></LI></UL>
+<H3>使用fdisk进行磁盘分区</H3>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux磁盘分区_files/20150820-02.png"></DIV>
+<DIV align="left"><FONT>输入fdisk /dev/sda后，在command后输入m显示命令选项</FONT></DIV></DIV>
+<P>常用命令选项：</P>
+<UL>
+  <LI>p：打印当前磁盘的分区情况。</LI>
+  <LI>n：重新建立一个新的分区。</LI>
+  <LI>w：保存操作。</LI>
+  <LI>q：退出。</LI>
+  <LI>d：删除一个分区</LI></UL>
+<UL>
+  <LI>
+  <DIV>
+  <DIV align="left"><FONT>增加一块新的磁盘。然后把新的磁盘分成多个分区</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+src="linux磁盘分区_files/20150820-03.png"></DIV>
+  <DIV align="left"><FONT>当再次fdisk -l 查看时发现多了一个/dev/hdb 
+  设备，并提示该设备没有可用的分区表。那么下面就来分一下这个/dev/hdb.</FONT></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left"><FONT>在fdisk命令中，首先用p查看一下，并没有任何分区信息。</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="linux磁盘分区_files/20150820-04.png"></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left"><FONT>用n创建一个新的分区，会提示要建立e （extended 扩展分区）或者p （primary 
+  partition主分区），这里我们选择主分区，所以按p回车。</FONT></DIV>
+  <DIV align="left"><FONT>按了p回车后，又让输入First cylinder 
+  你可以直接回车或者输入一个数字，因为这块磁盘是新的并没有任何分区，所以直接回车其实就是从1开始了。你也可以自定义输入，但不要超过2080，我们这里输入1回车。</FONT></DIV>
+  <DIV 
+  align="left"><FONT>回车后又提示分多大，可以写一个数值（2-2080），也可以输入+sizeK或者+sizeM，后者比较直观容易理解，所以我们在这里输入+100M，分了一个100M的主分区。再用p查看时，果真多出来一个分区。然后继续重复前面的操作，建立了4个主分区。</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+src="linux磁盘分区_files/20150820-05.png"></DIV>
+  <DIV align="left"><FONT>当我们再次输入n创建分区时，结果提示出错了。</FONT></DIV>
+  <DIV 
+  align="left"><FONT>由此我们发现，在linux中最多只能创建4个主分区，那如果想多创建几个分区如何做？很容易，在创建完第三个分区后，创建第四个分区时选择扩展分区。</FONT></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left"><FONT>先删除第四个主分区</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="linux磁盘分区_files/20150820-06.png"></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV 
+  align="left"><FONT>然后建立一个扩展分区，在建立扩展分区时，会问你要分多少给这个扩展分区，我们直接回车，即把所有空间都分给了这个扩展分区。这个扩展分区/dev/hdb4并不能往里写数据，它只是一个空壳子，需要我们继续在这个空壳中继续创建分区。</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="linux磁盘分区_files/20150820-07.png"></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV 
+  align="left"><FONT>当再次新建分区时，发生了变化，不再是p或者e了，而是p或者l（逻辑分区），这是为什么呢？在上面也提到了，一个扩展分区只是一个空壳，在扩展分区下才可以继续划分小的分区，这个小的分区其实就是逻辑分区了。</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="linux磁盘分区_files/20150820-08.png"></DIV></DIV></LI>
+  <LI>
+  <DIV>
+  <DIV align="left"><FONT>然后按w保存，该模式自动退出，如果你不想保存分区信息直接按q即可退出。</FONT></DIV>
+  <DIV align="left"><IMG alt="图片不存在" 
+  src="linux磁盘分区_files/20150820-09.png"></DIV></DIV></LI></UL>
+<H3>mkfs.ext2 / mkfs.ext3 /mke2fs 格式化linux硬盘分区</H3>
+<PRE class="brush: bash;">当用man查询这三个命令的帮助文档时，你会发现我们看到了同一个帮助文档，这说明三个命令是一样的。常用的选项有：
+
+-b：分区时设定每个数据区块占用空间大小，目前支持1024, 2048 以及4096 bytes每个块。
+
+-i：设定inode大小
+
+-N：设定inode数量，有时使用默认的inode数不够用，所以要自定设定inode数量。
+
+-c：在格式化前先检测一下磁盘是否有问题，加上这个选项后会非常慢
+
+-L：预设该分区的标签label
+
+-j：建立ext3格式的分区，如果使用mkfs.ext3 就不用加这个选项了
+</PRE>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux磁盘分区_files/20150820-10.png"></DIV>
+<DIV align="left"><FONT>不加任何选项，直接格式化/dev/hdb1 </FONT></DIV></DIV>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux磁盘分区_files/20150820-11.png"></DIV>
+<DIV align="left"><FONT>上例中更改了block size为4096 
+默认是1024，而inode大小设定为4096。</FONT></DIV></DIV>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux磁盘分区_files/20150820-12.png"></DIV>
+<DIV align="left"><FONT>上例的例子分区时自定义分区的label（标签）名。</FONT></DIV></DIV>
+<DIV>
+<DIV align="left"><FONT>e2label 用来查看或者修改分区的标签（label）</FONT></DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux磁盘分区_files/20150820-13.png"></DIV>
+<DIV 
+align="left"><FONT>这个命令很简单，后边直接跟分区编号，即可查看该分区的label，当想要修改标签名时，分区编号后边跟想要的标签名即可。</FONT></DIV></DIV>
+<H3>fsck 检查硬盘有没有坏道</H3>
+<PRE class="brush: bash;">语法： fsck [-Aar] [分区]
+
+-A ：加该参数时，后不需要跟分区名作为参数。它会自动检查/etc/fstab 文件下的所有分区（开机过程中就会执行一次该操作）；
+
+-a ：自动修复检查到有问题的分区；
+
+-r ：当检查到有坏道的分区时会让用户决定是否修复。
+</PRE>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" src="linux磁盘分区_files/20150820-14.png"></DIV>
+<DIV 
+align="left"><FONT>当你使用fsck检查磁盘有无坏道时，会提示用户“跑这个任务可能会导致某些挂载的文件系统损坏”，所以这个命令不要轻易运行。否则真的遇到问题，系统甚至都不能启动了。</FONT></DIV></DIV>
+<DIV>
+<DIV align="left"><IMG alt="图片不存在" 
+src="linux磁盘分区_files/20150820-15.png"></DIV></DIV>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 2013 ~ 2015 作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

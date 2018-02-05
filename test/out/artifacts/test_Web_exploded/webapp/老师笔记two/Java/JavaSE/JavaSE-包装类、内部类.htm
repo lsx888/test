@@ -1,0 +1,228 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0081)http://172.13.19.31:6060/note_html/Java/JavaSE/1008010-JavaSE-包装类、内部类.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>JavaSE-包装类、内部类</TITLE> <LINK href="JavaSE-包装类、内部类_files/standalone.css" 
+rel="stylesheet"> <LINK href="JavaSE-包装类、内部类_files/overlay-apple.css" rel="stylesheet"> 
+<LINK href="JavaSE-包装类、内部类_files/article_edit.css" rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="JavaSE-包装类、内部类_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="JavaSE-包装类、内部类_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">JavaSE-包装类、内部类</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2016-05-27 16:48:59</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<HR>
+
+<DIV id="content_div_2">
+<H3>八个包装类(Wrapper class)：针对原生数据类型的包装</H3>
+<UL>
+  <LI>int：Integer</LI>
+  <LI>char：Character</LI>
+  <LI>short：Short</LI>
+  <LI>long：Long</LI>
+  <LI>float：Float</LI>
+  <LI>double：Double</LI>
+  <LI>byte：Byte</LI>
+  <LI>boolean：Boolean</LI></UL>
+<H4>注意：</H4>
+<OL>
+  <LI>Integer、Byte、Float、Double、Short、Long都是Number类的子类。Number本身提供了返回以上类型的方法。</LI>
+  <LI>Character、Boolean都是Object的直接子类。</LI>
+  <LI>int a = new Integer("333");//自动拆箱 Integer c = 100;//自动装箱</LI></OL>
+<H3>自动拆箱/装箱：基本数据类型与其包装类之间的转换</H3>
+<UL>
+  <LI>自动装箱：基本类型自动转为包装类。(int to Integer)List&lt;Integer&gt; list; 
+  list.add(3);</LI>
+  <LI>自动拆箱：包装类自动转为基本类型。(Integer to int)Integer a = 8;</LI>
+  <LI>Long a = 8;会出错！因为8会自动装箱成Integer应该这样定义 Long a = 8L;</LI>
+  <LI><FONT style="color: red;">Integer 类有一个缓存，它会缓存介于-128～127之间的整数。</FONT>   
+  <BR>Integer a = 100; Integer b = 100; a == b;为true   <BR>  Integer a = 200; 
+  Integer b = 200; a == b;为false   <BR>注意：用原生int类型不会出现这种情况   </LI>
+  <LI><SPAN 
+  style="color: rgb(255, 0, 0);">Integer的parseInt和valueOf方法才会使用缓存值，直接使用构造方法不会使用缓存值。</SPAN></LI></UL></DIV>
+<HR>
+
+<DIV id="content_div_3">
+<H3>内部类</H3>
+<H4 
+style="text-indent: 0.8cm;">在类的内部可以定义成员变量和方法，而且在类内部也可以定义另一个类。如果在类Outer的内部再定义一个类Inner，此类Inner就称为内部类，而Outer称为外部类。内部类可声明成public或private。当内部类声明成public或private是，对其的访问限制和成员变量和成员方法完全相同。</H4>
+<H4 style="text-indent: 0.4cm;">成员内部类(member inner class)：直接在外部类中定义的类</H4>
+<UL>
+  <LI>可以访问外部类的静态与非静态的方法与成员变量</LI>
+  <LI>生成成员内部类对象的方式为： OuterClass.InnerClass inner = new OuterClass().new 
+  InnerClass();</LI>
+  <LI>若想在成员内部类中访问外部类的成员变量，语法为：OuterClass.this.a;</LI></UL>
+<H4 style="text-indent: 0.4cm;">静态内部类(static inner class)：用static关键字修饰的内部类</H4>
+<UL>
+  <LI>只能访问外部类的静态成员变量与静态方法，与外部类的静态方法一样。</LI>
+  <LI>生成静态内部类对象的方式为： OuterClass.InnerClass inner = new 
+  OuterClass.InnerClass();</LI></UL>
+<H4 style="text-indent: 0.4cm;">方法内部类(局部内部类Local Inner 
+Class)：定义在外部类方法中，和局部变量一样</H4>
+<UL>
+  <LI>定义在方法当中，只能访问方法中声明的final类型的变量</LI>
+  <LI>不能用访问修饰符修饰(就像局部变量不能用访问修饰符修饰一样)</LI></UL>
+<H4 style="text-indent: 0.4cm;">匿名内部类(Anonymous Inner 
+Class)：就是指没有指定一个具体的名称的类，它是从接口和抽象类的应用上发展而来的。</H4>
+<UL>
+  <LI>匿名内部类会隐式地继承一个父类或实现一个接口</LI></UL></DIV>
+<HR>
+
+<H4>成员内部类</H4>
+<PRE class="brush: java;">//成员内部类
+public class InnerDemo1{//OuterClass
+
+	private int a = 10;
+
+	public static void main(String[] args){
+		InnerDemo1.Inner in = new InnerDemo1().new Inner();
+		in.print();
+	}
+	
+	public class Inner{
+		private int a = 100;
+		public void print(){			
+			System.out.println(InnerDemo1.this.a+"普通内部类的成员方法");
+		}
+	}
+
+}
+</PRE>
+<H4>静态内部类</H4>
+<PRE class="brush: java;">//静态内部类
+public class InnerDemo2{
+
+	public static void main(String[] args){
+		//在外部类的内部可以使用以下方式初始化静态内部类
+		Inner in1 = new Inner();
+		in1.print();
+
+		InnerDemo2.Inner in2 = new InnerDemo2.Inner();
+		in2.print();
+	}
+
+	private static int a = 10;
+	private int b = 100;
+
+	public static class Inner{
+
+		private int c = 1000;
+
+		public void print(){
+
+			System.out.println(a);
+			System.out.println(InnerDemo2.a);
+			InnerDemo2 k = new InnerDemo2();
+			System.out.println(k.b);
+
+			System.out.println("静态内部类！");
+		}
+	}
+}
+</PRE>
+<H4>方法内部类</H4>
+<PRE class="brush: java;">//方法内部类
+public class InnerDemo3{
+
+	public static void main(String[] args){
+		InnerDemo3 outter = new InnerDemo3();
+		outter.print(7);
+	}
+
+	private int a =10;
+	
+	/*
+		要在方法内部类中使用，外部类的方法参数，那么该参数必须是final的
+	*/
+	public void print(final int b){
+		System.out.println(a);
+		System.out.println(b);
+
+		//方法内部类，不能有访问修饰符(就像局部变量一样)
+		class Inner{
+			public void print(){
+				System.out.println(a);
+				System.out.println(b);
+			}
+		}
+		
+		Inner in = new Inner();
+
+		in.print();
+		
+	}
+}
+</PRE>
+<H4>匿名内部类</H4>
+<PRE class="brush: java;">//匿名内部类 举例
+
+public class InnerDemo4{
+
+	public static void main(String[] args){
+		//匿名内部类
+		fn(new A(){
+			public void print(){
+				System.out.println("匿名内部类print方法");
+			}
+		});
+	}
+
+	public static void fn(A a){
+		a.print();
+	}
+
+}
+
+
+interface A{
+	void print();
+}
+
+/*
+class B implements A{
+	public void print(){
+		System.out.println("继承类的print方法");
+	}
+}
+*/
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushCss.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>

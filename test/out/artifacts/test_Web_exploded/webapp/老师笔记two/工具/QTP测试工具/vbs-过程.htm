@@ -1,0 +1,244 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0073)http://172.13.19.31:6060/note_html/工具/QTP测试工具/1004010-vbs-过程.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<TITLE>vbs-过程</TITLE> <LINK href="vbs-过程_files/standalone.css" rel="stylesheet"> 
+<LINK href="vbs-过程_files/overlay-apple.css" rel="stylesheet"> <LINK href="vbs-过程_files/article_edit.css" 
+rel="stylesheet"> 
+<STYLE type="text/css">
+	#content{
+		margin: 5px 10px;
+	}
+</STYLE>
+	 <!-- 代码高亮 -->	 <LINK href="vbs-过程_files/shCoreEclipse.css" rel="stylesheet">
+	 <LINK href="vbs-过程_files/my-highlighter.css" rel="stylesheet"> 
+<META name="GENERATOR" content="MSHTML 11.00.10586.545"></HEAD> 
+<BODY>
+<DIV id="content">
+<H1 align="center">vbs-过程</H1>
+<P align="right" 
+style="margin: 0px 10px 0px 0px; padding: 0px;">最后修改时间：2015-10-08 10:08:04</P>
+<HR style="border-width: 2px; border-color: lime;">
+
+<H3>过程</H3>
+<PRE class="brush: vb;">在VBScript中，过程被分为两类：Sub过程和Function过程。
+</PRE>
+<H4>Sub过程</H4>
+<PRE class="brush: vb;">语法结构如下：
+	
+[Public [Default] | Private] Sub name [(arglist)] 
+    [statements]
+    [Exit Sub]
+    [statements]
+End Sub
+
+主要参数：
+
+    Public：表示Sub过程可被所有脚本中的所有其他过程访问。
+    Default：只与Class块中的Public关键字连用，用来表示Sub过程是类的默认方法。如果在类中指定了不止一个Default过程，就会出错。
+    Private：表示Sub过程只可被声明该过程的脚本中的其他过程访问。
+    name：Sub的名称，遵循标准变量命名规则。
+    arglist：代表在调用时要传递给Sub过程的参数的变量列表。用逗号隔开多个变量。其语法为：[ByVal | ByRef] varname[()]，ByVal表示该参数是按值传递的，
+ByRef表示该参数按引用传递，varname代表参数的变量名称。
+
+如没有显式地指定使用Public或Private，则Sub过程默认为Public。
+调用Sub过程时，只需输入过程名及所有参数值，参数值之间使用逗号分隔。不需使用Call语句，但如果使用了此语句，则必须将所有参数包含在括号之中。
+
+调用Sub过程的两种方式。
+一种使用Call语句；
+另一种则不使用。两种方式效果相同
+
+如：Call MySub(a, b)或MySub a, b
+</PRE>
+<H4>示例</H4>
+<PRE class="brush: vb;">Sub 过程是包含在 Sub 和 End Sub 语句之间的一组 VBScript 语句。如果 Sub 过程无任何参数，则 Sub 语句必须包含空括号 ()。实例代码如下：
+	
+Call GetName() '调用Sub过程
+Sub GetName()
+    MsgBox "我是Sirrah" '输出字符串
+End Sub
+
+ Sub 过程可以使用参数（由调用过程传递的常数、变量或表达式）。实例代码如下：
+	
+Call GetName("我是sirrah") '调用Sub
+Sub GetName(name)
+    MsgBox name '输出字符串
+End Sub
+
+ 
+
+ Sub过程是没有返回值的哦！不然运行报错误的哦！！！实例代码如下：
+	
+getName "Sirrah" '调用过程
+Sub getName(name)
+    getName = name '设置返回值
+End Sub
+
+ 运行上面的脚本，将会出现下图所示的错误哦，请一定注意过程是不可以有返回值的 
+</PRE>
+<H4>Function过程（Function过程也叫函数）</H4>
+<PRE class="brush: vb;">语法结构如下：
+	
+[Public [Default]| Private] Function name [(arglist)]
+    [statements]
+    [name = expression]
+    [Exit Function] 
+    [statements]
+    [name = expression]
+End Function
+
+主要参数：
+
+    Public：表示Function过程可被所有脚本中的所有其他过程访问。
+    Default：只与Class块中的Public关键字连用，用来表示Function过程是类的默认方法。如果在类中指定了不止一个Default过程，就会出错。
+    Private：表示Function过程只可被声明该过程的脚本中的其他过程访问。
+    name：Function的名称，遵循标准变量命名规则。
+    arglist：代表在调用时要传递给Function过程的参数的变量列表。用逗号隔开多个变量。其语法为：[ByVal | ByRef] varname[()]，ByVal表示该参数是按值传递的，
+ByRef表示该参数按引用传递，varname代表参数的变量名称。
+
+如没有显式地指定使用Public或Private，则Function过程默认为Public。
+调用Function过程时，函数名必须用在变量赋值语句的右端或表达式中，如：b = MyFunction(a)。
+要从函数返回一个值，只需将值赋给函数名。在过程的任意位置都可以出现任意个这样的赋值。
+</PRE>
+<H4>Sub与Function的区别</H4>
+<UL>
+  <LI>Sub没有返回值，而Function有返回值。</LI>
+  <LI>Sub不能放在表达式中，而Function可以。</LI></UL>
+<H4>示例</H4>
+<PRE class="brush: vb;">Function 过程是包含在 Function 和 End Function 语句之间的一组 VBScript 语句。Function 过程与 Sub 过程类似，
+如果 Function 过程无任何参数，则 Function 语句必须包含空括号 ()。实例代码如下：
+	
+Call GetName() '调用Function
+Function GetName()
+    MsgBox "我是Sirrah" '输出字符串
+End Function
+
+ Function 过程可以使用参数（由调用过程传递的常数、变量或表达式）。实例代码如下：
+	
+Call GetName("我是sirrah") '调用Function
+Function GetName(name)
+    MsgBox name '输出字符串
+End Function
+
+ Function 是有返回值的，通过函数名返回一个值，这个值是在过程的语句中赋给函数名的。Function 返回值的数据类型总是Variant。实例代码如下：
+	
+getName "Sirrah" '调用Function
+Function getName(name)
+    getName = name '设置返回值
+End Function
+</PRE>
+<H3>如何调用过程</H3>
+<PRE class="brush: vb;">调用 Function 过程时，函数名必须用在变量赋值语句的右端或表达式中。
+
+调用 Sub 过程时，只需输入过程名及所有参数值，参数值之间使用逗号分隔。不需使用 Call 语句，但如果使用了此语句，则必须将所有参数包含在括号之中。
+
+　　下面的示例显示了调用过程的两种方式。一种使用 Call 语句；另一种则不使用。两种方式效果相同。
+	
+getName "Sirrah" '调用过程的第一种写法
+Call getName("Candy") '调用过程的第二种写法
+Sub getName(name)
+    MsgBox "我是"&amp;name  '&amp;是连接运算符，具体可以参考vbs参考文档
+End Sub
+</PRE>
+<H4>Sub过程</H4>
+<TABLE>
+  <TBODY>
+  <TR>
+    <TH>调用过程的合法方式</TH>
+    <TH>调用过程的非法方式</TH></TR>
+  <TR>
+    <TD>GreetUser "Bill"</TD>
+    <TD>GreetUser("Bill")</TD></TR>
+  <TR>
+    <TD>Call GreetUser("Bill")</TD>
+    <TD>Call GreetUser "Bill"</TD></TR></TBODY></TABLE>
+<H4>Function过程</H4>
+<TABLE>
+  <TBODY>
+  <TR>
+    <TH>调用Function过程的合法方式</TH>
+    <TH>调用Function过程的非法方式</TH>
+    <TH>备 注</TH></TR>
+  <TR>
+    <TD>lngSum = AddNumbers(10, 20)</TD>
+    <TD>lngSum = AddNumbers 10, 20</TD>
+    <TD>要获得函数的返回值，就不能用Call 关键字，并且一定要将参数放在圆括号中。没有圆括号是非法的</TD></TR>
+  <TR>
+    <TD>Call AddNumbers (10, 20)</TD>
+    <TD>lngSum = Call AddNumbers(10, 20)</TD>
+    <TD>如果不需要接收函数的返回值则可以使用 Call 关键字，但是必须使用圆括号。在接收返回值时用 Call 关键字是非法的</TD></TR>
+  <TR>
+    <TD>AddNumbers 10, 20</TD>
+    <TD>AddNumbers (10, 20)</TD>
+    <TD>可以同时忽略 Call 关键字和返回值，但这样也必须忽略圆括号</TD></TR></TBODY></TABLE>
+<H3>址传递ByRef 和 值传递RyVal</H3>
+<P style="text-indent: 0.8cm;">过程和函数的参数有一个概念：传址(by reference)和传值(by 
+value)。一个参数是传址还是传值取决于过程或函数定义中的声明。传址的参数用 ByRef 关键字说明，而传值的参数既可以用 ByVal 
+关键字说明也可以不加任何说明—— 也就是说， 没有明确地指定是哪一种的话，ByVal 就是默认值。 </P>
+<H4>示例</H4>
+<PRE class="brush: vb;">Option Explicit
+
+Dim lngA
+Dim lngB
+
+lngA = 1
+lngB = 1
+
+ByRefByValExample lngA, lngB
+
+MsgBox "lngA = " &amp; lngA &amp; vbNewLine &amp; _
+"lngB = " &amp; lngB
+
+Sub ByRefByValExample(ByRef lngFirst, ByVal lngSecond)
+
+lngFirst = lngFirst + 1
+lngSecond = lngSecond + 1
+
+End Sub
+
+'执行结果为：
+'
+'   ingA = 2
+'   ingB = 1
+
+'***********************************
+' 说明：
+'“&amp;_”一般是某个字符串很长需要在代码中进行换行时用，比如下面三句是等价的
+'
+' msgbox “1234567890abcdefg"
+' msgbox “1234567890“ &amp; "abcdefg"
+' msgbox “1234567890” &amp; _
+' "abcdefg" 
+'
+'***********************************
+
+</PRE>
+<HR style="border-width: 2px; border-color: lime;">
+
+<DIV align="center">©copyright 版权所有   作者：zzy</DIV>
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shCore.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushJScript.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushXml.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushSql.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushBash.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/scripts/shBrushVb.js" type="text/javascript"></SCRIPT>
+	
+<SCRIPT src="../../pub/syntaxhighlighter/init.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="../../pub/js/jquery.tools.min.js" type="text/javascript"></SCRIPT>
+ <!-- make all links with the 'rel' attribute open overlays --> 
+<SCRIPT>
+  $(function() {
+      $("#apple img[rel]").overlay({effect: 'apple'});
+    });
+</SCRIPT>
+ </DIV></BODY></HTML>
