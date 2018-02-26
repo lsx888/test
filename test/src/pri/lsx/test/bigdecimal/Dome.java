@@ -33,12 +33,15 @@ public class Dome {
 		 BigDecimal a51=new BigDecimal(a5); BigDecimal b51=new BigDecimal(b5);
 		 System.out.println(a51.add(b51).doubleValue());//加法
 		 System.out.println(a51.add(b51).doubleValue());
+
 //		 换一种方式对a5和b5两个数值进行计算,这种方式才是对的我日
 		 BigDecimal a52=new BigDecimal(Double.toString(a5)); BigDecimal b52=new BigDecimal(Double.toString(b5));
+		 System.out.println("Double.toString这个方法才是对的");
 		 System.out.println(a52.add(b52).doubleValue());
  //		 两个字符串相加也是可以的
 		 String str1=new String("1.1"); String stz1=new String("4.1");
 		 BigDecimal str2=new BigDecimal(str1); BigDecimal stz2=new BigDecimal(stz1);
+		 System.out.println("但是如果是字符型可以不用Double.toString这个方法");
 		 System.out.println(str2.add(stz2).doubleValue());
 //		 若精度超过了double的精度，还能精确计算吗？
 		 double a6=1.111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111;
@@ -46,6 +49,7 @@ public class Dome {
 		 System.out.println(a6+b6);//直接相加会出问题
 		 //下面试下BigDecimal方法
 		 BigDecimal a61=new BigDecimal(Double.toString(a6)); BigDecimal b62=new BigDecimal(Double.toString(b6));
+		 System.out.println("超出精度的计算，Double.toString这个方法会把多余的给省掉");
 		 System.out.println(a61.add(b62));
 
 
