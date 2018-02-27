@@ -7,8 +7,8 @@ import java.util.Scanner;
  * */
 public class 桶排序 {
     public static void main(String[] args) {
-        int n,i=1,t;
-        int[] sort,tong=new int[1001];
+        int n,i=1;
+        int[] sort;
         Scanner scn = new Scanner(System.in);
         n=scn.nextInt();//输入数字的总个数
         sort=new int[n+1];
@@ -26,14 +26,23 @@ public class 桶排序 {
           }*/
 
         //TODO 桶排序
+        tongpaixu(n,sort);
+
+        //TODO 冒泡排序
+        maopaopaixu(n,sort);
+    }
+
+    private static void  tongpaixu(int n,int[] sort){
+        int[] tong=new int[1001];
         for (int j=1;j<=1000;j++) tong[j]=0;//初始化
         for (int j=1; j<=n;j++){
-           if (sort[j] !=0) tong[sort[j]]++;
+            if (sort[j] !=0) tong[sort[j]]++;
         }
         System.out.print("桶排序结果：  ");
         for (int j=1;j<=1000;j++) if (tong[j] ==1) System.out.print(j+" ");//去重并打印出来
-
-        //TODO 冒泡排序
+    }
+    private static void  maopaopaixu(int n,int[] sort){
+        int t;
         for (int j=1;j<=n;j++){
             for (int k=1;k<=n-j;k++){
                 if (sort[k]>sort[k+1]) {
@@ -44,10 +53,6 @@ public class 桶排序 {
             }
         }
         System.out.print("冒泡排序结果：  ");
-        for (int j=1;j<=1000;j++) if (tong[j] ==1) System.out.print(j+" ");//去重并打印出来
-    }
-
-    private  void tongpaixu(int n,int[] sort){
-        
+        for (int j=1;j<=n-1;j++) if (sort[j] ==1) System.out.print(j+" ");//去重并打印出来
     }
 }
