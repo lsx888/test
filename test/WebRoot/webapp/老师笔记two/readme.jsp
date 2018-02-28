@@ -66,6 +66,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                             <a href="<%=basePath%>webapp\老师笔记two\Java\JavaSE\JavaSE-包与访问修饰符.htm">JavaSE-包与访问修饰符</a>
                       </li>
                       <li>
+                          <a href="<%=basePath%>webapp\老师笔记two\Java\JavaSE\JavaSE-包装类、内部类.htm">JavaSE-包装类、内部类</a>
+                      </li>
+                      <li>
                           <a href="<%=basePath%>webapp\老师笔记two\Java\JavaSE\JavaSE-反射机制.htm">JavaSE-反射机制</a>
                       </li>
                       <li>
