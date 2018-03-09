@@ -1,11 +1,13 @@
 package pri.lsx.test.suanfa;
 
 import java.util.LinkedList;
+import java.util.Stack;
 
 class 队列栈链表 {
     public static void main(String[] args) {
         query();//队列
-
+        System.out.println("_______________________________________________________________________________________________________________");
+        stack();//栈
     }
 
     /**
@@ -22,4 +24,17 @@ class 队列栈链表 {
         System.out.println("仅返回第一个元素但是不删除该元素"+query.peek());//仅返回第一个元素但是不删除该元素
         for (String str:query) System.out.println("打印出此时的队列数"+str);//打印出此时的队列数
     }
+
+    /**栈：只需要知道对栈存取数据基本操作就行了*/
+    private static void stack(){
+        Stack<String> stack = new Stack<String>();
+        stack.push("aa");stack.push("bb");stack.push("cc");//添加元素
+        System.out.println("判断该栈是否为空"+stack.empty());
+        System.out.println("去除该栈的顶元素但是不移除该元素"+stack.peek());
+        System.out.println("去除该栈的顶元素并移除该元素"+stack.pop());
+        while(!stack.empty()){//遍历该栈中的数据
+            System.out.printf(stack.pop());
+        }
+    }
+
 }
